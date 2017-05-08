@@ -91,6 +91,7 @@ logs/
 
 # bower
 src/main/resources/static/bower_components/*
+.bowerrc
 
 # MAC
 .DS_Store
