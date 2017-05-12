@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class U01G001Controller {
 
 	// public method called by request
-	@RequestMapping(value = "/U01G001", method = RequestMethod.GET)
+	@RequestMapping(value = "/u01g001", method = RequestMethod.GET)
 	public String index(Map<String, Object> model, HttpSession session) {
 		return "/u01/u01g001";
 	}

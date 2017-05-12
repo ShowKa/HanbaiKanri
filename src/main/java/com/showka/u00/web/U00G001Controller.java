@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class U00G001Controller {
 
 	// public method called by request
-	@RequestMapping(value = "/U00G001", method = RequestMethod.GET)
+	@RequestMapping(value = "/u00g001", method = RequestMethod.GET)
 	public String index(Map<String, Object> model, HttpSession session) {
 		return "/u00/u00g001";
 	}
