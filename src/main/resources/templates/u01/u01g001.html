@@ -1,40 +1,50 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
 <link th:substituteby="common/head :: common_link" />
+<script src="/u01/u01g001.js"></script>
 </head>
+
 <body>
 	<div th:substituteby="common/header :: common_header"></div>
-
 	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
 	<div class="bootstrap-iso">
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<form class="form-horizontal" method="post" action="/u01g001/search">
+					<form id="searchForm" class="form-horizontal">
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-2" for="kokyakuName"> 顧客名 </label>
+							<label class="control-label col-sm-2" for="kokyakuName">顧客名</label>
 							<div class="col-sm-10">
 								<input class="form-control" id="kokyakuName" name="kokyakuName" type="text" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-2" for="bushoName"> 部署名 </label>
+							<label class="control-label col-sm-2" for="bushoName">部署名</label>
 							<div class="col-sm-10">
 								<input class="form-control" id="bushoName" name="bushoName" type="text" />
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="col-sm-10 col-sm-offset-2">
-								<button class="btn btn-primary btn-sm" name="submit" type="submit">Submit</button>
+								<input onClick="search();" id="searchBtn" type="button" class="btn btn-primary btn-sm" value="検索"></input>
 							</div>
-						</div>
 					</form>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<table>
+						<thead>
+							<tr>
+								<th>顧客名</th>
+							</tr>
+						</thead>
+						<tbody id="kokyakuList"></tbody>
+					</table>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div th:substituteby="common/footer :: common_footer"></div>
 </body>
-
 </html>
