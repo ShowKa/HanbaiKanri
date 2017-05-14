@@ -10,7 +10,7 @@
 	<div th:substituteby="common/header :: common_header"></div>
 	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
 	<div class="bootstrap-iso">
-		<div class="container-fluid">
+		<div class="container">
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<form id="searchForm" class="form-horizontal">
@@ -30,18 +30,22 @@
 							<div class="col-sm-10 col-sm-offset-2">
 								<input onClick="search();" id="searchBtn" type="button" class="btn btn-primary btn-sm" value="検索"></input>
 							</div>
+						</div>
 					</form>
 				</div>
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<table>
-						<thead>
-							<tr>
-								<th>顧客名</th>
-							</tr>
-						</thead>
-						<tbody id="kokyakuList"></tbody>
-					</table>
-				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>顧客名</th>
+							<th>部署名</th>
+						</tr>
+					</thead>
+					<tbody id="kokyakuList"></tbody>
+				</table>
 			</div>
 		</div>
 	</div>
