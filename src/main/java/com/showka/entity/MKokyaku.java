@@ -9,32 +9,38 @@ import javax.persistence.Table;
 
 import com.showka.common.AbstractEntity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
- * The persistent class for the m_kokyaku database table.
+ * 顧客マスタ
  * 
  */
 @Entity
 @Table(name = "m_kokyaku")
+@Getter
+@Setter
 public class MKokyaku extends AbstractEntity implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique = true, nullable = false, length = 255)
+	@Column(name = "code", unique = true, nullable = false, length = 4)
 	private String code;
 
-	@Column(nullable = false, length = 255)
-	private String address;
-
-	@Column(name = "gentei_kubun", nullable = false, length = 255)
-	private String genteiKubun;
-
-	@Column(name = "kokyaku_kubun", nullable = false, length = 255)
-	private String kokyakuKubun;
-
-	@Column(nullable = false, length = 255)
+	@Column(name = "name", nullable = false, length = 255)
 	private String name;
 
-	@Column(name = "shukan_busho_code", nullable = false, length = 255)
-	private String shukanBushoCode;
+	@Column(name = "address", nullable = false, length = 255)
+	private String address;
+
+	@Column(name = "gentei_kubun", nullable = false, length = 2)
+	private String genteiKubun;
+
+	@Column(name = "kokyaku_kubun", nullable = false, length = 2)
+	private String kokyakuKubun;
+
+	@Column(name = "shukan_busho_id", nullable = false, length = 255)
+	private String shukanBushoId;
 
 }
