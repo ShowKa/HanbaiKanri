@@ -33,8 +33,8 @@ public class MBushoServiceCrudImplTest extends ServiceCrudTestCase {
 	 */
 	@Before
 	public void before() {
-		super.deleteAll("m_busho");
-		super.insert("m_busho", COLUMN, VALUE01, VALUE02);
+		super.deleteAll(TABLE_NAME);
+		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
 	}
 
 	@Test
