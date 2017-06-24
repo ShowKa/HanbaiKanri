@@ -27,7 +27,7 @@ public abstract class AbstractEntity {
 	 */
 	@Version
 	@Column(name = "version", nullable = false)
-	private Integer version = -666;
+	private Integer version;
 
 	/**
 	 * id
