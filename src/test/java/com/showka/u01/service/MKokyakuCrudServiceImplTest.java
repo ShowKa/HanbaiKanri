@@ -56,4 +56,13 @@ public class MKokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals(3, result.size());
 	}
 
+	@Test
+	public void testSearch() throws Exception {
+		MKokyakuCrudSearchCriteria c = new MKokyakuCrudSearchCriteria();
+		c.setName("aaaa");
+		c.setBushoName("部署02");
+		List<MKokyaku> result = service.search(c);
+		assertEquals(1, result.size());
+	}
+
 }

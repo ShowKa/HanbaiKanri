@@ -8,6 +8,7 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.showka.entity.MBusho;
 import com.showka.entity.MKokyaku;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.u01.service.i.MKokyakuCrudService;
@@ -46,8 +47,36 @@ public class MKokyakuCrudServiceImpl implements MKokyakuCrudService {
 		return kokyakuList;
 	}
 
+	/**
+	 * 全件検索
+	 * 
+	 * @return
+	 */
 	public List<MKokyaku> getAllKokyaku() {
 		return repository.findAll();
+	}
+
+	/**
+	 * 顧客検索
+	 */
+	@Override
+	public List<MKokyaku> search(MKokyakuCrudSearchCriteria criteria) {
+		// 条件
+		// 顧客名
+		MKokyaku k = new MKokyaku();
+		k.setName(criteria.getName());
+
+		// 部署名
+		MBusho b = new MBusho();
+		b.setName(criteria.getBushoName());
+		k.setShukanBusho(b);
+
+		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("name", match -> match.startsWith());
+		Example<MKokyaku> example = Example.of(k, matcher);
+
+		// 検索
+		List<MKokyaku> kokyakuList = repository.findAll(example);
+		return kokyakuList;
 	}
 
 }
