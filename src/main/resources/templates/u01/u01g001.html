@@ -2,12 +2,12 @@
 <html lang="ja">
 
 <head>
-<link th:substituteby="common/head :: common_link" />
+<link th:replace="common/head :: common_link" />
 <script src="/u01/u01g001.js"></script>
 </head>
 
 <body>
-	<div th:substituteby="common/header :: common_header"></div>
+	<div th:replace="common/header :: common_header"></div>
 	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
 	<div class="bootstrap-iso">
 		<div class="container">
@@ -49,6 +49,6 @@
 			</div>
 		</div>
 	</div>
-	<div th:substituteby="common/footer :: common_footer"></div>
+	<div th:replace="common/footer :: common_footer"></div>
 </body>
 </html>

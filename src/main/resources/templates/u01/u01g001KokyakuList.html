@@ -1,5 +1,6 @@
 <tbody th:fragment="list" th:remove="tag">
-	<tr>
-		<td th:text="${kokyakuName}" />
+	<tr th:each="kokyaku:${kokyakuList}"> 
+		<td th:text="${kokyaku.name}" />
+		<td th:text="${kokyaku.bushoName}" />
 	</tr>
 </tbody>
