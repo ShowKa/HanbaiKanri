@@ -26,51 +26,81 @@ public abstract class AbstractEntity {
 	 * version
 	 */
 	@Version
-	@Column(name = "version", nullable = false)
+	@Column(name = "version", nullable = false, columnDefinition = "INTEGER DEFAULT 1")
 	private Integer version;
 
 	/**
 	 * id
 	 */
-	@Column(name = "id", unique = true, nullable = false, length = 255)
-	private String id;
+	@Column(name = "record_id", unique = true, nullable = false, length = 255)
+	private String recordId;
 
 	/**
 	 * create_user_id
 	 */
-	@Column(name = "create_user_id", unique = false, nullable = false, length = 255)
+	@Column(
+			name = "create_user_id",
+				unique = false,
+				nullable = false,
+				length = 255,
+				columnDefinition = "VARCHAR DEFAULT 'default'")
 	private String create_user_id;
 
 	/**
-	 * create_user_name
+	 * create_function
 	 */
-	@Column(name = "create_user_name", unique = false, nullable = false, length = 255)
-	private String create_user_name;
+	@Column(
+			name = "create_function",
+				unique = false,
+				nullable = false,
+				length = 255,
+				columnDefinition = "VARCHAR DEFAULT 'default'")
+	private String create_function;
 
 	/**
 	 * create_timestamp
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "create_timestamp", unique = false, nullable = false, length = 255)
+	@Column(
+			name = "create_timestamp",
+				unique = false,
+				nullable = false,
+				length = 255,
+				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date create_timestamp;
 
 	/**
 	 * update_user_id
 	 */
-	@Column(name = "update_user_id", unique = false, nullable = false, length = 255)
+	@Column(
+			name = "update_user_id",
+				unique = false,
+				nullable = false,
+				length = 255,
+				columnDefinition = "VARCHAR DEFAULT 'default'")
 	private String update_user_id;
 
 	/**
-	 * update_user_name
+	 * update_function
 	 */
-	@Column(name = "update_user_name", unique = false, nullable = false, length = 255)
-	private String update_user_name;
+	@Column(
+			name = "update_function",
+				unique = false,
+				nullable = false,
+				length = 255,
+				columnDefinition = "VARCHAR DEFAULT 'default'")
+	private String update_function;
 
 	/**
 	 * update_timestamp
 	 */
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "update_timestamp", unique = false, nullable = false, length = 255)
+	@Column(
+			name = "update_timestamp",
+				unique = false,
+				nullable = false,
+				length = 255,
+				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date update_timestamp;
 
 	/**

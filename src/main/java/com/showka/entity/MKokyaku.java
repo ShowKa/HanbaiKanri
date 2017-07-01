@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.showka.common.AbstractEntity;
@@ -40,7 +43,8 @@ public class MKokyaku extends AbstractEntity implements Serializable {
 	@Column(name = "kokyaku_kubun", nullable = false, length = 2)
 	private String kokyakuKubun;
 
-	@Column(name = "shukan_busho_id", nullable = false, length = 255)
-	private String shukanBushoId;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "shukan_busho_id", referencedColumnName = "record_id")
+	private MBusho shukanBusho;
 
 }

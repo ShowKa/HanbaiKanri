@@ -26,14 +26,14 @@ public class MKokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	 * columns
 	 */
 	private static final String[] COLUMN = { "code", "name", "address", "gentei_kubun", "kokyaku_kubun",
-			"shukan_busho_id" };
+			"shukan_busho_id", "record_id" };
 
 	/**
 	 * test data
 	 */
-	private static final Object[] VALUE01 = { "KK01", "aaaa", "左京区", "00", "01", "BS01" };
-	private static final Object[] VALUE02 = { "KK02", "aaaa", "右京区", "00", "01", "BS02" };
-	private static final Object[] VALUE03 = { "KK03", "bbbb", "上京区", "00", "01", "BS02" };
+	private static final Object[] VALUE01 = { "KK01", "aaaa", "左京区", "00", "01", "BS01", "KK01" };
+	private static final Object[] VALUE02 = { "KK02", "aaaa", "右京区", "00", "01", "BS02", "KK02" };
+	private static final Object[] VALUE03 = { "KK03", "bbbb", "上京区", "00", "01", "BS02", "KK03" };
 
 	/**
 	 * Before

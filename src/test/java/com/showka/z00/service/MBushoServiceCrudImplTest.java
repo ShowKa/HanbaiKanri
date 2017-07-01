@@ -20,13 +20,13 @@ public class MBushoServiceCrudImplTest extends ServiceCrudTestCase {
 	/**
 	 * columns
 	 */
-	public static final String[] COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name" };
+	public static final String[] COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
 
 	/**
 	 * test data
 	 */
-	public static final Object[] VALUE01 = { "BS01", "00", "00", "部署01" };
-	public static final Object[] VALUE02 = { "BS02", "00", "00", "部署02" };
+	public static final Object[] VALUE01 = { "BS01", "00", "00", "部署01", "BS01" };
+	public static final Object[] VALUE02 = { "BS02", "00", "00", "部署02", "BS02" };
 
 	/**
 	 * Before

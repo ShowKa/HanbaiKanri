@@ -1,11 +1,12 @@
 package com.showka.common;
 
 import java.sql.Timestamp;
-import java.util.UUID;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,18 +39,16 @@ public abstract class ServiceCrudTestCase extends TestCase {
 	@Autowired
 	protected DataSource dataSource;
 
-	protected Destination dest;
-
 	/**
 	 * common columns name
 	 */
-	public static final String[] COMMON_COLUMN = { "create_user_id", "create_user_name", "create_timestamp",
-			"update_user_id", "update_user_name", "update_timestamp", "version", "id" };
+	private static final String[] COMMON_COLUMN = { "create_user_id", "create_function", "create_timestamp",
+			"update_user_id", "update_function", "update_timestamp", "version" };
 
 	/**
 	 * common columns value
 	 */
-	public static final Object[] COMMON_VALUE = { "test_create", "test_create", new Timestamp(0), "test_update",
+	private static final Object[] COMMON_VALUE = { "test_create", "test_create", new Timestamp(0), "test_update",
 			"test_update", new Timestamp(0), 0 };
 
 	/**
@@ -89,7 +88,7 @@ public abstract class ServiceCrudTestCase extends TestCase {
 
 		Builder builder = Operations.insertInto(tableName).columns(ArrayUtils.addAll(columns, COMMON_COLUMN));
 		for (Object[] v : values) {
-			builder.values(ArrayUtils.addAll(v, ArrayUtils.addAll(COMMON_VALUE, UUID.randomUUID().toString())));
+			builder.values(ArrayUtils.addAll(v, ArrayUtils.addAll(COMMON_VALUE)));
 		}
 
 		Insert inserts = builder.build();
@@ -98,4 +97,15 @@ public abstract class ServiceCrudTestCase extends TestCase {
 		DbSetup dbSetup = new DbSetup(dest, ops);
 		dbSetup.launch();
 	}
+
+	@Before
+	public void setup() {
+		dbSetUp(Operations.sequenceOf(Operations.sql("SET FOREIGN_KEY_CHECKS = 0")));
+	}
+
+	@After
+	public void cleanup() {
+		dbSetUp(Operations.sequenceOf(Operations.sql("SET FOREIGN_KEY_CHECKS = 1")));
+	}
+
 }
