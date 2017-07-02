@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.entity.MKokyaku;
+import com.showka.u01.service.MKokyakuCrudSearchCriteria;
 import com.showka.u01.service.i.MKokyakuCrudService;
 
 /**
@@ -54,7 +55,10 @@ public class U01G001Controller {
 	public String search(@ModelAttribute U01G001Form form, Model model, HttpSession session) {
 
 		// 検索
-		List<MKokyaku> result = service.getKokyauByName(form.getKokyakuName());
+		MKokyakuCrudSearchCriteria criteria = new MKokyakuCrudSearchCriteria();
+		criteria.setName(form.getKokyakuName());
+		criteria.setBushoName(form.getBushoName());
+		List<MKokyaku> result = service.search(criteria);
 
 		// list
 		ArrayList<HashMap<String, String>> kokyakuList = new ArrayList<>();
