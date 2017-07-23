@@ -25,7 +25,7 @@ public class MKokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	/**
 	 * columns
 	 */
-	private static final String[] COLUMN = { "code", "name", "address", "gentei_kubun", "kokyaku_kubun",
+	private static final String[] COLUMN = { "code", "name", "address", "hanbai_kubun", "kokyaku_kubun",
 			"shukan_busho_id", "record_id" };
 
 	/**

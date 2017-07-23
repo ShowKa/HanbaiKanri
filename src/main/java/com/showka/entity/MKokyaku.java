@@ -37,11 +37,11 @@ public class MKokyaku extends AbstractEntity implements Serializable {
 	@Column(name = "address", nullable = false, length = 255)
 	private String address;
 
-	@Column(name = "gentei_kubun", nullable = false, length = 2)
-	private String genteiKubun;
-
 	@Column(name = "kokyaku_kubun", nullable = false, length = 2)
 	private String kokyakuKubun;
+
+	@Column(name = "hanbai_kubun", nullable = false)
+	private String hanbaiKubun;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "shukan_busho_id", referencedColumnName = "record_id")

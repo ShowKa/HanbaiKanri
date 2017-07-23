@@ -6,7 +6,7 @@ VALUES
 
 
 INSERT INTO m_kokyaku
-(code, name, address, gentei_kubun, kokyaku_kubun, shukan_busho_id, record_id)
+(code, name, address, hanbai_kubun, kokyaku_kubun, shukan_busho_id, record_id)
 VALUES
 ('KK01', 'aaaa', '左京区', '00', '01', 'BS01', 'KK01'),
 ('KK02', 'aaaa', '右京区', '00', '01', 'BS02', 'KK02'),
