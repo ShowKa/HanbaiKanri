@@ -1,6 +1,7 @@
 package com.showka.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,11 @@ public class MNyukinKakeInfoRepositoryTest extends RepositoryTestCase {
 	public void test_01() {
 		List<MNyukinKakeInfo> result = repository.findAll();
 		assertNotNull(result.get(0));
+	}
+
+	@Test
+	public void test_02() {
+		Optional<MNyukinKakeInfo> result = repository.findById("KK03");
+		assertNotNull(result);
 	}
 }
