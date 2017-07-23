@@ -19,7 +19,6 @@ import lombok.Setter;
  */
 @MappedSuperclass
 @Getter
-@Setter
 public abstract class EntityBase {
 
 	/**
@@ -27,6 +26,7 @@ public abstract class EntityBase {
 	 */
 	@Version
 	@Column(name = "version", nullable = false, columnDefinition = "INTEGER DEFAULT 1")
+	@Setter
 	private Integer version;
 
 	/**
