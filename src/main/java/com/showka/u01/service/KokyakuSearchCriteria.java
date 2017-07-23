@@ -7,7 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MKokyakuSearchCriteria {
+public class KokyakuSearchCriteria {
 
 	/**
 	 * 顧客名
