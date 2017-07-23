@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.showka.common.AbstractEntity;
+import com.showka.common.EntityBase;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +22,7 @@ import lombok.Setter;
 @Table(name = "m_busho")
 @Getter
 @Setter
-public class MBusho extends AbstractEntity implements Serializable {
+public class MBusho extends EntityBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

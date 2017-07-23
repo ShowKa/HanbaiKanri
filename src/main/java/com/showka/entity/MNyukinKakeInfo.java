@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.showka.common.AbstractEntity;
+import com.showka.common.EntityBase;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +23,7 @@ import lombok.Setter;
 @Table(name = "m_nyukin_kake_info")
 @Setter
 @Getter
-public class MNyukinKakeInfo extends AbstractEntity implements Serializable {
+public class MNyukinKakeInfo extends EntityBase implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
