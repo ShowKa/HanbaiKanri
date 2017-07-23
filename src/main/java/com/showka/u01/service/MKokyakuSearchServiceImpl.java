@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.showka.entity.MBusho;
 import com.showka.entity.MKokyaku;
 import com.showka.repository.i.MKokyakuRepository;
-import com.showka.u01.service.i.MKokyakuCrudService;
+import com.showka.u01.service.i.MKokyakuSearchService;
 
 /**
  * 顧客Crud
@@ -21,7 +21,7 @@ import com.showka.u01.service.i.MKokyakuCrudService;
  */
 @Service
 @Transactional
-public class MKokyakuCrudServiceImpl implements MKokyakuCrudService {
+public class MKokyakuSearchServiceImpl implements MKokyakuSearchService {
 
 	/**
 	 * 顧客Repository
@@ -60,7 +60,7 @@ public class MKokyakuCrudServiceImpl implements MKokyakuCrudService {
 	 * 顧客検索
 	 */
 	@Override
-	public List<MKokyaku> search(MKokyakuCrudSearchCriteria criteria) {
+	public List<MKokyaku> search(MKokyakuSearchCriteria criteria) {
 		// 条件
 		// 顧客名
 		MKokyaku k = new MKokyaku();

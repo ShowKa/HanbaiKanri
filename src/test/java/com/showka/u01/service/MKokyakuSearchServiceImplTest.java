@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.entity.MKokyaku;
 
-public class MKokyakuCrudServiceImplTest extends ServiceCrudTestCase {
+public class MKokyakuSearchServiceImplTest extends ServiceCrudTestCase {
 
 	/**
 	 * service.
 	 */
 	@Autowired
-	private MKokyakuCrudServiceImpl service;
+	private MKokyakuSearchServiceImpl service;
 
 	/**
 	 * table name
@@ -58,7 +58,7 @@ public class MKokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Test
 	public void testSearch() throws Exception {
-		MKokyakuCrudSearchCriteria c = new MKokyakuCrudSearchCriteria();
+		MKokyakuSearchCriteria c = new MKokyakuSearchCriteria();
 		c.setName("aaaa");
 		c.setBushoName("部署02");
 		List<MKokyaku> result = service.search(c);

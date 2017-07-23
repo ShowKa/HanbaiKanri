@@ -3,7 +3,7 @@ package com.showka.u01.service.i;
 import java.util.List;
 
 import com.showka.entity.MKokyaku;
-import com.showka.u01.service.MKokyakuCrudSearchCriteria;
+import com.showka.u01.service.MKokyakuSearchCriteria;
 
 /**
  * 顧客Crud
@@ -11,7 +11,7 @@ import com.showka.u01.service.MKokyakuCrudSearchCriteria;
  * @author kanemotoshouta
  *
  */
-public interface MKokyakuCrudService {
+public interface MKokyakuSearchService {
 
 	/**
 	 * 顧客名検索
@@ -29,5 +29,5 @@ public interface MKokyakuCrudService {
 	 *            検索条件
 	 * @return 顧客
 	 */
-	public List<MKokyaku> search(MKokyakuCrudSearchCriteria criteria);
+	public List<MKokyaku> search(MKokyakuSearchCriteria criteria);
 }
