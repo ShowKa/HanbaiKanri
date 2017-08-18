@@ -51,4 +51,28 @@ dependencies {
 	testCompile('com.ninja-squad:DbSetup:2.0.0')
 	testCompile group: 'org.dbunit', name: 'dbunit', version: '2.4.3'
 
+	// freemarker
+	testCompile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
+}
+
+//For Eclipse IDE only
+eclipse {
+
+  classpath {
+  	file {
+
+  	  beforeMerged { classpath ->
+  	    classpath.entries.removeAll { it.path == 'src/generator/java' }
+  	    classpath.entries.removeAll { it.path == 'src/generator/resources' }
+  	  }
+
+  	  whenMerged { classpath ->
+  	    def genSrc = new org.gradle.plugins.ide.eclipse.model.SourceFolder('src/generator/java', null)
+  	    def genResources = new org.gradle.plugins.ide.eclipse.model.SourceFolder('src/generator/resources', null)
+  	    classpath.entries.add(genSrc)
+  	    classpath.entries.add(genResources)
+  	  }
+
+  	}
+  }
 }
