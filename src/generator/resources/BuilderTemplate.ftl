@@ -1,4 +1,4 @@
-package com.mkyong.helloworld.domain.builder;
+package com.showka.domain.builder;
 
 public class ${domain}DomainBuilder extends ${builderBaseClass}<${domain}Domain, ${domain}DomainBuilder> {
 

@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.showka.domain.DomainBase;
-import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.NyukinKakeInfoDomain;
+import com.showka.domain.builder.DomainBuilderBase;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -24,7 +25,7 @@ public class BuilderGenerater {
 	private static String DESTINATION = "generated/";
 
 	@SuppressWarnings("rawtypes")
-	static Class TARGET_CLASS = NyukinKakeInfo.class;
+	static Class TARGET_CLASS = NyukinKakeInfoDomain.class;
 
 	public static void main(String[] args) {
 
@@ -55,7 +56,7 @@ public class BuilderGenerater {
 
 		// config
 		DomainConfig domainConfig = new DomainConfig();
-		domainConfig.setBuilderBaseClass("AbstractDomainBuilder");
+		domainConfig.setBuilderBaseClass(DomainBuilderBase.class.getName());
 		domainConfig.setDomain(TARGET_CLASS.getSimpleName().replaceAll("Domain$", ""));
 		ArrayList<HashMap<String, String>> members = new ArrayList<HashMap<String, String>>();
 		for (Field m : privateFields) {
