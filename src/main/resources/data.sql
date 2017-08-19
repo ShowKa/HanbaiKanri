@@ -16,3 +16,9 @@ INSERT INTO m_nyukin_kake_info
 (kokyaku_id, nyukin_hoho_kubun, nyukin_tsuki_kubun, shimebi, nyukin_date, record_id)
 VALUES
 ('KK03', '00', '01', '20', '30', 'KK01');
+
+INSERT INTO t_uriage
+(kokyaku_id, denpyo_number, uriage_date, hanbai_kubun, record_id)
+VALUES
+('KK01', '00001', to_date('2017/08/20', 'yyyy/MM/dd'), '00', 'KK01-00001'),
+('KK01', '00002', to_date('2017/08/20', 'yyyy/MM/dd'), '10', 'KK01-00002');
