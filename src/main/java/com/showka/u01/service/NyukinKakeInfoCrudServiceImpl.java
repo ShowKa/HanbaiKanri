@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
 import com.showka.u01.service.i.NyukinKakeInfoCrudService;
@@ -23,7 +23,7 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 	private MNyukinKakeInfoRepository repo;
 
 	@Override
-	public void save(NyukinKakeInfo domain) {
+	public void save(NyukinKakeInfoDomain domain) {
 
 		// entity
 		MNyukinKakeInfo e = new MNyukinKakeInfo();
