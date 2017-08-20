@@ -28,3 +28,12 @@ INSERT INTO t_uriage
 VALUES
 ('KK01', '00001', to_date('2017/08/20', 'yyyy/MM/dd'), '00', 'KK01-00001'),
 ('KK01', '00002', to_date('2017/08/20', 'yyyy/MM/dd'), '10', 'KK01-00002');
+
+INSERT INTO t_uriage_meisai
+(uriage_id, meisai_number, shohin_id, sales_number, sales_price, record_id)
+VALUES
+('KK01-00001', 1, 'SH01', 5, 1000, 'KK01-00001-1'),
+('KK01-00001', 2, 'SH02', 5, 1001, 'KK01-00001-2'),
+('KK01-00002', 1, 'SH01', 10, 1000, 'KK01-00002-1'),
+('KK01-00002', 2, 'SH02', 10, 1001, 'KK01-00002-2'),
+;

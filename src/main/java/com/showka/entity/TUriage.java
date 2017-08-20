@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 顧客マスタ
+ * 売上
  * 
  */
 @Entity
