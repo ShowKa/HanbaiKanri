@@ -17,6 +17,12 @@ INSERT INTO m_nyukin_kake_info
 VALUES
 ('KK03', '00', '01', '20', '30', 'KK01');
 
+INSERT INTO m_shohin
+(code, name, standard_price, record_id)
+VALUES
+('SH01', '商品SH01', 1000, 'SH01'),
+('SH02', '商品SH02', 1001, 'SH02');
+
 INSERT INTO t_uriage
 (kokyaku_id, denpyo_number, uriage_date, hanbai_kubun, record_id)
 VALUES
