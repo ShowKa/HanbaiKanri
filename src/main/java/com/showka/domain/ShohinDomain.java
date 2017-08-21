@@ -19,7 +19,7 @@ public class ShohinDomain extends DomainBase {
 	private String name = STRING_EMPTY;
 
 	/** 商品標準単価. */
-	private BigDecimal hyojunKakaku = BigDecimal.ZERO;
+	private BigDecimal hyojunTanka = BigDecimal.ZERO;
 
 	/** バージョン(排他制御用) */
 	private Integer version = INTEGER_EMPTY;

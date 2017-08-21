@@ -1,8 +1,9 @@
 package com.showka.domain;
 
+import java.math.BigDecimal;
+
 import com.showka.system.exception.EmptyProxy;
 import com.showka.system.exception.SystemException;
-import com.showka.value.Kakaku;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,20 +31,20 @@ public class UriageMeisaiDomain extends DomainBase {
 	/** 売上数. */
 	private Integer hanbaiNumber = INTEGER_EMPTY;
 
-	/** 商品販売価格. */
-	private Kakaku hanbaiKakaku = EmptyProxy.value(Kakaku.class);
+	/** 商品販売単価. */
+	private BigDecimal hanbaiTanka = BigDecimal.ZERO;
 
 	/** バージョン(排他制御用) */
 	private Integer version = INTEGER_EMPTY;
 
 	// public method
 	/**
-	 * 明細合計価格取得
+	 * 明細合計金額取得
 	 * 
-	 * @return 明細合計価格
+	 * @return 明細合計金額
 	 */
-	public Kakaku getMeisaiGokeiKakaku() {
-		return hanbaiKakaku.multiply(hanbaiNumber);
+	public BigDecimal getMeisaiGokeiKakaku() {
+		return hanbaiTanka.multiply(new BigDecimal(hanbaiNumber));
 	}
 
 	@Override

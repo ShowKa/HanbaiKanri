@@ -41,7 +41,7 @@ public class TUriageMeisai extends EntityBase implements Serializable {
 	private Integer hanbaiNumber;
 
 	/** 商品販売単価. */
-	@Column(name = "hanbai_kakaku", nullable = false)
-	private Integer hanbaiKakaku;
+	@Column(name = "hanbai_tanka", nullable = false)
+	private Integer hanbaiTanka;
 
 }

@@ -33,7 +33,7 @@ public class MShohin extends EntityBase implements Serializable {
 	@Column(name = "name", nullable = false, length = 255)
 	private String name;
 
-	@Column(name = "hyojun_kakaku", nullable = false)
-	private Integer hyojunKakaku;
+	@Column(name = "hyojun_tanka", nullable = false)
+	private Integer hyojunTanka;
 
 }
