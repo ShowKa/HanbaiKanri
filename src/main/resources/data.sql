@@ -18,7 +18,7 @@ VALUES
 ('KK03', '00', '01', '20', '30', 'KK01');
 
 INSERT INTO m_shohin
-(code, name, standard_price, record_id)
+(code, name, hyojun_kakaku, record_id)
 VALUES
 ('SH01', '商品SH01', 1000, 'SH01'),
 ('SH02', '商品SH02', 1001, 'SH02');
