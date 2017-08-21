@@ -14,7 +14,7 @@ public class Kakaku extends ValueBase {
 
 	// private members
 	/** 税抜価格 */
-	private BigDecimal kakaku;
+	private BigDecimal zeinukiKakaku;
 
 	/** 税(小数) */
 	private BigDecimal zei;
@@ -24,7 +24,7 @@ public class Kakaku extends ValueBase {
 
 	// constructor
 	public Kakaku(long kakaku, double zei) {
-		this.kakaku = BigDecimal.valueOf(kakaku);
+		this.zeinukiKakaku = BigDecimal.valueOf(kakaku);
 		this.zei = BigDecimal.valueOf(zei);
 	}
 
@@ -35,7 +35,7 @@ public class Kakaku extends ValueBase {
 	@Override
 	protected boolean equals(ValueBase other) {
 		Kakaku o = (Kakaku) other;
-		if (!kakaku.equals(o.kakaku)) {
+		if (!zeinukiKakaku.equals(o.zeinukiKakaku)) {
 			return false;
 		}
 		if (!zei.equals(o.zei)) {
@@ -55,7 +55,7 @@ public class Kakaku extends ValueBase {
 	 * @return 税込価格
 	 */
 	public BigDecimal getZeikomiKakaku() {
-		return kakaku.multiply(zei.add(BigDecimal.ONE)).setScale(0, BigDecimal.ROUND_DOWN);
+		return zeinukiKakaku.multiply(zei.add(BigDecimal.ONE)).setScale(0, BigDecimal.ROUND_DOWN);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class Kakaku extends ValueBase {
 		if (!zei.equals(other.zei)) {
 			throw new SystemException("加算対象の金額の税率が一致しません。");
 		}
-		return new Kakaku(kakaku.add(other.kakaku), zei);
+		return new Kakaku(zeinukiKakaku.add(other.zeinukiKakaku), zei);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class Kakaku extends ValueBase {
 	 * @return 加算後の価格
 	 */
 	public Kakaku add(Kakaku... others) {
-		Kakaku base = new Kakaku(this.kakaku, this.zei);
+		Kakaku base = new Kakaku(this.zeinukiKakaku, this.zei);
 		for (Kakaku o : others) {
 			if (!zei.equals(o.zei)) {
 				throw new SystemException("加算対象の金額の税率が一致しません。");
@@ -116,7 +116,37 @@ public class Kakaku extends ValueBase {
 		if (!zei.equals(other.zei)) {
 			throw new SystemException("減産対象の金額の税率が一致しません。");
 		}
-		return new Kakaku(kakaku.subtract(other.kakaku), zei);
+		return new Kakaku(zeinukiKakaku.subtract(other.zeinukiKakaku), zei);
+	}
+
+	/**
+	 * 価格乗算
+	 * 
+	 * <pre>
+	 * 新しいインスタンスを返却する。呼び出し元の価格は変更しない。
+	 * </pre>
+	 * 
+	 * @param multiplicand
+	 *            被乗数
+	 * @return 乗算後の価格
+	 */
+	public Kakaku multiply(Integer multiplicand) {
+		return multiply(new BigDecimal(multiplicand));
+	}
+
+	/**
+	 * 価格乗算
+	 * 
+	 * <pre>
+	 * 新しいインスタンスを返却する。呼び出し元の価格は変更しない。
+	 * </pre>
+	 * 
+	 * @param multiplicand
+	 *            被乗数
+	 * @return 乗算後の価格
+	 */
+	public Kakaku multiply(BigDecimal multiplicand) {
+		return new Kakaku(zeinukiKakaku.multiply(multiplicand), zei);
 	}
 
 	/**
@@ -138,7 +168,7 @@ public class Kakaku extends ValueBase {
 	 * </pre>
 	 */
 	public String getZeinukiKakakuFormatted() {
-		return formatter.format(kakaku);
+		return formatter.format(zeinukiKakaku);
 	}
 
 }
