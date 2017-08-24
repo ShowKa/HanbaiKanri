@@ -37,4 +37,8 @@ public class TUriage extends EntityBase implements Serializable {
 	@Column(name = "hanbai_kubun", unique = false, nullable = false, length = 2)
 	private String hanbaiKubun;
 
+	/** 消費税率. */
+	@Column(name = "shohizeiritsu", unique = false, nullable = false)
+	private Double shohizeiritsu;
+
 }
