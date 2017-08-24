@@ -1,4 +1,4 @@
-package com.showka.u01.web;
+package com.showka.web.u01;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.entity.MKokyaku;
-import com.showka.u01.service.KokyakuSearchCriteria;
-import com.showka.u01.service.i.KokyakuSearchService;
+import com.showka.service.search.u01.KokyakuSearchCriteria;
+import com.showka.service.search.u01.i.KokyakuSearchService;
 
 /**
  * U01G001 顧客検索画面

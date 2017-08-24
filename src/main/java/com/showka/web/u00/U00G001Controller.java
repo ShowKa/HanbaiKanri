@@ -1,4 +1,4 @@
-package com.showka.u00.web;
+package com.showka.web.u00;
 
 import java.util.Map;
 

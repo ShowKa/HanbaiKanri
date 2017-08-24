@@ -1,4 +1,4 @@
-package com.showka.z00.service;
+package com.showka.service.crud.z00;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.entity.MBusho;
+import com.showka.service.crud.z00.MBushoServiceCrudImpl;
 
 public class MBushoServiceCrudImplTest extends ServiceCrudTestCase {
 

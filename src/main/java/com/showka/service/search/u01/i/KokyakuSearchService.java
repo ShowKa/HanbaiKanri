@@ -1,9 +1,9 @@
-package com.showka.u01.service.i;
+package com.showka.service.search.u01.i;
 
 import java.util.List;
 
 import com.showka.entity.MKokyaku;
-import com.showka.u01.service.KokyakuSearchCriteria;
+import com.showka.service.search.u01.KokyakuSearchCriteria;
 
 /**
  * 顧客Crud

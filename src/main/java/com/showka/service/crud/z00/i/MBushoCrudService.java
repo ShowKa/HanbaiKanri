@@ -1,4 +1,4 @@
-package com.showka.z00.service.i;
+package com.showka.service.crud.z00.i;
 
 import com.showka.entity.MBusho;
 
