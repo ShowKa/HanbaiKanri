@@ -1,4 +1,4 @@
-package com.showka.common;
+package com.showka.web;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 

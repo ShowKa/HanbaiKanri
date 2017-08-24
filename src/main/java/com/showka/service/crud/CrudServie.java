@@ -1,4 +1,4 @@
-package com.showka.common;
+package com.showka.service.crud;
 
 import com.showka.domain.DomainBase;
 

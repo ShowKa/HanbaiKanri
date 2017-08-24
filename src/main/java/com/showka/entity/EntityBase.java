@@ -1,4 +1,4 @@
-package com.showka.common;
+package com.showka.entity;
 
 import java.util.Date;
 

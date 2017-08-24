@@ -1,6 +1,6 @@
 package com.showka.web.u01;
 
-import com.showka.common.FormBase;
+import com.showka.web.FormBase;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
