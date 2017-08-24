@@ -1,4 +1,4 @@
-package com.showka.u01.service;
+package com.showka.searvice.search.u01;
 
 import java.util.List;
 
@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.entity.MKokyaku;
+import com.showka.searvice.search.u01.KokyakuSearchCriteria;
+import com.showka.searvice.search.u01.KokyakuSearchServiceImpl;
 
 public class KokyakuSearchServiceImplTest extends ServiceCrudTestCase {
 

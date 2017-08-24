@@ -1,4 +1,4 @@
-package com.showka.z00.service;
+package com.showka.searvice.crud.z00;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.entity.MBusho;
 import com.showka.repository.i.MBushoRepository;
-import com.showka.z00.service.i.MBushoCrudService;
+import com.showka.searvice.crud.z00.i.MBushoCrudService;
 
 @Service
 @Transactional

@@ -1,4 +1,4 @@
-package com.showka.u01.service.i;
+package com.showka.searvice.crud.u01.i;
 
 import com.showka.common.CrudServie;
 import com.showka.domain.NyukinKakeInfoDomain;

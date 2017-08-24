@@ -1,4 +1,4 @@
-package com.showka.u01.service;
+package com.showka.searvice.search.u01;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.showka.entity.MBusho;
 import com.showka.entity.MKokyaku;
 import com.showka.repository.i.MKokyakuRepository;
-import com.showka.u01.service.i.KokyakuSearchService;
+import com.showka.searvice.search.u01.i.KokyakuSearchService;
 
 /**
  * 顧客Crud
