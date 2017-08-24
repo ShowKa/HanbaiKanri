@@ -2,7 +2,7 @@ package com.showka.common;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
-public class AbstractForm {
+public class FormBase {
 
 	/**
 	 * 文字列化
