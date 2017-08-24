@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.showka.common.EntityBase;
-
 import lombok.Getter;
 import lombok.Setter;
 
