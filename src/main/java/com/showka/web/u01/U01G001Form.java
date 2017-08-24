@@ -1,4 +1,4 @@
-package com.showka.u01.web;
+package com.showka.web.u01;
 
 import com.showka.common.FormBase;
 
