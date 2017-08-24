@@ -1,4 +1,4 @@
-package com.showka.searvice.search.u01;
+package com.showka.service.search.u01;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

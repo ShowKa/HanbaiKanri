@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.entity.MKokyaku;
-import com.showka.searvice.search.u01.KokyakuSearchCriteria;
-import com.showka.searvice.search.u01.i.KokyakuSearchService;
+import com.showka.service.search.u01.KokyakuSearchCriteria;
+import com.showka.service.search.u01.i.KokyakuSearchService;
 
 /**
  * U01G001 顧客検索画面
