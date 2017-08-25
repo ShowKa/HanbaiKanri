@@ -38,4 +38,21 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 		repo.save(e);
 	}
 
+	@Override
+	public void delete(String pk, Integer version) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public NyukinKakeInfoDomain getDomain(String pk) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean exsists(String pk) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
