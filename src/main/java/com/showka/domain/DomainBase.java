@@ -4,7 +4,15 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.showka.system.exception.SystemException;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public abstract class DomainBase {
+
+	/** バージョン(排他制御用) */
+	@Getter
+	@Setter
+	private Integer version = INTEGER_EMPTY;
 
 	/**
 	 * Empty String

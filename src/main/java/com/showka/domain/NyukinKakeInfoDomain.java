@@ -36,9 +36,6 @@ public class NyukinKakeInfoDomain extends DomainBase {
 	/** 入金日 */
 	private Integer nyukinDate = INTEGER_EMPTY;
 
-	/** バージョン(排他制御用) */
-	private Integer version = INTEGER_EMPTY;
-
 	/**
 	 * 入金サイト取得
 	 * 

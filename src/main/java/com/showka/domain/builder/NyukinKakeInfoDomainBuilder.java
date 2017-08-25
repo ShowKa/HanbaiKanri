@@ -39,7 +39,10 @@ public class NyukinKakeInfoDomainBuilder
 
 	@Override
 	protected NyukinKakeInfoDomain createDomainObject() {
-		return new NyukinKakeInfoDomain(kokyakuId, shimeDate, nyukinTsukiKubun, nyukinHohoKubun, nyukinDate, version);
+		NyukinKakeInfoDomain d = new NyukinKakeInfoDomain(kokyakuId, shimeDate, nyukinTsukiKubun, nyukinHohoKubun,
+				nyukinDate);
+		d.setVersion(version);
+		return d;
 	}
 
 	@Override
