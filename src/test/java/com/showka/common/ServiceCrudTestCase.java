@@ -1,6 +1,8 @@
 package com.showka.common;
 
 import java.sql.Timestamp;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.sql.DataSource;
 
@@ -87,6 +89,8 @@ public abstract class ServiceCrudTestCase extends TestCase {
 		Destination dest = new DataSourceDestination(dataSource);
 
 		Builder builder = Operations.insertInto(tableName).columns(ArrayUtils.addAll(columns, COMMON_COLUMN));
+		// shuffle insert to test sorting
+		shuffleArray(values);
 		for (Object[] v : values) {
 			builder.values(ArrayUtils.addAll(v, ArrayUtils.addAll(COMMON_VALUE)));
 		}
@@ -106,6 +110,19 @@ public abstract class ServiceCrudTestCase extends TestCase {
 	@After
 	public void cleanup() {
 		dbSetUp(Operations.sequenceOf(Operations.sql("SET FOREIGN_KEY_CHECKS = 1")));
+	}
+
+	// Implementing Fisher–Yates shuffle
+	private static void shuffleArray(Object[] ar) {
+		// If running on Java 6 or older, use `new Random()` on RHS here
+		Random rnd = ThreadLocalRandom.current();
+		for (int i = ar.length - 1; i > 0; i--) {
+			int index = rnd.nextInt(i + 1);
+			// Simple swap
+			Object a = ar[index];
+			ar[index] = ar[i];
+			ar[i] = a;
+		}
 	}
 
 }
