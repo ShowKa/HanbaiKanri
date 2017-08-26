@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -22,6 +23,7 @@ import com.ninja_squad.dbsetup.operation.DeleteAll;
 import com.ninja_squad.dbsetup.operation.Insert;
 import com.ninja_squad.dbsetup.operation.Insert.Builder;
 import com.ninja_squad.dbsetup.operation.Operation;
+import com.showka.system.LoginUser;
 
 import junit.framework.TestCase;
 
@@ -34,6 +36,15 @@ import junit.framework.TestCase;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public abstract class ServiceCrudTestCase extends TestCase {
+
+	@Autowired
+	protected HttpSession session;
+
+	@Before
+	public void before() {
+		LoginUser user = new LoginUser("ServiceCrudTestCaseUser", "ServiceCrud単体テストユーザー");
+		session.setAttribute("user", user);
+	}
 
 	/**
 	 * data source.

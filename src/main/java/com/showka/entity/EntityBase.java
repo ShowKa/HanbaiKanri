@@ -10,6 +10,7 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +34,7 @@ public abstract class EntityBase {
 	 * id
 	 */
 	@Column(name = "record_id", unique = true, nullable = false, length = 255)
+	@Setter
 	private String recordId;
 
 	/**
@@ -44,6 +46,7 @@ public abstract class EntityBase {
 				nullable = false,
 				length = 255,
 				columnDefinition = "VARCHAR DEFAULT 'default'")
+	@Setter(AccessLevel.PROTECTED)
 	private String create_user_id;
 
 	/**
@@ -55,6 +58,7 @@ public abstract class EntityBase {
 				nullable = false,
 				length = 255,
 				columnDefinition = "VARCHAR DEFAULT 'default'")
+	@Setter(AccessLevel.PROTECTED)
 	private String create_function;
 
 	/**
@@ -67,6 +71,7 @@ public abstract class EntityBase {
 				nullable = false,
 				length = 255,
 				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Setter(AccessLevel.PROTECTED)
 	private Date create_timestamp;
 
 	/**
@@ -78,6 +83,7 @@ public abstract class EntityBase {
 				nullable = false,
 				length = 255,
 				columnDefinition = "VARCHAR DEFAULT 'default'")
+	@Setter(AccessLevel.PROTECTED)
 	private String update_user_id;
 
 	/**
@@ -89,6 +95,7 @@ public abstract class EntityBase {
 				nullable = false,
 				length = 255,
 				columnDefinition = "VARCHAR DEFAULT 'default'")
+	@Setter(AccessLevel.PROTECTED)
 	private String update_function;
 
 	/**
@@ -101,6 +108,7 @@ public abstract class EntityBase {
 				nullable = false,
 				length = 255,
 				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Setter(AccessLevel.PROTECTED)
 	private Date update_timestamp;
 
 	/**
