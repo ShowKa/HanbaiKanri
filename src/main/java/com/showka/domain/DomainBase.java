@@ -9,6 +9,11 @@ import lombok.Setter;
 
 public abstract class DomainBase {
 
+	/** record_id */
+	@Getter
+	@Setter
+	private String recordId = STRING_EMPTY;
+
 	/** バージョン(排他制御用) */
 	@Getter
 	@Setter

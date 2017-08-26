@@ -19,7 +19,10 @@ public class ${domain}DomainBuilder extends ${builderBaseClass}<${domain}Domain,
 
 	@Override
 	protected ${domain}Domain createDomainObject() {
-		return new ${domain}Domain(${memberListWithComma});
+		${domain}Domain domain = new ${domain}Domain(${memberListWithComma});
+		domain.setRecordId(recordId);
+		domain.setVersion(version);
+		return domain;
 	}
 
 	@Override
