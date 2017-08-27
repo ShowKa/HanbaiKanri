@@ -1,4 +1,4 @@
-package com.showka.service.crud.u01;
+package com.showka.service.crud.z00;
 
 import javax.persistence.Table;
 
@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.ShohinDomain;
 import com.showka.entity.MShohin;
+import com.showka.service.crud.z00.MShohinCrudServiceImpl;
 
 public class MShohinCrudServiceImplTest extends ServiceCrudTestCase {
 

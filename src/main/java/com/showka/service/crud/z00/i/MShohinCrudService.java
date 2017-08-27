@@ -1,4 +1,4 @@
-package com.showka.service.crud.u01.i;
+package com.showka.service.crud.z00.i;
 
 import com.showka.domain.ShohinDomain;
 

@@ -1,4 +1,4 @@
-package com.showka.service.crud.u01;
+package com.showka.service.crud.z00;
 
 import java.math.BigDecimal;
 
@@ -9,7 +9,7 @@ import com.showka.domain.ShohinDomain;
 import com.showka.domain.builder.ShohinDomainBuilder;
 import com.showka.entity.MShohin;
 import com.showka.repository.i.MShohinRepository;
-import com.showka.service.crud.u01.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.MShohinCrudService;
 
 /**
  * 商品CRUDサービス
