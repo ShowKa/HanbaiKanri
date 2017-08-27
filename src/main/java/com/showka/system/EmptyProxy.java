@@ -1,4 +1,4 @@
-package com.showka.system.exception;
+package com.showka.system;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.showka.domain.DomainBase;
 import com.showka.kubun.i.Kubun;
+import com.showka.system.exception.SystemException;
 import com.showka.value.ValueBase;
 
 import javassist.CannotCompileException;
