@@ -23,6 +23,9 @@ public class NyukinKakeInfoDomainBuilder
 	/** nyukinDate */
 	private Integer nyukinDate;
 
+	/** recordId */
+	private String recordId;
+
 	/** version */
 	private Integer version;
 
@@ -34,12 +37,17 @@ public class NyukinKakeInfoDomainBuilder
 		builder.withNyukinTsukiKubun(domain.getNyukinTsukiKubun());
 		builder.withNyukinHohoKubun(domain.getNyukinHohoKubun());
 		builder.withNyukinDate(domain.getNyukinDate());
+		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected NyukinKakeInfoDomain createDomainObject() {
-		return new NyukinKakeInfoDomain(kokyakuId, shimeDate, nyukinTsukiKubun, nyukinHohoKubun, nyukinDate, version);
+		NyukinKakeInfoDomain domain = new NyukinKakeInfoDomain(kokyakuId, shimeDate, nyukinTsukiKubun, nyukinHohoKubun,
+				nyukinDate);
+		domain.setRecordId(recordId);
+		domain.setVersion(version);
+		return domain;
 	}
 
 	@Override
@@ -133,6 +141,23 @@ public class NyukinKakeInfoDomainBuilder
 			@Override
 			public void configure(NyukinKakeInfoDomainBuilder builder) {
 				builder.nyukinDate = nyukinDate;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link NyukinKakeInfoDomain}に与えるrecordIdをこのビルダに設定する。
+	 *
+	 * @param recordId
+	 *            recordId
+	 * @return {@link NyukinKakeInfoDomainBuilder}
+	 */
+	public NyukinKakeInfoDomainBuilder withRecordId(final String recordId) {
+		addConfigurator(new BuilderConfigurator<NyukinKakeInfoDomainBuilder>() {
+			@Override
+			public void configure(NyukinKakeInfoDomainBuilder builder) {
+				builder.recordId = recordId;
 			}
 		});
 		return getThis();

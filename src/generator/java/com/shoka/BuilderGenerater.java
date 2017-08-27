@@ -66,6 +66,8 @@ public class BuilderGenerater {
 			map.put("explain", m.getName());
 			members.add(map);
 		}
+
+		// set members
 		domainConfig.setMembers(members);
 
 		// configuration
@@ -85,7 +87,14 @@ public class BuilderGenerater {
 
 			StringBuilder memberListWithComma = new StringBuilder();
 			for (HashMap<String, String> m : domainConfig.getMembers()) {
-				memberListWithComma.append("," + m.get("name"));
+				String name = m.get("name");
+				if (name.equals("recordId")) {
+					continue;
+				}
+				if (name.equals("version")) {
+					continue;
+				}
+				memberListWithComma.append("," + name);
 			}
 			map.put("memberListWithComma", memberListWithComma.toString().replaceAll("^,", ""));
 

@@ -36,15 +36,6 @@ public class NyukinKakeInfoDomain extends DomainBase {
 	/** 入金日 */
 	private Integer nyukinDate = INTEGER_EMPTY;
 
-	/** バージョン(排他制御用) */
-	private Integer version = INTEGER_EMPTY;
-
-	// public method
-	@Override
-	public boolean isEmpty() {
-		return false;
-	}
-
 	/**
 	 * 入金サイト取得
 	 * 
@@ -90,7 +81,7 @@ public class NyukinKakeInfoDomain extends DomainBase {
 	}
 
 	/**
-	 * 整合性チェック
+	 * 請求締日と入金日の前後関係を判定する.
 	 * 
 	 * <pre>
 	 * 当月入金なのに、締日と入金日が前後していたらfalse

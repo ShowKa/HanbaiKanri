@@ -2,14 +2,41 @@ package com.showka.service.crud;
 
 import com.showka.domain.DomainBase;
 
-public interface CrudServie<T extends DomainBase> {
+public interface CrudServie<T extends DomainBase, P> {
 
 	/**
-	 * 保管.
+	 * 登録・更新.
 	 * 
-	 * @param entity
-	 * @return
+	 * @param domain
+	 *            ドメイン
 	 */
-	void save(T entity);
+	void save(T domain);
+
+	/**
+	 * 削除.
+	 * 
+	 * @param pk
+	 *            主キー
+	 * @param version
+	 *            バージョン
+	 */
+	void delete(P pk, Integer version);
+
+	/**
+	 * ドメイン取得
+	 * 
+	 * @param pk
+	 *            主キー
+	 * @return ドメイン
+	 */
+	T getDomain(P pk);
+
+	/**
+	 * 存在チェック.
+	 * 
+	 * @param pk
+	 * @return 主キーでテーブルを検索し、存在すればtrue
+	 */
+	boolean exsists(P pk);
 
 }
