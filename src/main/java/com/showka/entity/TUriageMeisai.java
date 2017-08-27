@@ -8,8 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,13 +28,13 @@ public class TUriageMeisai extends EntityBase implements Serializable {
 	/** SID. */
 	private static final long serialVersionUID = -4916036385106678566L;
 
+	/** 主キー */
 	@EmbeddedId
 	private TUriageMeisaiPK pk;
 
-	/** 商品. */
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "shohin_id", referencedColumnName = "record_id")
-	MShohin shohin;
+	/** 商品ID. */
+	@Column(name = "shohin_id")
+	private String shohinId;
 
 	/** 売上数 */
 	@Column(name = "hanbai_number", nullable = false)
@@ -42,4 +44,15 @@ public class TUriageMeisai extends EntityBase implements Serializable {
 	@Column(name = "hanbai_tanka", nullable = false)
 	private Integer hanbaiTanka;
 
+	/** 商品 */
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "shohin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
+	@Setter(value = AccessLevel.NONE)
+	private MShohin shohin;
+
+	/** 売上. */
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "uriage_id", referencedColumnName = "record_id", insertable = false, updatable = false)
+	@Setter(value = AccessLevel.NONE)
+	private TUriage uriage;
 }
