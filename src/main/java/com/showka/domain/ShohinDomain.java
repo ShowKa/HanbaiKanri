@@ -21,9 +21,6 @@ public class ShohinDomain extends DomainBase {
 	/** 商品標準単価. */
 	private BigDecimal hyojunTanka = BigDecimal.ZERO;
 
-	/** バージョン(排他制御用) */
-	private Integer version = INTEGER_EMPTY;
-
 	@Override
 	public void validate() throws SystemException {
 		// nothing to do
