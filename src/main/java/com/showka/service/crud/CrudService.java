@@ -2,7 +2,7 @@ package com.showka.service.crud;
 
 import com.showka.domain.DomainBase;
 
-public interface CrudServie<T extends DomainBase, P> {
+public interface CrudService<T extends DomainBase, P> {
 
 	/**
 	 * 登録・更新.

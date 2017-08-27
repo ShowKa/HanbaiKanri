@@ -1,8 +1,8 @@
 package com.showka.service.crud.u01.i;
 
 import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.service.crud.CrudServie;
+import com.showka.service.crud.CrudService;
 
-public interface NyukinKakeInfoCrudService extends CrudServie<NyukinKakeInfoDomain, String> {
+public interface NyukinKakeInfoCrudService extends CrudService<NyukinKakeInfoDomain, String> {
 
 }
