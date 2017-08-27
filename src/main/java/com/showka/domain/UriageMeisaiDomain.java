@@ -2,7 +2,7 @@ package com.showka.domain;
 
 import java.math.BigDecimal;
 
-import com.showka.system.exception.EmptyProxy;
+import com.showka.system.EmptyProxy;
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
