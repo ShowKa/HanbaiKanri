@@ -34,9 +34,6 @@ public class UriageMeisaiDomain extends DomainBase {
 	/** 商品販売単価. */
 	private BigDecimal hanbaiTanka = BigDecimal.ZERO;
 
-	/** バージョン(排他制御用) */
-	private Integer version = INTEGER_EMPTY;
-
 	// public method
 	/**
 	 * 明細合計金額取得
