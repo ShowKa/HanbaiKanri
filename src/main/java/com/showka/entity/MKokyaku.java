@@ -15,7 +15,7 @@ import lombok.Setter;
 
 /**
  * 顧客マスタ
- * 
+ *
  */
 @Entity
 @Table(name = "m_kokyaku")
@@ -41,8 +41,11 @@ public class MKokyaku extends EntityBase implements Serializable {
 	@Column(name = "hanbai_kubun", nullable = false)
 	private String hanbaiKubun;
 
+	@Column(name = "shukan_busho_id", nullable = false, length = 255)
+	private String shukanBushoId;
+
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "shukan_busho_id", referencedColumnName = "record_id")
+	@JoinColumn(name = "shukan_busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MBusho shukanBusho;
 
 }
