@@ -12,7 +12,7 @@ import javax.validation.ConstraintValidatorContext;
  * 文字コードがshift_jis(Windows-31j)か否かを判定します。
  * </pre>
  *
- * @author 樋岡真菜美
+ * @author 25767
  *
  */
 class ShiftJisValidator implements ConstraintValidator<ShiftJis, String> {

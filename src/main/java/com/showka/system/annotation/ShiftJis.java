@@ -1,7 +1,9 @@
 package com.showka.system.annotation;
 
-import static java.lang.annotation.ElementType.*;
-import static java.lang.annotation.RetentionPolicy.*;
+import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
+import static java.lang.annotation.ElementType.FIELD;
+import static java.lang.annotation.ElementType.PARAMETER;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -16,7 +18,7 @@ import javax.validation.constraints.Size;
 /**
  * Asserts that the annotated string: encoding Windows-31j or not
  *
- * @author 樋岡真菜美
+ * @author 25767
  */
 @Documented
 @Constraint(validatedBy = ShiftJisValidator.class)

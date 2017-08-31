@@ -15,7 +15,7 @@ import com.showka.service.search.u01.i.KokyakuSearchService;
 /**
  * U01G002 顧客登録画面
  *
- * @author 樋岡真菜美
+ * @author 25767
  *
  */
 @Controller
