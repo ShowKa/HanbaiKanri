@@ -1,4 +1,4 @@
-package com.showka.annotation;
+package com.showka.system.annotation;
 
 import java.io.UnsupportedEncodingException;
 

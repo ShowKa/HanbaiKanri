@@ -1,6 +1,6 @@
 package com.showka.web.u01;
 
-import com.showka.annotation.ShiftJis;
+import com.showka.system.annotation.ShiftJis;
 import com.showka.web.FormBase;
 
 import lombok.AllArgsConstructor;

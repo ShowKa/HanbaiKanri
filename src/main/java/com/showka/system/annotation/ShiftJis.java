@@ -1,4 +1,4 @@
-package com.showka.annotation;
+package com.showka.system.annotation;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
