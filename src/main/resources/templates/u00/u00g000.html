@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<link th:substituteby="common/head :: common_link" />
+</head>
+<body>
+	<div th:substituteby="common/header :: common_header"></div>
+
+	<div class="container">
+		<div th:if="${param.error}">Invalid username and password.</div>
+		<div th:if="${param.logout}">You have been logged out.</div>
+		<div class="row">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<form id="searchForm" class="form-horizontal" th:action="@{/u00g000}" method="post">
+					<div class="form-group form-group-sm">
+						<label class="control-label col-sm-2" for="username">username</label>
+						<div class="col-sm-10">
+							<input class="form-control" id="username" name="username" type="text" />
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<label class="control-label col-sm-2" for="bushoName">password</label>
+						<div class="col-sm-10">
+							<input class="form-control" id="password" name="password" type="password" />
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-10 col-sm-offset-2">
+							<input id="loginButton" type="submit" class="btn btn-primary btn-sm" value="Login!!"></input>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div th:substituteby="common/footer :: common_footer"></div>
+</body>
+</html>

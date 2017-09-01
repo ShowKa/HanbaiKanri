@@ -16,3 +16,8 @@ INSERT INTO m_nyukin_kake_info
 (kokyaku_id, nyukin_hoho_kubun, nyukin_tsuki_kubun, shimebi, nyukin_date, record_id)
 VALUES
 ('KK03', '00', '01', '20', '30', 'KK01');
+
+INSERT INTO m_user
+(id, username, password, record_id)
+VALUES
+(1, 'user01', 'pass', 'user01');

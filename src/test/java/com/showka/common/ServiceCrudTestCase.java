@@ -11,8 +11,12 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ninja_squad.dbsetup.DbSetup;
@@ -23,7 +27,6 @@ import com.ninja_squad.dbsetup.operation.DeleteAll;
 import com.ninja_squad.dbsetup.operation.Insert;
 import com.ninja_squad.dbsetup.operation.Insert.Builder;
 import com.ninja_squad.dbsetup.operation.Operation;
-import com.showka.system.LoginUser;
 
 import junit.framework.TestCase;
 
@@ -41,9 +44,17 @@ public abstract class ServiceCrudTestCase extends TestCase {
 	protected HttpSession session;
 
 	@Before
-	public void before() {
-		LoginUser user = new LoginUser("ServiceCrudTestCaseUser", "ServiceCrud単体テストユーザー");
-		session.setAttribute("user", user);
+	public void setAuthToSecurityContext() {
+		// mock auth
+		Authentication authentication = Mockito.mock(Authentication.class);
+		Mockito.when(authentication.getName()).thenReturn("ServiceCrudTestCaseUser");
+
+		// mock security context
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+
+		// set security context
+		SecurityContextHolder.setContext(securityContext);
 	}
 
 	/**
