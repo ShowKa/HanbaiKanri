@@ -2,22 +2,16 @@ package com.showka.entity;
 
 import java.util.Date;
 
-import javax.servlet.http.HttpSession;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import com.showka.system.LoginUser;
 
 @Aspect
 @Component
 public class EntityBaseColumSetter {
-
-	@Autowired
-	private HttpSession session;
 
 	@Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.save*(..)) && args(entity)")
 	public Object checkSearchResultSize(ProceedingJoinPoint pjp, EntityBase entity) throws Throwable {
@@ -45,7 +39,7 @@ public class EntityBaseColumSetter {
 	}
 
 	private String getUserId() {
-		LoginUser user = (LoginUser) session.getAttribute("user");
-		return user.getUserId();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return auth.getName();
 	}
 }
