@@ -7,7 +7,9 @@ function searchAndBuildList(url, formId, targetId) {
 		success : function(data, status, xhr) {
 			$("#" + targetId).html(data);
 		},
-		error : function(data) {
+		error : function(data, status, xhr) {
+			$("#errorMessage").remove();
+			$("#" + formId).before("<div class='alert alert-danger' id='errorMessage'>"+data.responseText+"</div>");
 		}
 	});
 }
