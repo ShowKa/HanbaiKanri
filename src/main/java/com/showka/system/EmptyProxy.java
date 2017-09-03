@@ -160,7 +160,7 @@ public class EmptyProxy {
 				// BigDecimal
 				boolean isBigDecimal = returnType.equals(cp.get(BigDecimal.class.getName()));
 				if (isBigDecimal) {
-					method.setBody("return BigDecimal.ZERO;");
+					method.setBody("return java.math.BigDecimal.ZERO;");
 				}
 
 				// Domain
