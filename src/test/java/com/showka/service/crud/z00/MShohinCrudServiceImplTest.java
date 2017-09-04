@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.ShohinDomain;
 import com.showka.entity.MShohin;
-import com.showka.service.crud.z00.MShohinCrudServiceImpl;
 
 public class MShohinCrudServiceImplTest extends ServiceCrudTestCase {
 
@@ -22,7 +21,6 @@ public class MShohinCrudServiceImplTest extends ServiceCrudTestCase {
 	/**
 	 * Before
 	 */
-	@Override
 	@Before
 	public void before() {
 		super.deleteAll(M_SHOHIN);
