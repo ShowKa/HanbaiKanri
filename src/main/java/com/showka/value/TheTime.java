@@ -56,20 +56,6 @@ public class TheTime extends ValueBase {
 	}
 
 	/**
-	 * 空判定
-	 * 
-	 * @return time 未設定ならtrue
-	 * 
-	 */
-	@Override
-	public boolean isEmpty() {
-		if (time == null) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * 同値判定
 	 * 
 	 * @return 時刻 が一致するならtrue

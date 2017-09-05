@@ -8,7 +8,9 @@ public abstract class ValueBase {
 	 * 
 	 * @return 値オブジェクトとして意味をなさない状態ならtrue
 	 */
-	abstract public boolean isEmpty();
+	public boolean isEmpty() {
+		return false;
+	}
 
 	/**
 	 * 同値判定
@@ -24,6 +26,7 @@ public abstract class ValueBase {
 	 * @param other
 	 * @return
 	 */
+	@Override
 	public final boolean equals(Object other) {
 		if (other == this) {
 			return true;
