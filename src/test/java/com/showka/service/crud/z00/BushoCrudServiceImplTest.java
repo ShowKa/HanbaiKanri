@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.BushoDomain;
-import com.showka.repository.i.MBushoRepository;
 
 /**
  * 部署 CRUD Service Test
@@ -21,9 +20,6 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Autowired
 	private BushoCrudServiceImpl service;
-
-	@Autowired
-	private MBushoRepository repo;
 
 	/**
 	 * table name
