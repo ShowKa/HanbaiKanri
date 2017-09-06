@@ -1,6 +1,7 @@
 package com.showka.service.validate.u01;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.showka.domain.KokyakuDomain;
 import com.showka.kubun.HanbaiKubun;
@@ -9,6 +10,7 @@ import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.system.exception.ValidateException;
 
+@Service
 public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 	@Autowired
