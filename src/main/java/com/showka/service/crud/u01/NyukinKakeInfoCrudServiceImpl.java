@@ -6,7 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.NyukinKakeInfoDomain;
+import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
 import com.showka.entity.MNyukinKakeInfo;
+import com.showka.kubun.NyukinHohoKubun;
+import com.showka.kubun.NyukinTsukiKubun;
+import com.showka.kubun.i.Kubun;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
 import com.showka.service.crud.u01.i.NyukinKakeInfoCrudService;
 
@@ -45,20 +49,35 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 	}
 
 	@Override
-	public void delete(String pk, Integer version) {
-		// TODO Auto-generated method stub
+	public void delete(String kokyakuId, Integer version) {
+		MNyukinKakeInfo target = new MNyukinKakeInfo();
+		target.setKokyakuId(kokyakuId);
+		target.setVersion(version);
+		repo.delete(target);
 	}
 
 	@Override
-	public NyukinKakeInfoDomain getDomain(String pk) {
-		// TODO Auto-generated method stub
-		return null;
+	public NyukinKakeInfoDomain getDomain(String kokyakuId) {
+		// get entity
+		MNyukinKakeInfo e = repo.getOne(kokyakuId);
+
+		// set domain builder
+		NyukinKakeInfoDomainBuilder b = new NyukinKakeInfoDomainBuilder();
+		b.withKokyakuId(e.getKokyakuId());
+		b.withNyukinDate(e.getNyukinDate());
+		b.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, e.getNyukinHohoKubun()));
+		b.withNyukinTsukiKubun(Kubun.get(NyukinTsukiKubun.class, e.getNyukinTsukiKubun()));
+		b.withRecordId(e.getRecordId());
+		b.withShimeDate(e.getShimebi());
+		b.withVersion(e.getVersion());
+
+		// build domain
+		return b.build();
 	}
 
 	@Override
-	public boolean exsists(String pk) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean exsists(String kokyakuId) {
+		return repo.existsById(kokyakuId);
 	}
 
 }

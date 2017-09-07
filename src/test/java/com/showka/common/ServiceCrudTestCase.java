@@ -27,6 +27,7 @@ import com.ninja_squad.dbsetup.operation.DeleteAll;
 import com.ninja_squad.dbsetup.operation.Insert;
 import com.ninja_squad.dbsetup.operation.Insert.Builder;
 import com.ninja_squad.dbsetup.operation.Operation;
+import com.showka.system.Entry;
 
 import junit.framework.TestCase;
 
@@ -43,6 +44,9 @@ public abstract class ServiceCrudTestCase extends TestCase {
 	@Autowired
 	protected HttpSession session;
 
+	@Autowired
+	private Entry e;
+
 	@Before
 	public void setAuthToSecurityContext() {
 		// mock auth
@@ -55,6 +59,12 @@ public abstract class ServiceCrudTestCase extends TestCase {
 
 		// set security context
 		SecurityContextHolder.setContext(securityContext);
+	}
+
+	@Before
+	public void setEntry() {
+		e.setEntryClass(this.getClass().getSimpleName());
+		e.setMethod("test");
 	}
 
 	/**
