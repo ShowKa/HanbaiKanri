@@ -41,10 +41,16 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 		super.deleteAll(TABLE_NAME);
 	}
 
-	// findbyid 該当する部署を取得
-	// 入力：部署コード
-	// 条件：レコード2件、該当レコードあり
-	// 結果：成功
+	/**
+	 * findbyid 該当する部署を取得
+	 *
+	 * <pre>
+	 * 入力：部署コード <br>
+	 * 条件：レコード2件、該当レコードあり <br>
+	 * 結果：成功
+	 *
+	 * <pre>
+	 */
 	@Test
 	public void test_01() {
 
@@ -52,12 +58,13 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 
 		Optional<MBusho> result = repository.findById("BS01");
 
-		assertNotNull(result.get());
-		assertEquals("BS01", result.get().getCode());
-		assertEquals("00", result.get().getBushoKubun());
-		assertEquals("00", result.get().getJigyoKubun());
-		assertEquals("部署01", result.get().getName());
-		assertEquals("BS01", result.get().getRecordId());
+		MBusho resultBusho = result.get();
+		assertNotNull(resultBusho);
+		assertEquals("BS01", resultBusho.getCode());
+		assertEquals("00", resultBusho.getBushoKubun());
+		assertEquals("00", resultBusho.getJigyoKubun());
+		assertEquals("部署01", resultBusho.getName());
+		assertEquals("BS01", resultBusho.getRecordId());
 
 	}
 
@@ -101,11 +108,13 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 		List<MBusho> result = repository.findAll();
 		assertNotNull(result);
 		assertEquals(1, result.size());
-		assertEquals(e.getCode(), result.get(0).getCode());
-		assertEquals(e.getBushoKubun(), result.get(0).getBushoKubun());
-		assertEquals(e.getJigyoKubun(), result.get(0).getJigyoKubun());
-		assertEquals(e.getName(), result.get(0).getName());
-		assertEquals(e.getRecordId(), result.get(0).getRecordId());
+
+		MBusho busho = result.get(0);
+		assertEquals(e.getCode(), busho.getCode());
+		assertEquals(e.getBushoKubun(), busho.getBushoKubun());
+		assertEquals(e.getJigyoKubun(), busho.getJigyoKubun());
+		assertEquals(e.getName(), busho.getName());
+		assertEquals(e.getRecordId(), busho.getRecordId());
 
 	}
 
@@ -136,13 +145,13 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 		assertNotNull(beforeSave);
 		assertEquals(2, beforeSave.size());
 
-		Optional<MBusho> beforeSaveEntity = repository.findById(e.getCode());
+		MBusho beforeBusho = repository.findById(e.getCode()).get();
 
-		assertEquals("BS01", beforeSaveEntity.get().getCode());
-		assertEquals("00", beforeSaveEntity.get().getBushoKubun());
-		assertEquals("00", beforeSaveEntity.get().getJigyoKubun());
-		assertEquals("部署01", beforeSaveEntity.get().getName());
-		assertEquals("BS01", beforeSaveEntity.get().getRecordId());
+		assertEquals("BS01", beforeBusho.getCode());
+		assertEquals("00", beforeBusho.getBushoKubun());
+		assertEquals("00", beforeBusho.getJigyoKubun());
+		assertEquals("部署01", beforeBusho.getName());
+		assertEquals("BS01", beforeBusho.getRecordId());
 
 		// save
 		repository.save(e);
@@ -152,12 +161,12 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 		assertNotNull(result);
 		assertEquals(2, result.size());
 
-		Optional<MBusho> resultEntity = repository.findById(e.getCode());
-		assertEquals(e.getCode(), resultEntity.get().getCode());
-		assertEquals(e.getBushoKubun(), resultEntity.get().getBushoKubun());
-		assertEquals(e.getJigyoKubun(), resultEntity.get().getJigyoKubun());
-		assertEquals(e.getName(), resultEntity.get().getName());
-		assertEquals(e.getRecordId(), resultEntity.get().getRecordId());
+		MBusho resultBusho = repository.findById(e.getCode()).get();
+		assertEquals(e.getCode(), resultBusho.getCode());
+		assertEquals(e.getBushoKubun(), resultBusho.getBushoKubun());
+		assertEquals(e.getJigyoKubun(), resultBusho.getJigyoKubun());
+		assertEquals(e.getName(), resultBusho.getName());
+		assertEquals(e.getRecordId(), resultBusho.getRecordId());
 
 	}
 
@@ -219,17 +228,10 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 		super.insert(TABLE_NAME, COLUMN, VALUE02);
 
 		MBusho result = repository.getOne("BS01");
+		result.getCode();
 
-		assertNotNull(result);
-
-		assertEquals("BS01", result.getCode());
-		assertEquals("00", result.getBushoKubun());
-		assertEquals("00", result.getJigyoKubun());
-		assertEquals("部署01", result.getName());
-		assertEquals("BS01", result.getRecordId());
 	}
 
-	////////////////////////////////////////////////
 	// delete 該当する部署を削除
 	// 入力：部署entity
 	// 条件：該当レコードあり
@@ -237,13 +239,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_09() {
 
-		Optional<MBusho> result;
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
-
-		result = repository.findById("BS01");
-		assertTrue(result.isPresent());
-		result = repository.findById("BS02");
-		assertTrue(result.isPresent());
 
 		// entity
 		MBusho e = new MBusho();
@@ -260,28 +256,17 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 
 		repository.delete(e);
 
-		result = repository.findById("BS01");
+		Optional<MBusho> result = repository.findById("BS01");
 		assertFalse(result.isPresent());
-		result = repository.findById("BS02");
-		assertTrue(result.isPresent());
 
 	}
 
-	////////////////////////////////////////////////
 	// delete 該当する部署を削除
 	// 入力：部署entity
 	// 条件：該当レコードなし
 	// 結果：例外発生
 	@Test(expected = DataIntegrityViolationException.class)
 	public void test_10() {
-
-		Optional<MBusho> result;
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
-
-		result = repository.findById("BS01");
-		assertTrue(result.isPresent());
-		result = repository.findById("BS02");
-		assertTrue(result.isPresent());
 
 		// entity
 		MBusho e = new MBusho();
