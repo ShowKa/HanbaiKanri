@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<link th:replace="common/head :: common_link" />
+<script th:inline="javascript" src="/u05/u05g002.js"></script>
+</head>
+<body>
+	<div th:replace="common/header :: common_header"></div>
+	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
+
+	<div class="bootstrap-iso">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<form id="urageDenpyo" class="form-horizontal" method="post">
+						<div class="formden_header">
+							<h4>売上伝票</h4>
+						</div>
+						<div class="form-group form-group-sm">
+							<label class="control-label col-sm-3" for="kokyakuCode"> 顧客コード </label>
+							<div class="col-sm-9">
+								<input th:field="${form.kokyakuCode}" class="form-control" id="kokyakuCode" name="kokyakuCode" type="text" />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label class="control-label col-sm-3" for="denpyoNumber"> 伝票番号 </label>
+							<div class="col-sm-9">
+								<input th:field="${form.denpyoNumber}" class="form-control" id="denpyoNumber" name="denpyoNumber"
+									placeholder="00000" type="text" />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label class="control-label col-sm-3" for="uriageDate"> 売上日 </label>
+							<div class="col-sm-9">
+								<input th:field="${form.uriageDate}" class="form-control" id="uriageDate" name="uriageDate"
+									placeholder="YYYY/MM/DD" type="text" />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label class="control-label col-sm-3" for="hanbaiKubun">販売区分</label>
+							<div class="col-sm-9">
+								<select class="form-control selectCheck whenRegister whenUpdate" id="hanbaiKubun" name="hanbaiKubun"
+									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})' />
+							</div>
+						</div>
+
+						<div class="formden_header">
+							<h4>明細</h4>
+						</div>
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>商品コード</th>
+									<th>売上数</th>
+									<th>販売単価</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="m, stat:${form.meisai}">
+									<td><input th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__].meisaiNumber" type="text" /></td>
+									<td><input th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__].shohinCode" type="text" /></td>
+									<td><input th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__].hanbaiNumber" type="text" /></td>
+									<td><input th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__].hanbaiTanka" type="text" /></td>
+								</tr>
+							</tbody>
+						</table>
+
+						<div class="form-group">
+							<div class="col-sm-1 col-sm-offset-3">
+								<input onClick="register();" id="registerBtn" type="button" class="btn btn-primary btn-sm whenRegister"
+									value="登録"></input>
+							</div>
+							<div class="col-sm-7 col-sm-offset-1 col-xs-7 col-xs-offset-1">
+								<input onClick="update();" id="updateBtn" type="button" class="btn btn-primary btn-sm whenUpdate" value="更新"></input>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
+	<div th:replace="common/footer :: common_footer"></div>
+</body>
+</html>

@@ -17,7 +17,7 @@ public class Kakaku extends ValueBase {
 	private BigDecimal zeinukiKakaku;
 
 	/** 税(小数) */
-	private BigDecimal zei;
+	private TaxRate zei;
 
 	/** 価格表示用フォーマッタ */
 	private static DecimalFormat formatter = new DecimalFormat("\u00A5###,###");
@@ -25,7 +25,7 @@ public class Kakaku extends ValueBase {
 	// constructor
 	public Kakaku(long kakaku, double zei) {
 		this.zeinukiKakaku = BigDecimal.valueOf(kakaku);
-		this.zei = BigDecimal.valueOf(zei);
+		this.zei = new TaxRate(zei);
 	}
 
 	// public method
@@ -55,7 +55,7 @@ public class Kakaku extends ValueBase {
 	 * @return 税込価格
 	 */
 	public BigDecimal getZeikomiKakaku() {
-		return zeinukiKakaku.multiply(zei.add(BigDecimal.ONE)).setScale(0, BigDecimal.ROUND_DOWN);
+		return zeinukiKakaku.multiply(zei.getRate().add(BigDecimal.ONE)).setScale(0, BigDecimal.ROUND_DOWN);
 	}
 
 	/**

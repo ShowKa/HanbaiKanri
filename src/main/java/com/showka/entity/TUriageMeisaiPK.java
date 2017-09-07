@@ -5,11 +5,15 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Embeddable
 public class TUriageMeisaiPK implements Serializable {
 
@@ -23,5 +27,17 @@ public class TUriageMeisaiPK implements Serializable {
 	/** 明細番号 */
 	@Column(name = "meisai_number", nullable = false)
 	private Integer meisaiNumber;
+
+	@Override
+	public boolean equals(Object pk) {
+		if (this == pk) {
+			return true;
+		}
+		if (!(pk instanceof TUriageMeisaiPK)) {
+			return false;
+		}
+		TUriageMeisaiPK p = (TUriageMeisaiPK) pk;
+		return uriageId.equals(p.getUriageId()) && meisaiNumber.equals(p.getMeisaiNumber());
+	}
 
 }

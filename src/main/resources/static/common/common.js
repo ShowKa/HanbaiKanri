@@ -63,12 +63,12 @@ function crud(param) {
 		dataType : "json",
 		data: data,
 		success : function(data, status, xhr) {
+			var $form = $("<form>").hide();
 			var model = data.model;
 			if (model) {
 				var form = model.form;
 				if (form) {
 					// リダイレクト先にメッセージを引き継ぐ
-					var $form = $("<form>");
 					if (form.successMessage) {
 						$form.appendInput("successMessage", form.successMessage);
 					}
@@ -86,6 +86,7 @@ function crud(param) {
 			for (var key in redirectParam) {
 				$form.appendInput(key, redirectParam[key]);
 			}
+			$("body").append($form);
 			$form.attr("action", redirectUrl).submit();
 		},
 		error : function(data, status, xhr) {

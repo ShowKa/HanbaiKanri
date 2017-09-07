@@ -2,7 +2,6 @@ package com.showka.domain;
 
 import java.math.BigDecimal;
 
-import com.showka.system.EmptyProxy;
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
@@ -20,19 +19,19 @@ public class UriageMeisaiDomain extends DomainBase {
 
 	// private member
 	/** ID. */
-	private String uriageId = STRING_EMPTY;
+	private String uriageId;
 
 	/** 明細番号. */
-	private Integer meisaiNumber = INTEGER_EMPTY;
+	private Integer meisaiNumber;
 
 	/** 商品. */
-	private ShohinDomain shohinDomain = EmptyProxy.domain(ShohinDomain.class);
+	private ShohinDomain shohinDomain;
 
 	/** 売上数. */
-	private Integer hanbaiNumber = INTEGER_EMPTY;
+	private Integer hanbaiNumber;
 
 	/** 商品販売単価. */
-	private BigDecimal hanbaiTanka = BigDecimal.ZERO;
+	private BigDecimal hanbaiTanka;
 
 	// public method
 	/**

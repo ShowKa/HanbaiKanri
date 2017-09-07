@@ -44,7 +44,7 @@ public class NotAllowedNumberException extends ValidateException {
 	 *            許可最大値
 	 */
 	public NotAllowedNumberException(String targetName, BigDecimal allowedMinimum, BigDecimal allowedMaximum) {
-		super(targetName + "の値は " + getBetweenMessage(allowedMinimum, allowedMinimum) + " を設定する必要があります。");
+		super(targetName + "の値は " + getBetweenMessage(allowedMinimum, allowedMaximum) + " を設定する必要があります。");
 		this.targetName = targetName;
 		this.allowedMinimum = allowedMinimum;
 		this.allowedMaximum = allowedMaximum;

@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ninja_squad.dbsetup.DbSetup;
 import com.ninja_squad.dbsetup.Operations;
@@ -39,6 +40,7 @@ import junit.framework.TestCase;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public abstract class ServiceCrudTestCase extends TestCase {
 
 	@Autowired
@@ -132,6 +134,18 @@ public abstract class ServiceCrudTestCase extends TestCase {
 		Operation ops = Operations.sequenceOf(inserts);
 		DbSetup dbSetup = new DbSetup(dest, ops);
 		dbSetup.launch();
+	}
+
+	/**
+	 * insert records after delete table
+	 * 
+	 * @param tableName
+	 * @param columns
+	 * @param valuses
+	 */
+	public void deleteAndInsert(String tableName, String[] columns, Object[]... values) {
+		this.deleteAll(tableName);
+		this.insert(tableName, columns, values);
 	}
 
 	@Before
