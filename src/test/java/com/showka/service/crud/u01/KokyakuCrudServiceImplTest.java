@@ -2,8 +2,6 @@ package com.showka.service.crud.u01;
 
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,18 +59,24 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test_insert() {
 
-		String id = "NEW!";
-		Integer version = 0;
-		String record_id = "this is inserted record";
+		final String id = "NEW!";
+		final String name = "aaaa";
+		final String address = "北区";
+		final KokyakuKubun kKubun = KokyakuKubun.法人;
+		final HanbaiKubun hKubun = HanbaiKubun.掛売;
+		final String bushoId = "BS01";
+
+		final Integer version = 0;
+		final String record_id = "this is inserted record";
 
 		// set up builder
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(id);
-		builder.withName("aaaa");
-		builder.withAddress("北区");
-		builder.withKokyakuKubun(KokyakuKubun.法人);
-		builder.withHanbaiKubun(HanbaiKubun.掛売);
-		builder.withShukanBushoId("BS01");
+		builder.withName(name);
+		builder.withAddress(address);
+		builder.withKokyakuKubun(kKubun);
+		builder.withHanbaiKubun(hKubun);
+		builder.withShukanBushoId(bushoId);
 
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
@@ -85,6 +89,13 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 
 		// assert
 		MKokyaku actual = repo.findById(id).get();
+		assertEquals(name, actual.getName());
+		assertEquals(address, actual.getAddress());
+		assertEquals(kKubun.getCode(), actual.getKokyakuKubun());
+		assertEquals(hKubun.getCode(), actual.getHanbaiKubun());
+		assertEquals(name, actual.getName());
+		assertEquals(bushoId, actual.getShukanBushoId());
+
 		assertEquals(record_id, actual.getRecordId());
 
 	}
@@ -97,18 +108,24 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
 
-		String id = "KK01";
-		Integer version = 0;
-		String record_id = "this is inserted record";
+		final String id = "KK01";
+		final String name = "abcd";
+		final String address = "北区";
+		final KokyakuKubun kKubun = KokyakuKubun.法人;
+		final HanbaiKubun hKubun = HanbaiKubun.掛売;
+		final String bushoId = "BS01";
+
+		final Integer version = 0;
+		final String record_id = "this is updated record";
 
 		// set up builder
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(id);
-		builder.withName("aaaa");
-		builder.withAddress("北区");
-		builder.withKokyakuKubun(KokyakuKubun.法人);
-		builder.withHanbaiKubun(HanbaiKubun.掛売);
-		builder.withShukanBushoId("BS01");
+		builder.withName(name);
+		builder.withAddress(address);
+		builder.withKokyakuKubun(kKubun);
+		builder.withHanbaiKubun(hKubun);
+		builder.withShukanBushoId(bushoId);
 
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
@@ -121,8 +138,14 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 
 		// assert
 		MKokyaku actual = repo.findById(id).get();
-		assertEquals(record_id, actual.getRecordId());
+		assertEquals(name, actual.getName());
+		assertEquals(address, actual.getAddress());
+		assertEquals(kKubun.getCode(), actual.getKokyakuKubun());
+		assertEquals(hKubun.getCode(), actual.getHanbaiKubun());
+		assertEquals(name, actual.getName());
+		assertEquals(bushoId, actual.getShukanBushoId());
 
+		assertEquals(record_id, actual.getRecordId());
 	}
 
 	/**
@@ -170,25 +193,6 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_delete1() {
 
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
-
-		String id = "KK03";
-		Integer version = 0;
-
-		// delete
-		service.delete(id, version);
-
-		// assert
-		Optional<MKokyaku> result = repo.findById(id);
-		assertFalse(result.isPresent());
-
-	}
-
-	/**
-	 * 存在しないレコードの削除テスト
-	 */
-	@Test
-	@Transactional
-	public void test_delete2() {
 
 		String id = "KK03";
 		Integer version = 0;
@@ -251,20 +255,6 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals("01", result.getKokyakuKubun().getCode());
 		assertEquals("BS02", result.getShukanBushoId());
 		assertEquals("KK03", result.getRecordId());
-
-	}
-
-	/**
-	 * 存在しないレコードのgetテスト
-	 */
-	@Test(expected = EntityNotFoundException.class)
-	@Transactional
-	public void test_getDomain2() {
-
-		String id = "KK03";
-
-		// getDomain
-		service.getDomain(id);
 
 	}
 
