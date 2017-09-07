@@ -13,13 +13,23 @@ import com.showka.system.exception.ValidateException;
 public class NyukinKakeInfoValidateServiceImplTest extends ServiceCrudTestCase {
 
 	/**
-	 * service.
+	 * 入金掛情報 Validate Service Test
+	 *
+	 * @author 25767
+	 *
 	 */
 	@Autowired
 	private NyukinKakeInfoValidateServiceImpl service;
 
 	/**
-	 * validate 成功パターン
+	 * validate 入金日が締日より後になっているか検証する
+	 *
+	 * <pre>
+	 * 入力：入金掛情報domain <br>
+	 * 条件：入金日が締日より後 <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	public void test_validate1() {
@@ -46,9 +56,16 @@ public class NyukinKakeInfoValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 成功パターン
+	 * validate 入金日が締日より後になっているか検証する
+	 *
+	 * <pre>
+	 * 入力：入金掛情報domain <br>
+	 * 条件：入金日と締日が一致 <br>
+	 * 結果：失敗
+	 *
+	 * <pre>
 	 */
-	@Test
+	@Test(expected = ValidateException.class)
 	public void test_validate2() {
 
 		String id = "KK01";
@@ -60,7 +77,7 @@ public class NyukinKakeInfoValidateServiceImplTest extends ServiceCrudTestCase {
 		builder.withKokyakuId(id);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
-		builder.withShimeDate(20);
+		builder.withShimeDate(25);
 		builder.withNyukinDate(25);
 
 		builder.withVersion(version);
@@ -73,7 +90,14 @@ public class NyukinKakeInfoValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 失敗パターン
+	 * validate 入金日が締日より後になっているか検証する
+	 *
+	 * <pre>
+	 * 入力：入金掛情報domain <br>
+	 * 条件：入金日が締日より前 <br>
+	 * 結果：失敗
+	 *
+	 * <pre>
 	 */
 	@Test(expected = ValidateException.class)
 	public void test_validate3() {

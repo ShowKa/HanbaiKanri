@@ -14,7 +14,10 @@ import com.showka.system.exception.ValidateException;
 public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 
 	/**
-	 * service.
+	 * 顧客 Validate Service Test
+	 *
+	 * @author 25767
+	 *
 	 */
 	@Autowired
 	private KokyakuValidateServiceImpl service;
@@ -47,7 +50,14 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validateForRegister 成功パターン
+	 * validateForRegister 顧客コードが既に使われているか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：顧客コードが使われていない <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	public void test_validateForRegister1() {
@@ -75,7 +85,14 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validateForRegister 失敗パターン
+	 * validateForRegister 顧客コードが既に使われているか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：顧客コードが既に使われている <br>
+	 * 結果：失敗
+	 *
+	 * <pre>
 	 */
 	@Test(expected = ValidateException.class)
 	public void test_validateForRegister2() {
@@ -105,7 +122,14 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 成功パターン
+	 * validate 個人顧客に掛売が設定されていないか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：個人顧客に現金が設定されている <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	public void test_validate1() {
@@ -133,7 +157,14 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 成功パターン
+	 * validate 個人顧客に掛売が設定されていないか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：法人顧客 <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	public void test_validate2() {
@@ -161,7 +192,14 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 失敗パターン
+	 * validate 個人顧客に掛売が設定されていないか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：個人顧客に掛売が設定されている <br>
+	 * 結果：失敗
+	 *
+	 * <pre>
 	 */
 	@Test(expected = ValidateException.class)
 	public void test_validate3() {
