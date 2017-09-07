@@ -62,22 +62,4 @@ public class TheDate extends ValueBase {
 		return date.toString();
 	}
 
-	// empty
-	public static final TheDate EMPTY = EmptyTheDate.INSTANCE;
-
-}
-
-/**
- * Empty
- * 
- * @author ShowKa
- *
- */
-class EmptyTheDate extends TheDate {
-
-	public static final EmptyTheDate INSTANCE = new EmptyTheDate();
-
-	private EmptyTheDate() {
-		super();
-	}
 }
