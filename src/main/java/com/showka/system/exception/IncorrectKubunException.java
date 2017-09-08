@@ -28,6 +28,22 @@ public class IncorrectKubunException extends ValidateException {
 	 * 区分不正例外
 	 *
 	 * <pre>
+	 * targetにkubunは設定できません。
+	 * </pre>
+	 *
+	 * @param target
+	 * @param string
+	 */
+	public IncorrectKubunException(String target, Kubun<?> kubun) {
+		super(target + "に" + kubun.toString() + "は設定できません。");
+		this.target = target;
+		this.kubun = kubun;
+	}
+
+	/**
+	 * 区分不正例外
+	 *
+	 * <pre>
 	 * targetにkubunは設定できません。（理由：reason）
 	 * </pre>
 	 *
