@@ -16,25 +16,29 @@ public class IncorrectKubunException extends ValidateException {
 	private static final long serialVersionUID = -7827002962832575044L;
 
 	/** 設定対象 */
-	private String targetName;
+	private String target;
 
 	/** 区分 */
 	private Kubun<?> kubun;
 
+	/** 不可理由 */
+	private String reason;
+
 	/**
 	 * 区分不正例外
-	 * 
+	 *
 	 * <pre>
-	 * targetにkubunは設定できません。
+	 * targetにkubunは設定できません。（理由：reason）
 	 * </pre>
-	 * 
-	 * @param targetName
-	 * @param kubun
+	 *
+	 * @param target
+	 * @param string
 	 */
-	public IncorrectKubunException(String targetName, Kubun<?> kubun) {
-		super(targetName + "に" + kubun.toString() + "は設定できません。");
-		this.targetName = targetName;
+	public IncorrectKubunException(String target, Kubun<?> kubun, String reason) {
+		super(target + "に" + kubun.toString() + "は設定できません。（理由：" + reason + "）");
+		this.target = target;
 		this.kubun = kubun;
+		this.reason = reason;
 	}
 
 }

@@ -9,6 +9,7 @@ import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.system.exception.AlreadyExistsException;
+import com.showka.system.exception.IncorrectKubunException;
 import com.showka.system.exception.ValidateException;
 
 /**
@@ -34,7 +35,7 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 	public void validate(KokyakuDomain domain) throws ValidateException {
 
 		if (domain.getKokyakuKubun() == KokyakuKubun.個人 && domain.getHanbaiKubun() == HanbaiKubun.掛売) {
-			throw new ValidateException("個人顧客は現金払いのみです。");
+			throw new IncorrectKubunException("販売区分", HanbaiKubun.掛売, "個人顧客は掛売できません");
 		}
 	}
 

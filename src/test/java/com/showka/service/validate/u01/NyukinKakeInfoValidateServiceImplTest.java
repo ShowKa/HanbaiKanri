@@ -10,14 +10,14 @@ import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.system.exception.ValidateException;
 
+/**
+ * 入金掛情報 Validate Service Test
+ *
+ * @author 25767
+ *
+ */
 public class NyukinKakeInfoValidateServiceImplTest extends ServiceCrudTestCase {
 
-	/**
-	 * 入金掛情報 Validate Service Test
-	 *
-	 * @author 25767
-	 *
-	 */
 	@Autowired
 	private NyukinKakeInfoValidateServiceImpl service;
 

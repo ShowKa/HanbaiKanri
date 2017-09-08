@@ -11,14 +11,14 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.system.exception.ValidateException;
 
+/**
+ * 顧客 Validate Service Test
+ *
+ * @author 25767
+ *
+ */
 public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 
-	/**
-	 * 顧客 Validate Service Test
-	 *
-	 * @author 25767
-	 *
-	 */
 	@Autowired
 	private KokyakuValidateServiceImpl service;
 
