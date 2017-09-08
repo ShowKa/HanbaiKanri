@@ -8,6 +8,7 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
+import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.ValidateException;
 
 /**
@@ -25,15 +26,14 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 	@Override
 	public void validateForRegister(KokyakuDomain domain) throws ValidateException {
 		if (repo.existsById(domain.getCode())) {
-			throw new ValidateException("既に存在する顧客コードです。");
+			throw new AlreadyExistsException("顧客コード", domain.getCode());
 		}
 	}
 
 	@Override
 	public void validate(KokyakuDomain domain) throws ValidateException {
 
-		if (domain.getKokyakuKubun().isIncludedIn(KokyakuKubun.個人)
-				&& domain.getHanbaiKubun().isIncludedIn(HanbaiKubun.掛売)) {
+		if (domain.getKokyakuKubun() == KokyakuKubun.個人 && domain.getHanbaiKubun() == HanbaiKubun.掛売) {
 			throw new ValidateException("個人顧客は現金払いのみです。");
 		}
 	}
