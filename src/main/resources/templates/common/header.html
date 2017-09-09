@@ -25,4 +25,14 @@
 			<!-- /.navbar-collapse -->
 		</div>
 	</nav>
+	<div class="bootstrap-iso">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12" id="errorMessage-container">
+					<div class="alert alert-danger" id="errorMessage" th:if="${form != null and form.errorMessage != null}" th:text="${form.errorMessage}"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </header>
