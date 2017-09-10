@@ -2,6 +2,18 @@ package com.showka.web;
 
 import lombok.Getter;
 
+/**
+ * 
+ * ModelAndViewの拡張.
+ * 
+ * <pre>
+ * formを追加する関数を追加した。
+ * </pre>
+ * 
+ * @author ShowKa.
+ * @see org.springframework.web.servlet.ModelAndView
+ * 
+ */
 @Getter
 public class ModelAndView extends org.springframework.web.servlet.ModelAndView {
 

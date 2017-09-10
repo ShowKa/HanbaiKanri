@@ -17,6 +17,21 @@ public class FormBase implements Serializable {
 	private static final long serialVersionUID = -824041068500111832L;
 
 	/**
+	 * 成功メッセージ.
+	 */
+	private String successMessage;
+
+	/**
+	 * 通知メッセージ.
+	 */
+	private String infoMessage;
+
+	/**
+	 * 警告メッセージ.
+	 */
+	private String warningMessage;
+
+	/**
 	 * エラーメッセージ.
 	 */
 	private String errorMessage;
