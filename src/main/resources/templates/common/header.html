@@ -25,4 +25,21 @@
 			<!-- /.navbar-collapse -->
 		</div>
 	</nav>
+	<div class="bootstrap-iso">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12" id="message-container">
+					<div class="alert alert-success" id="successMessage" th:if="${form != null and form.successMessage != null}"
+						th:text="${form.successMessage}"></div>
+					<div class="alert alert-info" id="infoMessage" th:if="${form != null and form.infoMessage != null}"
+						th:text="${form.infoMessage}"></div>
+					<div class="alert alert-warning" id="warningMessage" th:if="${form != null and form.warningMessage != null}"
+						th:text="${form.warningMessage}"></div>
+					<div class="alert alert-danger" id="errorMessage" th:if="${form != null and form.errorMessage != null}"
+						th:text="${form.errorMessage}"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </header>
