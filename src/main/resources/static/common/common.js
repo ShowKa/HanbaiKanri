@@ -112,7 +112,7 @@ function showErroeMessage(message) {
  */
 (function($) {
 	$.fn.appendInput = function(name, value, type) {
-		type = type == null ? type : "hidden";
+		type = type ? type : "hidden";
 		var $input = $("<input>");
 		$input.attr("name", name);
 		$input.attr("type", type);
