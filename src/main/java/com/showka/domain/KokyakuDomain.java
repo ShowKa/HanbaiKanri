@@ -32,8 +32,11 @@ public class KokyakuDomain extends DomainBase {
 	/** 販売区分 */
 	private HanbaiKubun hanbaiKubun = HanbaiKubun.EMPTY;
 
-	/** 主幹部署ID */
-	private String shukanBushoId = STRING_EMPTY;
+	/** 主幹部署 */
+	private BushoDomain shukanBusho = null;
+
+	/** 入金掛情報 */
+	private NyukinKakeInfoDomain nyukinKakeInfo = null;
 
 	@Override
 	public void validate() throws SystemException {
