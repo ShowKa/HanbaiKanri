@@ -16,7 +16,7 @@ import com.showka.service.crud.u01.i.NyukinKakeInfoCrudService;
 
 /**
  * 入金掛情報 CRUD Service
- * 
+ *
  * @author ShowKa
  *
  */
@@ -38,7 +38,7 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 		e.setNyukinDate(domain.getNyukinDate());
 		e.setNyukinHohoKubun(domain.getNyukinHohoKubun().getCode());
 		e.setNyukinTsukiKubun(domain.getNyukinTsukiKubun().getCode());
-		e.setShimebi(e.getShimebi());
+		e.setShimebi(domain.getShimeDate());
 
 		// set record_id & version
 		e.setRecordId(domain.getRecordId());
@@ -77,6 +77,9 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 
 	@Override
 	public boolean exsists(String kokyakuId) {
+		if (kokyakuId == null) {
+			return false;
+		}
 		return repo.existsById(kokyakuId);
 	}
 
