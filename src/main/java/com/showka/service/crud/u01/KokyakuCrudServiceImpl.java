@@ -86,7 +86,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	public void delete(KokyakuDomain domain) {
 
 		// 入金掛情報delete
-		if (nyukinCrudService.exsists(domain.getCode())) {
+		if (nyukinCrudService.exsists(domain.getRecordId())) {
 			NyukinKakeInfoDomain target = domain.getNyukinKakeInfo();
 			nyukinCrudService.delete(target);
 		}
