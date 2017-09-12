@@ -15,7 +15,7 @@ import lombok.Getter;
  * 
  */
 @Getter
-public class ModelAndView extends org.springframework.web.servlet.ModelAndView {
+public class ModelAndViewExtended extends org.springframework.web.servlet.ModelAndView {
 
 	/**
 	 * form 追加.
