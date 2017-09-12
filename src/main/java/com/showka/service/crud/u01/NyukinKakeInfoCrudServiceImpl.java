@@ -77,9 +77,6 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 
 	@Override
 	public boolean exsists(String kokyakuId) {
-		if (kokyakuId == null) {
-			return false;
-		}
 		return repo.existsById(kokyakuId);
 	}
 
