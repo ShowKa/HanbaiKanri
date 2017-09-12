@@ -6,7 +6,7 @@ public interface CrudService<T extends DomainBase, P> {
 
 	/**
 	 * 登録・更新.
-	 * 
+	 *
 	 * @param domain
 	 *            ドメイン
 	 */
@@ -14,7 +14,7 @@ public interface CrudService<T extends DomainBase, P> {
 
 	/**
 	 * 削除.
-	 * 
+	 *
 	 * @param pk
 	 *            主キー
 	 * @param version
@@ -23,8 +23,16 @@ public interface CrudService<T extends DomainBase, P> {
 	void delete(P pk, Integer version);
 
 	/**
+	 * 削除.
+	 *
+	 * @param domain
+	 *            ドメイン
+	 */
+	void delete(T domain);
+
+	/**
 	 * ドメイン取得
-	 * 
+	 *
 	 * @param pk
 	 *            主キー
 	 * @return ドメイン
@@ -33,7 +41,7 @@ public interface CrudService<T extends DomainBase, P> {
 
 	/**
 	 * 存在チェック.
-	 * 
+	 *
 	 * @param pk
 	 * @return 主キーでテーブルを検索し、存在すればtrue
 	 */

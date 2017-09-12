@@ -83,4 +83,10 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 		return repo.existsById(kokyakuId);
 	}
 
+	@Override
+	public void delete(NyukinKakeInfoDomain domain) {
+		delete(domain.getKokyakuId(), domain.getVersion());
+
+	}
+
 }

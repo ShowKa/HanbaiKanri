@@ -107,7 +107,14 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * 新しいレコードのINERTテスト
+	 * insert 新規レコードの挿入テスト
+	 *
+	 * <pre>
+	 * 入力：顧客ドメイン <br>
+	 * 条件：該当顧客レコードなし <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	@Transactional
@@ -177,7 +184,14 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * 既存レコードの更新テスト
+	 * update 既存レコードの更新テスト
+	 *
+	 * <pre>
+	 * 入力：顧客ID <br>
+	 * 条件：該当顧客レコードあり。販売区分を掛売→現金へ更新。 <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	@Transactional
@@ -199,6 +213,7 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 
 		// build nyukinKakeInfo domain
 		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinBuilder.withKokyakuId(id);
 		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
@@ -234,7 +249,14 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * 既存レコードの削除テスト
+	 * delete 既存レコードの削除テスト
+	 *
+	 * <pre>
+	 * 入力：顧客ID <br>
+	 * 条件：該当顧客レコードが存在する。該当入金掛情報レコードが存在する。 <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	@Transactional
@@ -243,22 +265,47 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
 		super.insert(NYUKIN_KAKE_TABLE_NAME, NYUKIN_KAKE_COLUMN, NYUKIN_KAKE_VALUE01);
 
-		String id = "KK03";
+		final String id = "KK03";
+		final String bushoId = "BS01";
 		Integer version = 0;
 
+		// build nyukinKakeInfo domain
+		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinBuilder.withKokyakuId(id);
+		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+
+		// get busho domain
+		BushoDomain bushoDomain = bushoService.getDomain(bushoId);
+
+		// build kokyaku domain
+		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		builder.withCode(id);
+		builder.withShukanBusho(bushoDomain);
+		builder.withNyukinKakeInfo(nyukinDomain);
+		builder.withVersion(version);
+		KokyakuDomain domain = builder.build();
 		// delete
-		service.delete(id, version);
+
+		service.delete(domain);
 
 		// assert
 		Optional<MKokyaku> result = repo.findById(id);
 		assertFalse(result.isPresent());
 		Optional<MNyukinKakeInfo> resultNyukin = nyukinRepo.findById(id);
-		assertFalse(result.isPresent());
+		assertFalse(resultNyukin.isPresent());
 	}
 
 	/**
-	 * 既存レコードの存在確認テスト
+	 * exsists 存在しないレコードの存在確認テスト
+	 *
+	 * <pre>
+	 * 入力：顧客ID <br>
+	 * 条件：顧客レコードが存在する <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
+
 	@Test
 	public void test_exsists1() {
 
@@ -272,7 +319,14 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * 存在しないレコードの存在確認テスト
+	 * exsists 存在しないレコードの存在確認テスト
+	 *
+	 * <pre>
+	 * 入力：顧客ID <br>
+	 * 条件：顧客レコードが存在しない <br>
+	 * 結果：失敗
+	 *
+	 * <pre>
 	 */
 	@Test
 	public void test_exsists2() {
@@ -284,7 +338,14 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * 既存レコードのgetテスト
+	 * getDomain 既存レコードを取得できるか確認する
+	 *
+	 * <pre>
+	 * 入力：入金掛情報を持つ顧客のID <br>
+	 * 条件：顧客レコード、入金掛情報が存在 <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
 	@Transactional
@@ -312,5 +373,36 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals("10", resultNyukin.getNyukinTsukiKubun().getCode());
 		assertEquals(20, resultNyukin.getShimeDate().intValue());
 		assertEquals(30, resultNyukin.getNyukinDate().intValue());
+	}
+
+	/**
+	 * getDomain 既存レコードを取得できるか確認する
+	 *
+	 * <pre>
+	 * 入力：入金掛情報を持たない顧客のID <br>
+	 * 条件：顧客レコードが存在 <br>
+	 * 結果：成功
+	 *
+	 * <pre>
+	 */
+	@Test
+	@Transactional
+	public void test_getDomain2() {
+		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
+		super.insert(NYUKIN_KAKE_TABLE_NAME, NYUKIN_KAKE_COLUMN, NYUKIN_KAKE_VALUE01);
+
+		String id = "KK01";
+
+		// getDomain
+		KokyakuDomain result = service.getDomain(id);
+
+		// assert
+		assertEquals("KK01", result.getCode());
+		assertEquals("aaaa", result.getName());
+		assertEquals("左京区", result.getAddress());
+		assertEquals("00", result.getHanbaiKubun().getCode());
+		assertEquals("01", result.getKokyakuKubun().getCode());
+		assertEquals("BS01", result.getShukanBusho().getRecordId());
+		assertEquals("KK01", result.getRecordId());
 	}
 }
