@@ -1,5 +1,7 @@
 package com.showka.service.crud.z00;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,13 @@ public class BushoCrudServiceImpl implements BushoCrudService {
 		builder.withVersion(result.getVersion());
 
 		return builder.build();
+	}
+
+	@Override
+	public List<MBusho> getMBushoList() {
+
+		return repo.findAll();
+
 	}
 
 }
