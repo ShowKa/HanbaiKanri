@@ -64,9 +64,8 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
 			nyukinCrudService.save(nyukinKakeInfo);
 		} else {
-			if (nyukinCrudService.exsists(domain.getCode())) {
-				NyukinKakeInfoDomain target = domain.getNyukinKakeInfo();
-				nyukinCrudService.delete(target.getKokyakuId(), target.getVersion());
+			if (nyukinCrudService.exsists(nyukinKakeInfo.getKokyakuId())) {
+				nyukinCrudService.delete(nyukinKakeInfo);
 			}
 		}
 	}
@@ -99,24 +98,24 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	@Override
 	public KokyakuDomain getDomain(String pk) {
 		MKokyaku kokyakuEntity = repo.getOne(pk);
+		HanbaiKubun hanbaiKubun = Kubun.get(HanbaiKubun.class, kokyakuEntity.getHanbaiKubun());
+		String kokyakuRecordId = kokyakuEntity.getRecordId();
 
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(kokyakuEntity.getCode());
 		builder.withAddress(kokyakuEntity.getAddress());
 		builder.withName(kokyakuEntity.getName());
 		builder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, kokyakuEntity.getKokyakuKubun()));
-		builder.withHanbaiKubun(Kubun.get(HanbaiKubun.class, kokyakuEntity.getHanbaiKubun()));
+		builder.withHanbaiKubun(hanbaiKubun);
 
 		BushoDomain buhoDomain = bushoService.getDomain(kokyakuEntity.getShukanBusho().getCode());
 		builder.withShukanBusho(buhoDomain);
 
-		if (Kubun.get(HanbaiKubun.class, kokyakuEntity.getHanbaiKubun()) == HanbaiKubun.掛売) {
-			if (nyukinCrudService.exsists(kokyakuEntity.getRecordId())) {
-				NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinCrudService.getDomain(kokyakuEntity.getRecordId());
-				builder.withNyukinKakeInfo(nyukinKakeInfoDomain);
-			}
+		if (hanbaiKubun == HanbaiKubun.掛売) {
+			NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinCrudService.getDomain(kokyakuRecordId);
+			builder.withNyukinKakeInfo(nyukinKakeInfoDomain);
 		}
-		builder.withRecordId(kokyakuEntity.getRecordId());
+		builder.withRecordId(kokyakuRecordId);
 		builder.withVersion(kokyakuEntity.getVersion());
 
 		return builder.build();
