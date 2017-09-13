@@ -278,13 +278,13 @@ public class U01G002Controller {
 	/**
 	 * 削除
 	 *
+	 * @param form
 	 * @param model
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.GET)
-	public String delete(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model,
-			HttpSession session) {
+	public String delete(@Valid @ModelAttribute U01G002Form form, Model model, HttpSession session) {
 
 		// make NyukinKakeInfoDomain
 		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = setFormToNyukinKakeInfoBuilder(form);
