@@ -21,7 +21,6 @@ import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
-import com.showka.service.crud.u01.i.NyukinKakeInfoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 
 /**
@@ -43,9 +42,6 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Autowired
 	private BushoCrudService bushoService;
-
-	@Autowired
-	private NyukinKakeInfoCrudService nyukinCrudService;
 
 	/**
 	 * table name
@@ -268,10 +264,13 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		final String id = "KK03";
 		final String bushoId = "BS01";
 		Integer version = 0;
+		Integer nyukinVersion = 0;
+		final String record_id = "KK03";
 
 		// build nyukinKakeInfo domain
 		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
 		nyukinBuilder.withKokyakuId(id);
+		nyukinBuilder.withVersion(nyukinVersion);
 		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
@@ -283,6 +282,7 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		builder.withShukanBusho(bushoDomain);
 		builder.withNyukinKakeInfo(nyukinDomain);
 		builder.withVersion(version);
+		builder.withRecordId(record_id);
 		KokyakuDomain domain = builder.build();
 		// delete
 
@@ -291,7 +291,7 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		// assert
 		Optional<MKokyaku> result = repo.findById(id);
 		assertFalse(result.isPresent());
-		Optional<MNyukinKakeInfo> resultNyukin = nyukinRepo.findById(id);
+		Optional<MNyukinKakeInfo> resultNyukin = nyukinRepo.findById(record_id);
 		assertFalse(resultNyukin.isPresent());
 	}
 
