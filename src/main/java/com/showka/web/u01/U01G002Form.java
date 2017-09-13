@@ -39,4 +39,10 @@ public class U01G002Form extends FormBase {
 	/** 入金日 */
 	private int nyukinDate;
 
+	/** 顧客情報を排他制御するためのversion */
+	private int kokyakuVersion;
+
+	/** 入金掛情報を排他制御するためのversion */
+	private int nyukinKakeInfoVersion;
+
 }

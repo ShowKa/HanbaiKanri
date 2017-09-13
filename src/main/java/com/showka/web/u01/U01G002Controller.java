@@ -1,25 +1,30 @@
 package com.showka.web.u01;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.showka.domain.KokyakuDomain;
+import com.showka.domain.NyukinKakeInfoDomain;
+import com.showka.domain.builder.KokyakuDomainBuilder;
+import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
+import com.showka.kubun.i.Kubun;
 import com.showka.service.crud.u01.KokyakuCrudServiceImpl;
-import com.showka.service.crud.u01.NyukinKakeInfoCrudServiceImpl;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.validate.u01.KokyakuValidateServiceImpl;
 import com.showka.service.validate.u01.NyukinKakeInfoValidateServiceImpl;
@@ -38,9 +43,6 @@ public class U01G002Controller {
 	private KokyakuCrudServiceImpl kokyakuCrudService;
 
 	@Autowired
-	private NyukinKakeInfoCrudServiceImpl nyukinKakeInfoCrudService;
-
-	@Autowired
 	private BushoCrudService bushoCrudService;
 
 	@Autowired
@@ -52,39 +54,75 @@ public class U01G002Controller {
 	// private method
 
 	/**
-	 * 顧客区分の一覧を取得
+	 * 部署の一覧、顧客区分の一覧、販売区分の一覧、入金方法区分の一覧、 入金月区分の一覧を取得してmodelにセット
+	 *
+	 * @param model
 	 *
 	 */
-	private List<KokyakuKubun> getKokyakuKubunList() {
+	private void setListToModelAttribute(Model model) {
+
+		// 部署一覧
+		model.addAttribute("bushoList", bushoCrudService.getMBushoList());
+
+		// 顧客区分
 		KokyakuKubun[] kokyakuKubunArray = KokyakuKubun.values();
-		return Arrays.asList(kokyakuKubunArray);
-	}
+		model.addAttribute("kokyakuKubunList", Arrays.asList(kokyakuKubunArray));
 
-	/**
-	 * 販売区分の一覧を取得
-	 *
-	 */
-	private List<HanbaiKubun> getHanbaiKubunList() {
+		// 販売区分
 		HanbaiKubun[] hanbaiKubunArray = HanbaiKubun.values();
-		return Arrays.asList(hanbaiKubunArray);
-	}
+		model.addAttribute("hanbaiKubunList", Arrays.asList(hanbaiKubunArray));
 
-	/**
-	 * 入金方法区分の一覧を取得
-	 *
-	 */
-	private List<NyukinHohoKubun> getNyukinHohoKubunnList() {
+		// 入金方法区分
 		NyukinHohoKubun[] nyukinHohoKubunArray = NyukinHohoKubun.values();
-		return Arrays.asList(nyukinHohoKubunArray);
+		model.addAttribute("nyukinHohoKubunList", Arrays.asList(nyukinHohoKubunArray));
+
+		// 入金月区分
+		NyukinTsukiKubun[] nyukinTsukiKubunArray = NyukinTsukiKubun.values();
+		model.addAttribute("nyukinTsukiKubunList", Arrays.asList(nyukinTsukiKubunArray));
+
 	}
 
 	/**
-	 * 入金月区分の一覧を取得
+	 * formの内容をNyukinKakeInfoDomainBuilderにセットする。versionは別途設定する必要がある。
+	 *
+	 * @param form
 	 *
 	 */
-	private List<NyukinTsukiKubun> getNyukinTsukiKubunList() {
-		NyukinTsukiKubun[] nyukinTsukiKubunArray = NyukinTsukiKubun.values();
-		return Arrays.asList(nyukinTsukiKubunArray);
+	private NyukinKakeInfoDomainBuilder setFormToNyukinKakeInfoBuilder(U01G002Form form) {
+
+		final String kokyakuCode = form.getKokyakuCode();
+
+		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinKakeInfoBuilder.withKokyakuId(kokyakuCode);
+		nyukinKakeInfoBuilder.withNyukinDate(form.getNyukinDate());
+		nyukinKakeInfoBuilder.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, form.getNyukinHohoKubun()));
+		nyukinKakeInfoBuilder.withNyukinTsukiKubun(Kubun.get(NyukinTsukiKubun.class, form.getNyukinTsukiKubun()));
+		nyukinKakeInfoBuilder.withShimeDate(form.getShimebi());
+		nyukinKakeInfoBuilder.withRecordId(kokyakuCode);
+
+		return nyukinKakeInfoBuilder;
+	}
+
+	/**
+	 * formの内容をNyukinDomainBuilderにセットする。versionとnyukinKakeInfoは別途設定する必要がある。
+	 *
+	 * @param form
+	 *
+	 */
+	private KokyakuDomainBuilder setFormToKokyakuDomainBuilder(U01G002Form form) {
+
+		final String kokyakuCode = form.getKokyakuCode();
+
+		KokyakuDomainBuilder kokyakuDomainBuilder = new KokyakuDomainBuilder();
+		kokyakuDomainBuilder.withCode(kokyakuCode);
+		kokyakuDomainBuilder.withName(form.getKokyakuName());
+		kokyakuDomainBuilder.withAddress(form.getKokyakuAddress());
+		kokyakuDomainBuilder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, form.getKokyakuKubun()));
+		kokyakuDomainBuilder.withHanbaiKubun(Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()));
+		kokyakuDomainBuilder.withShukanBusho(bushoCrudService.getDomain(form.getShukanBushoCode()));
+		kokyakuDomainBuilder.withRecordId(kokyakuCode);
+
+		return kokyakuDomainBuilder;
 	}
 
 	// public method called by request
@@ -95,22 +133,12 @@ public class U01G002Controller {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value = "/u01g002/registerIndex", method = RequestMethod.GET)
-	public String registerIndex(Model model, HttpSession session) {
-		System.out.println("doing registerIndex");
+	@RequestMapping(value = "/u01g002/registerForm", method = RequestMethod.GET)
+	public String registerForm(Model model, HttpSession session) {
 		// すっからかんのフォームを表示する
 
 		// 選択肢を取得して画面に送る
-		// 部署一覧
-		model.addAttribute("bushoList", bushoCrudService.getMBushoList());
-		// 顧客区分一覧
-		model.addAttribute("kokyakuKubunList", getKokyakuKubunList());
-		// 販売区分一覧
-		model.addAttribute("hanbaiKubunList", getHanbaiKubunList());
-		// 入金方法区分一覧
-		model.addAttribute("nyukinHohoKubunnList", getNyukinHohoKubunnList());
-		// 入金方法区分一覧
-		model.addAttribute("nyukinTsukiKubunnList", getNyukinTsukiKubunList());
+		setListToModelAttribute(model);
 
 		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/registerにしておく
 		model.addAttribute("mode", "register");
@@ -126,26 +154,17 @@ public class U01G002Controller {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value = "/u01g002/getIndex", method = RequestMethod.GET)
-	public String getIndex(@RequestParam String kokyakuCode, Model model, HttpSession session) {
-		System.out.println("doing getIndex");
+	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
+	public String refer(@RequestParam String kokyakuCode, Model model, HttpSession session) {
 
 		// 顧客codeをもとに該当顧客の情報を全て取得
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
 		model.addAttribute("kokyaku", kokyaku);
 
-		// 選択肢を取得
-		// 部署一覧
-		model.addAttribute("bushoList", bushoCrudService.getMBushoList());
-		// 顧客区分一覧
-		model.addAttribute("kokyakuKubunList", getKokyakuKubunList());
-		// 販売区分一覧
-		model.addAttribute("hanbaiKubunList", getHanbaiKubunList());
-		// 入金方法区分一覧
-		model.addAttribute("nyukinHohoKubunnList", getNyukinHohoKubunnList());
-		// 入金方法区分一覧
-		model.addAttribute("nyukinTsukiKubunnList", getNyukinTsukiKubunList());
+		// 選択肢を取得して画面に送る
+		setListToModelAttribute(model);
 
+		// 入金サイトを取得して画面に送る
 		model.addAttribute("nyukinSaito", kokyaku.getNyukinKakeInfo().getNyukinSight());
 
 		// モード情報を画面に送る。編集できないようにする
@@ -162,33 +181,128 @@ public class U01G002Controller {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value = "/u01g002/updateIndex", method = RequestMethod.GET)
-	public String updateIndex(@RequestParam String kokyakuCode, Model model, HttpSession session) {
-		System.out.println("doing updateIndex");
+	@RequestMapping(value = "/u01g002/updateForm", method = RequestMethod.GET)
+	public String updateForm(@RequestParam String kokyakuCode, Model model, HttpSession session) {
 
 		// 顧客codeをもとに該当顧客の情報を全て取得
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
 		model.addAttribute("kokyaku", kokyaku);
 
-		// 選択肢を取得
-		// 部署一覧
-		model.addAttribute("bushoList", bushoCrudService.getMBushoList());
-		// 顧客区分一覧
-		model.addAttribute("kokyakuKubunList", getKokyakuKubunList());
-		// 販売区分一覧
-		model.addAttribute("hanbaiKubunList", getHanbaiKubunList());
-		// 入金方法区分一覧
-		model.addAttribute("nyukinHohoKubunnList", getNyukinHohoKubunnList());
-		// 入金方法区分一覧
-		model.addAttribute("nyukinTsukiKubunnList", getNyukinTsukiKubunList());
+		// 選択肢を取得して画面に送る
+		setListToModelAttribute(model);
 
-		model.addAttribute("nyukinSaito", kokyaku.getNyukinKakeInfo().getNyukinSight());
-
-		// モード情報を画面に送る。顧客codeを編集できないようにする
 		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/updateにしておく
 		model.addAttribute("mode", "update");
 
 		return "/u01/u01g002";
+	}
+
+	/**
+	 * 新規登録
+	 *
+	 * @param form
+	 * @param result
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/register", method = RequestMethod.GET)
+	public String register(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model,
+			HttpSession session) {
+
+		// 新規作成なのでversionは0
+		final Integer version = 0;
+
+		// make NyukinKakeInfoDomain
+		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = setFormToNyukinKakeInfoBuilder(form);
+		nyukinKakeInfoBuilder.withVersion(version);
+		NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinKakeInfoBuilder.build();
+
+		// make KokyakuDomain
+		KokyakuDomainBuilder kokyakuDomainBuilder = setFormToKokyakuDomainBuilder(form);
+		kokyakuDomainBuilder.withNyukinKakeInfo(nyukinKakeInfoDomain);
+		kokyakuDomainBuilder.withVersion(version);
+		KokyakuDomain kokyakuDomain = kokyakuDomainBuilder.build();
+
+		// validate
+		kokyakuValidateService.validateForRegister(kokyakuDomain);
+		kokyakuValidateService.validate(kokyakuDomain);
+		if (Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()) == HanbaiKubun.掛売) {
+			nyukinKakeInfoValidateService.validate(nyukinKakeInfoDomain);
+		}
+
+		// register
+		kokyakuCrudService.save(kokyakuDomain);
+
+		// jump refer
+		return refer(form.getKokyakuCode(), model, session);
+	}
+
+	/**
+	 * 更新
+	 *
+	 * @param form
+	 * @param result
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/update", method = RequestMethod.GET)
+	public String update(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model,
+			HttpSession session) {
+
+		// make NyukinKakeInfoDomain
+		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = setFormToNyukinKakeInfoBuilder(form);
+		nyukinKakeInfoBuilder.withVersion(form.getNyukinKakeInfoVersion());
+		NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinKakeInfoBuilder.build();
+
+		// make KokyakuDomain
+		KokyakuDomainBuilder kokyakuDomainBuilder = setFormToKokyakuDomainBuilder(form);
+		kokyakuDomainBuilder.withNyukinKakeInfo(nyukinKakeInfoDomain);
+		kokyakuDomainBuilder.withVersion(form.getKokyakuVersion());
+		KokyakuDomain kokyakuDomain = kokyakuDomainBuilder.build();
+
+		// validate
+		kokyakuValidateService.validate(kokyakuDomain);
+		if (Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()) == HanbaiKubun.掛売) {
+			nyukinKakeInfoValidateService.validate(nyukinKakeInfoDomain);
+		}
+
+		// update
+		kokyakuCrudService.save(kokyakuDomain);
+
+		// jump refer
+		return refer(form.getKokyakuCode(), model, session);
+	}
+
+	/**
+	 * 削除
+	 *
+	 * @param model
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.GET)
+	public String delete(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model,
+			HttpSession session) {
+
+		// make NyukinKakeInfoDomain
+		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = setFormToNyukinKakeInfoBuilder(form);
+		nyukinKakeInfoBuilder.withVersion(form.getNyukinKakeInfoVersion());
+		NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinKakeInfoBuilder.build();
+
+		// make KokyakuDomain
+		KokyakuDomainBuilder kokyakuDomainBuilder = setFormToKokyakuDomainBuilder(form);
+		kokyakuDomainBuilder.withNyukinKakeInfo(nyukinKakeInfoDomain);
+		kokyakuDomainBuilder.withVersion(form.getKokyakuVersion());
+		KokyakuDomain kokyakuDomain = kokyakuDomainBuilder.build();
+
+		// delete
+		kokyakuCrudService.delete(kokyakuDomain);
+
+		// jump search
+		return "/u01g001";
+
 	}
 
 }
