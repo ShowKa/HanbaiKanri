@@ -1,8 +1,8 @@
 package com.showka.web.u01;
 
 import java.util.Arrays;
+import java.util.UUID;
 
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +51,158 @@ public class U01G002Controller {
 	@Autowired
 	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
 
+	// public method called by request
+	/**
+	 * 登録モード初期表示
+	 *
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/registerForm", method = RequestMethod.GET)
+	public String registerForm(Model model) {
+		// すっからかんのフォームを表示する
+
+		// 選択肢を取得して画面に送る
+		setListToModelAttribute(model);
+
+		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/registerにしておく
+		model.addAttribute("mode", "register");
+
+		return "/u01/u01g002";
+	}
+
+	/**
+	 * 参照モード初期表示
+	 *
+	 * @param kokyakuCode
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
+	public String refer(@RequestParam String kokyakuCode, Model model) {
+
+		// 顧客codeをもとに該当顧客の情報を全て取得
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
+		model.addAttribute("kokyaku", kokyaku);
+
+		// 選択肢を取得して画面に送る
+		setListToModelAttribute(model);
+
+		// 入金サイトを取得して画面に送る
+		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		if (nyukinKakeInfo != null) {
+			model.addAttribute("nyukinSaito", nyukinKakeInfo.getNyukinSight());
+		}
+
+		// モード情報を画面に送る。編集できないようにする
+		model.addAttribute("mode", "read");
+
+		return "/u01/u01g002";
+	}
+
+	/**
+	 * 更新モード初期表示
+	 *
+	 * @param kokyakuCode
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/updateForm", method = RequestMethod.GET)
+	public String updateForm(@RequestParam String kokyakuCode, Model model) {
+
+		// 顧客codeをもとに該当顧客の情報を全て取得
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
+		model.addAttribute("kokyaku", kokyaku);
+
+		// 選択肢を取得して画面に送る
+		setListToModelAttribute(model);
+
+		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/updateにしておく
+		model.addAttribute("mode", "update");
+
+		return "/u01/u01g002";
+	}
+
+	/**
+	 * 新規登録
+	 *
+	 * @param form
+	 * @param result
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/register", method = RequestMethod.GET)
+	public String register(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model) {
+
+		// set recordID
+		form.setKokyakuRecordId(UUID.randomUUID().toString());
+		form.setNyukinKakeInfoRecordId(UUID.randomUUID().toString());
+
+		// make KokyakuDomain
+		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
+
+		// validate
+		kokyakuValidateService.validateForRegister(kokyakuDomain);
+		kokyakuValidateService.validate(kokyakuDomain);
+		if (kokyakuDomain.getHanbaiKubun() == HanbaiKubun.掛売) {
+			nyukinKakeInfoValidateService.validate(kokyakuDomain.getNyukinKakeInfo());
+		}
+
+		// register
+		kokyakuCrudService.save(kokyakuDomain);
+
+		// jump refer
+		return refer(form.getKokyakuCode(), model);
+	}
+
+	/**
+	 * 更新
+	 *
+	 * @param form
+	 * @param result
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/update", method = RequestMethod.GET)
+	public String update(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model) {
+
+		// make KokyakuDomain
+		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
+
+		// validate
+		kokyakuValidateService.validate(kokyakuDomain);
+		if (kokyakuDomain.getHanbaiKubun() == HanbaiKubun.掛売) {
+			nyukinKakeInfoValidateService.validate(kokyakuDomain.getNyukinKakeInfo());
+		}
+
+		// update
+		kokyakuCrudService.save(kokyakuDomain);
+
+		// jump refer
+		return refer(form.getKokyakuCode(), model);
+	}
+
+	/**
+	 * 削除
+	 *
+	 * @param form
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.GET)
+	public String delete(@Valid @ModelAttribute U01G002Form form, Model model) {
+
+		// make KokyakuDomain
+		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
+
+		// delete
+		kokyakuCrudService.delete(kokyakuDomain);
+
+		// jump search
+		return "/u01g001";
+
+	}
+
 	// private method
 
 	/**
@@ -88,7 +240,7 @@ public class U01G002Controller {
 	 * @param form
 	 *
 	 */
-	private NyukinKakeInfoDomainBuilder setFormToNyukinKakeInfoBuilder(U01G002Form form) {
+	private NyukinKakeInfoDomain createNyukinKakeInfoDomain(U01G002Form form) {
 
 		final String kokyakuCode = form.getKokyakuCode();
 
@@ -98,9 +250,9 @@ public class U01G002Controller {
 		nyukinKakeInfoBuilder.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, form.getNyukinHohoKubun()));
 		nyukinKakeInfoBuilder.withNyukinTsukiKubun(Kubun.get(NyukinTsukiKubun.class, form.getNyukinTsukiKubun()));
 		nyukinKakeInfoBuilder.withShimeDate(form.getShimebi());
-		nyukinKakeInfoBuilder.withRecordId(kokyakuCode);
-
-		return nyukinKakeInfoBuilder;
+		nyukinKakeInfoBuilder.withRecordId(form.getNyukinKakeInfoRecordId());
+		nyukinKakeInfoBuilder.withVersion(form.getNyukinKakeInfoVersion());
+		return nyukinKakeInfoBuilder.build();
 	}
 
 	/**
@@ -109,7 +261,7 @@ public class U01G002Controller {
 	 * @param form
 	 *
 	 */
-	private KokyakuDomainBuilder setFormToKokyakuDomainBuilder(U01G002Form form) {
+	private KokyakuDomain createKokyakuDomain(U01G002Form form) {
 
 		final String kokyakuCode = form.getKokyakuCode();
 
@@ -120,193 +272,10 @@ public class U01G002Controller {
 		kokyakuDomainBuilder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, form.getKokyakuKubun()));
 		kokyakuDomainBuilder.withHanbaiKubun(Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()));
 		kokyakuDomainBuilder.withShukanBusho(bushoCrudService.getDomain(form.getShukanBushoCode()));
-		kokyakuDomainBuilder.withRecordId(kokyakuCode);
-
-		return kokyakuDomainBuilder;
-	}
-
-	// public method called by request
-	/**
-	 * 登録モード初期表示
-	 *
-	 * @param model
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping(value = "/u01g002/registerForm", method = RequestMethod.GET)
-	public String registerForm(Model model, HttpSession session) {
-		// すっからかんのフォームを表示する
-
-		// 選択肢を取得して画面に送る
-		setListToModelAttribute(model);
-
-		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/registerにしておく
-		model.addAttribute("mode", "register");
-
-		return "/u01/u01g002";
-	}
-
-	/**
-	 * 参照モード初期表示
-	 *
-	 * @param kokyakuCode
-	 * @param model
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
-	public String refer(@RequestParam String kokyakuCode, Model model, HttpSession session) {
-
-		System.out.println("/u01g002/refer:" + kokyakuCode);
-		// 顧客codeをもとに該当顧客の情報を全て取得
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
-		model.addAttribute("kokyaku", kokyaku);
-
-		// 選択肢を取得して画面に送る
-		setListToModelAttribute(model);
-
-		// 入金サイトを取得して画面に送る
-		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
-		if (nyukinKakeInfo != null) {
-			model.addAttribute("nyukinSaito", nyukinKakeInfo.getNyukinSight());
-		}
-
-		// モード情報を画面に送る。編集できないようにする
-		model.addAttribute("mode", "read");
-
-		return "/u01/u01g002";
-	}
-
-	/**
-	 * 更新モード初期表示
-	 *
-	 * @param kokyakuCode
-	 * @param model
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping(value = "/u01g002/updateForm", method = RequestMethod.GET)
-	public String updateForm(@RequestParam String kokyakuCode, Model model, HttpSession session) {
-
-		// 顧客codeをもとに該当顧客の情報を全て取得
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
-		model.addAttribute("kokyaku", kokyaku);
-
-		// 選択肢を取得して画面に送る
-		setListToModelAttribute(model);
-
-		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/updateにしておく
-		model.addAttribute("mode", "update");
-
-		return "/u01/u01g002";
-	}
-
-	/**
-	 * 新規登録
-	 *
-	 * @param form
-	 * @param result
-	 * @param model
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping(value = "/u01g002/register", method = RequestMethod.GET)
-	public String register(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model,
-			HttpSession session) {
-
-		// 新規作成なのでversionは0
-		final Integer version = 0;
-
-		// make NyukinKakeInfoDomain
-		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = setFormToNyukinKakeInfoBuilder(form);
-		nyukinKakeInfoBuilder.withVersion(version);
-		NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinKakeInfoBuilder.build();
-
-		// make KokyakuDomain
-		KokyakuDomainBuilder kokyakuDomainBuilder = setFormToKokyakuDomainBuilder(form);
-		kokyakuDomainBuilder.withNyukinKakeInfo(nyukinKakeInfoDomain);
-		kokyakuDomainBuilder.withVersion(version);
-		KokyakuDomain kokyakuDomain = kokyakuDomainBuilder.build();
-
-		// validate
-		kokyakuValidateService.validateForRegister(kokyakuDomain);
-		kokyakuValidateService.validate(kokyakuDomain);
-		if (Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()) == HanbaiKubun.掛売) {
-			nyukinKakeInfoValidateService.validate(nyukinKakeInfoDomain);
-		}
-
-		// register
-		kokyakuCrudService.save(kokyakuDomain);
-
-		// jump refer
-		return refer(form.getKokyakuCode(), model, session);
-	}
-
-	/**
-	 * 更新
-	 *
-	 * @param form
-	 * @param result
-	 * @param model
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping(value = "/u01g002/update", method = RequestMethod.GET)
-	public String update(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model,
-			HttpSession session) {
-
-		// make NyukinKakeInfoDomain
-		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = setFormToNyukinKakeInfoBuilder(form);
-		nyukinKakeInfoBuilder.withVersion(form.getNyukinKakeInfoVersion());
-		NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinKakeInfoBuilder.build();
-
-		// make KokyakuDomain
-		KokyakuDomainBuilder kokyakuDomainBuilder = setFormToKokyakuDomainBuilder(form);
-		kokyakuDomainBuilder.withNyukinKakeInfo(nyukinKakeInfoDomain);
+		kokyakuDomainBuilder.withRecordId(form.getKokyakuRecordId());
+		kokyakuDomainBuilder.withNyukinKakeInfo(createNyukinKakeInfoDomain(form));
 		kokyakuDomainBuilder.withVersion(form.getKokyakuVersion());
-		KokyakuDomain kokyakuDomain = kokyakuDomainBuilder.build();
-
-		// validate
-		kokyakuValidateService.validate(kokyakuDomain);
-		if (Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()) == HanbaiKubun.掛売) {
-			nyukinKakeInfoValidateService.validate(nyukinKakeInfoDomain);
-		}
-
-		// update
-		kokyakuCrudService.save(kokyakuDomain);
-
-		// jump refer
-		return refer(form.getKokyakuCode(), model, session);
-	}
-
-	/**
-	 * 削除
-	 *
-	 * @param form
-	 * @param model
-	 * @param session
-	 * @return
-	 */
-	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.GET)
-	public String delete(@Valid @ModelAttribute U01G002Form form, Model model, HttpSession session) {
-
-		// make NyukinKakeInfoDomain
-		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = setFormToNyukinKakeInfoBuilder(form);
-		nyukinKakeInfoBuilder.withVersion(form.getNyukinKakeInfoVersion());
-		NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinKakeInfoBuilder.build();
-
-		// make KokyakuDomain
-		KokyakuDomainBuilder kokyakuDomainBuilder = setFormToKokyakuDomainBuilder(form);
-		kokyakuDomainBuilder.withNyukinKakeInfo(nyukinKakeInfoDomain);
-		kokyakuDomainBuilder.withVersion(form.getKokyakuVersion());
-		KokyakuDomain kokyakuDomain = kokyakuDomainBuilder.build();
-
-		// delete
-		kokyakuCrudService.delete(kokyakuDomain);
-
-		// jump search
-		return "/u01g001";
-
+		return kokyakuDomainBuilder.build();
 	}
 
 }

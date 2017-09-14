@@ -34,15 +34,21 @@ public class U01G002Form extends FormBase {
 	private String nyukinTsukiKubun;
 
 	/** 請求締日 */
-	private int shimebi;
+	private Integer shimebi;
 
 	/** 入金日 */
-	private int nyukinDate;
+	private Integer nyukinDate;
 
 	/** 顧客情報を排他制御するためのversion */
-	private int kokyakuVersion;
+	private Integer kokyakuVersion;
 
 	/** 入金掛情報を排他制御するためのversion */
-	private int nyukinKakeInfoVersion;
+	private Integer nyukinKakeInfoVersion;
+
+	/** 顧客レコードID */
+	private String kokyakuRecordId;
+
+	/** 入金掛け情報レコードID */
+	private String nyukinKakeInfoRecordId;
 
 }
