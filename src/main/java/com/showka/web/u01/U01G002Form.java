@@ -10,13 +10,13 @@ import lombok.Setter;
 public class U01G002Form extends FormBase {
 
 	/** 顧客コード */
-	private String kokyakuCode;
+	private String code;
 
 	/** 顧客名 */
-	private String kokyakuName;
+	private String name;
 
 	/** 顧客住所 */
-	private String kokyakuAddress;
+	private String address;
 
 	/** 顧客区分 */
 	private String kokyakuKubun;

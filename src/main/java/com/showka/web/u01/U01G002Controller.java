@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,6 +29,7 @@ import com.showka.service.crud.u01.KokyakuCrudServiceImpl;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.validate.u01.KokyakuValidateServiceImpl;
 import com.showka.service.validate.u01.NyukinKakeInfoValidateServiceImpl;
+import com.showka.web.ModelAndViewExtended;
 
 /**
  * U01G002 顧客登録画面
@@ -79,10 +81,10 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
-	public String refer(@RequestParam String kokyakuCode, Model model) {
+	public String refer(@RequestParam String code, Model model) {
 
 		// 顧客codeをもとに該当顧客の情報を全て取得
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(code);
 		model.addAttribute("kokyaku", kokyaku);
 
 		// 選択肢を取得して画面に送る
@@ -91,7 +93,7 @@ public class U01G002Controller {
 		// 入金サイトを取得して画面に送る
 		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 		if (nyukinKakeInfo != null) {
-			model.addAttribute("nyukinSaito", nyukinKakeInfo.getNyukinSight());
+			model.addAttribute("nyukinDate", nyukinKakeInfo.getNyukinSight());
 		}
 
 		// モード情報を画面に送る。編集できないようにする
@@ -132,7 +134,8 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/register", method = RequestMethod.GET)
-	public String register(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model) {
+	public ResponseEntity<?> register(@Valid @ModelAttribute U01G002Form form, BindingResult result,
+			ModelAndViewExtended model) {
 
 		// set recordID
 		form.setKokyakuRecordId(UUID.randomUUID().toString());
@@ -152,7 +155,9 @@ public class U01G002Controller {
 		kokyakuCrudService.save(kokyakuDomain);
 
 		// jump refer
-		return refer(form.getKokyakuCode(), model);
+		form.setInfoMessage("登録成功");
+		model.addForm(form);
+		return ResponseEntity.ok(model);
 	}
 
 	/**
@@ -164,7 +169,8 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/update", method = RequestMethod.GET)
-	public String update(@Valid @ModelAttribute U01G002Form form, BindingResult result, Model model) {
+	public ResponseEntity<?> update(@Valid @ModelAttribute U01G002Form form, BindingResult result,
+			ModelAndViewExtended model) {
 
 		// make KokyakuDomain
 		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
@@ -179,7 +185,9 @@ public class U01G002Controller {
 		kokyakuCrudService.save(kokyakuDomain);
 
 		// jump refer
-		return refer(form.getKokyakuCode(), model);
+		form.setInfoMessage("");
+		model.addForm(form);
+		return ResponseEntity.ok(model);
 	}
 
 	/**
@@ -190,7 +198,7 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.GET)
-	public String delete(@Valid @ModelAttribute U01G002Form form, Model model) {
+	public ResponseEntity<?> delete(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
 		// make KokyakuDomain
 		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
@@ -199,7 +207,9 @@ public class U01G002Controller {
 		kokyakuCrudService.delete(kokyakuDomain);
 
 		// jump search
-		return "/u01g001";
+		form.setInfoMessage("");
+		model.addForm(form);
+		return ResponseEntity.ok(model);
 
 	}
 
@@ -242,7 +252,7 @@ public class U01G002Controller {
 	 */
 	private NyukinKakeInfoDomain createNyukinKakeInfoDomain(U01G002Form form) {
 
-		final String kokyakuCode = form.getKokyakuCode();
+		final String kokyakuCode = form.getCode();
 
 		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = new NyukinKakeInfoDomainBuilder();
 		nyukinKakeInfoBuilder.withKokyakuId(kokyakuCode);
@@ -263,12 +273,12 @@ public class U01G002Controller {
 	 */
 	private KokyakuDomain createKokyakuDomain(U01G002Form form) {
 
-		final String kokyakuCode = form.getKokyakuCode();
+		final String kokyakuCode = form.getCode();
 
 		KokyakuDomainBuilder kokyakuDomainBuilder = new KokyakuDomainBuilder();
 		kokyakuDomainBuilder.withCode(kokyakuCode);
-		kokyakuDomainBuilder.withName(form.getKokyakuName());
-		kokyakuDomainBuilder.withAddress(form.getKokyakuAddress());
+		kokyakuDomainBuilder.withName(form.getName());
+		kokyakuDomainBuilder.withAddress(form.getAddress());
 		kokyakuDomainBuilder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, form.getKokyakuKubun()));
 		kokyakuDomainBuilder.withHanbaiKubun(Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()));
 		kokyakuDomainBuilder.withShukanBusho(bushoCrudService.getDomain(form.getShukanBushoCode()));
