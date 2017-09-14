@@ -66,6 +66,7 @@ public class U01G001Controller {
 		ArrayList<HashMap<String, String>> kokyakuList = new ArrayList<>();
 		for (MKokyaku k : result) {
 			HashMap<String, String> m = new HashMap<String, String>();
+			m.put("code", k.getCode());
 			m.put("name", k.getName());
 			m.put("bushoName", k.getShukanBusho().getName());
 			kokyakuList.add(m);
@@ -91,6 +92,7 @@ public class U01G001Controller {
 			// list
 			ArrayList<HashMap<String, String>> kokyakuList = new ArrayList<>();
 			HashMap<String, String> m = new HashMap<String, String>();
+			m.put("code", "");
 			m.put("name", "valid NG");
 			m.put("bushoName", "");
 			kokyakuList.add(m);

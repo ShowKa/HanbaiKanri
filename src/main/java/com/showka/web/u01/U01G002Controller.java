@@ -157,6 +157,7 @@ public class U01G002Controller {
 	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
 	public String refer(@RequestParam String kokyakuCode, Model model, HttpSession session) {
 
+		System.out.println("/u01g002/refer:" + kokyakuCode);
 		// 顧客codeをもとに該当顧客の情報を全て取得
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
 		model.addAttribute("kokyaku", kokyaku);
@@ -165,7 +166,10 @@ public class U01G002Controller {
 		setListToModelAttribute(model);
 
 		// 入金サイトを取得して画面に送る
-		model.addAttribute("nyukinSaito", kokyaku.getNyukinKakeInfo().getNyukinSight());
+		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		if (nyukinKakeInfo != null) {
+			model.addAttribute("nyukinSaito", nyukinKakeInfo.getNyukinSight());
+		}
 
 		// モード情報を画面に送る。編集できないようにする
 		model.addAttribute("mode", "read");

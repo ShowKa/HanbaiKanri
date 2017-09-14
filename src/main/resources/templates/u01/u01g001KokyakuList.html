@@ -1,6 +1,6 @@
 <tbody th:fragment="list" th:remove="tag">
-	<tr th:each="kokyaku:${kokyakuList}"> 
-		<td th:text="${kokyaku.name}" />
+	<tr th:each="kokyaku:${kokyakuList}">
+		<td><a href="/u01g002/refer" th:attr="href=@{/u01g002/refer(kokyakuCode=${kokyaku.code})}"><div th:text="${kokyaku.name}"></div></a></td>
 		<td th:text="${kokyaku.bushoName}" />
 	</tr>
 </tbody>
