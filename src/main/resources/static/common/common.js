@@ -72,6 +72,9 @@ function crud(url, formId, nextUrl) {
 			if (data.status === 400) {
 				showErroeMessage(data.responseText);
 				return;
+			} else if (data.status === 409) {
+				showErroeMessage(data.responseText);
+				return;
 			}
 			$("html").html(data.responseText);
 		}

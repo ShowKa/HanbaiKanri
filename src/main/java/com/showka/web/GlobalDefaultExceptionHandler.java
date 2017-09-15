@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -24,11 +25,26 @@ public class GlobalDefaultExceptionHandler {
 	 * @param req
 	 *            リクエスト
 	 * @param e
-	 *            例外
+	 *            整合性検証例外
 	 * @return HTTPレスポンス
 	 */
 	@ExceptionHandler(value = ValidateException.class)
 	public ResponseEntity<?> defaultErrorHandler(HttpServletRequest req, ValidateException e) {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	}
+
+	/**
+	 * 例外メッセージをbodyにセットして返すだけ。HttpStatus=409
+	 * 
+	 * @param req
+	 *            リクエスト
+	 * @param e
+	 *            排他制御例外
+	 * @return HTTPレスポンス
+	 */
+	@ExceptionHandler(value = ObjectOptimisticLockingFailureException.class)
+	public ResponseEntity<?> optimisticLockExceptionHandler(HttpServletRequest req,
+			ObjectOptimisticLockingFailureException e) {
+		return ResponseEntity.status(HttpStatus.CONFLICT).body("他のユーザによりすでにデータが更新されています。画面を開き直してください。");
 	}
 }
