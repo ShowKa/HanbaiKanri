@@ -3,7 +3,7 @@
 
 <head>
 <link th:replace="common/head :: common_link" />
-<script src="/u01/u01g001.js"></script>
+<script src="/u01/u01g002.js"></script>
 </head>
 
 <body>
@@ -15,113 +15,183 @@
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<form id="registerForm" class="form-horizontal">
 						<div>
-						<!--
-							<div class="col-sm-1 col-sm-offset-9 col-xs-1 col-xs-offset-9">
-								<input onClick="update();" id="updateBtn" type="button" class="btn btn-primary btn-sm" value="更新"></input>
-							</div>
-							<div class="col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1">
-								<input onClick="delete();" id="deleteBtn" type="button" class="btn btn-primary btn-sm" value="削除"></input>
-							</div>
-						-->
 						<div class="col-sm-1 col-sm-offset-11 col-xs-1 col-xs-offset-11">
 							<input onClick="delete();" id="deleteBtn" type="button" class="btn btn-primary btn-sm" value="削除"></input>
 						</div>
 						</div>
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>顧客情報</h4></div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="kokyakuCode">顧客コード</label>
+							<label class="control-label col-sm-3" for="code">顧客コード</label>
 							<div class="col-sm-9">
-								<input class="form-control" id="kokyakuCode" name="kokyakuCode" type="text" />
+								<input th:if="${kokyaku}" class="form-control" th:field="${kokyaku.code}" id="code" name="code" type="text" />
+								<input th:unless="${kokyaku}" class="form-control"  id="code" name="code" type="text" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="kokyakuName">顧客名</label>
+							<label class="control-label col-sm-3" for="name">顧客名</label>
 							<div class="col-sm-9">
-								<input class="form-control" id="kokyakuName" name="kokyakuName" type="text" />
+								<input th:if="${kokyaku}" class="form-control" id="name" name="name" type="text" th:field="${kokyaku.name}" />
+								<input th:unless="${kokyaku}" class="form-control" id="name" name="name" type="text" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="kokyakuName">顧客住所</label>
+							<label class="control-label col-sm-3" for="address">顧客住所</label>
 							<div class="col-sm-9">
-								<input class="form-control" id="kokyakuName" name="kokyakuName" type="text" />
+								<input th:if="${kokyaku}" class="form-control" id="address" name="address" type="text"  th:field="${kokyaku.address}"/>
+								<input th:unless="${kokyaku}" class="form-control" id="address" name="address" type="text"/>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="kokyakuName">顧客区分</label>
+							<label class="control-label col-sm-3" for="kokyakuKubun">顧客区分</label>
 							<div class="col-sm-9">
 						      <select class="form-control" id="number" name="number">
-						        <option value="0" selected="selected">選択してください</option>
-						        <option value="2">2</option>
-						        <option value="3">3</option>
+						        <option value="">選択してください</option>
+					        	<tr th:each="kokyakuKubun:${kokyakuKubunList}">
+						        	<div th:switch="${kokyakuKubun}">
+						        	    <div th:if="${kokyaku}">
+										    <div th:case="${kokyaku.kokyakuKubun}" ><option value="${kokyakuKubun}" th:text="${kokyakuKubun}" selected="selected" /></div>
+										    <div th:case="*" ><option value="${kokyakuKubun}" th:text="${kokyakuKubun}" /></div>
+										</div>
+						        	    <div th:unless="${kokyaku}">
+										    <div th:case="*" ><option value="${kokyakuKubun}" th:text="${kokyakuKubun}" /></div>
+										</div>
+									</div>
+								</tr>
 						      </select>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="bushoName">販売区分</label>
+							<label class="control-label col-sm-3" for="hanbaiKubun">販売区分</label>
 							<div class="col-sm-9">
 						      <select class="form-control" id="number" name="number">
-						        <option value="0" selected="selected">選択してください</option>
-						        <option value="2">2</option>
-						        <option value="3">3</option>
+						        <option value="">選択してください</option>
+					        	<tr th:each="hanbaiKubun:${hanbaiKubunList}">
+						        	<div th:switch="${hanbaiKubun}">
+						        	    <div th:if="${kokyaku}">
+										    <div th:case="${kokyaku.hanbaiKubun}" ><option value="${hanbaiKubun}" th:text="${hanbaiKubun}" selected="selected" /></div>
+										    <div th:case="*" ><option value="${hanbaiKubun}" th:text="${hanbaiKubun}" /></div>
+										</div>
+									    <div th:unless="${kokyaku}">
+										    <div th:case="*" ><option value="${hanbaiKubun}" th:text="${hanbaiKubun}" /></div>
+										</div>
+									</div>
+								</tr>
 						      </select>
 							</div>
 						</div>
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>部署情報</h4></div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="bushoName">主幹部署</label>
+							<label class="control-label col-sm-3" for="shukanBushoCode">主幹部署</label>
 							<div class="col-sm-9">
 						      <select class="form-control" id="number" name="number">
-						        <option value="0" selected="selected">選択してください</option>
-						        <option value="2">2</option>
-						        <option value="3">3</option>
+						        <option value="">選択してください</option>
+					        	<tr th:each="busho:${bushoList}">
+						        	<div th:switch="${busho.code}">
+						        	    <div th:if="${kokyaku}">
+										    <div th:case="${kokyaku.shukanBusho.code}" ><option value="${busho.code}" th:text="${busho.code}"  selected="selected" /></div>
+										    <div th:case="*" ><option value="${busho.code}" th:text="${busho.code}" /></div>
+										</div>
+						        	    <div th:unless="${kokyaku}">
+										    <div th:case="*" ><option value="${busho.code}" th:text="${busho.code}" /></div>
+										</div>
+									</div>
+								</tr>
 						      </select>
 							</div>
 						</div>
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>請求情報</h4></div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="seikyuShimebi">請求締日</label>
+							<label class="control-label col-sm-3" for="shimebi">請求締日</label>
 							<div class="col-sm-9">
 						      <select class="form-control" id="number" name="number">
-						        <option value="0" selected="selected">選択してください</option>
-						        <option value="5">05日</option>
-						        <option value="10">10日</option>
-						        <option value="15">15日</option>
-						        <option value="20">20日</option>
-						        <option value="25">25日</option>
-						        <option value="30">30日</option>
+						        <option value="">選択してください</option>
+					        	<tr th:each="shimebi:${shimebiList}">
+						        	<div th:switch="${shimebi}">
+									    <div th:if="${kokyaku}">
+										    <div th:if="${kokyaku.nyukinKakeInfo}">
+										    	<div th:case="${kokyaku.nyukinKakeInfo.shimeDate}" ><option value="${shimebi}" th:text="${shimebi}"  selected="selected" /></div>
+											    <div th:case="*" ><option value="${shimebi}" th:text="${shimebi}" /></div>
+										    </div>
+										    <div th:unless="${kokyaku.nyukinKakeInfo}">
+										    	<div th:case="*" ><option value="${shimebi}" th:text="${shimebi}" /></div>
+										    </div>
+										</div>
+									    <div th:case="${kokyaku}">
+									    	<div th:case="*" ><option value="${shimebi}" th:text="${shimebi}" /></div>
+										</div>
+									</div>
+								</tr>
 						      </select>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="bushoName">入金方法</label>
+							<label class="control-label col-sm-3" for="nyukinHohoKubun">入金方法</label>
 							<div class="col-sm-9">
 						      <select class="form-control" id="number" name="number">
-						        <option value="0" selected="selected">選択してください</option>
-						        <option value="2">2</option>
-						        <option value="3">3</option>
+						        <option value="">選択してください</option>
+					        	<tr th:each="nyukinHohoKubun:${nyukinHohoKubunList}">
+						        	<div th:switch="${nyukinHohoKubun}">
+									    <div th:if="${kokyaku}">
+										    <div th:if="${kokyaku.nyukinKakeInfo}">
+										    	<div th:case="${kokyaku.nyukinKakeInfo.nyukinHohoKubun}" ><option value="${nyukinHohoKubun}" th:text="${nyukinHohoKubun}"  selected="selected" /></div>
+											    <div th:case="*" ><option value="${nyukinHohoKubun}" th:text="${nyukinHohoKubun}" /></div>
+										    </div>
+										    <div th:unless="${kokyaku.nyukinKakeInfo}">
+										    	<div th:case="*" ><option value="${nyukinHohoKubun}" th:text="${nyukinHohoKubun}" /></div>
+										    </div>
+										</div>
+									    <div th:case="${kokyaku}">
+									    	<div th:case="*" ><option value="${nyukinHohoKubun}" th:text="${nyukinHohoKubun}" /></div>
+										</div>
+									</div>
+								</tr>
 						      </select>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="bushoName">入金月区分</label>
+							<label class="control-label col-sm-3" for="nyukinTsukiKubun">入金月区分</label>
 							<div class="col-sm-9">
 						      <select class="form-control" id="number" name="number">
-						        <option value="0" selected="selected">選択してください</option>
-						        <option value="2">2</option>
-						        <option value="3">3</option>
+						        <option value="">選択してください</option>
+					        	<tr th:each="nyukinTsukiKubun:${nyukinTsukiKubunList}">
+						        	<div th:switch="${nyukinTsukiKubun}">
+									    <div th:if="${kokyaku}">
+										    <div th:if="${kokyaku.nyukinKakeInfo}">
+										    	<div th:case="${kokyaku.nyukinKakeInfo.nyukinTsukiKubun}" ><option value="${nyukinTsukiKubun}" th:text="${nyukinTsukiKubun}"  selected="selected" /></div>
+											    <div th:case="*" ><option value="${nyukinTsukiKubun}" th:text="${nyukinTsukiKubun}" /></div>
+										    </div>
+										    <div th:unless="${kokyaku.nyukinKakeInfo}">
+										    	<div th:case="*" ><option value="${nyukinTsukiKubun}" th:text="${nyukinTsukiKubun}" /></div>
+										    </div>
+										</div>
+									    <div th:case="${kokyaku}">
+									    	<div th:case="*" ><option value="${nyukinTsukiKubun}" th:text="${nyukinTsukiKubun}" /></div>
+										</div>
+									</div>
+								</tr>
 						      </select>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="bushoName">入金日</label>
+							<label class="control-label col-sm-3" for="nyukinDate">入金日</label>
 							<div class="col-sm-9">
-								<input class="form-control" id="bushoName" name="bushoName" type="text" />
+							    <div th:if="${kokyaku}">
+									<input th:if="${kokyaku.nyukinKakeInfo}" class="form-control" id="nyukinDate" name="nyukinDate" type="text"  th:field="${kokyaku.nyukinKakeInfo.nyukinDate}"/>
+									<input th:unless="${kokyaku.nyukinKakeInfo}" class="form-control" id="nyukinDate" name="nyukinDate" type="text" />
+								</div>
+							    <div th:unless="${kokyaku}">
+									<input class="form-control" id="nyukinDate" name="nyukinDate" type="text" />
+								</div>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="bushoName">入金サイト</label>
-							<div class="col-sm-9">
-								30日
+						    <div th:if="${kokyaku}">
+							    <div th:if="${kokyaku.nyukinKakeInfo}">
+									<label class="control-label col-sm-3" for="bushoName" >入金サイト</label>
+									<div class="col-sm-9">
+										<div th:text="${nyukinSight}" />
+									</div>
+								</div>
 							</div>
 						</div>
 						<div class="form-group">
