@@ -1,6 +1,8 @@
 package com.showka.web.u01;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -93,7 +95,7 @@ public class U01G002Controller {
 		// 入金サイトを取得して画面に送る
 		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 		if (nyukinKakeInfo != null) {
-			model.addAttribute("nyukinDate", nyukinKakeInfo.getNyukinSight());
+			model.addAttribute("nyukinSight", nyukinKakeInfo.getNyukinSight());
 		}
 
 		// モード情報を画面に送る。編集できないようにする
@@ -216,7 +218,7 @@ public class U01G002Controller {
 	// private method
 
 	/**
-	 * 部署の一覧、顧客区分の一覧、販売区分の一覧、入金方法区分の一覧、 入金月区分の一覧を取得してmodelにセット
+	 * 部署の一覧、顧客区分の一覧、販売区分の一覧、入金方法区分の一覧、入金月区分、締日の候補日 の一覧を取得してmodelにセット
 	 *
 	 * @param model
 	 *
@@ -242,6 +244,9 @@ public class U01G002Controller {
 		NyukinTsukiKubun[] nyukinTsukiKubunArray = NyukinTsukiKubun.values();
 		model.addAttribute("nyukinTsukiKubunList", Arrays.asList(nyukinTsukiKubunArray));
 
+		// 締日の候補日
+		List<Integer> shimebiList = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 25, 30));
+		model.addAttribute("shimebiList", shimebiList);
 	}
 
 	/**
