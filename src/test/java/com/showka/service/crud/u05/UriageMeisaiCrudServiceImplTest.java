@@ -16,10 +16,10 @@ import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.repository.i.TUriageMeisaiRepository;
 
-public class TUriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
+public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Autowired
-	private TUriageMeisaiCrudServiceImpl service;
+	private UriageMeisaiCrudServiceImpl service;
 
 	@Autowired
 	private TUriageMeisaiRepository repo;
