@@ -10,11 +10,14 @@ import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
+import com.showka.entity.MKokyaku;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
+import com.showka.repository.i.MKokyakuRepository;
+import com.showka.repository.i.TUriageMeisaiRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
@@ -27,6 +30,12 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Autowired
 	private TUriageRepository repo;
+
+	@Autowired
+	private MKokyakuRepository kokyakuRepo;
+
+	@Autowired
+	private TUriageMeisaiRepository meisaiRepository;
 
 	@Autowired
 	private UriageMeisaiCrudService uriageMeisaiCrudService;
@@ -58,6 +67,17 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		for (UriageMeisaiDomain meisai : domain.getUriageMeisai()) {
 			uriageMeisaiCrudService.save(meisai);
 		}
+
+		// set 顧客
+		MKokyaku kokyaku = kokyakuRepo.findByRecordId(domain.getKokyaku().getRecordId());
+		e.setKokyaku(kokyaku);
+
+		// set 明細
+		List<TUriageMeisai> m = new ArrayList<TUriageMeisai>();
+		for (UriageMeisaiDomain meisai : domain.getUriageMeisai()) {
+			m.add(meisaiRepository.findByRecordId(meisai.getRecordId()));
+		}
+		e.setMeisai(m);
 	}
 
 	@Override
