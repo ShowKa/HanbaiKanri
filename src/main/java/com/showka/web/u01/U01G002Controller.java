@@ -2,6 +2,7 @@ package com.showka.web.u01;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.KokyakuDomainBuilder;
@@ -85,9 +87,9 @@ public class U01G002Controller {
 	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
 	public String refer(@RequestParam String code, Model model) {
 
-		// 顧客codeをもとに該当顧客の情報を全て取得
+		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(code);
-		model.addAttribute("kokyaku", kokyaku);
+		model.addAttribute("kokyaku", setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
@@ -107,16 +109,16 @@ public class U01G002Controller {
 	/**
 	 * 更新モード初期表示
 	 *
-	 * @param kokyakuCode
+	 * @param code
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/updateForm", method = RequestMethod.GET)
-	public String updateForm(@RequestParam String kokyakuCode, Model model) {
+	public String updateForm(@RequestParam String code, Model model) {
 
-		// 顧客codeをもとに該当顧客の情報を全て取得
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
-		model.addAttribute("kokyaku", kokyaku);
+		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(code);
+		model.addAttribute("kokyaku", setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
@@ -229,20 +231,44 @@ public class U01G002Controller {
 		model.addAttribute("bushoList", bushoCrudService.getMBushoList());
 
 		// 顧客区分
-		KokyakuKubun[] kokyakuKubunArray = KokyakuKubun.values();
-		model.addAttribute("kokyakuKubunList", Arrays.asList(kokyakuKubunArray));
+		List<HashMap<String, String>> KokyakuKubunList = new ArrayList<HashMap<String, String>>();
+		for (KokyakuKubun kubun : KokyakuKubun.values()) {
+			HashMap<String, String> m = new HashMap<String, String>();
+			m.put("code", kubun.getCode());
+			m.put("name", kubun.toString());
+			KokyakuKubunList.add(m);
+		}
+		model.addAttribute("kokyakuKubunList", KokyakuKubunList);
 
 		// 販売区分
-		HanbaiKubun[] hanbaiKubunArray = HanbaiKubun.values();
-		model.addAttribute("hanbaiKubunList", Arrays.asList(hanbaiKubunArray));
+		List<HashMap<String, String>> HanbaiKubunList = new ArrayList<HashMap<String, String>>();
+		for (HanbaiKubun kubun : HanbaiKubun.values()) {
+			HashMap<String, String> m = new HashMap<String, String>();
+			m.put("code", kubun.getCode());
+			m.put("name", kubun.toString());
+			HanbaiKubunList.add(m);
+		}
+		model.addAttribute("hanbaiKubunList", HanbaiKubunList);
 
 		// 入金方法区分
-		NyukinHohoKubun[] nyukinHohoKubunArray = NyukinHohoKubun.values();
-		model.addAttribute("nyukinHohoKubunList", Arrays.asList(nyukinHohoKubunArray));
+		List<HashMap<String, String>> NyukinHohoKubunList = new ArrayList<HashMap<String, String>>();
+		for (NyukinHohoKubun kubun : NyukinHohoKubun.values()) {
+			HashMap<String, String> m = new HashMap<String, String>();
+			m.put("code", kubun.getCode());
+			m.put("name", kubun.toString());
+			NyukinHohoKubunList.add(m);
+		}
+		model.addAttribute("nyukinHohoKubunList", NyukinHohoKubunList);
 
 		// 入金月区分
-		NyukinTsukiKubun[] nyukinTsukiKubunArray = NyukinTsukiKubun.values();
-		model.addAttribute("nyukinTsukiKubunList", Arrays.asList(nyukinTsukiKubunArray));
+		List<HashMap<String, String>> NyukinTsukiKubunList = new ArrayList<HashMap<String, String>>();
+		for (NyukinTsukiKubun kubun : NyukinTsukiKubun.values()) {
+			HashMap<String, String> m = new HashMap<String, String>();
+			m.put("code", kubun.getCode());
+			m.put("name", kubun.toString());
+			NyukinTsukiKubunList.add(m);
+		}
+		model.addAttribute("nyukinTsukiKubunList", NyukinTsukiKubunList);
 
 		// 締日の候補日
 		List<Integer> shimebiList = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 25, 30));
@@ -293,4 +319,41 @@ public class U01G002Controller {
 		return kokyakuDomainBuilder.build();
 	}
 
+	/**
+	 * KokyakuDomainの情報を、U01G002Formにセットして返す
+	 *
+	 * @param kokyaku
+	 *
+	 */
+	private U01G002Form setForm(KokyakuDomain kokyaku) {
+
+		U01G002Form form = new U01G002Form();
+		BushoDomain busho = kokyaku.getShukanBusho();
+		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+
+		// kokyaku
+		form.setCode(kokyaku.getCode());
+		form.setName(kokyaku.getName());
+		form.setAddress(kokyaku.getAddress());
+		form.setKokyakuKubun(kokyaku.getKokyakuKubun().getCode());
+		form.setHanbaiKubun(kokyaku.getHanbaiKubun().getCode());
+		form.setKokyakuRecordId(kokyaku.getRecordId());
+		form.setKokyakuVersion(kokyaku.getVersion());
+
+		// busho
+		form.setShukanBushoCode(busho.getCode());
+
+		// kakeinfo
+		if (nyukinKakeInfo != null) {
+			form.setNyukinHohoKubun(nyukinKakeInfo.getNyukinHohoKubun().getCode());
+			form.setNyukinTsukiKubun(nyukinKakeInfo.getNyukinTsukiKubun().getCode());
+			form.setShimebi(nyukinKakeInfo.getShimeDate());
+			form.setNyukinDate(nyukinKakeInfo.getNyukinDate());
+			form.setNyukinKakeInfoRecordId(nyukinKakeInfo.getRecordId());
+			form.setNyukinKakeInfoVersion(nyukinKakeInfo.getVersion());
+		}
+
+		return form;
+
+	}
 }
