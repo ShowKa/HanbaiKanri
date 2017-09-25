@@ -63,16 +63,16 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="hanbaiKubun">販売区分</label>
 							<div class="col-sm-9">
-						      <select class="form-control" id="kokyakuKubun" name="kokyakuKubun">
+						      <select class="form-control" id="Kubun" name="hanbaiKubun">
 						        <option value="">選択してください</option>
-					        	<tr th:each="kokyakuKubun:${kokyakuKubunList}">
-						        	<div th:switch='${kokyakuKubun.get("code")}'>
+					        	<tr th:each="hanbaiKubun:${hanbaiKubunList}">
+						        	<div th:switch='${hanbaiKubun.get("code")}'>
 						        	    <div th:if="${kokyaku}">
-										    <div th:case="${kokyaku.kokyakuKubun}" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' selected="selected" /></div>
-										    <div th:case="*" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' /></div>
+										    <div th:case="${kokyaku.hanbaiKubun}" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' selected="selected" /></div>
+										    <div th:case="*" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' /></div>
 										</div>
 						        	    <div th:unless="${kokyaku}">
-										    <div th:case="*" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' /></div>
+										    <div th:case="*" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' /></div>
 										</div>
 									</div>
 								</tr>
@@ -88,11 +88,11 @@
 					        	<tr th:each="busho:${bushoList}">
 						        	<div th:switch="${busho.code}">
 						        	    <div th:if="${kokyaku}">
-										    <div th:case="${kokyaku.shukanBushoCode}" ><option value="${busho.code}" th:text="${busho.name}"  selected="selected" /></div>
-										    <div th:case="*" ><option value="${busho.code}" th:text="${busho.code}" /></div>
+										    <div th:case="${kokyaku.shukanBushoCode}" ><option th:value="${busho.code}" th:text="${busho.name}"  selected="selected" /></div>
+										    <div th:case="*" ><option th:value="${busho.code}" th:text="${busho.code}" /></div>
 										</div>
 						        	    <div th:unless="${kokyaku}">
-										    <div th:case="*" ><option value="${busho.code}" th:text="${busho.code}" /></div>
+										    <div th:case="*" ><option th:value="${busho.code}" th:text="${busho.code}" /></div>
 										</div>
 									</div>
 								</tr>
@@ -108,11 +108,11 @@
 					        	<tr th:each="shimebi:${shimebiList}">
 						        	<div th:switch="${shimebi}">
 									    <div th:if="${kokyaku}">
-										    	<div th:case="${kokyaku.shimebi}" ><option value="${shimebi}" th:text="${shimebi}"  selected="selected" /></div>
-											    <div th:case="*" ><option value="${shimebi}" th:text="${shimebi}" /></div>
+										    	<div th:case="${kokyaku.shimebi}" ><option th:value="${shimebi}" th:text="${shimebi}"  selected="selected" /></div>
+											    <div th:case="*" ><option th:value="${shimebi}" th:text="${shimebi}" /></div>
 										</div>
 									    <div th:unless="${kokyaku}">
-									    	<div th:case="*" ><option value="${shimebi}" th:text="${shimebi}" /></div>
+									    	<div th:case="*" ><option th:value="${shimebi}" th:text="${shimebi}" /></div>
 										</div>
 									</div>
 								</tr>
