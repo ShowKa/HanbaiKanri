@@ -16,7 +16,7 @@
 					<form id="registerForm" class="form-horizontal">
 						<div>
 						<div class="col-sm-1 col-sm-offset-11 col-xs-1 col-xs-offset-11">
-							<input onClick="delete();" id="deleteBtn" type="button" class="btn btn-primary btn-sm" value="削除"></input>
+							<input onClick="deleteKokyaku();" id="deleteBtn" type="button" class="btn btn-primary btn-sm" value="削除"></input>
 						</div>
 						</div>
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>顧客情報</h4></div>
@@ -89,10 +89,10 @@
 						        	<div th:switch="${busho.code}">
 						        	    <div th:if="${kokyaku}">
 										    <div th:case="${kokyaku.shukanBushoCode}" ><option th:value="${busho.code}" th:text="${busho.name}"  selected="selected" /></div>
-										    <div th:case="*" ><option th:value="${busho.code}" th:text="${busho.code}" /></div>
+										    <div th:case="*" ><option th:value="${busho.code}" th:text="${busho.name}" /></div>
 										</div>
 						        	    <div th:unless="${kokyaku}">
-										    <div th:case="*" ><option th:value="${busho.code}" th:text="${busho.code}" /></div>
+										    <div th:case="*" ><option th:value="${busho.code}" th:text="${busho.name}" /></div>
 										</div>
 									</div>
 								</tr>
@@ -175,6 +175,12 @@
 									<div th:text="${nyukinSight}" />
 								</div>
 							</div>
+						</div>
+					    <div th:if="${kokyaku}">
+					    	<input type="hidden" name="kokyakuVersion" th:value="${kokyaku.kokyakuVersion}" />
+					    	<input type="hidden" name="nyukinKakeInfoVersion" th:value="${kokyaku.nyukinKakeInfoVersion}" />
+					    	<input type="hidden" name="kokyakuRecordId" th:value="${kokyaku.kokyakuRecordId}" />
+					    	<input type="hidden" name="nyukinKakeInfoRecordId" th:value="${kokyaku.nyukinKakeInfoRecordId}" />
 						</div>
 						<div class="form-group">
 							<div class="col-sm-1 col-sm-offset-3">
