@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
@@ -57,6 +58,7 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 	}
 
 	@Override
+	@Transactional
 	public NyukinKakeInfoDomain getDomain(String kokyakuId) {
 		// get entity
 		MNyukinKakeInfo e = repo.getOne(kokyakuId);
