@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
@@ -85,10 +85,10 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
-	public String refer(@RequestParam String code, Model model) {
+	public String refer(@Valid @ModelAttribute U01G002Form form, Model model) {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(code);
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
 		model.addAttribute("kokyaku", setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
@@ -114,10 +114,10 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/updateForm", method = RequestMethod.GET)
-	public String updateForm(@RequestParam String code, Model model) {
+	public String updateForm(@Valid @ModelAttribute U01G002Form form, Model model) {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(code);
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
 		model.addAttribute("kokyaku", setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
@@ -138,6 +138,7 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/register", method = RequestMethod.GET)
+	@Transactional
 	public ResponseEntity<?> register(@Valid @ModelAttribute U01G002Form form, BindingResult result,
 			ModelAndViewExtended model) {
 
@@ -173,6 +174,7 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/update", method = RequestMethod.GET)
+	@Transactional
 	public ResponseEntity<?> update(@Valid @ModelAttribute U01G002Form form, BindingResult result,
 			ModelAndViewExtended model) {
 
@@ -202,6 +204,7 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.GET)
+	@Transactional
 	public ResponseEntity<?> delete(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
 		// make KokyakuDomain
@@ -283,10 +286,8 @@ public class U01G002Controller {
 	 */
 	private NyukinKakeInfoDomain createNyukinKakeInfoDomain(U01G002Form form) {
 
-		final String kokyakuCode = form.getCode();
-
 		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = new NyukinKakeInfoDomainBuilder();
-		nyukinKakeInfoBuilder.withKokyakuId(kokyakuCode);
+		nyukinKakeInfoBuilder.withKokyakuId(form.getKokyakuRecordId());
 		nyukinKakeInfoBuilder.withNyukinDate(form.getNyukinDate());
 		nyukinKakeInfoBuilder.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, form.getNyukinHohoKubun()));
 		nyukinKakeInfoBuilder.withNyukinTsukiKubun(Kubun.get(NyukinTsukiKubun.class, form.getNyukinTsukiKubun()));
