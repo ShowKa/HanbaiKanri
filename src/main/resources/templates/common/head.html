@@ -13,4 +13,17 @@
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- common js -->
 <script src="/common/common.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+function isReadMode() {
+	return "read" === /*[[${mode}]]*/null;
+}
+function isRegisterMode() {
+	return "register" === /*[[${mode}]]*/null;
+}
+function isUpdateMode() {
+	return "update" === /*[[${mode}]]*/null;
+}
+/*]]>*/
+</script>
 </head>

@@ -1,6 +1,6 @@
 /**
  * 検索 & 検索結果のリスト構築.
- * 
+ *
  * @param url
  *            検索URL
  * @param formId
@@ -25,13 +25,13 @@ function searchAndBuildList(url, formId, targetId) {
 
 /**
  * CRUD処理.
- * 
+ *
  * <pre>
  * ただし最初にAjaxでサーバーにアクセスし、処理が成功すればそのままリダイレクトする。
  * <br>
  * ValidateExceptionが発生した場合はリダイレクトせずにエラーメッセージを表示する。
  * </pre>
- * 
+ *
  * @param url
  *            CRUD処理のURL
  * @param formId
@@ -83,7 +83,7 @@ function crud(url, formId, nextUrl) {
 
 /**
  * formをsubmitする.
- * 
+ *
  * @param url
  *            submit先のURL
  * @param formId
@@ -95,7 +95,7 @@ function submitForm(url, formId) {
 
 /**
  * エラーメッセージ表示.
- * 
+ *
  * @param message
  *            メッセージ
  */
@@ -124,3 +124,71 @@ function showErroeMessage(message) {
 		return this;
 	};
 })(jQuery);
+
+
+/**
+ * jauery拡張. 要素の活性化
+ */
+(function($) {
+	$.fn.activate = function() {
+		if (this.is("input[type=button],button")) {
+			this.prop("disabled", false);
+		} else if (this.is("input")) {
+			this.prop("readonly", false);
+		} else if (this.is("select")) {
+			this.find("option[disabled]").prop("disabled", false);
+		}
+		return this;
+	};
+})(jQuery);
+
+/**
+ * jauery拡張. 要素の非活性化
+ */
+(function($) {
+	$.fn.inactivate = function() {
+		if (this.is("input[type=button],button")) {
+			this.prop("disabled", true);
+		} else if (this.is("input")) {
+			this.prop("readonly", true);
+		} else if (this.is("select")) {
+			this.find("option:not(:selected)").prop("disabled", true);
+		}
+		return this;
+	};
+})(jQuery);
+
+/**
+ * 要素の活性化状態をモードで切替る。
+ */
+function swithElementActivationByMode() {
+	var $elements = $(".whenRead,.whenRegister,.whenUpdate");
+	if (isReadMode()) {
+		$elements.each(function(event) {
+			var $this = $(this);
+			if ($this.hasClass("whenRead")) {
+				$this.activate();
+			} else {
+				$this.inactivate();
+			}
+		});
+	} else if (isRegisterMode()) {
+		$elements.each(function(event) {
+			var $this = $(this);
+			if ($this.hasClass("whenRegister")) {
+				$this.activate();
+			} else {
+				$this.inactivate();
+			}
+		});
+	} else if (isUpdateMode()) {
+		$elements.each(function(event) {
+			var $this = $(this);
+			if ($this.hasClass("whenUpdate")) {
+				$this.activate();
+			} else {
+				$this.inactivate();
+			}
+		});
+	}
+}
