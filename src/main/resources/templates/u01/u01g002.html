@@ -16,36 +16,39 @@
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<form id="registerForm" class="form-horizontal">
 						<div>
-						<div class="col-sm-1 col-sm-offset-11 col-xs-1 col-xs-offset-11">
-							<input onClick="deleteKokyaku();" id="deleteBtn" type="button" class="btn btn-primary btn-sm" value="削除"></input>
+						<div class="col-sm-2 col-sm-offset-8 col-xs-2 col-xs-offset-8">
+							<input onClick="updateForm();" id="deleteBtn" type="button" class="btn btn-primary btn-sm whenRead" value="更新モードへ"></input>
+						</div>
+						<div class="col-sm-1 col-sm-offset-1 col-xs-1 col-xs-offset-1">
+							<input onClick="deleteKokyaku();" id="deleteBtn" type="button" class="btn btn-primary btn-sm whenRead" value="削除"></input>
 						</div>
 						</div>
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>顧客情報</h4></div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="code">顧客コード</label>
 							<div class="col-sm-9">
-								<input th:if="${kokyaku}" class="form-control code" th:field="${kokyaku.code}" id="code" name="code" type="text" />
+								<input th:if="${kokyaku}" class="form-control code whenRegister" th:field="${kokyaku.code}" id="code" name="code" type="text" />
 								<input th:unless="${kokyaku}" class="form-control code"  id="code" name="code" type="text" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="name">顧客名</label>
 							<div class="col-sm-9">
-								<input th:if="${kokyaku}" class="form-control required" id="name" name="name" type="text" th:field="${kokyaku.name}" />
-								<input th:unless="${kokyaku}" class="form-control required" id="name" name="name" type="text" />
+								<input th:if="${kokyaku}" class="form-control required whenUpdate" id="name" name="name" type="text" th:field="${kokyaku.name}" />
+								<input th:unless="${kokyaku}" class="form-control required whenRegister" id="name" name="name" type="text" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="address">顧客住所</label>
 							<div class="col-sm-9">
-								<input th:if="${kokyaku}" class="form-control required" id="address" name="address" type="text"  th:field="${kokyaku.address}"/>
-								<input th:unless="${kokyaku}" class="form-control required" id="address" name="address" type="text"/>
+								<input th:if="${kokyaku}" class="form-control required whenUpdate" id="address" name="address" type="text"  th:field="${kokyaku.address}"/>
+								<input th:unless="${kokyaku}" class="form-control required whenRegister" id="address" name="address" type="text"/>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="kokyakuKubun">顧客区分</label>
 							<div class="col-sm-9">
-						      <select class="form-control selectCheck" id="kokyakuKubun" name="kokyakuKubun">
+						      <select class="form-control selectCheck whenRegister whenUpdate" id="kokyakuKubun" name="kokyakuKubun">
 						        <option value="">選択してください</option>
 					        	<tr th:each="kokyakuKubun:${kokyakuKubunList}">
 						        	<div th:switch='${kokyakuKubun.get("code")}'>
@@ -66,7 +69,7 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="hanbaiKubun">販売区分</label>
 							<div class="col-sm-9">
-						      <select class="form-control selectCheck" id="Kubun" name="hanbaiKubun">
+						      <select class="form-control selectCheck whenRegister whenUpdate" id="hanbaiKubun" name="hanbaiKubun">
 						        <option value="">選択してください</option>
 					        	<tr th:each="hanbaiKubun:${hanbaiKubunList}">
 						        	<div th:switch='${hanbaiKubun.get("code")}'>
@@ -88,7 +91,7 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="shukanBushoCode">主幹部署</label>
 							<div class="col-sm-9">
-						      <select class="form-control selectCheck" id="shukanBushoCode" name="shukanBushoCode">
+						      <select class="form-control selectCheck whenRegister whenUpdate" id="shukanBushoCode" name="shukanBushoCode">
 						        <option value="">選択してください</option>
 					        	<tr th:each="busho:${bushoList}">
 						        	<div th:switch="${busho.code}">
@@ -108,7 +111,7 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="shimebi">請求締日</label>
 							<div class="col-sm-9">
-						      <select class="form-control" id="shimebi" name="shimebi">
+						      <select class="form-control whenRegister whenUpdate" id="shimebi" name="shimebi">
 						        <option value="">選択してください</option>
 					        	<tr th:each="shimebi:${shimebiList}">
 						        	<div th:switch="${shimebi}">
@@ -127,7 +130,7 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="nyukinHohoKubun">入金方法</label>
 							<div class="col-sm-9">
-						      <select class="form-control" id="nyukinHohoKubun" name="nyukinHohoKubun">
+						      <select class="form-control whenRegister whenUpdate" id="nyukinHohoKubun" name="nyukinHohoKubun">
 						        <option value="">選択してください</option>
 					        	<tr th:each="nyukinHohoKubun:${nyukinHohoKubunList}">
 						        	<div th:switch='${nyukinHohoKubun.get("code")}'>
@@ -148,7 +151,7 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="nyukinTsukiKubun">入金月区分</label>
 							<div class="col-sm-9">
-						      <select class="form-control" id="nyukinTsukiKubun" name="nyukinTsukiKubun">
+						      <select class="form-control whenRegister whenUpdate" id="nyukinTsukiKubun" name="nyukinTsukiKubun">
 						        <option value="">選択してください</option>
 					        	<tr th:each="nyukinTsukiKubun:${nyukinTsukiKubunList}">
 						        	<div th:switch='${nyukinTsukiKubun.get("code")}'>
@@ -170,10 +173,10 @@
 							<label class="control-label col-sm-3" for="nyukinDate">入金日</label>
 							<div class="col-sm-9">
 							    <div th:if="${kokyaku}">
-									<input class="form-control nyukinDate" id="nyukinDate" name="nyukinDate" type="text"  th:field="${kokyaku.nyukinDate}"/>
+									<input class="form-control nyukinDate whenUpdate" id="nyukinDate" name="nyukinDate" type="text"  th:field="${kokyaku.nyukinDate}"/>
 								</div>
 							    <div th:unless="${kokyaku}">
-									<input class="form-control nyukinDate" id="nyukinDate" name="nyukinDate" type="text" />
+									<input class="form-control nyukinDate whenRegister" id="nyukinDate" name="nyukinDate" type="text" />
 								</div>
 							</div>
 						</div>
@@ -193,10 +196,10 @@
 						</div>
 						<div class="form-group">
 							<div class="col-sm-1 col-sm-offset-3">
-								<input onClick="register();" id="registerBtn" type="button" class="btn btn-primary btn-sm" value="登録"></input>
+								<input onClick="register();" id="registerBtn" type="button" class="btn btn-primary btn-sm whenRegister" value="登録"></input>
 							</div>
 							<div class="col-sm-7 col-sm-offset-1 col-xs-7 col-xs-offset-1">
-								<input onClick="update();" id="updateBtn" type="button" class="btn btn-primary btn-sm" value="更新"></input>
+								<input onClick="update();" id="updateBtn" type="button" class="btn btn-primary btn-sm whenUpdate" value="更新"></input>
 							</div>
 						</div>
 					</form>
