@@ -20,7 +20,21 @@ function updateForm() {
    form.action = "/u01g002/updateForm"; // action(遷移先URL)を設定する
    form.submit(); // submit する
 }
+$(function() {
+    $('#hanbaiKubun').change(function(){
+    	controlNyukinKakeInfoForm();
+    });
+});
+
+function controlNyukinKakeInfoForm() {
+	if ($('#hanbaiKubun').val() == HanbaiKubun.kakeuri) {
+		$('.nyukinKakeInfo').show();
+	} else {
+		$('.nyukinKakeInfo').hide();
+	}
+}
 
 $(document).ready(function() {
 	swithElementActivationByMode();
+	controlNyukinKakeInfoForm();
 });

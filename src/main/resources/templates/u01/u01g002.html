@@ -3,10 +3,13 @@
 
 <head>
 <link th:replace="common/head :: common_link" />
-<script src="/u01/u01g002.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+/*]]>*/
+</script>
+<script  th:inline="javascript" src="/u01/u01g002.js"></script>
 <script src="/u01/kokyakuInputValidate.js"></script>
 </head>
-
 <body>
 	<div th:replace="common/header :: common_header"></div>
 	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
@@ -107,6 +110,7 @@
 						      </select>
 							</div>
 						</div>
+						<div class="nyukinKakeInfo" style="display: none">
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>請求情報</h4></div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="shimebi">請求締日</label>
@@ -187,6 +191,7 @@
 									<div th:text="${nyukinSight}" />
 								</div>
 							</div>
+						</div>
 						</div>
 					    <div th:if="${kokyaku}">
 					    	<input type="hidden" name="kokyakuVersion" th:value="${kokyaku.kokyakuVersion}" />
