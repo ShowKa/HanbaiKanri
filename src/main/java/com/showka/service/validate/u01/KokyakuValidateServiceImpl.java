@@ -24,6 +24,9 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 	@Autowired
 	private MKokyakuRepository repo;
 
+	@Autowired
+	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
+
 	@Override
 	public void validateForRegister(KokyakuDomain domain) throws ValidateException {
 		if (repo.existsById(domain.getCode())) {
@@ -36,6 +39,10 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 		if (domain.getKokyakuKubun() == KokyakuKubun.個人 && domain.getHanbaiKubun() == HanbaiKubun.掛売) {
 			throw new IncorrectKubunException("販売区分", HanbaiKubun.掛売, "個人顧客は掛売できません");
+		}
+
+		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
+			nyukinKakeInfoValidateService.validate(domain.getNyukinKakeInfo());
 		}
 	}
 

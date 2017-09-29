@@ -152,9 +152,6 @@ public class U01G002Controller {
 		// validate
 		kokyakuValidateService.validateForRegister(kokyakuDomain);
 		kokyakuValidateService.validate(kokyakuDomain);
-		if (kokyakuDomain.getHanbaiKubun() == HanbaiKubun.掛売) {
-			nyukinKakeInfoValidateService.validate(kokyakuDomain.getNyukinKakeInfo());
-		}
 
 		// register
 		kokyakuCrudService.save(kokyakuDomain);
@@ -183,9 +180,6 @@ public class U01G002Controller {
 
 		// validate
 		kokyakuValidateService.validate(kokyakuDomain);
-		if (kokyakuDomain.getHanbaiKubun() == HanbaiKubun.掛売) {
-			nyukinKakeInfoValidateService.validate(kokyakuDomain.getNyukinKakeInfo());
-		}
 
 		// update
 		kokyakuCrudService.save(kokyakuDomain);
@@ -306,16 +300,25 @@ public class U01G002Controller {
 	private KokyakuDomain createKokyakuDomain(U01G002Form form) {
 
 		final String kokyakuCode = form.getCode();
+		HanbaiKubun hanbaiKubun = Kubun.get(HanbaiKubun.class, form.getHanbaiKubun());
 
 		KokyakuDomainBuilder kokyakuDomainBuilder = new KokyakuDomainBuilder();
 		kokyakuDomainBuilder.withCode(kokyakuCode);
 		kokyakuDomainBuilder.withName(form.getName());
 		kokyakuDomainBuilder.withAddress(form.getAddress());
 		kokyakuDomainBuilder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, form.getKokyakuKubun()));
-		kokyakuDomainBuilder.withHanbaiKubun(Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()));
+		kokyakuDomainBuilder.withHanbaiKubun(hanbaiKubun);
 		kokyakuDomainBuilder.withShukanBusho(bushoCrudService.getDomain(form.getShukanBushoCode()));
 		kokyakuDomainBuilder.withRecordId(form.getKokyakuRecordId());
-		kokyakuDomainBuilder.withNyukinKakeInfo(createNyukinKakeInfoDomain(form));
+
+		// 入金掛売り情報は販売区分=掛売の時のみ
+		if (hanbaiKubun == HanbaiKubun.掛売) {
+			kokyakuDomainBuilder.withNyukinKakeInfo(createNyukinKakeInfoDomain(form));
+		} else {
+			// TODO set empty
+			// kokyakuDomainBuilder.withNyukinKakeInfo(EmptyProxy.domain(NyukinKakeInfoDomain.class));
+		}
+
 		kokyakuDomainBuilder.withVersion(form.getKokyakuVersion());
 		return kokyakuDomainBuilder.build();
 	}
