@@ -76,4 +76,11 @@ public class KokyakuSearchServiceImplTest extends ServiceCrudTestCase {
 		assertEquals(1, result.size());
 	}
 
+	@Test
+	public void testSearchWithoutBusho() throws Exception {
+		KokyakuSearchCriteria c = new KokyakuSearchCriteria();
+		c.setName("aaaa");
+		List<MKokyaku> result = service.search(c);
+		assertEquals(2, result.size());
+	}
 }
