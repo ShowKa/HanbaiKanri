@@ -74,6 +74,9 @@ public class EmptyProxy {
 			String emptyClassName = origCtClass.getName() + "Empty";
 			CtClass emptyCtClass = cp.makeClass(emptyClassName, origCtClass);
 
+			// stopPruning
+			emptyCtClass.stopPruning(true);
+
 			// override methods of empty class
 			CtMethod[] emptyMethods = emptyCtClass.getMethods();
 			List<CtMethod> methodsForOverride = new ArrayList<CtMethod>(Arrays.asList(emptyMethods));
@@ -248,6 +251,9 @@ public class EmptyProxy {
 			// cretate instance
 			Class<?> emptyClass = emptyCtClass.toClass();
 			T empty = (T) emptyClass.newInstance();
+
+			// defrost
+			emptyCtClass.defrost();
 
 			// done
 			INSTANCES.put(clazz, empty);
