@@ -5,37 +5,38 @@ import com.showka.domain.KokyakuDomain;
 import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
+import com.showka.system.EmptyProxy;
 
 public class KokyakuDomainBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<KokyakuDomain, KokyakuDomainBuilder> {
 
 	// private member
 	/** code */
-	private String code;
+	private String code = STRING_EMPTY;;
 
 	/** name */
-	private String name;
+	private String name = STRING_EMPTY;;
 
 	/** address */
-	private String address;
+	private String address = STRING_EMPTY;
 
 	/** kokyakuKubun */
-	private KokyakuKubun kokyakuKubun;
+	private KokyakuKubun kokyakuKubun = KokyakuKubun.EMPTY;
 
 	/** hanbaiKubun */
-	private HanbaiKubun hanbaiKubun;
+	private HanbaiKubun hanbaiKubun = HanbaiKubun.EMPTY;
 
 	/** shukanBusho */
-	private BushoDomain shukanBusho;
+	private BushoDomain shukanBusho = EmptyProxy.domain(BushoDomain.class);
 
 	/** nyukinKakeInfo */
-	private NyukinKakeInfoDomain nyukinKakeInfo;
+	private NyukinKakeInfoDomain nyukinKakeInfo = EmptyProxy.domain(NyukinKakeInfoDomain.class);
 
 	/** recordId */
-	private String recordId;
+	private String recordId = STRING_EMPTY;;
 
 	/** version */
-	private Integer version;
+	private Integer version = INTEGER_EMPTY;
 
 	// protected method
 	@Override
