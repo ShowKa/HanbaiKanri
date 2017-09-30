@@ -218,4 +218,35 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 		// check
 		assertFalse(actual);
 	}
+
+	@Test
+	public void test_deleteForciblyIfExists01() {
+
+		// insert data
+		super.insert(TABLE_NAME, COLUMN, VALUE01);
+
+		String id = "KK03";
+		assertTrue(repo.existsById(id));
+
+		// do
+		service.deleteForciblyIfExists(id);
+
+		// check
+		assertFalse(repo.existsById(id));
+	}
+
+	@Test
+	public void test_deleteForciblyIfExists02() {
+
+		// insert data
+		super.insert(TABLE_NAME, COLUMN, VALUE01);
+
+		String id = "AAAAAA";
+		assertFalse(repo.existsById(id));
+
+		// do
+		service.deleteForciblyIfExists(id);
+
+		// nothing to worry about
+	}
 }

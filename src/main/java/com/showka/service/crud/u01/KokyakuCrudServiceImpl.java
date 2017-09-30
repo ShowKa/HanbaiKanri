@@ -64,9 +64,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
 			nyukinCrudService.save(nyukinKakeInfo);
 		} else {
-			if (nyukinCrudService.exsists(nyukinKakeInfo.getKokyakuId())) {
-				nyukinCrudService.delete(nyukinKakeInfo);
-			}
+			nyukinCrudService.deleteForciblyIfExists(domain.getRecordId());
 		}
 	}
 
@@ -86,10 +84,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	public void delete(KokyakuDomain domain) {
 
 		// 入金掛情報delete
-		if (nyukinCrudService.exsists(domain.getRecordId())) {
-			NyukinKakeInfoDomain target = domain.getNyukinKakeInfo();
-			nyukinCrudService.delete(target);
-		}
+		nyukinCrudService.deleteForciblyIfExists(domain.getRecordId());
 
 		// 顧客を削除
 		this.delete(domain.getCode(), domain.getVersion());

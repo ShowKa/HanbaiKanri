@@ -205,7 +205,7 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		final String bushoId = "BS01";
 
 		final Integer version = 0;
-		final String record_id = "this is inserted record";
+		final String record_id = "KK03";
 
 		// build nyukinKakeInfo domain
 		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();

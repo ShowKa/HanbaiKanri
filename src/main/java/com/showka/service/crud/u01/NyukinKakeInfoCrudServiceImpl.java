@@ -88,4 +88,11 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 
 	}
 
+	@Override
+	public void deleteForciblyIfExists(String kokyakuId) {
+		if (exsists(kokyakuId)) {
+			repo.deleteById(kokyakuId);
+		}
+	}
+
 }
