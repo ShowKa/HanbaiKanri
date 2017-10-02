@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 /**
  * WebSecurityConfig.
- * 
+ *
  * @author ShowKa
  *
  */
@@ -16,14 +16,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	/**
 	 * 認証済みでなかったら/u00g000 ログイン画面へ.
-	 * 
+	 *
 	 * <pre>
 	 * ログイン画面のレイアウトは整えたいので、静的コンテンツは無条件でアクセス許可.
 	 * </pre>
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
+		http.headers()
+				.frameOptions()
+				.sameOrigin()
+				.and()
+				.csrf()
+				.disable()
+				.authorizeRequests()
 				.antMatchers("/", "/bower_components/**", "/common/**")
 				.permitAll()
 				.anyRequest()
