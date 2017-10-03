@@ -57,8 +57,8 @@
 					        	<tr th:each="kokyakuKubun:${kokyakuKubunList}">
 						        	<div th:switch='${kokyakuKubun.get("code")}'>
 						        	    <div th:if="${kokyaku}">
-										    <div th:case="${kokyaku.kokyakuKubun}" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' selected="selected" /></div>
 											<div th:case="''" ></div>
+										    <div th:case="${kokyaku.kokyakuKubun}" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' selected="selected" /></div>
 										    <div th:case="*" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' /></div>
 										</div>
 						        	    <div th:unless="${kokyaku}">
@@ -78,8 +78,8 @@
 					        	<tr th:each="hanbaiKubun:${hanbaiKubunList}">
 						        	<div th:switch='${hanbaiKubun.get("code")}'>
 						        	    <div th:if="${kokyaku}">
-										    <div th:case="${kokyaku.hanbaiKubun}" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' selected="selected" /></div>
 											<div th:case="''" ></div>
+										    <div th:case="${kokyaku.hanbaiKubun}" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' selected="selected" /></div>
 										    <div th:case="*" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' /></div>
 										</div>
 						        	    <div th:unless="${kokyaku}">
@@ -140,8 +140,8 @@
 					        	<tr th:each="nyukinHohoKubun:${nyukinHohoKubunList}">
 						        	<div th:switch='${nyukinHohoKubun.get("code")}'>
 									    <div th:if="${kokyaku}">
-									    	<div th:case="${kokyaku.nyukinHohoKubun}" ><option th:value='${nyukinHohoKubun.get("code")}' th:text='${nyukinHohoKubun.get("name")}'  selected="selected" /></div>
 											<div th:case="''" ></div>
+									    	<div th:case="${kokyaku.nyukinHohoKubun}" ><option th:value='${nyukinHohoKubun.get("code")}' th:text='${nyukinHohoKubun.get("name")}'  selected="selected" /></div>
 									    	<div th:case="*" ><option th:value='${nyukinHohoKubun.get("code")}' th:text='${nyukinHohoKubun.get("name")}' /></div>
 										</div>
 									    <div th:unless="${kokyaku}">
@@ -161,8 +161,8 @@
 					        	<tr th:each="nyukinTsukiKubun:${nyukinTsukiKubunList}">
 						        	<div th:switch='${nyukinTsukiKubun.get("code")}'>
 									    <div th:if="${kokyaku}">
-									    	<div th:case="${kokyaku.nyukinTsukiKubun}" ><option th:value='${nyukinTsukiKubun.get("code")}' th:text='${nyukinTsukiKubun.get("name")}'  selected="selected" /></div>
 											<div th:case="''" ></div>
+									    	<div th:case="${kokyaku.nyukinTsukiKubun}" ><option th:value='${nyukinTsukiKubun.get("code")}' th:text='${nyukinTsukiKubun.get("name")}'  selected="selected" /></div>
 									    	<div th:case="*" ><option th:value='${nyukinTsukiKubun.get("code")}' th:text='${nyukinTsukiKubun.get("name")}' /></div>
 										</div>
 									    <div th:unless="${kokyaku}">
