@@ -1,10 +1,10 @@
 package com.showka.web;
 
+import javax.persistence.OptimisticLockException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -42,9 +42,8 @@ public class GlobalDefaultExceptionHandler {
 	 *            排他制御例外
 	 * @return HTTPレスポンス
 	 */
-	@ExceptionHandler(value = ObjectOptimisticLockingFailureException.class)
-	public ResponseEntity<?> optimisticLockExceptionHandler(HttpServletRequest req,
-			ObjectOptimisticLockingFailureException e) {
+	@ExceptionHandler(value = OptimisticLockException.class)
+	public ResponseEntity<?> optimisticLockExceptionHandler(HttpServletRequest req, OptimisticLockException e) {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body("他のユーザによりすでにデータが更新されています。画面を開き直してください。");
 	}
 }
