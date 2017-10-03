@@ -175,6 +175,11 @@ public class U01G002Controller {
 	public ResponseEntity<?> update(@Valid @ModelAttribute U01G002Form form, BindingResult result,
 			ModelAndViewExtended model) {
 
+		// set recordID
+		if (form.getNyukinKakeInfoRecordId().isEmpty()) {
+			form.setNyukinKakeInfoRecordId(UUID.randomUUID().toString());
+		}
+
 		// make KokyakuDomain
 		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
 
