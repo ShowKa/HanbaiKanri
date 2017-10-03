@@ -15,7 +15,7 @@
 	    return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
 	  },
 	date: function(value, element){
-	    return this.optional(element) || /^[0-9]$|^[1-2][0-9]$|^30$/.test(value);
+	    return this.optional(element) || /^[1-9]$|^[1-2][0-9]$|^30$/.test(value);
 	  },
   };
 
@@ -46,7 +46,7 @@
     	maxlength: "*255文字以下で入力してください"
     },
     nyukinDate: {
-    	date: "*0-30を入力してください"
+    	date: "*1-30を入力してください"
     },
   };
 
