@@ -29,9 +29,6 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 	@Override
 	public void validateForRegister(KokyakuDomain domain) throws ValidateException {
-		if (true) {
-			throw new RuntimeException("bug!!!");
-		}
 		if (repo.existsById(domain.getCode())) {
 			throw new AlreadyExistsException("顧客コード", domain.getCode());
 		}
