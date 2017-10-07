@@ -13,7 +13,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,16 +60,18 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/registerForm", method = RequestMethod.GET)
-	public String registerForm(Model model) {
+	public ModelAndViewExtended registerForm(ModelAndViewExtended model) {
 		// すっからかんのフォームを表示する
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
 
 		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/registerにしておく
-		model.addAttribute("mode", "register");
+		model.addObject("mode", "register");
 
-		return "/u01/u01g002";
+		// view
+		model.setViewName("/u01/u01g002");
+		return model;
 	}
 
 	/**
@@ -81,11 +82,11 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
-	public String refer(@Valid @ModelAttribute U01G002Form form, Model model) {
+	public ModelAndViewExtended refer(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
-		model.addAttribute("kokyaku", setForm(kokyaku));
+		model.addObject("kokyaku", setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
@@ -93,13 +94,14 @@ public class U01G002Controller {
 		// 入金サイトを取得して画面に送る
 		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 		if (nyukinKakeInfo != null) {
-			model.addAttribute("nyukinSight", nyukinKakeInfo.getNyukinSight());
+			model.addObject("nyukinSight", nyukinKakeInfo.getNyukinSight());
 		}
 
 		// モード情報を画面に送る。編集できないようにする
-		model.addAttribute("mode", "read");
+		model.addObject("mode", "read");
 
-		return "/u01/u01g002";
+		model.setViewName("/u01/u01g002");
+		return model;
 	}
 
 	/**
@@ -110,19 +112,20 @@ public class U01G002Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g002/updateForm", method = RequestMethod.GET)
-	public String updateForm(@Valid @ModelAttribute U01G002Form form, Model model) {
+	public ModelAndViewExtended updateForm(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
-		model.addAttribute("kokyaku", setForm(kokyaku));
+		model.addObject("kokyaku", setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
 
 		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/updateにしておく
-		model.addAttribute("mode", "update");
+		model.addObject("mode", "update");
 
-		return "/u01/u01g002";
+		model.setViewName("/u01/u01g002");
+		return model;
 	}
 
 	/**
@@ -223,10 +226,10 @@ public class U01G002Controller {
 	 * @param model
 	 *
 	 */
-	private void setListToModelAttribute(Model model) {
+	private void setListToModelAttribute(ModelAndViewExtended model) {
 
 		// 部署一覧
-		model.addAttribute("bushoList", bushoCrudService.getMBushoList());
+		model.addObject("bushoList", bushoCrudService.getMBushoList());
 
 		// 顧客区分
 		List<HashMap<String, String>> KokyakuKubunList = new ArrayList<HashMap<String, String>>();
@@ -236,7 +239,7 @@ public class U01G002Controller {
 			m.put("name", kubun.toString());
 			KokyakuKubunList.add(m);
 		}
-		model.addAttribute("kokyakuKubunList", KokyakuKubunList);
+		model.addObject("kokyakuKubunList", KokyakuKubunList);
 
 		// 販売区分
 		List<HashMap<String, String>> HanbaiKubunList = new ArrayList<HashMap<String, String>>();
@@ -246,7 +249,7 @@ public class U01G002Controller {
 			m.put("name", kubun.toString());
 			HanbaiKubunList.add(m);
 		}
-		model.addAttribute("hanbaiKubunList", HanbaiKubunList);
+		model.addObject("hanbaiKubunList", HanbaiKubunList);
 
 		// 入金方法区分
 		List<HashMap<String, String>> NyukinHohoKubunList = new ArrayList<HashMap<String, String>>();
@@ -256,7 +259,7 @@ public class U01G002Controller {
 			m.put("name", kubun.toString());
 			NyukinHohoKubunList.add(m);
 		}
-		model.addAttribute("nyukinHohoKubunList", NyukinHohoKubunList);
+		model.addObject("nyukinHohoKubunList", NyukinHohoKubunList);
 
 		// 入金月区分
 		List<HashMap<String, String>> NyukinTsukiKubunList = new ArrayList<HashMap<String, String>>();
@@ -266,11 +269,11 @@ public class U01G002Controller {
 			m.put("name", kubun.toString());
 			NyukinTsukiKubunList.add(m);
 		}
-		model.addAttribute("nyukinTsukiKubunList", NyukinTsukiKubunList);
+		model.addObject("nyukinTsukiKubunList", NyukinTsukiKubunList);
 
 		// 締日の候補日
 		List<Integer> shimebiList = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 25, 30));
-		model.addAttribute("shimebiList", shimebiList);
+		model.addObject("shimebiList", shimebiList);
 	}
 
 	/**
