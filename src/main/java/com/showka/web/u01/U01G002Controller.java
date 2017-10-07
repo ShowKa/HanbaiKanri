@@ -63,6 +63,7 @@ public class U01G002Controller {
 	@RequestMapping(value = "/u01g002/registerForm", method = RequestMethod.GET)
 	public ModelAndViewExtended registerForm(ModelAndViewExtended model) {
 		// すっからかんのフォームを表示する
+		model.addForm(new U01G002Form());
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
@@ -87,7 +88,7 @@ public class U01G002Controller {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
-		model.addObject("kokyaku", setForm(kokyaku));
+		model.addForm(setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
@@ -117,7 +118,7 @@ public class U01G002Controller {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
-		model.addObject("kokyaku", setForm(kokyaku));
+		model.addForm(setForm(kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
