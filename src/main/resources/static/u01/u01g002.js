@@ -1,17 +1,44 @@
 function register() {
 	var $form = $('form');
 	if (kokyakuValid($form)) {
-		crud("/u01g002/register", "registerForm", "/u01g002/refer");
+		var param = {
+			url : "/u01g002/register",
+			formId : "registerForm",
+			redirect : {
+				url : "/u01g002/refer",
+				param : {
+					code : $form.findByName("code").val()
+				}
+			}
+		};
+		crud(param);
 	}
 }
 function update() {
 	var $form = $('form');
 	if (kokyakuValid($form)) {
-		crud("/u01g002/update", "registerForm", "/u01g002/refer");
+		var param = {
+			url : "/u01g002/update",
+			formId : "registerForm",
+			redirect : {
+				url : "/u01g002/refer",
+				param : {
+					code : $form.findByName("code").val()
+				}
+			}
+		};
+		crud(param);
 	}
 }
 function deleteKokyaku() {
-	crud("/u01g002/delete", "registerForm", "/u01g001/");
+	var param = {
+		url : "/u01g002/delete",
+		formId : "registerForm",
+		redirect : {
+			url : "/u01g001"
+		}
+	};
+	crud(param);
 }
 function updateForm() {
    var form = document.forms["registerForm"];

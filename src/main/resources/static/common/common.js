@@ -25,33 +25,50 @@ function searchAndBuildList(url, formId, targetId) {
 
 /**
  * CRUD処理.
- *
+ * 
  * <pre>
  * ただし最初にAjaxでサーバーにアクセスし、処理が成功すればそのままリダイレクトする。
  * <br>
  * ValidateExceptionが発生した場合はリダイレクトせずにエラーメッセージを表示する。
  * </pre>
- *
+ * 
  * @param url
  *            CRUD処理のURL
  * @param formId
  *            formのid属性値
- * @param nextUrl
+ * @param redirect.url
  *            リダイレクト先URL
+ * @param redirect.param
+ *            リダイレクト先に渡すパラメータ
  */
-function crud(url, formId, nextUrl) {
-	var paramUrl = url + "?" + $("#" + formId).serialize();
+function crud(param) {
+	
+	// set parameters
+	var url = param.url;
+	var formId = param.formId;
+	var redirectUrl = param.redirect.url;
+	var redirectParam = param.redirect.param;
+
+	// set data from form
+	var $form = $("#" + formId);
+	var data = {};
+	$.each($form.serializeArray(), function(_, kv) {
+		data[kv.name] = kv.value;
+	});
+	
+	// post
 	$.ajax({
-		type : "GET",
-		url : paramUrl,
+		type : "POST",
+		url : url,
 		dataType : "json",
+		data: data,
 		success : function(data, status, xhr) {
 			var model = data.model;
 			if (model) {
 				var form = model.form;
 				if (form) {
 					// リダイレクト先にメッセージを引き継ぐ
-					var $form = $("#" + formId);
+					var $form = $("<form>");
 					if (form.successMessage) {
 						$form.appendInput("successMessage", form.successMessage);
 					}
@@ -66,7 +83,10 @@ function crud(url, formId, nextUrl) {
 					}
 				}
 			}
-			submitForm(nextUrl, formId);
+			for (var key in redirectParam) {
+				$form.appendInput(key, redirectParam[key]);
+			}
+			$form.attr("action", redirectUrl).submit();
 		},
 		error : function(data, status, xhr) {
 			if (data.status === 400) {
@@ -125,6 +145,15 @@ function showErroeMessage(message) {
 	};
 })(jQuery);
 
+/**
+ * jauery拡張. name属性値を用いてform内要素を取得する。
+ * 
+ */
+(function($) {
+	$.fn.findByName = function(name) {
+		return this.find("[name=" + name + "]");
+	};
+})(jQuery);
 
 /**
  * jauery拡張. 要素の活性化

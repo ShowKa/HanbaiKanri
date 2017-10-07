@@ -138,7 +138,7 @@ public class U01G002Controller {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/u01g002/register", method = RequestMethod.GET)
+	@RequestMapping(value = "/u01g002/register", method = RequestMethod.POST)
 	@Transactional
 	public ResponseEntity<?> register(@Valid @ModelAttribute U01G002Form form, BindingResult result,
 			ModelAndViewExtended model) {
@@ -171,7 +171,7 @@ public class U01G002Controller {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/u01g002/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/u01g002/update", method = RequestMethod.POST)
 	@Transactional
 	public ResponseEntity<?> update(@Valid @ModelAttribute U01G002Form form, BindingResult result,
 			ModelAndViewExtended model) {
@@ -203,7 +203,7 @@ public class U01G002Controller {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.GET)
+	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.POST)
 	@Transactional
 	public ResponseEntity<?> delete(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
