@@ -33,10 +33,10 @@ public class KokyakuDomainBuilder
 	private NyukinKakeInfoDomain nyukinKakeInfo = EmptyProxy.domain(NyukinKakeInfoDomain.class);
 
 	/** recordId */
-	private String recordId = STRING_EMPTY;;
+	private String recordId;;
 
 	/** version */
-	private Integer version = INTEGER_EMPTY;
+	private Integer version;
 
 	// protected method
 	@Override

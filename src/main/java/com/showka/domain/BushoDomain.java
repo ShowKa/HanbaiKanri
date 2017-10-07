@@ -18,16 +18,16 @@ import lombok.Getter;
 public class BushoDomain extends DomainBase {
 
 	/** 顧客コード */
-	private String code = STRING_EMPTY;
+	private String code;
 
 	/** 部署区分 */
-	private BushoKubun bushoKubun = BushoKubun.EMPTY;
+	private BushoKubun bushoKubun;
 
 	/** 事業区分 */
-	private JigyoKubun jigyoKubun = JigyoKubun.EMPTY;
+	private JigyoKubun jigyoKubun;
 
 	/** 部署名 */
-	private String name = STRING_EMPTY;
+	private String name;
 
 	@Override
 	public void validate() throws SystemException {

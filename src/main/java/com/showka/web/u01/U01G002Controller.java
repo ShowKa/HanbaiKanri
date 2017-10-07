@@ -293,6 +293,7 @@ public class U01G002Controller {
 		nyukinKakeInfoBuilder.withShimeDate(form.getShimebi());
 		nyukinKakeInfoBuilder.withRecordId(form.getNyukinKakeInfoRecordId());
 		nyukinKakeInfoBuilder.withVersion(form.getNyukinKakeInfoVersion());
+		System.out.println(form.getNyukinKakeInfoVersion());
 		return nyukinKakeInfoBuilder.build();
 	}
 
@@ -353,7 +354,7 @@ public class U01G002Controller {
 		form.setShukanBushoCode(busho.getCode());
 
 		// kakeinfo
-		if (nyukinKakeInfo != null) {
+		if (!nyukinKakeInfo.isEmpty()) {
 			form.setNyukinHohoKubun(nyukinKakeInfo.getNyukinHohoKubun().getCode());
 			form.setNyukinTsukiKubun(nyukinKakeInfo.getNyukinTsukiKubun().getCode());
 			form.setShimebi(nyukinKakeInfo.getShimeDate());

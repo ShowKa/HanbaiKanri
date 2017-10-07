@@ -124,7 +124,6 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		final HanbaiKubun hanbaiKubun = HanbaiKubun.掛売;
 		final String bushoId = "BS01";
 
-		final Integer version = 0;
 		final String record_id = "this is inserted record";
 
 		// nyukinKakeInfo
@@ -140,7 +139,6 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		nyukinBuilder.withNyukinHohoKubun(nyukinHohoKubun);
 		nyukinBuilder.withNyukinTsukiKubun(nyukinTukiKubun);
 		nyukinBuilder.withShimeDate(shimeDate);
-		nyukinBuilder.withVersion(version);
 		nyukinBuilder.withRecordId(record_id);
 		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
 
@@ -156,7 +154,6 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 		builder.withHanbaiKubun(hanbaiKubun);
 		builder.withShukanBusho(bushoDomain);
 		builder.withNyukinKakeInfo(nyukinDomain);
-		builder.withVersion(version);
 		builder.withRecordId(record_id);
 		KokyakuDomain domain = builder.build();
 

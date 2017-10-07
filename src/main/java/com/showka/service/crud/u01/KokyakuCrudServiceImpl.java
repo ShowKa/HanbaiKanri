@@ -71,7 +71,9 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	@Override
 	@Transactional
 	public void delete(String code, Integer version) {
-		MKokyaku targetKokyaku = new MKokyaku();
+		// entity
+		MKokyaku targetKokyaku = repo.getOne(code);
+
 		targetKokyaku.setCode(code);
 		targetKokyaku.setVersion(version);
 

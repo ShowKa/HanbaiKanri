@@ -8,13 +8,13 @@ import javax.persistence.EntityNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.RepositoryTestCase;
 import com.showka.entity.MBusho;
 import com.showka.repository.i.MBushoRepository;
 
+@Transactional
 public class MBushoRepositoryTest extends RepositoryTestCase {
 
 	@Autowired
@@ -99,7 +99,6 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 
 		// set record_id & version
 		e.setRecordId("this is inserted record");
-		e.setVersion(0);
 
 		// save
 		repository.save(e);
@@ -127,31 +126,29 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
 
-		// entity
-		MBusho e = new MBusho();
-
-		// set columns
-		e.setCode("BS01");
-		e.setBushoKubun("20");
-		e.setJigyoKubun("10");
-		e.setName("部署03");
-
-		// set record_id & version
-		e.setRecordId("this is inserted record");
-		e.setVersion(0);
-
-		// check before save
-		List<MBusho> beforeSave = repository.findAll();
-		assertNotNull(beforeSave);
-		assertEquals(2, beforeSave.size());
-
-		MBusho beforeBusho = repository.findById(e.getCode()).get();
+		MBusho beforeBusho = repository.findById("BS01").get();
 
 		assertEquals("BS01", beforeBusho.getCode());
 		assertEquals("00", beforeBusho.getBushoKubun());
 		assertEquals("00", beforeBusho.getJigyoKubun());
 		assertEquals("部署01", beforeBusho.getName());
 		assertEquals("BS01", beforeBusho.getRecordId());
+
+		// entity
+		MBusho e = repository.getOne("BS01");
+
+		// set columns
+		e.setBushoKubun("20");
+		e.setJigyoKubun("10");
+		e.setName("部署03");
+
+		// set record_id & version
+		e.setRecordId("this is inserted record");
+
+		// check before save
+		List<MBusho> beforeSave = repository.findAll();
+		assertNotNull(beforeSave);
+		assertEquals(2, beforeSave.size());
 
 		// save
 		repository.save(e);
@@ -201,7 +198,6 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	// 条件：該当レコードあり
 	// 結果：成功
 	@Test
-	@Transactional
 	public void test_07() {
 
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
@@ -222,7 +218,6 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	// 条件：該当レコードなし
 	// 結果：失敗
 	@Test(expected = EntityNotFoundException.class)
-	@Transactional
 	public void test_08() {
 
 		super.insert(TABLE_NAME, COLUMN, VALUE02);
@@ -242,49 +237,17 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
 
 		// entity
-		MBusho e = new MBusho();
+		MBusho e = repository.getOne("BS01");
 
 		// set columns
 		e.setCode("BS01");
-		e.setBushoKubun(null);
-		e.setJigyoKubun(null);
-		e.setName(null);
-
-		// set record_id & version
-		e.setRecordId("this is inserted record");
 		e.setVersion(0);
 
+		// do
 		repository.delete(e);
 
 		Optional<MBusho> result = repository.findById("BS01");
 		assertFalse(result.isPresent());
 
 	}
-
-	// delete 該当する部署を削除
-	// 入力：部署entity
-	// 条件：該当レコードなし
-	// 結果：例外発生
-	@Test(expected = DataIntegrityViolationException.class)
-	public void test_10() {
-
-		// entity
-		MBusho e = new MBusho();
-
-		// set columns
-		e.setCode("BS03");
-		e.setBushoKubun(null);
-		e.setJigyoKubun(null);
-		e.setName(null);
-
-		// set record_id & version
-		e.setRecordId("this is inserted record");
-		e.setVersion(0);
-
-		repository.delete(e);
-
-		fail();
-
-	}
-
 }
