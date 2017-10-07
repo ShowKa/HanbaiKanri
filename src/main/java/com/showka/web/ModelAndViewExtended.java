@@ -26,4 +26,13 @@ public class ModelAndViewExtended extends org.springframework.web.servlet.ModelA
 		this.addObject("form", form);
 	}
 
+	/**
+	 * mode 設定
+	 * 
+	 * @param mode
+	 */
+	public void setMode(Mode mode) {
+		this.addObject("mode", mode.getCode());
+	}
+
 }

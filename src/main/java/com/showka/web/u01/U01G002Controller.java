@@ -31,6 +31,7 @@ import com.showka.kubun.i.Kubun;
 import com.showka.service.crud.u01.KokyakuCrudServiceImpl;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.validate.u01.KokyakuValidateServiceImpl;
+import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
 /**
@@ -67,7 +68,7 @@ public class U01G002Controller {
 		setListToModelAttribute(model);
 
 		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/registerにしておく
-		model.addObject("mode", "register");
+		model.setMode(Mode.REGISTER);
 
 		// view
 		model.setViewName("/u01/u01g002");
@@ -98,7 +99,7 @@ public class U01G002Controller {
 		}
 
 		// モード情報を画面に送る。編集できないようにする
-		model.addObject("mode", "read");
+		model.setMode(Mode.READ);
 
 		model.setViewName("/u01/u01g002");
 		return model;
@@ -122,7 +123,7 @@ public class U01G002Controller {
 		setListToModelAttribute(model);
 
 		// モード情報を画面に送る。登録ボタンのリンク先を/u01g002/updateにしておく
-		model.addObject("mode", "update");
+		model.setMode(Mode.UPDATE);
 
 		model.setViewName("/u01/u01g002");
 		return model;
