@@ -88,7 +88,7 @@ public class U01G002Controller {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
-		model.addForm(setForm(kokyaku));
+		model.addForm(setForm(form, kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
@@ -118,7 +118,7 @@ public class U01G002Controller {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
-		model.addForm(setForm(kokyaku));
+		model.addForm(setForm(form, kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
@@ -158,7 +158,7 @@ public class U01G002Controller {
 		kokyakuCrudService.save(kokyakuDomain);
 
 		// jump refer
-		form.setInfoMessage("登録成功");
+		form.setSuccessMessage("登録成功");
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
@@ -191,7 +191,7 @@ public class U01G002Controller {
 		kokyakuCrudService.save(kokyakuDomain);
 
 		// jump refer
-		form.setInfoMessage("");
+		form.setSuccessMessage("更新成功");
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
@@ -214,7 +214,7 @@ public class U01G002Controller {
 		kokyakuCrudService.delete(kokyakuDomain);
 
 		// jump search
-		form.setInfoMessage("");
+		form.setSuccessMessage("削除成功");
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 
@@ -321,9 +321,6 @@ public class U01G002Controller {
 		// 入金掛売り情報は販売区分=掛売の時のみ
 		if (hanbaiKubun == HanbaiKubun.掛売) {
 			kokyakuDomainBuilder.withNyukinKakeInfo(createNyukinKakeInfoDomain(form));
-		} else {
-			// TODO set empty
-			// kokyakuDomainBuilder.withNyukinKakeInfo(EmptyProxy.domain(NyukinKakeInfoDomain.class));
 		}
 
 		kokyakuDomainBuilder.withVersion(form.getKokyakuVersion());
@@ -336,9 +333,8 @@ public class U01G002Controller {
 	 * @param kokyaku
 	 *
 	 */
-	private U01G002Form setForm(KokyakuDomain kokyaku) {
+	private U01G002Form setForm(U01G002Form form, KokyakuDomain kokyaku) {
 
-		U01G002Form form = new U01G002Form();
 		BushoDomain busho = kokyaku.getShukanBusho();
 		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 

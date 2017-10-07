@@ -3,7 +3,6 @@ package com.showka.web.u01;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.entity.MKokyaku;
 import com.showka.service.search.u01.KokyakuSearchCriteria;
 import com.showka.service.search.u01.i.KokyakuSearchService;
+import com.showka.web.ModelAndViewExtended;
 
 /**
  * U01G001 顧客検索画面
@@ -44,8 +44,10 @@ public class U01G001Controller {
 	 * @return
 	 */
 	@RequestMapping(value = "/u01g001", method = RequestMethod.GET)
-	public String index(Map<String, Object> model, HttpSession session) {
-		return "/u01/u01g001";
+	public ModelAndViewExtended index(@ModelAttribute U01G001Form form, ModelAndViewExtended model) {
+		model.addForm(form);
+		model.setViewName("/u01/u01g001");
+		return model;
 	}
 
 	/**
