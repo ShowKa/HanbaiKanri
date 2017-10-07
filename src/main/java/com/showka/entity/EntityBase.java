@@ -116,7 +116,6 @@ public abstract class EntityBase {
 	 * @param version
 	 */
 	public void setVersion(Integer version) {
-		System.out.println(this.getClass().getSimpleName());
 		if (this.version == null && version != null) {
 			throw new OptimisticLockException(
 					"OptimisticLockException!! version should be null but was <" + version + ">");
