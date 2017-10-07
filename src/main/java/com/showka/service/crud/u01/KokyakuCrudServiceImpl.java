@@ -72,8 +72,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	@Transactional
 	public void delete(String code, Integer version) {
 		// entity
-		Optional<MKokyaku> entity = repo.findById(code);
-		MKokyaku targetKokyaku = entity.orElse(new MKokyaku());
+		MKokyaku targetKokyaku = repo.getOne(code);
 
 		targetKokyaku.setCode(code);
 		targetKokyaku.setVersion(version);
