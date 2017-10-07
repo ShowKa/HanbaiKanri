@@ -32,7 +32,6 @@ import com.showka.kubun.i.Kubun;
 import com.showka.service.crud.u01.KokyakuCrudServiceImpl;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.validate.u01.KokyakuValidateServiceImpl;
-import com.showka.service.validate.u01.NyukinKakeInfoValidateServiceImpl;
 import com.showka.web.ModelAndViewExtended;
 
 /**
@@ -53,9 +52,6 @@ public class U01G002Controller {
 
 	@Autowired
 	private KokyakuValidateServiceImpl kokyakuValidateService;
-
-	@Autowired
-	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
 
 	// public method called by request
 	/**
