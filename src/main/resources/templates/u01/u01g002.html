@@ -64,34 +64,26 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="shukanBushoCode">主幹部署</label>
 							<div class="col-sm-9">
-						      <select class="form-control selectCheck whenRegister whenUpdate" id="shukanBushoCode" name="shukanBushoCode">
-						        <option value="">選択してください</option>
-					        	<tr th:each="busho:${bushoList}">
-						        	<div th:switch="${busho.code}">
-									    <div th:case="${form.shukanBushoCode}" ><option th:value="${busho.code}" th:text="${busho.name}"  selected="selected" /></div>
-									    <div th:case="*" ><option th:value="${busho.code}" th:text="${busho.name}" /></div>
-									</div>
-								</tr>
-						      </select>
+								<select class="form-control selectCheck whenRegister whenUpdate" id="shukanBushoCode" name="shukanBushoCode">
+									<option value="">選択してください</option>
+									<option th:each="busho : ${bushoList}" th:value="${busho.code}" th:text='${busho.name}'
+										th:selected="${busho.code.equals('__${form.shukanBushoCode}__')}" />
+								</select>
 							</div>
 						</div>
 						<div class="nyukinKakeInfo" style="display: none">
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>請求情報</h4></div>
-						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="shimebi">請求締日</label>
-							<div class="col-sm-9">
-						      <select class="form-control whenRegister whenUpdate" id="shimebi" name="shimebi">
-						        <option value="">選択してください</option>
-					        	<tr th:each="shimebi:${shimebiList}">
-						        	<div th:switch="${shimebi}">
-									   	<div th:case="${form.shimebi}" ><option th:value="${shimebi}" th:text="${shimebi}"  selected="selected" /></div>
-									    <div th:case="*" ><option th:value="${shimebi}" th:text="${shimebi}" /></div>
-									</div>
-								</tr>
-						      </select>
+							<div class="form-group form-group-sm">
+								<label class="control-label col-sm-3" for="shimebi">請求締日</label>
+								<div class="col-sm-9">
+									<select class="form-control whenRegister whenUpdate" id="shimebi" name="shimebi">
+										<option value="">選択してください</option>
+										<option th:each="shimebi : ${shimebiList}" th:value="${shimebi}" th:text='${shimebi}'
+											th:selected="${shimebi.equals(__${form.shimebi}__)}" />
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="form-group form-group-sm">
+							<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="nyukinHohoKubun">入金方法</label>
 							<div class="col-sm-9">
 						      	<select class="form-control whenRegister whenUpdate" id="nyukinHohoKubun" name="nyukinHohoKubun"
