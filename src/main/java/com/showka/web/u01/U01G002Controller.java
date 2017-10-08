@@ -253,7 +253,6 @@ public class U01G002Controller {
 		nyukinKakeInfoBuilder.withShimeDate(form.getShimebi());
 		nyukinKakeInfoBuilder.withRecordId(form.getNyukinKakeInfoRecordId());
 		nyukinKakeInfoBuilder.withVersion(form.getNyukinKakeInfoVersion());
-		System.out.println(form.getNyukinKakeInfoVersion());
 		return nyukinKakeInfoBuilder.build();
 	}
 

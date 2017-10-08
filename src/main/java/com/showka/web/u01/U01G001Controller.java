@@ -88,7 +88,6 @@ public class U01G001Controller {
 	@RequestMapping(value = "/u01g001/valid", method = RequestMethod.GET)
 	public String form(@Valid @ModelAttribute U01G001Form form, BindingResult result, Model model,
 			HttpSession session) {
-		System.out.println("doing validate");
 
 		if (result.hasErrors()) {
 			// list
@@ -98,7 +97,6 @@ public class U01G001Controller {
 			m.put("name", "valid NG");
 			m.put("bushoName", "");
 			kokyakuList.add(m);
-			System.out.println("has error");
 
 			model.addAttribute("kokyakuList", kokyakuList);
 
