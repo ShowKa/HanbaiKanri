@@ -2,7 +2,6 @@ package com.showka.web.u01;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -223,7 +222,7 @@ public class U01G002Controller {
 	// private method
 
 	/**
-	 * 部署の一覧、顧客区分の一覧、販売区分の一覧、入金方法区分の一覧、入金月区分、締日の候補日 の一覧を取得してmodelにセット
+	 * 部署の一覧、締日の候補日 の一覧を取得してmodelにセット
 	 *
 	 * @param model
 	 *
@@ -232,46 +231,6 @@ public class U01G002Controller {
 
 		// 部署一覧
 		model.addObject("bushoList", bushoCrudService.getMBushoList());
-
-		// 顧客区分
-		List<HashMap<String, String>> KokyakuKubunList = new ArrayList<HashMap<String, String>>();
-		for (KokyakuKubun kubun : KokyakuKubun.values()) {
-			HashMap<String, String> m = new HashMap<String, String>();
-			m.put("code", kubun.getCode());
-			m.put("name", kubun.toString());
-			KokyakuKubunList.add(m);
-		}
-		model.addObject("kokyakuKubunList", KokyakuKubunList);
-
-		// 販売区分
-		List<HashMap<String, String>> HanbaiKubunList = new ArrayList<HashMap<String, String>>();
-		for (HanbaiKubun kubun : HanbaiKubun.values()) {
-			HashMap<String, String> m = new HashMap<String, String>();
-			m.put("code", kubun.getCode());
-			m.put("name", kubun.toString());
-			HanbaiKubunList.add(m);
-		}
-		model.addObject("hanbaiKubunList", HanbaiKubunList);
-
-		// 入金方法区分
-		List<HashMap<String, String>> NyukinHohoKubunList = new ArrayList<HashMap<String, String>>();
-		for (NyukinHohoKubun kubun : NyukinHohoKubun.values()) {
-			HashMap<String, String> m = new HashMap<String, String>();
-			m.put("code", kubun.getCode());
-			m.put("name", kubun.toString());
-			NyukinHohoKubunList.add(m);
-		}
-		model.addObject("nyukinHohoKubunList", NyukinHohoKubunList);
-
-		// 入金月区分
-		List<HashMap<String, String>> NyukinTsukiKubunList = new ArrayList<HashMap<String, String>>();
-		for (NyukinTsukiKubun kubun : NyukinTsukiKubun.values()) {
-			HashMap<String, String> m = new HashMap<String, String>();
-			m.put("code", kubun.getCode());
-			m.put("name", kubun.toString());
-			NyukinTsukiKubunList.add(m);
-		}
-		model.addObject("nyukinTsukiKubunList", NyukinTsukiKubunList);
 
 		// 締日の候補日
 		List<Integer> shimebiList = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 25, 30));

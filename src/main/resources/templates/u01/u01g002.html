@@ -49,31 +49,15 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="kokyakuKubun">顧客区分</label>
 							<div class="col-sm-9">
-						      <select class="form-control selectCheck whenRegister whenUpdate" id="kokyakuKubun" name="kokyakuKubun">
-						        <option value="">選択してください</option>
-					        	<tr th:each="kokyakuKubun:${kokyakuKubunList}">
-						        	<div th:switch='${kokyakuKubun.get("code")}'>
-										<div th:case="''" ></div>
-									    <div th:case="${form.kokyakuKubun}" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' selected="selected" /></div>
-									    <div th:case="*" ><option th:value='${kokyakuKubun.get("code")}' th:text='${kokyakuKubun.get("name")}' /></div>
-									</div>
-								</tr>
-						      </select>
+								<select class="form-control selectCheck whenRegister whenUpdate" id="kokyakuKubun" name="kokyakuKubun"
+									th:include='common/kubunOption :: option(kubunName=KokyakuKubun, selected=${form.kokyakuKubun})' />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="hanbaiKubun">販売区分</label>
 							<div class="col-sm-9">
-						      <select class="form-control selectCheck whenRegister whenUpdate" id="hanbaiKubun" name="hanbaiKubun">
-						        <option value="">選択してください</option>
-					        	<tr th:each="hanbaiKubun:${hanbaiKubunList}">
-						        	<div th:switch='${hanbaiKubun.get("code")}'>
-										<div th:case="''" ></div>
-									    <div th:case="${form.hanbaiKubun}" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' selected="selected" /></div>
-									    <div th:case="*" ><option th:value='${hanbaiKubun.get("code")}' th:text='${hanbaiKubun.get("name")}' /></div>
-									</div>
-								</tr>
-						      </select>
+								<select class="form-control selectCheck whenRegister whenUpdate" id="hanbaiKubun" name="hanbaiKubun"
+									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})' />
 							</div>
 						</div>
 						<div class="col-md-12 col-sm-12 col-xs-12"><h4>部署情報</h4></div>
@@ -110,31 +94,15 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="nyukinHohoKubun">入金方法</label>
 							<div class="col-sm-9">
-						      <select class="form-control whenRegister whenUpdate" id="nyukinHohoKubun" name="nyukinHohoKubun">
-						        <option value="">選択してください</option>
-					        	<tr th:each="nyukinHohoKubun:${nyukinHohoKubunList}">
-						        	<div th:switch='${nyukinHohoKubun.get("code")}'>
-										<div th:case="''" ></div>
-								    	<div th:case="${form.nyukinHohoKubun}" ><option th:value='${nyukinHohoKubun.get("code")}' th:text='${nyukinHohoKubun.get("name")}'  selected="selected" /></div>
-								    	<div th:case="*" ><option th:value='${nyukinHohoKubun.get("code")}' th:text='${nyukinHohoKubun.get("name")}' /></div>
-									</div>
-								</tr>
-						      </select>
+						      	<select class="form-control whenRegister whenUpdate" id="nyukinHohoKubun" name="nyukinHohoKubun"
+									th:include='common/kubunOption :: option(kubunName=NyukinHohoKubun, selected=${form.nyukinHohoKubun})' />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="nyukinTsukiKubun">入金月区分</label>
 							<div class="col-sm-9">
-						      <select class="form-control whenRegister whenUpdate" id="nyukinTsukiKubun" name="nyukinTsukiKubun">
-						        <option value="">選択してください</option>
-					        	<tr th:each="nyukinTsukiKubun:${nyukinTsukiKubunList}">
-						        	<div th:switch='${nyukinTsukiKubun.get("code")}'>
-										<div th:case="''" ></div>
-								    	<div th:case="${form.nyukinTsukiKubun}" ><option th:value='${nyukinTsukiKubun.get("code")}' th:text='${nyukinTsukiKubun.get("name")}'  selected="selected" /></div>
-								    	<div th:case="*" ><option th:value='${nyukinTsukiKubun.get("code")}' th:text='${nyukinTsukiKubun.get("name")}' /></div>
-									</div>
-								</tr>
-						      </select>
+						    	<select class="form-control whenRegister whenUpdate" id="nyukinTsukiKubun" name="nyukinTsukiKubun"
+									th:include='common/kubunOption :: option(kubunName=NyukinTsukiKubun, selected=${form.nyukinTsukiKubun})' />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
