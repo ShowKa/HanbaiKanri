@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 import mockit.integration.junit4.JMockit;
 
 @RunWith(JMockit.class)
-public class SimpleTestCase extends TestCase {
+public abstract class SimpleTestCase extends TestCase {
 
 	@Rule
 	public ExpectedException expectedEx = ExpectedException.none();

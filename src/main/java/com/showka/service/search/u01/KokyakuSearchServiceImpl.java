@@ -2,6 +2,7 @@ package com.showka.service.search.u01;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -15,7 +16,7 @@ import com.showka.service.search.u01.i.KokyakuSearchService;
 
 /**
  * 顧客Crud
- * 
+ *
  * @author ShowKa
  *
  */
@@ -25,7 +26,7 @@ public class KokyakuSearchServiceImpl implements KokyakuSearchService {
 
 	/**
 	 * 顧客Repository
-	 * 
+	 *
 	 */
 	@Autowired
 	private MKokyakuRepository repository;
@@ -49,7 +50,7 @@ public class KokyakuSearchServiceImpl implements KokyakuSearchService {
 
 	/**
 	 * 全件検索
-	 * 
+	 *
 	 * @return
 	 */
 	public List<MKokyaku> getAllKokyaku() {
@@ -67,9 +68,11 @@ public class KokyakuSearchServiceImpl implements KokyakuSearchService {
 		k.setName(criteria.getName());
 
 		// 部署名
-		MBusho b = new MBusho();
-		b.setName(criteria.getBushoName());
-		k.setShukanBusho(b);
+		if (!StringUtils.isEmpty(criteria.getBushoName())) {
+			MBusho b = new MBusho();
+			b.setName(criteria.getBushoName());
+			k.setShukanBusho(b);
+		}
 
 		ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("name", match -> match.startsWith());
 		Example<MKokyaku> example = Example.of(k, matcher);

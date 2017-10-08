@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
@@ -16,7 +17,7 @@ import com.showka.service.crud.u01.i.NyukinKakeInfoCrudService;
 
 /**
  * 入金掛情報 CRUD Service
- * 
+ *
  * @author ShowKa
  *
  */
@@ -38,7 +39,7 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 		e.setNyukinDate(domain.getNyukinDate());
 		e.setNyukinHohoKubun(domain.getNyukinHohoKubun().getCode());
 		e.setNyukinTsukiKubun(domain.getNyukinTsukiKubun().getCode());
-		e.setShimebi(e.getShimebi());
+		e.setShimebi(domain.getShimeDate());
 
 		// set record_id & version
 		e.setRecordId(domain.getRecordId());
@@ -50,13 +51,14 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 
 	@Override
 	public void delete(String kokyakuId, Integer version) {
-		MNyukinKakeInfo target = new MNyukinKakeInfo();
+		MNyukinKakeInfo target = repo.getOne(kokyakuId);
 		target.setKokyakuId(kokyakuId);
 		target.setVersion(version);
 		repo.delete(target);
 	}
 
 	@Override
+	@Transactional
 	public NyukinKakeInfoDomain getDomain(String kokyakuId) {
 		// get entity
 		MNyukinKakeInfo e = repo.getOne(kokyakuId);
@@ -78,6 +80,19 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 	@Override
 	public boolean exsists(String kokyakuId) {
 		return repo.existsById(kokyakuId);
+	}
+
+	@Override
+	public void delete(NyukinKakeInfoDomain domain) {
+		delete(domain.getKokyakuId(), domain.getVersion());
+
+	}
+
+	@Override
+	public void deleteForciblyIfExists(String kokyakuId) {
+		if (exsists(kokyakuId)) {
+			repo.deleteById(kokyakuId);
+		}
 	}
 
 }

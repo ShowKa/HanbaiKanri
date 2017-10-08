@@ -1,0 +1,5 @@
+<div th:fragment="option(kubunName, selected)" th:remove="tag">
+	<option value="" th:text="選択してください"></option>
+	<option th:each="kubun : ${T(com.showka.kubun.__${kubunName}__).values()}" th:if="${kubun.getCode().isEmpty() == false}"
+		th:value="${kubun.getCode()}" th:text='${kubun}' th:selected="${kubun.getCode().equals('__${selected}__')}" />
+</div>

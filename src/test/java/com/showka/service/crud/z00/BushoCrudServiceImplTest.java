@@ -1,5 +1,7 @@
 package com.showka.service.crud.z00;
 
+import java.util.List;
+
 import javax.persistence.EntityNotFoundException;
 
 import org.junit.Before;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.BushoDomain;
+import com.showka.entity.MBusho;
 
 /**
  * 部署 CRUD Service Test
@@ -78,6 +81,22 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 		service.getDomain(id);
 
 		fail();
+	}
+
+	/**
+	 * getMBushoListテスト
+	 */
+	@Test
+	@Transactional
+	public void test_getMBushoList() {
+
+		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+
+		// getDomain
+		List<MBusho> bushoList = service.getMBushoList();
+
+		assertEquals(2, bushoList.size());
+
 	}
 
 }

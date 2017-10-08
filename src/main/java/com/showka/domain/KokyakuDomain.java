@@ -18,22 +18,25 @@ import lombok.Getter;
 public class KokyakuDomain extends DomainBase {
 
 	/** 顧客コード */
-	private String code = STRING_EMPTY;
+	private String code;
 
 	/** 顧客名 */
-	private String name = STRING_EMPTY;
+	private String name;
 
 	/** 顧客住所 */
-	private String address = STRING_EMPTY;
+	private String address;
 
 	/** 顧客区分 */
-	private KokyakuKubun kokyakuKubun = KokyakuKubun.EMPTY;
+	private KokyakuKubun kokyakuKubun;
 
 	/** 販売区分 */
-	private HanbaiKubun hanbaiKubun = HanbaiKubun.EMPTY;
+	private HanbaiKubun hanbaiKubun;
 
-	/** 主幹部署ID */
-	private String shukanBushoId = STRING_EMPTY;
+	/** 主幹部署 */
+	private BushoDomain shukanBusho;
+
+	/** 入金掛情報 */
+	private NyukinKakeInfoDomain nyukinKakeInfo;
 
 	@Override
 	public void validate() throws SystemException {

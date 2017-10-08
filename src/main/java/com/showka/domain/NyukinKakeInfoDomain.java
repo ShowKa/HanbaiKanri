@@ -22,19 +22,19 @@ public class NyukinKakeInfoDomain extends DomainBase {
 
 	// private member
 	/** ID */
-	private String kokyakuId = STRING_EMPTY;
+	private String kokyakuId;
 
 	/** 締日 */
-	private Integer shimeDate = INTEGER_EMPTY;
+	private Integer shimeDate;
 
 	/** 入金月区分 */
-	private NyukinTsukiKubun nyukinTsukiKubun = NyukinTsukiKubun.EMPTY;
+	private NyukinTsukiKubun nyukinTsukiKubun;
 
 	/** 入金方法 */
-	private NyukinHohoKubun nyukinHohoKubun = NyukinHohoKubun.EMPTY;
+	private NyukinHohoKubun nyukinHohoKubun;
 
 	/** 入金日 */
-	private Integer nyukinDate = INTEGER_EMPTY;
+	private Integer nyukinDate;
 
 	/**
 	 * 入金サイト取得
