@@ -10,6 +10,7 @@ import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.IncorrectKubunException;
+import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
 
 /**
@@ -26,6 +27,13 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 	@Autowired
 	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
+
+	@Override
+	public void validateForRefer(String kokyakuCode) throws ValidateException {
+		if (!repo.existsById(kokyakuCode)) {
+			throw new NotExistException("顧客コード", kokyakuCode);
+		}
+	}
 
 	@Override
 	public void validateForRegister(KokyakuDomain domain) throws ValidateException {
@@ -45,5 +53,4 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 			nyukinKakeInfoValidateService.validate(domain.getNyukinKakeInfo());
 		}
 	}
-
 }

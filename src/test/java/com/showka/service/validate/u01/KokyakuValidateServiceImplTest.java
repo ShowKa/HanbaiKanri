@@ -14,6 +14,7 @@ import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
 
 /**
@@ -55,6 +56,20 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	public void before() {
 		super.deleteAll(TABLE_NAME);
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
+	}
+
+	@Test(expected = NotExistException.class)
+	public void test_validateForRefer1() {
+		String id = "KK05";
+		service.validateForRefer(id);
+		fail();
+	}
+
+	@Test
+	public void test_validateForRefer2() {
+		String id = "KK01";
+		service.validateForRefer(id);
+		assertTrue(true);
 	}
 
 	/**

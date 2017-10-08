@@ -85,8 +85,12 @@ public class U01G002Controller {
 	@RequestMapping(value = "/u01g002/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
+		// validate
+		String code = form.getCode();
+		kokyakuValidateService.validateForRefer(code);
+
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(code);
 		model.addForm(setForm(form, kokyaku));
 
 		// 選択肢を取得して画面に送る
