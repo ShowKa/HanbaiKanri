@@ -1,8 +1,8 @@
 INSERT INTO m_busho
 (code, busho_kubun, jigyo_kubun, name, record_id)
 VALUES
-('BS01', '00', '00', '部署01', 'BS01'),
-('BS02', '00', '00', '部署02', 'BS02');
+('BS01', '01', '01', '部署01', 'BS01'),
+('BS02', '99', '02', '部署02', 'BS02');
 
 
 INSERT INTO m_kokyaku
@@ -15,7 +15,7 @@ VALUES
 INSERT INTO m_nyukin_kake_info
 (kokyaku_id, nyukin_hoho_kubun, nyukin_tsuki_kubun, shimebi, nyukin_date, record_id)
 VALUES
-('KK03', '00', '01', '20', '30', 'KK03');
+('KK03', '00', '10', '20', '30', 'KK03');
 
 INSERT INTO m_user
 (id, username, password, record_id)

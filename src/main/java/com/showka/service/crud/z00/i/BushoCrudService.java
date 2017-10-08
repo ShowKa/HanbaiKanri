@@ -1,9 +1,14 @@
 package com.showka.service.crud.z00.i;
 
+import java.util.List;
+
 import com.showka.domain.BushoDomain;
+import com.showka.entity.MBusho;
 
 public interface BushoCrudService {
 
-	BushoDomain getDomain(String pk);
+	public BushoDomain getDomain(String pk);
+
+	public List<MBusho> getMBushoList();
 
 }

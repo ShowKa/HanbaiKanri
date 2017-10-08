@@ -51,7 +51,7 @@ public class MKokyaku extends EntityBase implements Serializable {
 	private String shukanBushoId;
 
 	/** 主幹部署 */
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "shukan_busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MBusho shukanBusho;
 

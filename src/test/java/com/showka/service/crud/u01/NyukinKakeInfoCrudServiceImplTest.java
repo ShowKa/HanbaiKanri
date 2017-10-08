@@ -1,11 +1,11 @@
 package com.showka.service.crud.u01;
 
+import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.NyukinKakeInfoDomain;
@@ -54,7 +54,6 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_insert() {
 
 		String id = "NEW!";
-		Integer version = 0;
 		String record_id = "this is inserted record";
 
 		// set up builder
@@ -64,7 +63,6 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
 		builder.withShimeDate(12);
-		builder.withVersion(version);
 		builder.withRecordId(record_id);
 
 		// build domain
@@ -121,7 +119,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	 * 不正なversion番号を設定する。更新エラーとなればよい。
 	 * </pre>
 	 */
-	@Test(expected = ObjectOptimisticLockingFailureException.class)
+	@Test(expected = OptimisticLockException.class)
 	public void test_optimistic_lock_error() {
 
 		// insert data
@@ -217,5 +215,36 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 
 		// check
 		assertFalse(actual);
+	}
+
+	@Test
+	public void test_deleteForciblyIfExists01() {
+
+		// insert data
+		super.insert(TABLE_NAME, COLUMN, VALUE01);
+
+		String id = "KK03";
+		assertTrue(repo.existsById(id));
+
+		// do
+		service.deleteForciblyIfExists(id);
+
+		// check
+		assertFalse(repo.existsById(id));
+	}
+
+	@Test
+	public void test_deleteForciblyIfExists02() {
+
+		// insert data
+		super.insert(TABLE_NAME, COLUMN, VALUE01);
+
+		String id = "AAAAAA";
+		assertFalse(repo.existsById(id));
+
+		// do
+		service.deleteForciblyIfExists(id);
+
+		// nothing to worry about
 	}
 }

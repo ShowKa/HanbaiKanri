@@ -26,7 +26,7 @@ public class MNyukinKakeInfo extends EntityBase implements Serializable {
 
 	/** 顧客ID */
 	@Id
-	@Column(name = "kokyaku_id", nullable = false, length = 4)
+	@Column(name = "kokyaku_id", nullable = false, length = 255)
 	private String kokyakuId;
 
 	/** 顧客 */
