@@ -12,22 +12,12 @@ public abstract class DomainBase {
 	/** record_id */
 	@Getter
 	@Setter
-	private String recordId = STRING_EMPTY;
+	private String recordId;
 
 	/** バージョン(排他制御用) */
 	@Getter
 	@Setter
-	private Integer version = INTEGER_EMPTY;
-
-	/**
-	 * Empty String
-	 */
-	protected static final String STRING_EMPTY = "";
-
-	/**
-	 * Empty Integer
-	 */
-	protected static final Integer INTEGER_EMPTY = new Integer(0);
+	private Integer version;
 
 	/**
 	 * 空チェック

@@ -3,21 +3,33 @@ package com.showka.service.validate.u01;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.ServiceCrudTestCase;
+import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
+import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.KokyakuDomainBuilder;
+import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
+import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
 
+/**
+ * 顧客 Validate Service Test
+ *
+ * @author 25767
+ *
+ */
 public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 
-	/**
-	 * service.
-	 */
 	@Autowired
 	private KokyakuValidateServiceImpl service;
+
+	@Autowired
+	private BushoCrudService bushoCRUDService;
 
 	/**
 	 * table name
@@ -46,24 +58,52 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
 	}
 
+	@Test(expected = NotExistException.class)
+	public void test_validateForRefer1() {
+		String id = "KK05";
+		service.validateForRefer(id);
+		fail();
+	}
+
+	@Test
+	public void test_validateForRefer2() {
+		String id = "KK01";
+		service.validateForRefer(id);
+		assertTrue(true);
+	}
+
 	/**
-	 * validateForRegister 成功パターン
+	 * validateForRegister 顧客コードが既に使われているか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：顧客コードが使われていない <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
+	@Transactional
 	public void test_validateForRegister1() {
 
 		String id = "KK05";
 		Integer version = 0;
 		String record_id = "this is inserted record";
+		String bushoId = "BS01";
 
-		// set up builder
+		// build nyukinKakeInfo domain
+		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinBuilder.withKokyakuId(id);
+		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+
+		// get busho domain
+		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+
+		// build kokyaku domain
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(id);
-		builder.withName("aaaa");
-		builder.withAddress("北区");
-		builder.withKokyakuKubun(KokyakuKubun.法人);
-		builder.withHanbaiKubun(HanbaiKubun.掛売);
-		builder.withShukanBushoId("BS01");
+		builder.withShukanBusho(bushoDomain);
+		builder.withNyukinKakeInfo(nyukinDomain);
 
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
@@ -75,23 +115,37 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validateForRegister 失敗パターン
+	 * validateForRegister 顧客コードが既に使われているか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：顧客コードが既に使われている <br>
+	 * 結果：失敗
+	 *
+	 * <pre>
 	 */
 	@Test(expected = ValidateException.class)
+	@Transactional
 	public void test_validateForRegister2() {
 
 		String id = "KK01";
 		Integer version = 0;
 		String record_id = "this is inserted record";
+		String bushoId = "BS01";
 
-		// set up builder
+		// build nyukinKakeInfo domain
+		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinBuilder.withKokyakuId(id);
+		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+
+		// get busho domain
+		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+
+		// build kokyaku domain
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(id);
-		builder.withName("aaaa");
-		builder.withAddress("北区");
-		builder.withKokyakuKubun(KokyakuKubun.法人);
-		builder.withHanbaiKubun(HanbaiKubun.掛売);
-		builder.withShukanBushoId("BS01");
+		builder.withShukanBusho(bushoDomain);
+		builder.withNyukinKakeInfo(nyukinDomain);
 
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
@@ -105,23 +159,41 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 成功パターン
+	 * validate 個人顧客に掛売が設定されていないか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：個人顧客に現金が設定されている <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
+	@Transactional
 	public void test_validate1() {
 
 		String id = "KK01";
 		Integer version = 0;
+		String bushoId = "BS01";
 		String record_id = "this is inserted record";
+		KokyakuKubun kokyakuKubun = KokyakuKubun.個人;
+		HanbaiKubun hanbaiKubun = HanbaiKubun.現金;
 
-		// set up builder
+		// build nyukinKakeInfo domain
+		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinBuilder.withKokyakuId(id);
+		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+
+		// get busho domain
+		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+
+		// build kokyaku domain
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(id);
-		builder.withName("aaaa");
-		builder.withAddress("北区");
-		builder.withKokyakuKubun(KokyakuKubun.個人);
-		builder.withHanbaiKubun(HanbaiKubun.現金);
-		builder.withShukanBushoId("BS01");
+		builder.withKokyakuKubun(kokyakuKubun);
+		builder.withHanbaiKubun(hanbaiKubun);
+		builder.withShukanBusho(bushoDomain);
+		builder.withNyukinKakeInfo(nyukinDomain);
 
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
@@ -133,23 +205,41 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 成功パターン
+	 * validate 個人顧客に掛売が設定されていないか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：法人顧客 <br>
+	 * 結果：成功
+	 *
+	 * <pre>
 	 */
 	@Test
+	@Transactional
 	public void test_validate2() {
 
 		String id = "KK01";
 		Integer version = 0;
 		String record_id = "this is inserted record";
+		String bushoId = "BS01";
+		KokyakuKubun kokyakuKubun = KokyakuKubun.法人;
+		HanbaiKubun hanbaiKubun = HanbaiKubun.現金;
 
-		// set up builder
+		// build nyukinKakeInfo domain
+		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinBuilder.withKokyakuId(id);
+		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+
+		// get busho domain
+		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+
+		// build kokyaku domain
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(id);
-		builder.withName("aaaa");
-		builder.withAddress("北区");
-		builder.withKokyakuKubun(KokyakuKubun.法人);
-		builder.withHanbaiKubun(HanbaiKubun.現金);
-		builder.withShukanBushoId("BS01");
+		builder.withKokyakuKubun(kokyakuKubun);
+		builder.withHanbaiKubun(hanbaiKubun);
+		builder.withShukanBusho(bushoDomain);
+		builder.withNyukinKakeInfo(nyukinDomain);
 
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
@@ -161,23 +251,41 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	/**
-	 * validate 失敗パターン
+	 * validate 個人顧客に掛売が設定されていないか検証する
+	 *
+	 * <pre>
+	 * 入力：顧客domain <br>
+	 * 条件：個人顧客に掛売が設定されている <br>
+	 * 結果：失敗
+	 *
+	 * <pre>
 	 */
 	@Test(expected = ValidateException.class)
+	@Transactional
 	public void test_validate3() {
 
 		String id = "KK01";
 		Integer version = 0;
 		String record_id = "this is inserted record";
+		String bushoId = "BS01";
+		KokyakuKubun kokyakuKubun = KokyakuKubun.個人;
+		HanbaiKubun hanbaiKubun = HanbaiKubun.掛売;
 
-		// set up builder
+		// build nyukinKakeInfo domain
+		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		nyukinBuilder.withKokyakuId(id);
+		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+
+		// get busho domain
+		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+
+		// build kokyaku domain
 		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
 		builder.withCode(id);
-		builder.withName("aaaa");
-		builder.withAddress("北区");
-		builder.withKokyakuKubun(KokyakuKubun.個人);
-		builder.withHanbaiKubun(HanbaiKubun.掛売);
-		builder.withShukanBushoId("BS01");
+		builder.withKokyakuKubun(kokyakuKubun);
+		builder.withHanbaiKubun(hanbaiKubun);
+		builder.withShukanBusho(bushoDomain);
+		builder.withNyukinKakeInfo(nyukinDomain);
 
 		builder.withVersion(version);
 		builder.withRecordId(record_id);

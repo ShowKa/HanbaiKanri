@@ -15,6 +15,16 @@ import com.showka.domain.DomainBase;
  */
 public abstract class DomainBuilderBase<T extends DomainBase, S extends DomainBuilderBase<T, S>> {
 
+	/**
+	 * Empty String
+	 */
+	protected static final String STRING_EMPTY = "";
+
+	/**
+	 * Empty Integer
+	 */
+	protected static final Integer INTEGER_EMPTY = new Integer(0);
+
 	List<BuilderConfigurator<S>> configurators = new ArrayList<BuilderConfigurator<S>>();
 
 	/**

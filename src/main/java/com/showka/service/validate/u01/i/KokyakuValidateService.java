@@ -6,6 +6,14 @@ import com.showka.system.exception.ValidateException;
 public interface KokyakuValidateService {
 
 	/**
+	 * 参照時の整合性検証
+	 *
+	 * @param kokyakuCode
+	 * @throws ValidateException
+	 */
+	public void validateForRefer(String kokyakuCode) throws ValidateException;
+
+	/**
 	 * 新規登録時の整合性検証
 	 *
 	 * <pre>

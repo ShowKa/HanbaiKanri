@@ -122,4 +122,12 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		return repo.existsById(pk);
 	}
 
+	@Override
+	public void delete(UriageDomain domain) {
+		TUriagePK pk = new TUriagePK();
+		pk.setDenpyoNumber(domain.getDenpyoNumber());
+		pk.setKokyakuId(domain.getKokyaku().getRecordId());
+		this.delete(pk, domain.getVersion());
+	}
+
 }

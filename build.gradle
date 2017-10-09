@@ -16,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'jacoco'
 
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
@@ -55,6 +56,10 @@ dependencies {
 	testCompile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
 }
 
+jacoco {
+    toolVersion = "0.7.5.+"
+}
+
 //For Eclipse IDE only
 eclipse {
 
@@ -75,4 +80,19 @@ eclipse {
 
   	}
   }
+}
+
+// JaCoCo coverage reports
+jacoco {
+  applyTo(tasks.withType(JavaExec))
+}
+test {
+  jacoco {
+    enabled = true
+    destinationFile = file('build/reports/jacoco/jacoco.exec')
+  }
+}
+task jacocoReport(type: JacocoReport) {
+  executionData test
+  sourceSets project.sourceSets.main
 }

@@ -1,42 +1,44 @@
 package com.showka.domain.builder;
 
+import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
+import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
+import com.showka.system.EmptyProxy;
 
-/**
- * 顧客 DomainBuilder
- *
- * @author 25767
- *
- */
 public class KokyakuDomainBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<KokyakuDomain, KokyakuDomainBuilder> {
 
-	/** 顧客コード */
-	private String code;
+	// private member
+	/** code */
+	private String code = STRING_EMPTY;;
 
-	/** 顧客名 */
-	private String name;
+	/** name */
+	private String name = STRING_EMPTY;;
 
-	/** 顧客住所 */
-	private String address;
+	/** address */
+	private String address = STRING_EMPTY;
 
-	/** 顧客区分 */
-	private KokyakuKubun kokyakuKubun;
+	/** kokyakuKubun */
+	private KokyakuKubun kokyakuKubun = KokyakuKubun.EMPTY;
 
-	/** 販売区分 */
-	private HanbaiKubun hanbaiKubun;
+	/** hanbaiKubun */
+	private HanbaiKubun hanbaiKubun = HanbaiKubun.EMPTY;
 
-	/** 主幹部署ID */
-	private String shukanBushoId;
+	/** shukanBusho */
+	private BushoDomain shukanBusho = EmptyProxy.domain(BushoDomain.class);
+
+	/** nyukinKakeInfo */
+	private NyukinKakeInfoDomain nyukinKakeInfo = EmptyProxy.domain(NyukinKakeInfoDomain.class);
 
 	/** recordId */
-	private String recordId;
+	private String recordId;;
 
 	/** version */
 	private Integer version;
 
+	// protected method
 	@Override
 	protected void apply(KokyakuDomain domain, KokyakuDomainBuilder builder) {
 		builder.withCode(domain.getCode());
@@ -44,14 +46,16 @@ public class KokyakuDomainBuilder
 		builder.withAddress(domain.getAddress());
 		builder.withKokyakuKubun(domain.getKokyakuKubun());
 		builder.withHanbaiKubun(domain.getHanbaiKubun());
-		builder.withShukanBushoId(domain.getShukanBushoId());
+		builder.withShukanBusho(domain.getShukanBusho());
+		builder.withNyukinKakeInfo(domain.getNyukinKakeInfo());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected KokyakuDomain createDomainObject() {
-		KokyakuDomain domain = new KokyakuDomain(code, name, address, kokyakuKubun, hanbaiKubun, shukanBushoId);
+		KokyakuDomain domain = new KokyakuDomain(code, name, address, kokyakuKubun, hanbaiKubun, shukanBusho,
+				nyukinKakeInfo);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -77,7 +81,6 @@ public class KokyakuDomainBuilder
 	 */
 	public KokyakuDomainBuilder withCode(final String code) {
 		addConfigurator(new BuilderConfigurator<KokyakuDomainBuilder>() {
-
 			@Override
 			public void configure(KokyakuDomainBuilder builder) {
 				builder.code = code;
@@ -95,7 +98,6 @@ public class KokyakuDomainBuilder
 	 */
 	public KokyakuDomainBuilder withName(final String name) {
 		addConfigurator(new BuilderConfigurator<KokyakuDomainBuilder>() {
-
 			@Override
 			public void configure(KokyakuDomainBuilder builder) {
 				builder.name = name;
@@ -113,7 +115,6 @@ public class KokyakuDomainBuilder
 	 */
 	public KokyakuDomainBuilder withAddress(final String address) {
 		addConfigurator(new BuilderConfigurator<KokyakuDomainBuilder>() {
-
 			@Override
 			public void configure(KokyakuDomainBuilder builder) {
 				builder.address = address;
@@ -157,18 +158,34 @@ public class KokyakuDomainBuilder
 	}
 
 	/**
-	 * {@link KokyakuDomain}に与えるshukanBushoIdをこのビルダに設定する。
+	 * {@link KokyakuDomain}に与えるshukanBushoをこのビルダに設定する。
 	 *
-	 * @param shukanBushoId
-	 *            shukanBushoId
+	 * @param shukanBusho
+	 *            shukanBusho
 	 * @return {@link KokyakuDomainBuilder}
 	 */
-	public KokyakuDomainBuilder withShukanBushoId(final String shukanBushoId) {
+	public KokyakuDomainBuilder withShukanBusho(final BushoDomain shukanBusho) {
 		addConfigurator(new BuilderConfigurator<KokyakuDomainBuilder>() {
-
 			@Override
 			public void configure(KokyakuDomainBuilder builder) {
-				builder.shukanBushoId = shukanBushoId;
+				builder.shukanBusho = shukanBusho;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link KokyakuDomain}に与えるnyukinKakeInfoをこのビルダに設定する。
+	 *
+	 * @param nyukinKakeInfo
+	 *            nyukinKakeInfo
+	 * @return {@link KokyakuDomainBuilder}
+	 */
+	public KokyakuDomainBuilder withNyukinKakeInfo(final NyukinKakeInfoDomain nyukinKakeInfo) {
+		addConfigurator(new BuilderConfigurator<KokyakuDomainBuilder>() {
+			@Override
+			public void configure(KokyakuDomainBuilder builder) {
+				builder.nyukinKakeInfo = nyukinKakeInfo;
 			}
 		});
 		return getThis();

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OptimisticLockException;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
@@ -27,7 +28,6 @@ public abstract class EntityBase {
 	 */
 	@Version
 	@Column(name = "version", nullable = false, columnDefinition = "INTEGER DEFAULT 1")
-	@Setter
 	private Integer version;
 
 	/**
@@ -110,6 +110,22 @@ public abstract class EntityBase {
 				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	@Setter(AccessLevel.PROTECTED)
 	private Date update_timestamp;
+
+	/**
+	 * 
+	 * @param version
+	 */
+	public void setVersion(Integer version) {
+		if (this.version == null && version != null) {
+			throw new OptimisticLockException(
+					"OptimisticLockException!! version should be null but was <" + version + ">");
+		}
+		if (this.version != null && !this.version.equals(version)) {
+			throw new OptimisticLockException(
+					"OptimisticLockException!! expected version is <" + this.version + "> but was <" + version + ">");
+		}
+		this.version = version;
+	}
 
 	/**
 	 * 文字列化

@@ -40,7 +40,6 @@ public class TUriageMeisaiRepositoryTest extends RepositoryTestCase {
 
 		// recordId & version
 		e.setRecordId("KK01-00001-3");
-		e.setVersion(0);
 
 		// test
 		repository.save(e);

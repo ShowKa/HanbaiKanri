@@ -8,33 +8,49 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
+import com.showka.system.exception.AlreadyExistsException;
+import com.showka.system.exception.IncorrectKubunException;
+import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
 
+/**
+ * 顧客 Validate Service
+ *
+ * @author 25767
+ *
+ */
 @Service
 public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 	@Autowired
 	private MKokyakuRepository repo;
 
+	@Autowired
+	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
+
+	@Override
+	public void validateForRefer(String kokyakuCode) throws ValidateException {
+		if (!repo.existsById(kokyakuCode)) {
+			throw new NotExistException("顧客コード", kokyakuCode);
+		}
+	}
+
 	@Override
 	public void validateForRegister(KokyakuDomain domain) throws ValidateException {
 		if (repo.existsById(domain.getCode())) {
-			throw new ValidateException("既に存在する顧客コードです。");
+			throw new AlreadyExistsException("顧客コード", domain.getCode());
 		}
 	}
 
 	@Override
 	public void validate(KokyakuDomain domain) throws ValidateException {
 
-		if (domain.getKokyakuKubun().isIncludedIn(KokyakuKubun.法人)) {
-			return;
+		if (domain.getKokyakuKubun() == KokyakuKubun.個人 && domain.getHanbaiKubun() == HanbaiKubun.掛売) {
+			throw new IncorrectKubunException("販売区分", HanbaiKubun.掛売, "個人顧客は掛売できません");
 		}
-		if (domain.getKokyakuKubun().isIncludedIn(KokyakuKubun.個人)) {
-			if (domain.getHanbaiKubun().isIncludedIn(HanbaiKubun.現金)) {
-				return;
-			}
-		}
-		throw new ValidateException("個人顧客は現金払いのみです。");
-	}
 
+		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
+			nyukinKakeInfoValidateService.validate(domain.getNyukinKakeInfo());
+		}
+	}
 }
