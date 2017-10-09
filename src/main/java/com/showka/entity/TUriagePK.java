@@ -22,4 +22,16 @@ public class TUriagePK implements Serializable {
 	@Column(name = "denpyo_number", unique = false, nullable = false, length = 5)
 	private String denpyoNumber;
 
+	@Override
+	public boolean equals(Object pk) {
+		if (this == pk) {
+			return true;
+		}
+		if (!(pk instanceof TUriagePK)) {
+			return false;
+		}
+		TUriagePK p = (TUriagePK) pk;
+		return kokyakuId.equals(p.getKokyakuId()) && denpyoNumber.equals(p.getDenpyoNumber());
+	}
+
 }

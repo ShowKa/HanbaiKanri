@@ -11,6 +11,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
+import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.EmptyException;
 import com.showka.system.exception.ValidateException;
 
@@ -43,7 +44,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 		pk.setKokyakuId(domain.getKokyaku().getRecordId());
 		boolean exists = uriageRepo.existsById(pk);
 		if (exists) {
-			// AlreadyExistsException
+			throw new AlreadyExistsException("売上伝票", domain.getDenpyoNumber());
 		}
 	}
 
