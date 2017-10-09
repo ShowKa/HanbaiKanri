@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.ShohinDomain;
@@ -15,7 +16,7 @@ import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.repository.i.TUriageMeisaiRepository;
 
-public class TUriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
+public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Autowired
 	private UriageMeisaiCrudServiceImpl service;
@@ -85,6 +86,7 @@ public class TUriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	@Test
+	@Transactional
 	public void test03_getDomain() {
 
 		// set pk
@@ -135,24 +137,6 @@ public class TUriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 
 		// check
 		assertFalse(actual);
-	}
-
-	@Test
-	public void test06_delte() {
-		// set pk
-		TUriageMeisaiPK pk = new TUriageMeisaiPK();
-		String uriageId = "KK01-00001";
-		Integer meisaiNumber = 1;
-		pk.setUriageId(uriageId);
-		pk.setMeisaiNumber(meisaiNumber);
-
-		// do
-		UriageMeisaiDomain d = service.getDomain(pk);
-
-		// check
-		assertTrue(service.exsists(pk));
-		service.delete(d);
-		assertFalse(service.exsists(pk));
 	}
 
 }

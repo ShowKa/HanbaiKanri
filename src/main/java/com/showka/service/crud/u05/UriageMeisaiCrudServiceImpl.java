@@ -11,7 +11,7 @@ import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.repository.i.TUriageMeisaiRepository;
-import com.showka.service.crud.u05.i.TUriageMeisaiCrudService;
+import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
 
 /**
@@ -21,7 +21,7 @@ import com.showka.service.crud.z00.i.MShohinCrudService;
  *
  */
 @Service
-public class TUriageMeisaiCrudServiceImpl implements TUriageMeisaiCrudService {
+public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 
 	/**
 	 * 売上明細リポジトリ.
