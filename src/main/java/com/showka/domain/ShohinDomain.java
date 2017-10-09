@@ -13,13 +13,13 @@ public class ShohinDomain extends DomainBase {
 
 	// private member
 	/** 商品コード. */
-	private String code = STRING_EMPTY;
+	private String code;
 
 	/** 商品名. */
-	private String name = STRING_EMPTY;
+	private String name;
 
 	/** 商品標準単価. */
-	private BigDecimal hyojunTanka = BigDecimal.ZERO;
+	private BigDecimal hyojunTanka;
 
 	@Override
 	public void validate() throws SystemException {

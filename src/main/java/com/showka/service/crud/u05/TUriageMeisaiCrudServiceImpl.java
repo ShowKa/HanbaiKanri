@@ -65,7 +65,7 @@ public class TUriageMeisaiCrudServiceImpl implements TUriageMeisaiCrudService {
 	 */
 	@Override
 	public void delete(TUriageMeisaiPK pk, Integer version) {
-		TUriageMeisai entity = new TUriageMeisai();
+		TUriageMeisai entity = repo.getOne(pk);
 		entity.setPk(pk);
 		entity.setVersion(version);
 		repo.delete(entity);
@@ -104,6 +104,14 @@ public class TUriageMeisaiCrudServiceImpl implements TUriageMeisaiCrudService {
 	@Override
 	public boolean exsists(TUriageMeisaiPK pk) {
 		return repo.findById(pk).isPresent();
+	}
+
+	@Override
+	public void delete(UriageMeisaiDomain domain) {
+		TUriageMeisaiPK pk = new TUriageMeisaiPK();
+		pk.setUriageId(domain.getUriageId());
+		pk.setMeisaiNumber(domain.getMeisaiNumber());
+		this.delete(pk, domain.getVersion());
 	}
 
 }
