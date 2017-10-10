@@ -16,6 +16,9 @@ public class U05G002MeisaiForm extends FormBase {
 	 */
 	private static final long serialVersionUID = 8827535996218492194L;
 
+	/** 明細番号. */
+	private Integer meisaiNumber;
+
 	/** 商品ID. */
 	private String shohinCode;
 
@@ -24,4 +27,10 @@ public class U05G002MeisaiForm extends FormBase {
 
 	/** 商品販売単価. */
 	private Integer hanbaiTanka;
+
+	/** record_id */
+	private String recordId;
+
+	/** version. */
+	private Integer version;
 }

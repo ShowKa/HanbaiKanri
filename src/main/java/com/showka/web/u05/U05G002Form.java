@@ -34,4 +34,10 @@ public class U05G002Form extends FormBase {
 	/** 売上明細. */
 	private List<U05G002MeisaiForm> meisai;
 
+	/** record_id */
+	private String recordId;
+
+	/** version. */
+	private Integer version;
+
 }
