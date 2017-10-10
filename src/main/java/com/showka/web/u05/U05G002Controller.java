@@ -93,15 +93,63 @@ public class U05G002Controller {
 	@RequestMapping(value = "/u05g002/register", method = RequestMethod.GET)
 	public ModelAndViewExtended register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
+		// domain
+		UriageDomain uriage = buildDomainFromForm(form);
+
+		// validate
+		uriageValidateService.validateForRegister(uriage);
+		uriageValidateService.validate(uriage);
+
+		// save
+		uriageCrudService.save(uriage);
+
+		// set model
+		model.addForm(form);
+		model.setMode(Mode.REGISTER);
+		model.setViewName("/u05/u05g002");
+		return model;
+	}
+
+	/**
+	 * 登録
+	 *
+	 */
+	@RequestMapping(value = "/u05g002/update", method = RequestMethod.GET)
+	public ModelAndViewExtended update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+
+		// domain
+		UriageDomain uriage = buildDomainFromForm(form);
+
+		// validate
+		uriageValidateService.validate(uriage);
+
+		// save
+		uriageCrudService.save(uriage);
+
+		// set model
+		model.addForm(form);
+		model.setMode(Mode.REGISTER);
+		model.setViewName("/u05/u05g002");
+		return model;
+	}
+
+	/**
+	 * form から domain を生成する.
+	 * 
+	 * @param form
+	 * @return
+	 */
+	private UriageDomain buildDomainFromForm(U05G002Form form) {
+
 		// record_id 採番
-		form.setRecordId(UUID.randomUUID().toString());
+		form.setRecordId(form.getRecordId() == null ? UUID.randomUUID().toString() : form.getRecordId());
 
 		// 売上明細
 		List<UriageMeisaiDomain> uriageMeisaiList = new ArrayList<UriageMeisaiDomain>();
 		for (U05G002MeisaiForm mf : form.getMeisai()) {
 
 			// record_id 採番
-			mf.setRecordId(UUID.randomUUID().toString());
+			mf.setRecordId(mf.getRecordId() == null ? UUID.randomUUID().toString() : mf.getRecordId());
 
 			// build
 			UriageMeisaiDomainBuilder mb = new UriageMeisaiDomainBuilder();
@@ -134,16 +182,6 @@ public class U05G002Controller {
 		ub.withKokyaku(kokyaku);
 		UriageDomain uriage = ub.build();
 
-		// validate
-		uriageValidateService.validate(uriage);
-
-		// save
-		uriageCrudService.save(uriage);
-
-		// set model
-		model.addForm(form);
-		model.setMode(Mode.REGISTER);
-		model.setViewName("/u05/u05g002");
-		return model;
+		return uriage;
 	}
 }
