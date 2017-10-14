@@ -49,7 +49,7 @@ public class U05G002Controller {
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
 
 	/**
-	 * 参照モード初期表示
+	 * 参照.
 	 *
 	 */
 	@RequestMapping(value = "/u05g002/refer", method = RequestMethod.GET)
@@ -87,7 +87,7 @@ public class U05G002Controller {
 	}
 
 	/**
-	 * 登録
+	 * 登録.
 	 *
 	 */
 	@RequestMapping(value = "/u05g002/register", method = RequestMethod.GET)
@@ -111,7 +111,7 @@ public class U05G002Controller {
 	}
 
 	/**
-	 * 登録
+	 * 更新.
 	 *
 	 */
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.GET)
