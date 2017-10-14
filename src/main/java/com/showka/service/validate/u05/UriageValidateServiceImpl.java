@@ -3,6 +3,7 @@ package com.showka.service.validate.u05;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.showka.domain.UriageDomain;
@@ -15,6 +16,7 @@ import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.EmptyException;
 import com.showka.system.exception.ValidateException;
 
+@Service
 public class UriageValidateServiceImpl implements UriageValidateService {
 
 	@Autowired
