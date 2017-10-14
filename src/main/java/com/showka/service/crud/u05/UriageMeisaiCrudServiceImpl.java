@@ -1,8 +1,11 @@
 package com.showka.service.crud.u05;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.ShohinDomain;
@@ -112,6 +115,28 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		pk.setUriageId(domain.getUriageId());
 		pk.setMeisaiNumber(domain.getMeisaiNumber());
 		this.delete(pk, domain.getVersion());
+	}
+
+	@Override
+	public List<UriageMeisaiDomain> getDomainList(String uriageId) {
+
+		// 売上IDで検索
+		TUriageMeisai e = new TUriageMeisai();
+		TUriageMeisaiPK pk = new TUriageMeisaiPK();
+		pk.setUriageId(uriageId);
+		e.setPk(pk);
+		Example<TUriageMeisai> example = Example.of(e);
+
+		// 明細
+		List<TUriageMeisai> meisaiList = repo.findAll(example);
+
+		// ドメイン取得
+		List<UriageMeisaiDomain> meisaiDomainList = new ArrayList<UriageMeisaiDomain>();
+		for (TUriageMeisai meisai : meisaiList) {
+			UriageMeisaiDomain md = this.getDomain(meisai.getPk());
+			meisaiDomainList.add(md);
+		}
+		return meisaiDomainList;
 	}
 
 }

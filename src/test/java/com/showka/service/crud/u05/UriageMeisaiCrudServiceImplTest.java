@@ -1,6 +1,7 @@
 package com.showka.service.crud.u05;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.Test;
@@ -137,6 +138,19 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 
 		// check
 		assertFalse(actual);
+	}
+
+	@Test
+	public void test06_getDomainList() throws Exception {
+
+		// param
+		String uriageId = "KK01-00001";
+
+		// do
+		List<UriageMeisaiDomain> actual = service.getDomainList(uriageId);
+
+		// check
+		assertEquals(2, actual.size());
 	}
 
 }
