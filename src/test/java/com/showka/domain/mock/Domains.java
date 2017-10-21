@@ -2,6 +2,7 @@ package com.showka.domain.mock;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
@@ -33,7 +34,7 @@ public class Domains {
 				.withBushoKubun(BushoKubun.営業所)
 				.withJigyoKubun(JigyoKubun.販売)
 				.withName("部署01")
-				.withRecordId("BS01")
+				.withRecordId("r-BS01")
 				.build();
 	}
 
@@ -49,16 +50,29 @@ public class Domains {
 				.build();
 	}
 
+	// 顧客
+	/**
+	 * table name
+	 */
+	public static final String M_KOKYAKU_TABLE = "m_kokyaku";
+
+	/**
+	 * columns
+	 */
+	public static final String[] M_KOKYAKU_COLUMN = { "code", "name", "address", "kokyaku_kubun", "hanbai_kubun",
+			"shukan_busho_id", "record_id" };
+
 	/** 顧客01. */
+	public static final Object[] KOKYAKU01 = { "KK01", "顧客01", "左京区", "01", "00", "r-BS01", "r-KK01" };
 	public static final KokyakuDomain kokyaku01;
 	static {
 		KokyakuDomainBuilder b = new KokyakuDomainBuilder();
 		kokyaku01 = b.withCode("KK01")
 				.withName("顧客01")
-				.withCode("左京区")
+				.withAddress("左京区")
 				.withKokyakuKubun(KokyakuKubun.法人)
 				.withHanbaiKubun(HanbaiKubun.現金)
-				.withRecordId("KK01")
+				.withRecordId("r-KK01")
 				.build();
 	}
 
@@ -92,11 +106,8 @@ public class Domains {
 	public static final ShohinDomain shohin01;
 	static {
 		ShohinDomainBuilder b = new ShohinDomainBuilder();
-		shohin01 = b.withCode("SH01")
-				.withName("商品SH01")
-				.withHyojunTanka(BigDecimal.valueOf(1000))
-				.withRecordId("SH01")
-				.build();
+		b.withCode("SH01").withName("商品SH01").withHyojunTanka(BigDecimal.valueOf(1000)).withRecordId("SH01");
+		shohin01 = b.build();
 	}
 
 	/** 商品02. */
@@ -110,30 +121,43 @@ public class Domains {
 				.build();
 	}
 
+	// 売上明細ドメイン
+	/**
+	 * table name
+	 */
+	public static final String T_URIAGE_MEISAI_TABLE = "t_uriage_meisai";
+
+	/**
+	 * columns
+	 */
+	public static final String[] T_URIAGE_MEISAI_COLUMN = { "uriage_id", "meisai_number", "shohin_id", "hanbai_number",
+			"hanbai_tanka", "record_id" };
+
 	/** 売上明細01. */
+	public static final Object[] URIAGE_MEISAI_01 = { "r-KK01-00001", 1, "r-SH01", 5, 1000, "r-KK01-00001-1" };
 	public static final UriageMeisaiDomain uriageMeisai01;
 	static {
 		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
-		uriageMeisai01 = b.withUriageId("KK01-00001")
+		b.withUriageId("KK01-00001")
 				.withMeisaiNumber(1)
 				.withShohinDomain(shohin01)
 				.withHanbaiNumber(5)
 				.withHanbaiTanka(BigDecimal.valueOf(1000))
-				.withRecordId("KK01-00001-1")
-				.build();
+				.withRecordId("KK01-00001-1");
+		uriageMeisai01 = b.build();
 	}
 
 	/** 売上明細02. */
+	public static final Object[] URIAGE_MEISAI_02 = { "r-KK01-00001", 2, "r-SH02", 5, 1001, "r-KK01-00001-2" };
 	public static final UriageMeisaiDomain uriageMeisai02;
 	static {
 		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
-		uriageMeisai02 = b.withUriageId("KK01-00001")
-				.withMeisaiNumber(2)
+		b.withMeisaiNumber(1)
 				.withShohinDomain(shohin02)
 				.withHanbaiNumber(5)
-				.withHanbaiTanka(BigDecimal.valueOf(1001))
-				.withRecordId("KK01-00001-2")
-				.build();
+				.withHanbaiTanka(BigDecimal.valueOf(1000))
+				.withRecordId("KK01-00001-1");
+		uriageMeisai02 = b.build();
 	}
 
 	/** 売上明細03. */
@@ -163,7 +187,19 @@ public class Domains {
 	}
 
 	// 売上ドメイン
+	/**
+	 * table name
+	 */
+	public static final String T_URIAGE_TABLE = "t_uriage";
+
+	/**
+	 * columns
+	 */
+	public static final String[] T_URIAGE_COLUMN = { "kokyaku_id", "denpyo_number", "uriage_date", "hanbai_kubun",
+			"shohizeiritsu", "record_id" };
+
 	/** 売上01. */
+	private static final Object[] URIAGE_01 = { "r-KK01", "00001", new Date(2017, 8, 20), "00", 0.08, "r-KK01-00001" };
 	public static final UriageDomain uriage01;
 	static {
 		UriageDomainBuilder b = new UriageDomainBuilder();
