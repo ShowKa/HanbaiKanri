@@ -68,6 +68,14 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 			uriageMeisaiCrudService.save(meisai);
 		}
 
+		// delete old
+		List<UriageMeisaiDomain> oldMeisaiList = uriageMeisaiCrudService.getDomainList(domain.getRecordId());
+		for (UriageMeisaiDomain old : oldMeisaiList) {
+			if (!domain.getUriageMeisai().contains(old)) {
+				uriageMeisaiCrudService.delete(old);
+			}
+		}
+
 		// set 顧客
 		MKokyaku kokyaku = kokyakuRepo.findByRecordId(domain.getKokyaku().getRecordId());
 		e.setKokyaku(kokyaku);
@@ -82,7 +90,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Override
 	public void delete(TUriagePK pk, Integer version) {
-		TUriage entity = new TUriage();
+		TUriage entity = repo.getOne(pk);
 		entity.setPk(pk);
 		entity.setVersion(version);
 		repo.delete(entity);
