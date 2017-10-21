@@ -136,6 +136,18 @@ public abstract class ServiceCrudTestCase extends TestCase {
 		dbSetup.launch();
 	}
 
+	/**
+	 * insert records after delete table
+	 * 
+	 * @param tableName
+	 * @param columns
+	 * @param valuses
+	 */
+	public void deleteAndInsert(String tableName, String[] columns, Object[]... values) {
+		this.deleteAll(tableName);
+		this.insert(tableName, columns, values);
+	}
+
 	@Before
 	public void setup() {
 		dbSetUp(Operations.sequenceOf(Operations.sql("SET FOREIGN_KEY_CHECKS = 0")));
