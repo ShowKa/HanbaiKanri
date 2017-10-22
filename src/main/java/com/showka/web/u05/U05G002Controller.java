@@ -72,6 +72,7 @@ public class U05G002Controller {
 		List<U05G002MeisaiForm> meisaiList = new ArrayList<U05G002MeisaiForm>();
 		for (UriageMeisaiDomain meisai : u.getUriageMeisai()) {
 			U05G002MeisaiForm e = new U05G002MeisaiForm();
+			e.setMeisaiNumber(meisai.getMeisaiNumber());
 			e.setHanbaiNumber(meisai.getHanbaiNumber());
 			e.setHanbaiTanka(meisai.getHanbaiTanka().intValue());
 			e.setShohinCode(meisai.getShohinDomain().getCode());
