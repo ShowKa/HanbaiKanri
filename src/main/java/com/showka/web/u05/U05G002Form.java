@@ -3,6 +3,8 @@ package com.showka.web.u05;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.showka.web.FormBase;
 
 import lombok.Getter;
@@ -26,6 +28,7 @@ public class U05G002Form extends FormBase {
 	private String denpyoNumber;
 
 	/** 売上日. */
+	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date uriageDate;
 
 	/** 販売区分. */
