@@ -58,11 +58,11 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="m:${form.meisai}">
-									<td th:text="${m.meisaiNumber}"></td>
-									<td th:text="${m.shohinCode}"></td>
-									<td th:text="${m.hanbaiNumber}"></td>
-									<td th:text="${m.hanbaiTanka}"></td>
+								<tr th:each="m, stat:${form.meisai}">
+									<td><input th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__][meisaiNumber]" type="text" /></td>
+									<td><input th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__][shohinCode]" type="text" /></td>
+									<td><input th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__][hanbaiNumber]" type="text" /></td>
+									<td><input th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__][hanbaiNumber]" type="text" /></td>
 								</tr>
 							</tbody>
 						</table>
