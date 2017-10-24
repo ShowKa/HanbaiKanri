@@ -63,17 +63,17 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		// save
 		repo.saveAndFlush(e);
 
-		// save 明細
-		for (UriageMeisaiDomain meisai : domain.getUriageMeisai()) {
-			uriageMeisaiCrudService.save(meisai);
-		}
-
 		// delete old
 		List<UriageMeisaiDomain> oldMeisaiList = uriageMeisaiCrudService.getDomainList(domain.getRecordId());
 		for (UriageMeisaiDomain old : oldMeisaiList) {
 			if (!domain.getUriageMeisai().contains(old)) {
 				uriageMeisaiCrudService.delete(old);
 			}
+		}
+
+		// save 明細
+		for (UriageMeisaiDomain meisai : domain.getUriageMeisai()) {
+			uriageMeisaiCrudService.save(meisai);
 		}
 
 		// set 顧客

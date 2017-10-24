@@ -13,7 +13,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<form class="form-horizontal" method="post">
+					<form id="urageDenpyo" class="form-horizontal" method="post">
 						<div class="formden_header">
 							<h4>売上伝票</h4>
 						</div>
@@ -59,10 +59,10 @@
 							</thead>
 							<tbody>
 								<tr th:each="m, stat:${form.meisai}">
-									<td><input th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__][meisaiNumber]" type="text" /></td>
-									<td><input th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__][shohinCode]" type="text" /></td>
-									<td><input th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__][hanbaiNumber]" type="text" /></td>
-									<td><input th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__][hanbaiNumber]" type="text" /></td>
+									<td><input th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__].meisaiNumber" type="text" /></td>
+									<td><input th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__].shohinCode" type="text" /></td>
+									<td><input th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__].hanbaiNumber" type="text" /></td>
+									<td><input th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__].hanbaiTanka" type="text" /></td>
 								</tr>
 							</tbody>
 						</table>

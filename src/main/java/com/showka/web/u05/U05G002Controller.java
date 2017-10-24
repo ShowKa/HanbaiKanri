@@ -7,7 +7,9 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -91,8 +93,13 @@ public class U05G002Controller {
 	 * 登録.
 	 *
 	 */
-	@RequestMapping(value = "/u05g002/register", method = RequestMethod.GET)
-	public ModelAndViewExtended register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+	@Transactional
+	@RequestMapping(value = "/u05g002/register", method = RequestMethod.POST)
+	public ResponseEntity<?> register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+
+		// set id
+		form.setRecordId(UUID.randomUUID().toString());
+		form.getMeisai().forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
 
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
@@ -104,11 +111,10 @@ public class U05G002Controller {
 		// save
 		uriageCrudService.save(uriage);
 
-		// set model
+		// jump refer
+		form.setSuccessMessage("登録成功");
 		model.addForm(form);
-		model.setMode(Mode.REGISTER);
-		model.setViewName("/u05/u05g002");
-		return model;
+		return ResponseEntity.ok(model);
 	}
 
 	/**
