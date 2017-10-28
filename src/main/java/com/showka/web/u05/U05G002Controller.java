@@ -50,6 +50,26 @@ public class U05G002Controller {
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
 
+	// public method called by request
+	/**
+	 * 登録モード初期表示
+	 *
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u05g002/registerForm", method = RequestMethod.GET)
+	public ModelAndViewExtended registerForm(ModelAndViewExtended model) {
+		// すっからかんのフォームを表示する
+		model.addForm(new U05G002Form());
+
+		// モード
+		model.setMode(Mode.REGISTER);
+
+		// view
+		model.setViewName("/u05/u05g002");
+		return model;
+	}
+
 	/**
 	 * 参照.
 	 *
