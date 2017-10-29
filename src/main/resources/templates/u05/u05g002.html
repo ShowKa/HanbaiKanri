@@ -48,24 +48,27 @@
 						<div class="formden_header">
 							<h4>明細</h4>
 						</div>
-						<table class="table table-striped">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>商品コード</th>
-									<th>売上数</th>
-									<th>販売単価</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="m, stat:${form.meisai}">
-									<td><input th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__].meisaiNumber" type="text" /></td>
-									<td><input th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__].shohinCode" type="text" /></td>
-									<td><input th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__].hanbaiNumber" type="text" /></td>
-									<td><input th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__].hanbaiTanka" type="text" /></td>
-								</tr>
-							</tbody>
-						</table>
+
+						<div id="table" class="table-editable">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>商品コード</th>
+										<th>売上数</th>
+										<th>販売単価</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="m, stat:${form.meisai}">
+										<td><input th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__].meisaiNumber" type="text" /></td>
+										<td><input th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__].shohinCode" type="text" /></td>
+										<td><input th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__].hanbaiNumber" type="text" /></td>
+										<td><input th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__].hanbaiTanka" type="text" /></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
 						<div class="form-group">
 							<div class="col-sm-1 col-sm-offset-3">
@@ -77,6 +80,51 @@
 							</div>
 						</div>
 					</form>
+
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo">
+						明細</button>
+
+					<th:block th:each="m, stat:${form.meisai}">
+						<div class="modal fade" th:id="exampleModal__${stat.index}__" tabindex="-1" role="dialog"
+							aria-labelledby="modalLabel" aria-hidden="true">
+							<div class="modal-dialog" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="modalLabel">売上明細</h5>
+									</div>
+									<div class="modal-body">
+										<form>
+											<div class="form-group form-group-sm">
+												<label class="control-label" for="meisaiNumber"> 明細番号 </label>
+												<input class="form-control" th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__].meisaiNumber" type="text" />
+											</div>		
+											<div class="form-group form-group-sm">
+												<label class="control-label" for="shohinCode"> 商品コード </label>
+												<input class="form-control"
+													th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__].shohinCode" type="text" />
+											</div>
+											<div class="form-group form-group-sm">
+												<label class="control-label" for="shohinCode"> 販売数 </label>
+												<input class="form-control"
+													th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__].hanbaiNumber" type="text" />
+											</div>
+											<div class="form-group form-group-sm">
+												<label class="control-label" for="shohinCode"> 販売単価 </label>
+												<input class="form-control"
+													th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__].hanbaiTanka" type="text" />
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-primary">Send message</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</th:block>
+
+
 				</div>
 			</div>
 		</div>
