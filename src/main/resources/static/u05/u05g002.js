@@ -18,3 +18,15 @@ function update() {
 $(document).ready(function() {
 	swithElementActivationByMode();
 });
+
+$(document).ready(function() {
+	$("#uriageMeisai").on("dblclick", "tbody tr", function() {
+		var $row = $(this);
+		var row_number = $row.attr("row_number");
+		$("#exampleModal" + row_number).modal("show");
+	});
+});
+
+function registerMeisai() {
+	alert("登録");
+}
