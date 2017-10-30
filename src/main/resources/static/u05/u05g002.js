@@ -27,6 +27,13 @@ $(document).ready(function() {
 	});
 });
 
-function registerMeisai() {
-	alert("登録");
+function registerMeisai(index) {
+	var $table = $("#exampleModal" + index);
+	var selector = "meisai" + selectorEscape("[" + index + "].")
+			+ "meisaiNumber";
+	var $meisaiNumber = $table.findByName(selector);
+}
+
+function selectorEscape(val) {
+	return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
 }

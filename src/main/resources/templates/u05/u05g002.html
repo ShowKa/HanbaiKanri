@@ -82,7 +82,6 @@
 														th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__].meisaiNumber" type="text" />
 												</div>
 											</div>
-
 											<div class="row">
 												<div class="col-md-12">
 													<label class="control-label" for="shohinCode"> 商品コード </label> <input class="form-control"
@@ -103,7 +102,7 @@
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-												<button type="button" class="btn btn-primary" onclick="registerMeisai();">登録</button>
+												<button type="button" class="btn btn-primary" th:attr="onclick='registerMeisai(' + ${stat.index} + ');'">登録</button>
 											</div>
 										</div>
 									</div>
