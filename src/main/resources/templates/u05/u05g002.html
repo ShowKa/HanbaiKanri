@@ -59,8 +59,8 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="m, stat:${form.meisai}" th:row_number="${stat.index}">
-									<td th:text="${m.meisaiNumber}" />
+								<tr th:each="m, stat:${form.meisai}" th:index="${stat.index}">
+									<td column="meisaiNumber" th:text="${m.meisaiNumber}" />
 									<td th:text="${m.shohinCode}" />
 									<td th:text="${m.hanbaiNumber}" />
 									<td th:text="${m.hanbaiTanka}" />
@@ -68,8 +68,8 @@
 							</tbody>
 						</table>
 						<th:block th:each="m, stat:${form.meisai}">
-							<div class="modal fade" th:id="exampleModal__${stat.index}__" tabindex="-1" role="dialog"
-								aria-labelledby="modalLabel" aria-hidden="true">
+							<div class="modal fade uriageMeisaiModal" th:index="__${stat.index}__" th:id="uriageMeisai__${stat.index}__"
+								tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
 								<div class="modal-dialog" role="document">
 									<div class="modal-content">
 										<div class="modal-header">

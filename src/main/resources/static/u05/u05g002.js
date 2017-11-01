@@ -19,19 +19,47 @@ $(document).ready(function() {
 	swithElementActivationByMode();
 });
 
-$(document).ready(function() {
-	$("#uriageMeisai").on("dblclick", "tbody tr", function() {
-		var $row = $(this);
-		var row_number = $row.attr("row_number");
-		$("#exampleModal" + row_number).modal("show");
-	});
-});
+$(document).ready(
+		function() {
+			// double click
+			$("#uriageMeisai").on("dblclick", "tbody tr", function() {
+				var $row = $(this);
+				var index = $row.attr("index");
+				$("#uriageMeisai" + index).modal("show");
+			});
+
+			// registered
+			$(".uriageMeisaiModal").on(
+					"success.register.modal",
+					function() {
+						// get value
+						var $this = $(this);
+						var index = $this.attr("index");
+						var $meisaiNumber = $this.findByName(selector("meisaiNumber"));
+
+						// table
+						var $table = $("#uriageMeisai");
+						var $row = $table.find("[index=" + index + "]");
+						$row.find("[column=meisaiNumber]").text($meisaiNumber.val());
+						
+						function selector(name) {
+							return "meisai"
+							+ selectorEscape("[" + index + "].")
+							+ name;
+						}
+					});
+		});
 
 function registerMeisai(index) {
-	var $table = $("#exampleModal" + index);
+	var $table = $("#uriageMeisai" + index);
 	var selector = "meisai" + selectorEscape("[" + index + "].")
 			+ "meisaiNumber";
 	var $meisaiNumber = $table.findByName(selector);
+
+	// validate
+
+	// trigger event
+	$table.trigger("success.register.modal");
 }
 
 function selectorEscape(val) {
