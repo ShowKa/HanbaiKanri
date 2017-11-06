@@ -55,6 +55,7 @@ function crud(param) {
 	$.each($form.serializeArray(), function(_, kv) {
 		data[kv.name] = kv.value;
 	});
+	alert(data);
 	
 	// post
 	$.ajax({
@@ -100,6 +101,28 @@ function crud(param) {
 			$("html").html(data.responseText);
 		}
 	});
+}
+
+function validate(param) {
+	// set parameters
+	var url = param.url;
+	var targetId = param.targetId;
+	
+	var $inputs = $("#" + targetId).find("[name]");
+	var data = {};
+	$inputs.each(function() {
+		data[this.name] = this.value;
+	});
+	
+	console.log(data);
+	
+	$.ajax({
+		type : "POST",
+		url : url,
+		dataType : "json",
+		data: data
+	});
+	
 }
 
 /**

@@ -211,4 +211,16 @@ public class U05G002Controller {
 
 		return uriage;
 	}
+
+	/**
+	 * 更新.
+	 *
+	 */
+	@RequestMapping(value = "/u05g002/validateMeisai", method = RequestMethod.POST)
+	public ModelAndViewExtended validateMeisai(@ModelAttribute ArrayList<U05G002MeisaiForm> form,
+			ModelAndViewExtended model) {
+		System.out.println(form);
+		model.setViewName("/u05/u05g002");
+		return model;
+	}
 }

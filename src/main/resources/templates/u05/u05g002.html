@@ -61,9 +61,9 @@
 							<tbody>
 								<tr th:each="m, stat:${form.meisai}" th:index="${stat.index}">
 									<td column="meisaiNumber" th:text="${m.meisaiNumber}" />
-									<td th:text="${m.shohinCode}" />
-									<td th:text="${m.hanbaiNumber}" />
-									<td th:text="${m.hanbaiTanka}" />
+									<td column="shohinCode" th:text="${m.shohinCode}" />
+									<td column="hanbaiNumber" th:text="${m.hanbaiNumber}" />
+									<td column="hanbaiTanka" th:text="${m.hanbaiTanka}" />
 								</tr>
 							</tbody>
 						</table>
@@ -101,7 +101,7 @@
 												</div>
 											</div>
 											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+												<button type="button" class="btn btn-secondary" th:attr="onclick='dismiss(' + ${stat.index} + ');'">閉じる</button>
 												<button type="button" class="btn btn-primary" th:attr="onclick='registerMeisai(' + ${stat.index} + ');'">登録</button>
 											</div>
 										</div>
