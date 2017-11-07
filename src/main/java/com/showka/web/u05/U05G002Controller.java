@@ -217,8 +217,7 @@ public class U05G002Controller {
 	 *
 	 */
 	@RequestMapping(value = "/u05g002/validateMeisai", method = RequestMethod.POST)
-	public ModelAndViewExtended validateMeisai(@ModelAttribute ArrayList<U05G002MeisaiForm> form,
-			ModelAndViewExtended model) {
+	public ModelAndViewExtended validateMeisai(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		System.out.println(form);
 		model.setViewName("/u05/u05g002");
 		return model;

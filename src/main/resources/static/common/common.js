@@ -55,7 +55,6 @@ function crud(param) {
 	$.each($form.serializeArray(), function(_, kv) {
 		data[kv.name] = kv.value;
 	});
-	alert(data);
 	
 	// post
 	$.ajax({
@@ -106,15 +105,30 @@ function crud(param) {
 function validate(param) {
 	// set parameters
 	var url = param.url;
-	var targetId = param.targetId;
-	
-	var $inputs = $("#" + targetId).find("[name]");
+	var detailName = param.detail.name;
+	var detailIndex = param.detail.index;
+
+	var $form;
+	if (param.form instanceof String) {
+		$form = $(param.form);
+	} else {
+		$form = param.form;
+	}
+
+	var $clonedForm = $form.clone();
+	var $inputs = $clonedForm.find("[name]");
 	var data = {};
+	var reg = new RegExp("^" + detailName + "\\[\\d\\]");
+	var regStrictly = new RegExp("^" + detailName + "\\[" + detailIndex + "\\]");
 	$inputs.each(function() {
-		data[this.name] = this.value;
+		if (this.name.match(reg)) {
+			if (this.name.match(regStrictly)) {
+				data[this.name] = this.value;
+			}
+		} else {
+			data[this.name] = this.value;
+		}
 	});
-	
-	console.log(data);
 	
 	$.ajax({
 		type : "POST",

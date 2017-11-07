@@ -71,7 +71,11 @@ function registerMeisai(index) {
 	// validate
 	validate({
 		url: "/u05g002/validateMeisai",
-		targetId : $this[0].id
+		form : $("#urageDenpyo"),
+		detail : {
+			name : "meisai",
+			index : index
+		}
 	});
 
 	// trigger event
