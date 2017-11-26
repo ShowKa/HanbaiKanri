@@ -91,10 +91,11 @@ function crud(param) {
 		},
 		error : function(data, status, xhr) {
 			if (data.status === 400) {
-				showErroeMessage(data.responseText);
+				console.log(data);
+				showErroeMessage(data.responseJSON.message);
 				return;
 			} else if (data.status === 409) {
-				showErroeMessage(data.responseText);
+				showErroeMessage(data.responseJSON.message);
 				return;
 			}
 			$("html").html(data.responseText);
