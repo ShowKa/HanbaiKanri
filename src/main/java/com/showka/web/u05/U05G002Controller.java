@@ -2,6 +2,7 @@ package com.showka.web.u05;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +26,7 @@ import com.showka.kubun.i.Kubun;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -37,6 +39,9 @@ public class U05G002Controller {
 
 	@Autowired
 	private KokyakuCrudService kokyakuCrudService;
+
+	@Autowired
+	private KokyakuValidateService kokyakuValidateService;
 
 	@Autowired
 	private UriageCrudService uriageCrudService;
@@ -60,7 +65,10 @@ public class U05G002Controller {
 	@RequestMapping(value = "/u05g002/registerForm", method = RequestMethod.GET)
 	public ModelAndViewExtended registerForm(ModelAndViewExtended model) {
 		// すっからかんのフォームを表示する
-		model.addForm(new U05G002Form());
+		U05G002Form form = new U05G002Form();
+		form.setUriageDate(new Date());
+		form.setDenpyoNumber("00000");
+		model.addForm(form);
 
 		// モード
 		model.setMode(Mode.REGISTER);
@@ -213,13 +221,15 @@ public class U05G002Controller {
 	}
 
 	/**
-	 * 更新.
+	 * 明細Validate.
 	 *
 	 */
 	@RequestMapping(value = "/u05g002/validateMeisai", method = RequestMethod.POST)
-	public ModelAndViewExtended validateMeisai(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-		System.out.println(form);
-		model.setViewName("/u05/u05g002");
-		return model;
+	public ResponseEntity<?> validateMeisai(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+		kokyakuValidateService.validateForRefer(form.getKokyakuCode());
+		UriageDomain d = buildDomainFromForm(form);
+		uriageValidateService.validate(d);
+		model.addForm(form);
+		return ResponseEntity.ok(model);
 	}
 }

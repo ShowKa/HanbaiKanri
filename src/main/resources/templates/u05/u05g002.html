@@ -5,12 +5,12 @@
 <link th:replace="common/head :: common_link" />
 <script th:inline="javascript" src="/u05/u05g002.js"></script>
 </head>
-<body>
+<body ng-app="App">
 	<div th:replace="common/header :: common_header"></div>
 	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
 
 	<div class="bootstrap-iso">
-		<div class="container">
+		<div class="container" ng-controller="MainController">
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<form id="urageDenpyo" class="form-horizontal" method="post">
@@ -20,28 +20,30 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="kokyakuCode"> 顧客コード </label>
 							<div class="col-sm-9">
-								<input th:field="${form.kokyakuCode}" class="form-control" id="kokyakuCode" name="kokyakuCode" type="text" />
+								<input th:field="${form.kokyakuCode}" class="form-control" id="kokyakuCode" name="kokyakuCode" type="text"
+									ng-model="kokyakuCode" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="denpyoNumber"> 伝票番号 </label>
 							<div class="col-sm-9">
 								<input th:field="${form.denpyoNumber}" class="form-control" id="denpyoNumber" name="denpyoNumber"
-									placeholder="00000" type="text" />
+									placeholder="00000" type="text" ng-model="denpyoNumber" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="uriageDate"> 売上日 </label>
 							<div class="col-sm-9">
-								<input th:field="${form.uriageDate}" class="form-control" id="uriageDate" name="uriageDate"
-									placeholder="YYYY/MM/DD" type="text" />
+								<input th:attr="ng-init = 'uriageDate = __${form.uriageDate}__'" class="form-control" id="uriageDate" name="uriageDate"
+									placeholder="YYYY/MM/DD" type="text" ng-model="uriageDate" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="hanbaiKubun">販売区分</label>
 							<div class="col-sm-9">
 								<select class="form-control selectCheck whenRegister whenUpdate" id="hanbaiKubun" name="hanbaiKubun"
-									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})' />
+									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})'
+									ng-model="hanbaiKubun" />
 							</div>
 						</div>
 
@@ -49,66 +51,47 @@
 							<h4>明細</h4>
 						</div>
 
-						<table id="uriageMeisai" class="table table-striped">
-							<thead>
-								<tr>
-									<th>#</th>
-									<th>商品コード</th>
-									<th>売上数</th>
-									<th>販売単価</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="m, stat:${form.meisai}" th:index="${stat.index}">
-									<td column="meisaiNumber" th:text="${m.meisaiNumber}" />
-									<td column="shohinCode" th:text="${m.shohinCode}" />
-									<td column="hanbaiNumber" th:text="${m.hanbaiNumber}" />
-									<td column="hanbaiTanka" th:text="${m.hanbaiTanka}" />
-								</tr>
-							</tbody>
-						</table>
-						<th:block th:each="m, stat:${form.meisai}">
-							<div class="modal fade uriageMeisaiModal" th:index="__${stat.index}__" th:id="uriageMeisai__${stat.index}__"
-								tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-								<div class="modal-dialog" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="modalLabel">売上明細</h5>
-										</div>
-										<div class="modal-body">
-											<div class="row">
-												<div class="col-md-12">
-													<label class="control-label" for="meisaiNumber"> 明細番号 </label> <input class="form-control"
-														th:value="${m.meisaiNumber}" th:name="meisai[__${stat.index}__].meisaiNumber" type="text" />
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-12">
-													<label class="control-label" for="shohinCode"> 商品コード </label> <input class="form-control"
-														th:value="${m.shohinCode}" th:name="meisai[__${stat.index}__].shohinCode" type="text" />
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-12">
-													<label class="control-label" for="hanbaiNumber"> 販売数 </label> <input class="form-control"
-														th:value="${m.hanbaiNumber}" th:name="meisai[__${stat.index}__].hanbaiNumber" type="text" />
-												</div>
-											</div>
-											<div class="row">
-												<div class="col-md-12">
-													<label class="control-label" for="hanbaiTanka"> 販売単価 </label> <input class="form-control"
-														th:value="${m.hanbaiTanka}" th:name="meisai[__${stat.index}__].hanbaiTanka" type="text" />
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-secondary" th:attr="onclick='dismiss(' + ${stat.index} + ');'">閉じる</button>
-												<button type="button" class="btn btn-primary" th:attr="onclick='registerMeisai(' + ${stat.index} + ');'">登録</button>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</th:block>
+						<div ng-controller="CreationController">
+							<button class="btn btn-primary whenRegister" type="button" ng-click="addLine()">明細行を追加</button>
+
+							<table id="uriageMeisai" class="table table-striped">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>商品コード</th>
+										<th>売上数</th>
+										<th>販売単価</th>
+										<th>計</th>
+										<th colspan="2"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="m, stat:${form.meisai}" th:index="${stat.index}">
+										<td column="meisaiNumber" th:text="${m.meisaiNumber}" />
+										<td column="shohinCode" th:text="${m.shohinCode}" />
+										<td column="hanbaiNumber" th:text="${m.hanbaiNumber}" />
+										<td column="hanbaiTanka" th:text="${m.hanbaiTanka}" />
+									</tr>
+									<tr ng-repeat="line in lines">
+										<td></td>
+										<td><input type="text" ng-model="line.shohinCode" ng-readonly="!line.editing"></td>
+										<td><input type="number" ng-model="line.hanbaiNumber" ng-readonly="!line.editing"></td>
+										<td><input type="number" ng-model="line.hanbaiTanka" ng-readonly="!line.editing"></td>
+										<td>{{ getSubtotal(line) | number }}</td>
+										<td>
+											<button class="btn btn-default btn-block" type="button" ng-click="done(line)" ng-show="line.editing">OK</button>
+											<button class="btn btn-default btn-block" type="button" ng-click="edit(line)" ng-show="!line.editing">編集</button>
+										</td>
+										<td><button class="btn btn-default btn-block" type="button" ng-click="removeLine(line)"
+												ng-show="!line.editing">削除</button></td>
+									</tr>
+									<tr ng-show="lines.length > 0">
+										<td colspan="4"></td>
+										<td colspan="3">{{ getTotalAmount(lines) | number }}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 
 						<div class="form-group">
 							<div class="col-sm-1 col-sm-offset-3">
@@ -125,10 +108,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
 	<div th:replace="common/footer :: common_footer"></div>
 </body>
 </html>
