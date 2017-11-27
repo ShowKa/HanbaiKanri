@@ -170,6 +170,13 @@ function showErroeMessage(message) {
 }
 
 /**
+ * エラーメッセージを消す。
+ */
+function hideErrorMessage() {
+	$("#errorMessage").hide();
+}
+
+/**
  * jauery拡張. form要素にinput要素を動的に追加するために使用する。
  */
 (function($) {
