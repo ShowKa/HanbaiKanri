@@ -64,10 +64,13 @@ public class U05G002Controller {
 	 */
 	@RequestMapping(value = "/u05g002/registerForm", method = RequestMethod.GET)
 	public ModelAndViewExtended registerForm(ModelAndViewExtended model) {
-		// すっからかんのフォームを表示する
+
+		// 初期入力値設定
 		U05G002Form form = new U05G002Form();
+		form.setKokyakuCode("");
 		form.setUriageDate(new Date());
 		form.setDenpyoNumber("00000");
+		form.setHanbaiKubun(HanbaiKubun.現金.getCode());
 		model.addForm(form);
 
 		// モード

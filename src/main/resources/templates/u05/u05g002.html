@@ -20,21 +20,21 @@
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="kokyakuCode"> 顧客コード </label>
 							<div class="col-sm-9">
-								<input th:field="${form.kokyakuCode}" class="form-control" id="kokyakuCode" name="kokyakuCode" type="text"
+								<input th:attr="ng-init = 'kokyakuCode = \'__${form.kokyakuCode}__\''" class="form-control" id="kokyakuCode" name="kokyakuCode" type="text"
 									ng-model="kokyakuCode" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="denpyoNumber"> 伝票番号 </label>
 							<div class="col-sm-9">
-								<input th:field="${form.denpyoNumber}" class="form-control" id="denpyoNumber" name="denpyoNumber"
+								<input th:attr="ng-init = 'denpyoNumber = \'__${form.denpyoNumber}__\''" class="form-control" id="denpyoNumber" name="denpyoNumber"
 									placeholder="00000" type="text" ng-model="denpyoNumber" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="uriageDate"> 売上日 </label>
 							<div class="col-sm-9">
-								<input th:attr="ng-init = 'uriageDate = __${form.uriageDate}__'" class="form-control" id="uriageDate" name="uriageDate"
+								<input th:attr="ng-init = 'uriageDate = \'__${{form.uriageDate}}__\''" class="form-control" id="uriageDate" name="uriageDate"
 									placeholder="YYYY/MM/DD" type="text" ng-model="uriageDate" />
 							</div>
 						</div>
@@ -43,7 +43,7 @@
 							<div class="col-sm-9">
 								<select class="form-control selectCheck whenRegister whenUpdate" id="hanbaiKubun" name="hanbaiKubun"
 									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})'
-									ng-model="hanbaiKubun" />
+									ng-model="hanbaiKubun" th:attr="ng-init = ' hanbaiKubun = \'__${form.hanbaiKubun}__\' ' "/>
 							</div>
 						</div>
 

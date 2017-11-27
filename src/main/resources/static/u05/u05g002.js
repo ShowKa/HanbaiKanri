@@ -162,8 +162,6 @@ angular.module('App', [])
 		});
 		return totalAmount;
 	};
-
-	$scope.initialize();
 } ])
 // main controller
 .controller('MainController', [ '$scope', '$http', function($scope, $http) {
