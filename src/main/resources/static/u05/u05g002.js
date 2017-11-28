@@ -109,7 +109,12 @@ function selectorEscape(val) {
 
 angular.module('App', [])
 // services
-.service('meisai', [ '$rootScope', '$filter', function($scope, $filter) {
+.service('denpyo', [ '$rootScope', '$filter', function($scope, $filter) {
+	this.lines = [];
+	
+	this.getLineLength = function() {
+		return this.lines.length;
+	};
 
 } ])
 // creation controller
@@ -131,7 +136,7 @@ angular.module('App', [])
 
 	// リストモデルを初期化する
 	$scope.initialize = function() {
-		$scope.lines = [ createLine() ];
+		$scope.lines = [];
 	};
 	
 	// 編集開始
@@ -162,9 +167,11 @@ angular.module('App', [])
 		});
 		return totalAmount;
 	};
+
+	$scope.initialize();
 } ])
 // main controller
-.controller('MainController', [ '$scope', '$http', function($scope, $http) {
+.controller('MainController', [ '$scope', '$http', 'denpyo', function($scope, $http, denpyo) {
 	
 	// 明細入力完了
 	$scope.done = function(line) {
@@ -187,5 +194,10 @@ angular.module('App', [])
 		}, function errorCallback(response) {
 			showErroeMessage(response.data.message);
 		});
+	};
+	
+	// 新規登録
+	$scope.register = function() {
+		alert(denpyo.getLineLength());
 	};
 } ]);
