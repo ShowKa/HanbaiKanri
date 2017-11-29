@@ -13,166 +13,37 @@ function register() {
 	};
 	crud(param);
 }
-function update() {
-}
+
 $(document).ready(function() {
 	swithElementActivationByMode();
 });
 
-$(document).ready(function() {
-	// double click
-	$("#uriageMeisai").on("dblclick", "tbody tr", function() {
-		var $row = $(this);
-		var index = $row.attr("index");
-		$("#uriageMeisai" + index).modal("show");
-	});
-
-	// save
-	$(".uriageMeisaiModal").on("shown.bs.modal", function() {
-		var $this = $(this);
-		var index = $this.attr("index");
-		var $meisaiNumber = $this.findByName(selector("meisaiNumber", index));
-		var $shohinCode = $this.findByName(selector("shohinCode", index));
-		var $hanbaiNumber = $this.findByName(selector("hanbaiNumber", index));
-		var $hanbaiTanka = $this.findByName(selector("hanbaiTanka", index));
-		$meisaiNumber.data("previous", $meisaiNumber.val());
-		$shohinCode.data("previous", $shohinCode.val());
-		$hanbaiNumber.data("previous", $hanbaiNumber.val());
-		$hanbaiTanka.data("previous", $hanbaiTanka.val());
-	});
-
-	// registered
-	$(".uriageMeisaiModal").on("success", function() {
-		// get value
-		var $this = $(this);
-		var index = $this.attr("index");
-		var $meisaiNumber = $this.findByName(selector("meisaiNumber", index));
-		var $shohinCode = $this.findByName(selector("shohinCode", index));
-		var $hanbaiNumber = $this.findByName(selector("hanbaiNumber", index));
-		var $hanbaiTanka = $this.findByName(selector("hanbaiTanka", index));
-
-		// table
-		var $table = $("#uriageMeisai");
-		var $row = $table.find("[index=" + index + "]");
-		$row.find("[column=meisaiNumber]").text($meisaiNumber.val());
-		$row.find("[column=shohinCode]").text($shohinCode.val());
-		$row.find("[column=hanbaiNumber]").text($hanbaiNumber.val());
-		$row.find("[column=hanbaiTanka]").text($hanbaiTanka.val());
-	});
-
-});
-
-function registerMeisai(index) {
-	var $this = $("#uriageMeisai" + index);
-	var selector = "meisai" + selectorEscape("[" + index + "].")
-			+ "meisaiNumber";
-	var $meisaiNumber = $this.findByName(selector);
-
-	// validate
-	validate({
-		url : "/u05g002/validateMeisai",
-		form : $("#urageDenpyo"),
-		detail : {
-			name : "meisai",
-			index : index
-		}
-	});
-
-	// trigger event
-	$this.trigger("success");
-	$this.modal("hide");
-}
-
-function dismiss(index) {
-	var $this = $("#uriageMeisai" + index);
-
-	var $meisaiNumber = $this.findByName(selector("meisaiNumber", index));
-	var $shohinCode = $this.findByName(selector("shohinCode", index));
-	var $hanbaiNumber = $this.findByName(selector("hanbaiNumber", index));
-	var $hanbaiTanka = $this.findByName(selector("hanbaiTanka", index));
-
-	$meisaiNumber.val($meisaiNumber.data("previous"));
-	$shohinCode.val($shohinCode.data("previous"));
-	$hanbaiNumber.val($hanbaiNumber.data("previous"));
-	$hanbaiTanka.val($hanbaiTanka.data("previous"));
-
-	$this.modal("hide");
-}
-
-function selector(name, index) {
-	return "meisai" + selectorEscape("[" + index + "].") + name;
-}
-
-function selectorEscape(val) {
-	return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
-}
-
 angular.module('App', [])
 // services
-.service('denpyo', [ '$rootScope', '$filter', function($scope, $filter) {
-	this.lines = [];
-	
-	this.getLineLength = function() {
-		return this.lines.length;
-	};
+.service('denpyo', [ '$rootScope', '$filter',
+// モデルの操作
+function($scope, $filter) {
 
-} ])
-// creation controller
-.controller('CreationController', [ '$scope', '$http', function($scope, $http) {
-	function createLine() {
+	this.createLine = function() {
 		return {
 			shohinCode : '',
 			hanbaiNumber : 0,
 			hanbaiTanka : 0,
-			editing : true
+			editing : true,
+			edit : function(editable) {
+				this.editing = editable;
+			},
+			getSubtotal : function() {
+				return this.hanbaiNumber * this.hanbaiTanka;
+			}
 		};
 	}
-
-	// リストモデルに新しい明細行を追加する
-	$scope.addLine = function() {
-		var newLine = createLine();
-		$scope.lines.push(newLine);
-	};
-
-	// リストモデルを初期化する
-	$scope.initialize = function() {
-		$scope.lines = [];
-	};
-	
-	// 編集開始
-	$scope.edit = function(line) {
-		line.editing = true;
-	}
-	
-	// 任意の明細行をリストモデルから取り除く
-	$scope.removeLine = function(target) {
-		var lines = $scope.lines;
-		var index = lines.indexOf(target);
-
-		if (index !== -1) {
-			lines.splice(index, 1);
-		}
-	};
-
-	// 引数から小計を計算して返す
-	$scope.getSubtotal = function(line) {
-		return line.hanbaiNumber * line.hanbaiTanka;
-	};
-
-	// 明細小計の合計
-	$scope.getTotalAmount = function(lines) {
-		var totalAmount = 0;
-		angular.forEach(lines, function(line) {
-			totalAmount += $scope.getSubtotal(line);
-		});
-		return totalAmount;
-	};
-
-	$scope.initialize();
 } ])
 // main controller
-.controller('MainController', [ '$scope', '$http', 'denpyo', function($scope, $http, denpyo) {
-	
+.controller('MainController', [ '$scope', '$http', 'denpyo',
+// HDRと明細
+function($scope, $http, denpyo) {
+
 	// 明細入力完了
 	$scope.done = function(line) {
 		$http({
@@ -190,14 +61,87 @@ angular.module('App', [])
 			}
 		}).then(function successCallback(response) {
 			hideErrorMessage();
-			line.editing = false;
+			line.edit(false);
 		}, function errorCallback(response) {
 			showErroeMessage(response.data.message);
 		});
 	};
-	
+
 	// 新規登録
 	$scope.register = function() {
-		alert(denpyo.getLineLength());
+
+		// check
+		var lines = $scope.lines;
+		if (lines.length === 0) {
+			showErroeMessage("明細を追加してください。");
+			return;
+		}
+		for ( var l of lines) {
+			console.log(l);
+			if (l.editing == true) {
+				showErroeMessage("編集中の明細が残っています。");
+				return;
+			}
+		}
+
+		var line = lines[0];
+		$http({
+			method : 'POST',
+			url : '/u05g002/register',
+			responseType : 'text',
+			params : {
+				kokyakuCode : $scope.kokyakuCode,
+				denpyoNumber : $scope.denpyoNumber,
+				uriageDate : $scope.uriageDate,
+				hanbaiKubun : $scope.hanbaiKubun,
+				"meisai[0].shohinCode" : line.shohinCode,
+				"meisai[0].hanbaiNumber" : line.hanbaiNumber,
+				"meisai[0].hanbaiTanka" : line.hanbaiTanka
+			}
+		}).then(function successCallback(response) {
+			alert("登録成功");
+		}, function errorCallback(response) {
+			showErroeMessage(response.data.message);
+		});
 	};
+
+	// 初期化
+	$scope.initialize = function() {
+		$scope.lines = [];
+	};
+
+	// リストモデルに新しい明細行を追加する
+	$scope.addLine = function() {
+		$scope.lines.push(denpyo.createLine());
+	};
+
+	// 編集開始
+	$scope.edit = function(line) {
+		line.edit(true);
+	}
+
+	// 任意の明細行をリストモデルから取り除く
+	$scope.removeLine = function(target) {
+		var lines = $scope.lines;
+		var index = lines.indexOf(target);
+		if (index !== -1) {
+			lines.splice(index, 1);
+		}
+	};
+
+	// 引数から小計を計算して返す
+	$scope.getSubtotal = function(line) {
+		return line.getSubtotal();
+	};
+
+	// 明細小計の合計
+	$scope.getTotalAmount = function(lines) {
+		var totalAmount = 0;
+		angular.forEach(lines, function(line) {
+			totalAmount += $scope.getSubtotal(line);
+		});
+		return totalAmount;
+	};
+
+	$scope.initialize();
 } ]);

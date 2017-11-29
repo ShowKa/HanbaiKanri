@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -130,7 +131,12 @@ public class U05G002Controller {
 
 		// set id
 		form.setRecordId(UUID.randomUUID().toString());
-		form.getMeisai().forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
+		List<U05G002MeisaiForm> meisai = form.getMeisai();
+		meisai.forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
+
+		// meisai number
+		AtomicInteger i = new AtomicInteger();
+		meisai.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
