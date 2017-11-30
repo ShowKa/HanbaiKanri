@@ -4,6 +4,20 @@
 <head>
 <link th:replace="common/head :: common_link" />
 <script th:inline="javascript" src="/u05/u05g002.js"></script>
+<style>
+/* example.css より一部抜粋 */
+.ng-invalid {
+	border-color: #b94a48;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+.ng-invalid:focus {
+	border-color: #953b39;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #d59392;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #d59392;
+}
+</style>
 </head>
 <body ng-app="App">
 	<div th:replace="common/header :: common_header"></div>
@@ -13,7 +27,7 @@
 		<div class="container" ng-controller="MainController">
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<form id="urageDenpyo" class="form-horizontal" method="post">
+					<form novalidate id="uriageDenpyo" class="form-horizontal" method="post" name="uriageDenpyo">
 						<div class="formden_header">
 							<h4>売上伝票</h4>
 						</div>
@@ -21,7 +35,7 @@
 							<label class="control-label col-sm-3" for="kokyakuCode"> 顧客コード </label>
 							<div class="col-sm-9">
 								<input th:attr="ng-init = 'kokyakuCode = \'__${form.kokyakuCode}__\''" class="form-control" id="kokyakuCode"
-									name="kokyakuCode" type="text" ng-model="kokyakuCode" />
+									name="kokyakuCode" type="text" ng-model="kokyakuCode" required />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
@@ -93,8 +107,8 @@
 
 						<div class="form-group">
 							<div class="col-sm-1 col-sm-offset-3">
-								<input ng-click="register();" id="registerBtn" type="button" class="btn btn-primary btn-sm whenRegister"
-									value="登録"></input>
+								<input id="registerBtn" type="button" class="btn btn-primary btn-sm" ng-click="register()"
+									value="登録" ng-disabled="uriageDenpyo.$invalid"></input>
 							</div>
 							<div class="col-sm-7 col-sm-offset-1 col-xs-7 col-xs-offset-1">
 								<input onClick="update();" id="updateBtn" type="button" class="btn btn-primary btn-sm whenUpdate" value="更新"></input>
