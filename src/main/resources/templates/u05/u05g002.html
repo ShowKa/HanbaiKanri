@@ -28,28 +28,26 @@
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<form novalidate id="uriageDenpyo" class="form-horizontal" method="post" name="uriageDenpyo">
-						<div class="formden_header">
-							<h4>売上伝票</h4>
-						</div>
+						<h4>売上伝票</h4>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="kokyakuCode"> 顧客コード </label>
 							<div class="col-sm-9">
 								<input th:attr="ng-init = 'kokyakuCode = \'__${form.kokyakuCode}__\''" class="form-control" id="kokyakuCode"
-									name="kokyakuCode" type="text" ng-model="kokyakuCode" required />
+									name="kokyakuCode" type="text" ng-model="kokyakuCode" required ng-readonly="!header.editing" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="denpyoNumber"> 伝票番号 </label>
 							<div class="col-sm-9">
 								<input th:attr="ng-init = 'denpyoNumber = \'__${form.denpyoNumber}__\''" class="form-control" id="denpyoNumber"
-									name="denpyoNumber" placeholder="00000" type="text" ng-model="denpyoNumber" />
+									name="denpyoNumber" placeholder="00000" type="text" ng-model="denpyoNumber" ng-readonly="!header.editing" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
 							<label class="control-label col-sm-3" for="uriageDate"> 売上日 </label>
 							<div class="col-sm-9">
 								<input th:attr="ng-init = 'uriageDate = \'__${{form.uriageDate}}__\''" class="form-control" id="uriageDate"
-									name="uriageDate" placeholder="YYYY/MM/DD" type="text" ng-model="uriageDate" />
+									name="uriageDate" placeholder="YYYY/MM/DD" type="text" ng-model="uriageDate" ng-readonly="!header.editing" />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
@@ -57,15 +55,14 @@
 							<div class="col-sm-9">
 								<select class="form-control selectCheck whenRegister whenUpdate" id="hanbaiKubun" name="hanbaiKubun"
 									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})'
-									ng-model="hanbaiKubun" th:attr="ng-init = ' hanbaiKubun = \'__${form.hanbaiKubun}__\' ' " />
+									ng-model="hanbaiKubun" th:attr="ng-init = ' hanbaiKubun = \'__${form.hanbaiKubun}__\' ' "
+									ng-readonly="!header.editing" />
 							</div>
 						</div>
 
-						<div class="formden_header">
-							<h4>明細</h4>
-						</div>
+						<h4>明細</h4>
 
-						<button class="btn btn-primary whenRegister" type="button" ng-click="addLine()">明細行を追加</button>
+						<button class="btn btn-primary" type="button" ng-click="addLine()" ng-disabled="uriageDenpyo.$invalid">明細行を追加</button>
 
 						<table id="uriageMeisai" class="table table-striped">
 							<thead>
@@ -87,16 +84,15 @@
 								</tr>
 								<tr ng-repeat="line in lines">
 									<td></td>
-									<td><input type="text" ng-model="line.shohinCode" ng-readonly="!line.editing"></td>
-									<td><input type="number" ng-model="line.hanbaiNumber" ng-readonly="!line.editing"></td>
-									<td><input type="number" ng-model="line.hanbaiTanka" ng-readonly="!line.editing"></td>
-									<td>{{ getSubtotal(line) | number }}</td>
-									<td>
-										<button class="btn btn-default btn-block" type="button" ng-click="done(line)" ng-show="line.editing">OK</button>
-										<button class="btn btn-default btn-block" type="button" ng-click="edit(line)" ng-show="!line.editing">編集</button>
-									</td>
-									<td><button class="btn btn-default btn-block" type="button" ng-click="removeLine(line)"
-											ng-show="!line.editing">削除</button></td>
+									<td class="col-sm-5"><input class="form-control" type="text" ng-model="line.shohinCode"
+										ng-readonly="!line.editing" required></td>
+									<td class="col-sm-2"><input class="form-control" type="number" ng-model="line.hanbaiNumber" ng-readonly="!line.editing" required></td>
+									<td class="col-sm-2"><input class="form-control" type="number" ng-model="line.hanbaiTanka" ng-readonly="!line.editing" required></td>
+									<td class="col-sm-1">{{ getSubtotal(line) | number }}</td>
+									<td class="col-sm-1"><input class="btn btn-default" type="button" ng-click="done(line)" ng-show="line.editing"
+										ng-disabled="uriageDenpyo.$invalid" value="完了" />
+										<button class="btn btn-default" type="button" ng-click="edit(line)" ng-show="!line.editing">編集</button></td>
+									<td class="col-sm-1"><button class="btn btn-default" type="button" ng-click="removeLine(line)">削除</button></td>
 								</tr>
 								<tr ng-show="lines.length > 0">
 									<td colspan="4"></td>
@@ -108,14 +104,14 @@
 						<div class="form-group">
 							<div class="col-sm-1 col-sm-offset-3">
 								<input id="registerBtn" type="button" class="btn btn-primary btn-sm" ng-click="register()"
-									value="登録" ng-disabled="uriageDenpyo.$invalid"></input>
+									ng-disabled="uriageDenpyo.$invalid" value="登録" />
 							</div>
 							<div class="col-sm-7 col-sm-offset-1 col-xs-7 col-xs-offset-1">
 								<input onClick="update();" id="updateBtn" type="button" class="btn btn-primary btn-sm whenUpdate" value="更新"></input>
 							</div>
 						</div>
-					</form>
 
+					</form>
 				</div>
 			</div>
 		</div>

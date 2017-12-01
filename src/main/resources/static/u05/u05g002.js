@@ -14,10 +14,6 @@ function register() {
 	crud(param);
 }
 
-$(document).ready(function() {
-	swithElementActivationByMode();
-});
-
 angular.module('App', [])
 // services
 .service('denpyo', [ '$rootScope', '$filter',
@@ -38,32 +34,61 @@ function($scope, $filter) {
 			}
 		};
 	}
+	
 } ])
 // main controller
 .controller('MainController', [ '$scope', '$http', 'denpyo',
 // HDRと明細
 function($scope, $http, denpyo) {
-
-	// 明細入力完了
-	$scope.done = function(line) {
+		
+	var validateHeader = function (callback) {
 		$http({
 			method : 'POST',
-			url : '/u05g002/validateMeisai',
+			url : '/u05g002/validateHeader',
 			responseType : 'text',
 			params : {
 				kokyakuCode : $scope.kokyakuCode,
 				denpyoNumber : $scope.denpyoNumber,
 				uriageDate : $scope.uriageDate,
 				hanbaiKubun : $scope.hanbaiKubun,
-				"meisai[0].shohinCode" : line.shohinCode,
-				"meisai[0].hanbaiNumber" : line.hanbaiNumber,
-				"meisai[0].hanbaiTanka" : line.hanbaiTanka
 			}
 		}).then(function successCallback(response) {
 			hideErrorMessage();
-			line.edit(false);
+			callback();
 		}, function errorCallback(response) {
 			showErroeMessage(response.data.message);
+		});
+	}
+
+	var validateMeisai = function (line, callback) {
+		var meisai = {
+			"meisai[0].shohinCode" : line.shohinCode,
+			"meisai[0].hanbaiNumber" : line.hanbaiNumber,
+			"meisai[0].hanbaiTanka" : line.hanbaiTanka
+		}
+		
+		$http({
+			method : 'POST',
+			url : '/u05g002/validateMeisai',
+			responseType : 'text',
+			params : Object.assign({
+				kokyakuCode : $scope.kokyakuCode,
+				denpyoNumber : $scope.denpyoNumber,
+				uriageDate : $scope.uriageDate,
+				hanbaiKubun : $scope.hanbaiKubun,
+				}, meisai)
+		}).then(function successCallback(response) {
+			hideErrorMessage();
+			callback();
+		}, function errorCallback(response) {
+			showErroeMessage(response.data.message);
+		});
+	}
+
+	// 明細入力完了
+	$scope.done = function(line) {
+		validateMeisai(line, function () {
+			line.edit(false);
 		});
 	};
 
@@ -105,14 +130,17 @@ function($scope, $http, denpyo) {
 		});
 	};
 
-	// 初期化
-	$scope.initialize = function() {
-		$scope.lines = [];
-	};
-
 	// リストモデルに新しい明細行を追加する
 	$scope.addLine = function() {
-		$scope.lines.push(denpyo.createLine());
+		if($scope.header.editing == true) {
+			validateHeader(function() {
+				$scope.lines.push(denpyo.createLine());
+				$scope.header.edit(false);
+			});
+		} else {
+			$scope.lines.push(denpyo.createLine());
+		}
+		
 	};
 
 	// 編集開始
@@ -141,6 +169,17 @@ function($scope, $http, denpyo) {
 			totalAmount += $scope.getSubtotal(line);
 		});
 		return totalAmount;
+	};
+
+	// 初期化
+	$scope.initialize = function() {
+		$scope.header = {
+			editing : true,
+			edit : function(editable) {
+				this.editing = editable;
+			},
+		};
+		$scope.lines = [];
 	};
 
 	$scope.initialize();

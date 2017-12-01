@@ -1,5 +1,6 @@
 package com.showka.web.u05;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class U05G002Form extends FormBase {
 	private String hanbaiKubun;
 
 	/** 売上明細. */
-	private List<U05G002MeisaiForm> meisai;
+	private List<U05G002MeisaiForm> meisai = new ArrayList<U05G002MeisaiForm>();
 
 	/** record_id */
 	private String recordId;

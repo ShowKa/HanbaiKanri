@@ -29,6 +29,7 @@ import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
+import com.showka.system.exception.NotExistException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 import com.showka.web.Mode;
@@ -230,12 +231,36 @@ public class U05G002Controller {
 	}
 
 	/**
-	 * 明細Validate.
+	 * Validate Header.
+	 *
+	 */
+	@RequestMapping(value = "/u05g002/validateHeader", method = RequestMethod.POST)
+	public ResponseEntity<?> validateHeader(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+		kokyakuValidateService.validateForRefer(form.getKokyakuCode());
+		UriageDomain d = buildDomainFromForm(form);
+		uriageValidateService.validateForRegister(d);
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	/**
+	 * Validate Meisai.
 	 *
 	 */
 	@RequestMapping(value = "/u05g002/validateMeisai", method = RequestMethod.POST)
 	public ResponseEntity<?> validateMeisai(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-		kokyakuValidateService.validateForRefer(form.getKokyakuCode());
+
+		// TODO
+		List<U05G002MeisaiForm> meisaiList = form.getMeisai();
+		meisaiList.forEach(m -> {
+			String shohinCode = m.getShohinCode();
+			try {
+				shohinCrudService.getDomain(shohinCode);
+			} catch (Exception e) {
+				throw new NotExistException("商品", shohinCode);
+			}
+		});
+
 		UriageDomain d = buildDomainFromForm(form);
 		uriageValidateService.validate(d);
 		model.addForm(form);
