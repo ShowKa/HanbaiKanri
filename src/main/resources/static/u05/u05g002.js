@@ -109,20 +109,27 @@ function($scope, $http, denpyo) {
 			}
 		}
 
-		var line = lines[0];
+		var params = {
+			kokyakuCode : $scope.kokyakuCode,
+			denpyoNumber : $scope.denpyoNumber,
+			uriageDate : $scope.uriageDate,
+			hanbaiKubun : $scope.hanbaiKubun
+		};
+		
+		for(var i = 0; i < lines.length; i++) {
+			var line = lines[i];
+			var meisai = {};
+			meisai["meisai["+i+"].shohinCode"] = line.shohinCode;
+			meisai["meisai["+i+"].hanbaiNumber"] = line.hanbaiNumber;
+			meisai["meisai["+i+"].hanbaiTanka"] = line.hanbaiTanka;
+			Object.assign(params, meisai);
+		}
+
 		$http({
 			method : 'POST',
 			url : '/u05g002/register',
 			responseType : 'text',
-			params : {
-				kokyakuCode : $scope.kokyakuCode,
-				denpyoNumber : $scope.denpyoNumber,
-				uriageDate : $scope.uriageDate,
-				hanbaiKubun : $scope.hanbaiKubun,
-				"meisai[0].shohinCode" : line.shohinCode,
-				"meisai[0].hanbaiNumber" : line.hanbaiNumber,
-				"meisai[0].hanbaiTanka" : line.hanbaiTanka
-			}
+			params : params
 		}).then(function successCallback(response) {
 			alert("登録成功");
 		}, function errorCallback(response) {
