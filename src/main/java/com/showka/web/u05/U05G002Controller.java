@@ -171,6 +171,9 @@ public class U05G002Controller {
 		// save
 		uriageCrudService.save(uriage);
 
+		// message
+		form.setSuccessMessage("登録成功");
+
 		// set model
 		model.addForm(form);
 		model.setMode(Mode.REGISTER);

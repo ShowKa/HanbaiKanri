@@ -1,22 +1,5 @@
-function register() {
-	var $form = $('#urageDenpyo');
-	var param = {
-		url : "/u05g002/register",
-		formId : "urageDenpyo",
-		redirect : {
-			url : "/u05g002/refer",
-			param : {
-				kokyakuCode : $form.findByName("kokyakuCode").val(),
-				denpyoNumber : $form.findByName("denpyoNumber").val()
-			}
-		}
-	};
-	crud(param);
-}
-
-angular.module('App', [])
 // services
-.service('denpyo', [ '$rootScope', '$filter',
+ngModules.service('denpyo', [ '$rootScope', '$filter',
 // モデルの操作
 function($scope, $filter) {
 
@@ -37,9 +20,9 @@ function($scope, $filter) {
 	
 } ])
 // main controller
-.controller('MainController', [ '$scope', '$http', 'denpyo',
+.controller('MainController', [ '$scope', '$http', 'denpyo', 'common',
 // HDRと明細
-function($scope, $http, denpyo) {
+function($scope, $http, denpyo, common) {
 		
 	var validateHeader = function (callback) {
 		$http({
@@ -102,38 +85,22 @@ function($scope, $http, denpyo) {
 			return;
 		}
 		for ( var l of lines) {
-			console.log(l);
 			if (l.editing == true) {
 				showErroeMessage("編集中の明細が残っています。");
 				return;
 			}
 		}
 
-		var params = {
-			kokyakuCode : $scope.kokyakuCode,
-			denpyoNumber : $scope.denpyoNumber,
-			uriageDate : $scope.uriageDate,
-			hanbaiKubun : $scope.hanbaiKubun
-		};
-		
-		for(var i = 0; i < lines.length; i++) {
-			var line = lines[i];
-			var meisai = {};
-			meisai["meisai["+i+"].shohinCode"] = line.shohinCode;
-			meisai["meisai["+i+"].hanbaiNumber"] = line.hanbaiNumber;
-			meisai["meisai["+i+"].hanbaiTanka"] = line.hanbaiTanka;
-			Object.assign(params, meisai);
-		}
-
-		$http({
-			method : 'POST',
-			url : '/u05g002/register',
-			responseType : 'text',
-			params : params
-		}).then(function successCallback(response) {
-			alert("登録成功");
-		}, function errorCallback(response) {
-			showErroeMessage(response.data.message);
+		crud({
+			url : "/u05g002/register",
+			formId : "uriageDenpyo",
+			redirect : {
+				url : "/u05g002/refer",
+				param : {
+					kokyakuCode : $scope.kokyakuCode,
+					denpyoNumber : $scope.denpyoNumber
+				}
+			}
 		});
 	};
 
@@ -191,3 +158,4 @@ function($scope, $http, denpyo) {
 
 	$scope.initialize();
 } ]);
+

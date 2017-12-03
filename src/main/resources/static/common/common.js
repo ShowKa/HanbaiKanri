@@ -1,6 +1,6 @@
 /**
  * 検索 & 検索結果のリスト構築.
- *
+ * 
  * @param url
  *            検索URL
  * @param formId
@@ -42,7 +42,7 @@ function searchAndBuildList(url, formId, targetId) {
  *            リダイレクト先に渡すパラメータ
  */
 function crud(param) {
-	
+
 	// set parameters
 	var url = param.url;
 	var formId = param.formId;
@@ -55,13 +55,13 @@ function crud(param) {
 	$.each($form.serializeArray(), function(_, kv) {
 		data[kv.name] = kv.value;
 	});
-	
+
 	// post
 	$.ajax({
 		type : "POST",
 		url : url,
 		dataType : "json",
-		data: data,
+		data : data,
 		success : function(data, status, xhr) {
 			var $form = $("<form>").hide();
 			var model = data.model;
@@ -70,20 +70,24 @@ function crud(param) {
 				if (form) {
 					// リダイレクト先にメッセージを引き継ぐ
 					if (form.successMessage) {
-						$form.appendInput("successMessage", form.successMessage);
+						$form
+								.appendInput("successMessage",
+										form.successMessage);
 					}
 					if (form.infoMessage) {
 						$form.appendInput("infoMessage", form.infoMessage);
 					}
 					if (form.warningMessage) {
-						$form.appendInput("warningMessage", form.warningMessage);
+						$form
+								.appendInput("warningMessage",
+										form.warningMessage);
 					}
 					if (form.errorMessage) {
 						$form.appendInput("errorMessage", form.errorMessage);
 					}
 				}
 			}
-			for (var key in redirectParam) {
+			for ( var key in redirectParam) {
 				$form.appendInput(key, redirectParam[key]);
 			}
 			$("body").append($form);
@@ -130,19 +134,19 @@ function validate(param) {
 			data[this.name] = this.value;
 		}
 	});
-	
+
 	$.ajax({
 		type : "POST",
 		url : url,
 		dataType : "json",
-		data: data
+		data : data
 	});
-	
+
 }
 
 /**
  * formをsubmitする.
- *
+ * 
  * @param url
  *            submit先のURL
  * @param formId
@@ -154,7 +158,7 @@ function submitForm(url, formId) {
 
 /**
  * エラーメッセージ表示.
- *
+ * 
  * @param message
  *            メッセージ
  */
@@ -268,6 +272,22 @@ function swithElementActivationByMode() {
 	}
 }
 
+/**
+ * escape jquery's selector value
+ * @param val
+ * @returns
+ */
 function selectorEscape(val) {
 	return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
 }
+
+$(document).ready(function() {
+	// set select readonly
+	$("body").on("mousedown keydown", "select[readonly]", function(e) {
+		// tab
+		if(e.which === 9) {
+			return;
+		}
+		return false;
+	});
+});
