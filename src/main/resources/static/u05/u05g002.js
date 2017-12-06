@@ -106,7 +106,7 @@ function($scope, $http, denpyo, common) {
 
 	// リストモデルに新しい明細行を追加する
 	$scope.addLine = function() {
-		if($scope.header.editing == true) {
+		if($scope.header.editing == true && $scope.isRegisterMode()) {
 			validateHeader(function() {
 				$scope.lines.push(denpyo.createLine());
 				$scope.header.edit(false);
@@ -155,7 +155,23 @@ function($scope, $http, denpyo, common) {
 		};
 		$scope.lines = [];
 	};
+	
+	// 更新画面へ
+	$scope.updateForm = function() {
+		submitForm("/u05g002/updateForm", "uriageDenpyo");
+	};
 
+	// 削除
+	$scope.delete = function() {
+		crud({
+			url : "/u05g002/delete",
+			formId : "uriageDenpyo",
+			redirect : {
+				url : "/u00g001"
+			}
+		});
+	};
+	
 	$scope.initialize();
 } ]);
 

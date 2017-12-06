@@ -84,6 +84,23 @@ public class U05G002Controller {
 	}
 
 	/**
+	 * 登録モード初期表示
+	 *
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/u05g002/updateForm", method = RequestMethod.POST)
+	public ModelAndViewExtended updateForm(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+
+		// 初期入力値設定
+		model = refer(form, model);
+
+		// モード
+		model.setMode(Mode.UPDATE);
+		return model;
+	}
+
+	/**
 	 * 参照.
 	 *
 	 */
