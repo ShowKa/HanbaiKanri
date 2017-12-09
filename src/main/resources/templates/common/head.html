@@ -32,6 +32,18 @@
 			return "update" === $scope.mode;
 		}
 	} ]);
+	// directive
+	ngModules.directive('ngAutoInit', function() {
+		return {
+			restrict : 'A',
+			link : function postLink(scope, element, attrs, ctrl) {
+				var ngAutoInit = attrs["ngAutoInit"];
+				var ngModel = attrs["ngModel"];
+				var value = element.val();
+				scope[ngModel] = value;
+			}
+		};
+	});
 
 	/*<![CDATA[*/
 	function isReadMode() {
