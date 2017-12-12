@@ -1,10 +1,18 @@
-<head th:fragment="common_link" th:remove="tag">
+<head
+	th:fragment="common_link"
+	th:remove="tag">
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta
+	http-equiv="X-UA-Compatible"
+	content="IE=edge">
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1">
 <title>販売管理</title>
 <!-- Bootstrap -->
-<link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="/bower_components/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 <!-- jQuery読み込み -->
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- jQueryValidate -->
@@ -41,6 +49,49 @@
 				var ngModel = attrs["ngModel"];
 				var value = element.val();
 				scope[ngModel] = value;
+			}
+		};
+	});
+	ngModules.directive('ngAutoInitIterator', function() {
+		return {
+			restrict : 'A',
+			priority : 1001,
+			compile : function(tElement, tAttrs) { //Compile関数
+				return {
+					pre : function preLink(scope, element, attrs, ctrl) { //Link関数その1
+						var match = attrs["ngAutoInitIterator"].match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+						var lhs = match[1];
+						var rhs = match[2];
+						scope[rhs] = scope[rhs] ? scope[rhs] : [];
+						 
+						var ngModels = element.find("[ng-model]");
+						var line = {};
+						for(nm of ngModels) {
+							var $nm = $(nm);
+							var attr = $nm.attr("ng-model");
+							attr = attr.split(".");
+							if (attr[0] == lhs) {
+								var target = line;
+								for (var i = 1; i < attr.length; i++) {
+									if (i != attr.length -1) {
+										target[attr[i]] = target[attr[i]] ? target[attr[i]] : {};
+										target = target[attr[i]];
+									} else {
+										var v = $nm.val();
+										if ($nm.attr("type") == "number") {
+											v = parseInt(v);
+										}
+										target[attr[i]] = v;
+									}
+								}
+							}
+						}
+						scope[rhs].push(line);
+						element.remove();
+					},
+					post : function postLink(scope, element, attrs, ctrl) { //Link関数その2
+					}
+				};
 			}
 		};
 	});

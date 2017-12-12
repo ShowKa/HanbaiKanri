@@ -3,7 +3,9 @@
 
 <head>
 <link th:replace="common/head :: common_link" />
-<script th:inline="javascript" src="/u05/u05g002.js"></script>
+<script
+	th:inline="javascript"
+	src="/u05/u05g002.js"></script>
 <style>
 /* example.css より一部抜粋 */
 .ng-invalid {
@@ -17,6 +19,12 @@
 	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #d59392;
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px #d59392;
 }
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
+	{
+	-webkit-appearance: none;
+	margin: 0;
+}
 </style>
 </head>
 <body ng-app="App">
@@ -24,60 +32,118 @@
 	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
 
 	<div class="bootstrap-iso">
-		<div class="container" ng-controller="MainController">
+		<div
+			class="container"
+			ng-controller="MainController">
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<form novalidate id="uriageDenpyo" class="form-horizontal" method="post" name="uriageDenpyo">
+					<form
+						novalidate
+						id="uriageDenpyo"
+						class="form-horizontal"
+						method="post"
+						name="uriageDenpyo">
 						<div class="row">
 							<div class="col-sm-2 col-sm-offset-8 col-xs-2 col-xs-offset-8">
-								<input type="button" class="btn btn-primary btn-sm whenRead" value="更新モードへ" ng-show="isReadMode()"
+								<input
+									type="button"
+									class="btn btn-primary btn-sm whenRead"
+									value="更新モードへ"
+									ng-show="isReadMode()"
 									ng-click="updateForm()"></input>
 							</div>
 							<div class="col-sm-1 col-xs-1">
-								<input onClick="deleteKokyaku();" id="deleteBtn" type="button" class="btn btn-primary btn-sm" value="削除"
-									ng-show="isReadMode()" ng-click="delete()" />
+								<input
+									onClick="deleteKokyaku();"
+									id="deleteBtn"
+									type="button"
+									class="btn btn-primary btn-sm"
+									value="削除"
+									ng-show="isReadMode()"
+									ng-click="delete()" />
 							</div>
 						</div>
 
 						<h4>売上伝票</h4>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="kokyakuCode"> 顧客コード </label>
+							<label
+								class="control-label col-sm-3"
+								for="kokyakuCode"> 顧客コード </label>
 							<div class="col-sm-9">
-								<input class="form-control" id="kokyakuCode" name="kokyakuCode" type="text" th:value="${form.kokyakuCode}"
-									ng-model="kokyakuCode" ng-auto-init required ng-readonly="!header.editing || !isRegisterMode() " />
-							</div>
-						</div>
-						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="denpyoNumber"> 伝票番号 </label>
-							<div class="col-sm-9">
-								<input class="form-control" id="denpyoNumber" name="denpyoNumber" placeholder="00000" type="text"
-									th:value="${form.denpyoNumber}" ng-model="denpyoNumber" ng-auto-init
+								<input
+									class="form-control"
+									id="kokyakuCode"
+									name="kokyakuCode"
+									type="text"
+									th:value="${form.kokyakuCode}"
+									ng-model="kokyakuCode"
+									ng-auto-init
+									required
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="uriageDate"> 売上日 </label>
+							<label
+								class="control-label col-sm-3"
+								for="denpyoNumber"> 伝票番号 </label>
 							<div class="col-sm-9">
-								<input class="form-control" id="uriageDate" name="uriageDate" placeholder="YYYY/MM/DD" type="text"
-									th:value="${{form.uriageDate}}" ng-model="uriageDate" ng-auto-init
+								<input
+									class="form-control"
+									id="denpyoNumber"
+									name="denpyoNumber"
+									placeholder="00000"
+									type="text"
+									th:value="${form.denpyoNumber}"
+									ng-model="denpyoNumber"
+									ng-auto-init
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
-							<label class="control-label col-sm-3" for="hanbaiKubun">販売区分</label>
+							<label
+								class="control-label col-sm-3"
+								for="uriageDate"> 売上日 </label>
 							<div class="col-sm-9">
-								<select class="form-control" id="hanbaiKubun" name="hanbaiKubun"
+								<input
+									class="form-control"
+									id="uriageDate"
+									name="uriageDate"
+									placeholder="YYYY/MM/DD"
+									type="text"
+									th:value="${{form.uriageDate}}"
+									ng-model="uriageDate"
+									ng-auto-init
+									ng-readonly="!header.editing || !isRegisterMode() " />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-3"
+								for="hanbaiKubun">販売区分</label>
+							<div class="col-sm-9">
+								<select
+									class="form-control"
+									id="hanbaiKubun"
+									name="hanbaiKubun"
 									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})'
-									ng-model="hanbaiKubun" ng-auto-init ng-readonly="!header.editing || !isRegisterMode() " />
+									ng-model="hanbaiKubun"
+									ng-auto-init
+									ng-readonly="!header.editing || !isRegisterMode()" />
 							</div>
 						</div>
 
 						<h4>明細</h4>
 
-						<button class="btn btn-primary" type="button" ng-click="addLine()" ng-disabled="uriageDenpyo.$invalid"
+						<button
+							class="btn btn-primary"
+							type="button"
+							ng-click="addLine()"
+							ng-disabled="uriageDenpyo.$invalid"
 							ng-show="!isReadMode()">明細行を追加</button>
 
-						<table id="uriageMeisai" class="table table-striped">
+						<table
+							id="uriageMeisai"
+							class="table table-striped">
 							<thead>
 								<tr>
 									<th>#</th>
@@ -85,29 +151,84 @@
 									<th>売上数</th>
 									<th>販売単価</th>
 									<th>計</th>
-									<th colspan="2"></th>
+									<th
+										colspan="2"
+										ng-show="!isReadMode()"></th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="m, stat:${form.meisai}" th:index="${stat.index}">
-									<td column="meisaiNumber" th:text="${m.meisaiNumber}" />
-									<td column="shohinCode" th:text="${m.shohinCode}" />
-									<td column="hanbaiNumber" th:text="${m.hanbaiNumber}" />
-									<td column="hanbaiTanka" th:text="${m.hanbaiTanka}" />
+								<tr
+									ng-auto-init-iterator="line in lines"
+									th:each="m, stat:${form.meisai}">
+									<td>
+										<input
+											type="text"
+											th:value="${m.shohinCode}"
+											ng-model="line.shohinCode" />
+										<input
+											type="number"
+											th:value="${m.hanbaiNumber}"
+											ng-model="line.hanbaiNumber" />
+										<input
+											type="number"
+											th:value="${m.hanbaiTanka}"
+											ng-model="line.hanbaiTanka" />
+									</td>
 								</tr>
 								<tr ng-repeat="line in lines">
 									<td></td>
-									<td class="col-sm-5"><input name="meisai[{{$index}}].shohinCode" class="form-control" type="text"
-										ng-model="line.shohinCode" ng-readonly="!line.editing" required></td>
-									<td class="col-sm-2"><input name="meisai[{{$index}}].hanbaiNumber" class="form-control" type="number"
-										ng-model="line.hanbaiNumber" ng-readonly="!line.editing" required></td>
-									<td class="col-sm-2"><input name="meisai[{{$index}}].hanbaiTanka" class="form-control" type="number"
-										ng-model="line.hanbaiTanka" ng-readonly="!line.editing" required></td>
+									<td class="col-sm-5">
+										<input
+											name="meisai[{{$index}}].shohinCode"
+											class="form-control"
+											type="text"
+											ng-model="line.shohinCode"
+											ng-readonly="!line.editing"
+											required>
+									</td>
+									<td class="col-sm-2">
+										<input
+											name="meisai[{{$index}}].hanbaiNumber"
+											class="form-control"
+											type="number"
+											ng-model="line.hanbaiNumber"
+											ng-readonly="!line.editing"
+											required>
+									</td>
+									<td class="col-sm-2">
+										<input
+											name="meisai[{{$index}}].hanbaiTanka"
+											class="form-control"
+											type="number"
+											ng-model="line.hanbaiTanka"
+											ng-readonly="!line.editing"
+											required>
+									</td>
 									<td class="col-sm-1">{{ getSubtotal(line) | number }}</td>
-									<td class="col-sm-1"><input class="btn btn-default" type="button" ng-click="done(line)"
-										ng-show="line.editing" ng-disabled="uriageDenpyo.$invalid" value="完了" />
-										<button class="btn btn-default" type="button" ng-click="edit(line)" ng-show="!line.editing">編集</button></td>
-									<td class="col-sm-1"><button class="btn btn-default" type="button" ng-click="removeLine(line)">削除</button></td>
+									<td
+										class="col-sm-1"
+										ng-show="!isReadMode()">
+										<input
+											class="btn btn-default"
+											type="button"
+											ng-click="done(line)"
+											ng-show="line.editing"
+											ng-disabled="uriageDenpyo.$invalid"
+											value="完了" />
+										<button
+											class="btn btn-default"
+											type="button"
+											ng-click="edit(line)"
+											ng-show="!line.editing">編集</button>
+									</td>
+									<td
+										class="col-sm-1"
+										ng-show="!isReadMode()">
+										<button
+											class="btn btn-default"
+											type="button"
+											ng-click="removeLine(line)">削除</button>
+									</td>
 								</tr>
 								<tr ng-show="lines.length > 0">
 									<td colspan="4"></td>
@@ -118,11 +239,22 @@
 
 						<div class="form-group">
 							<div class="col-sm-1 col-sm-offset-3">
-								<input id="registerBtn" type="button" class="btn btn-primary btn-sm" ng-click="register()"
-									ng-disabled="uriageDenpyo.$invalid" value="登録" ng-show="isRegisterMode()" />
+								<input
+									id="registerBtn"
+									type="button"
+									class="btn btn-primary btn-sm"
+									ng-click="register()"
+									ng-disabled="uriageDenpyo.$invalid"
+									value="登録"
+									ng-show="isRegisterMode()" />
 							</div>
 							<div class="col-sm-7 col-sm-offset-1 col-xs-7 col-xs-offset-1">
-								<input onClick="update();" id="updateBtn" type="button" class="btn btn-primary btn-sm whenUpdate" value="更新"
+								<input
+									onClick="update();"
+									id="updateBtn"
+									type="button"
+									class="btn btn-primary btn-sm whenUpdate"
+									value="更新"
 									ng-show="isUpdateMode()" />
 							</div>
 						</div>

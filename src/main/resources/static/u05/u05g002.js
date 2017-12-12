@@ -8,15 +8,13 @@ function($scope, $filter) {
 			shohinCode : '',
 			hanbaiNumber : 0,
 			hanbaiTanka : 0,
-			editing : true,
-			edit : function(editable) {
-				this.editing = editable;
-			},
-			getSubtotal : function() {
-				return this.hanbaiNumber * this.hanbaiTanka;
-			}
+			editing : true
 		};
-	}
+	};
+	
+	this.getSubtotal = function (line) {
+		return line.hanbaiNumber * line.hanbaiTanka;
+	};
 	
 } ])
 // main controller
@@ -71,7 +69,7 @@ function($scope, $http, denpyo, common) {
 	// 明細入力完了
 	$scope.done = function(line) {
 		validateMeisai(line, function () {
-			line.edit(false);
+			line.editing = false;
 		});
 	};
 
@@ -119,7 +117,7 @@ function($scope, $http, denpyo, common) {
 
 	// 編集開始
 	$scope.edit = function(line) {
-		line.edit(true);
+		line.editing = true;
 	}
 
 	// 任意の明細行をリストモデルから取り除く
@@ -133,7 +131,7 @@ function($scope, $http, denpyo, common) {
 
 	// 引数から小計を計算して返す
 	$scope.getSubtotal = function(line) {
-		return line.getSubtotal();
+		return denpyo.getSubtotal(line);
 	};
 
 	// 明細小計の合計
@@ -153,7 +151,9 @@ function($scope, $http, denpyo, common) {
 				this.editing = editable;
 			},
 		};
-		$scope.lines = [];
+		if(!$scope.lines){
+			$scope.lines = [];
+		}
 	};
 	
 	// 更新画面へ
@@ -163,6 +163,8 @@ function($scope, $http, denpyo, common) {
 
 	// 削除
 	$scope.delete = function() {
+		alert("未実装");
+		return;
 		crud({
 			url : "/u05g002/delete",
 			formId : "uriageDenpyo",
