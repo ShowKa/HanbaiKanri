@@ -77,7 +77,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									type="text"
 									th:value="${form.kokyakuCode}"
 									ng-model="kokyakuCode"
-									ng-auto-init
+									ng-init-from-value
 									required
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
@@ -95,7 +95,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									type="text"
 									th:value="${form.denpyoNumber}"
 									ng-model="denpyoNumber"
-									ng-auto-init
+									ng-init-from-value
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
 						</div>
@@ -112,7 +112,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									type="text"
 									th:value="${{form.uriageDate}}"
 									ng-model="uriageDate"
-									ng-auto-init
+									ng-init-from-value
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
 						</div>
@@ -127,7 +127,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									name="hanbaiKubun"
 									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})'
 									ng-model="hanbaiKubun"
-									ng-auto-init
+									ng-init-from-value
 									ng-readonly="!header.editing || !isRegisterMode()" />
 							</div>
 						</div>
@@ -157,24 +157,22 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								</tr>
 							</thead>
 							<tbody>
-								<tr
-									ng-auto-init-iterator="line in lines"
+								<ng-init-iterator
+									for="line in lines"
 									th:each="m, stat:${form.meisai}">
-									<td>
-										<input
-											type="text"
-											th:value="${m.shohinCode}"
-											ng-model="line.shohinCode" />
-										<input
-											type="number"
-											th:value="${m.hanbaiNumber}"
-											ng-model="line.hanbaiNumber" />
-										<input
-											type="number"
-											th:value="${m.hanbaiTanka}"
-											ng-model="line.hanbaiTanka" />
-									</td>
-								</tr>
+									<input
+										type="text"
+										th:value="${m.shohinCode}"
+										ng-model="line.shohinCode" />
+									<input
+										type="number"
+										th:value="${m.hanbaiNumber}"
+										ng-model="line.hanbaiNumber" />
+									<input
+										type="number"
+										th:value="${m.hanbaiTanka}"
+										ng-model="line.hanbaiTanka" />
+								</ng-init-iterator>
 								<tr ng-repeat="line in lines">
 									<td></td>
 									<td class="col-sm-5">

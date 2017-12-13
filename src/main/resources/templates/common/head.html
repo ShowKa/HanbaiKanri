@@ -41,25 +41,26 @@
 		}
 	} ]);
 	// directive
-	ngModules.directive('ngAutoInit', function() {
+	ngModules.directive('ngInitFromValue', function() {
 		return {
 			restrict : 'A',
 			link : function postLink(scope, element, attrs, ctrl) {
-				var ngAutoInit = attrs["ngAutoInit"];
 				var ngModel = attrs["ngModel"];
-				var value = element.val();
-				scope[ngModel] = value;
+				if (ngModel) {
+					var value = element.val();
+					scope[ngModel] = value;
+				}
 			}
 		};
 	});
-	ngModules.directive('ngAutoInitIterator', function() {
+	ngModules.directive('ngInitIterator', function() {
 		return {
-			restrict : 'A',
+			restrict : 'E',
 			priority : 1001,
 			compile : function(tElement, tAttrs) { //Compile関数
 				return {
 					pre : function preLink(scope, element, attrs, ctrl) { //Link関数その1
-						var match = attrs["ngAutoInitIterator"].match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+						var match = attrs["for"].match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 						var lhs = match[1];
 						var rhs = match[2];
 						scope[rhs] = scope[rhs] ? scope[rhs] : [];
