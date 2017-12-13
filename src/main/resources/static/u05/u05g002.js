@@ -16,6 +16,20 @@ function($scope, $filter) {
 		return line.hanbaiNumber * line.hanbaiTanka;
 	};
 	
+	this.checkLines = function (lines) {
+		if (lines.length === 0) {
+			showErroeMessage("明細を追加してください。");
+			return false;
+		}
+		for ( var l of lines) {
+			if (l.editing == true) {
+				showErroeMessage("編集中の明細が残っています。");
+				return false;
+			}
+		}
+		return true;
+	};
+	
 } ])
 // main controller
 .controller('MainController', [ '$scope', '$http', 'denpyo', 'common',
@@ -77,20 +91,34 @@ function($scope, $http, denpyo, common) {
 	$scope.register = function() {
 
 		// check
-		var lines = $scope.lines;
-		if (lines.length === 0) {
-			showErroeMessage("明細を追加してください。");
+		if (!denpyo.checkLines($scope.lines)) {
 			return;
-		}
-		for ( var l of lines) {
-			if (l.editing == true) {
-				showErroeMessage("編集中の明細が残っています。");
-				return;
-			}
 		}
 
 		crud({
 			url : "/u05g002/register",
+			formId : "uriageDenpyo",
+			redirect : {
+				url : "/u05g002/refer",
+				param : {
+					kokyakuCode : $scope.kokyakuCode,
+					denpyoNumber : $scope.denpyoNumber
+				}
+			}
+		});
+	};
+
+	// 新規登録
+	$scope.update = function() {
+
+		// check
+		if (!denpyo.checkLines($scope.lines)) {
+			return;
+		}
+		alert("crud");
+
+		crud({
+			url : "/u05g002/update",
 			formId : "uriageDenpyo",
 			redirect : {
 				url : "/u05g002/refer",

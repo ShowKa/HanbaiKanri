@@ -176,7 +176,7 @@ public class U05G002Controller {
 	 * 更新.
 	 *
 	 */
-	@RequestMapping(value = "/u05g002/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
 	public ModelAndViewExtended update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// domain
