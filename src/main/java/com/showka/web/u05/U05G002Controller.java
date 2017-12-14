@@ -152,7 +152,8 @@ public class U05G002Controller {
 	public ResponseEntity<?> register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// set id
-		form.setRecordId(UUID.randomUUID().toString());
+		String uriageRecordId = UUID.randomUUID().toString();
+		form.setRecordId(uriageRecordId);
 		List<U05G002MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
 
@@ -227,7 +228,7 @@ public class U05G002Controller {
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
 			mb.withRecordId(mf.getRecordId());
 			mb.withShohinDomain(shohinCrudService.getDomain(mf.getShohinCode()));
-			mb.withUriageId(mf.getRecordId());
+			mb.withUriageId(form.getRecordId());
 			mb.withVersion(mf.getVersion());
 			UriageMeisaiDomain md = mb.build();
 
