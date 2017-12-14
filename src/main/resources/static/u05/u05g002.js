@@ -115,7 +115,6 @@ function($scope, $http, denpyo, common) {
 		if (!denpyo.checkLines($scope.lines)) {
 			return;
 		}
-		alert("crud");
 
 		crud({
 			url : "/u05g002/update",

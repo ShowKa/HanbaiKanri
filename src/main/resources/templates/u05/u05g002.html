@@ -131,6 +131,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									ng-readonly="!header.editing || !isRegisterMode()" />
 							</div>
 						</div>
+						<input type="hidden" name ="version" th:value="${form.version}" />
+						<input type="hidden" name ="recordId" th:value="${form.recordId}" />
 
 						<h4>明細</h4>
 
@@ -161,6 +163,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									for="line in lines"
 									th:each="m, stat:${form.meisai}">
 									<input
+										type="number"
+										th:value="${m.meisaiNumber}"
+										ng-model="line.meisaiNumber" />
+									<input
 										type="text"
 										th:value="${m.shohinCode}"
 										ng-model="line.shohinCode" />
@@ -172,9 +178,24 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										type="number"
 										th:value="${m.hanbaiTanka}"
 										ng-model="line.hanbaiTanka" />
+									<input
+										type="number"
+										th:value="${m.version}"
+										ng-model="line.version" />
+									<input
+										type="text"
+										th:value="${m.recordId}"
+										ng-model="line.recordId" />
 								</ng-init-iterator>
 								<tr ng-repeat="line in lines">
-									<td></td>
+									<td class="col-sm-1">
+										<input
+											name="meisai[{{$index}}].meisaiNumber"
+											class="form-control"
+											type="number"
+											ng-model="line.meisaiNumber"
+											ng-readonly="true">
+									</td>
 									<td class="col-sm-5">
 										<input
 											name="meisai[{{$index}}].shohinCode"
@@ -201,6 +222,16 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											ng-model="line.hanbaiTanka"
 											ng-readonly="!line.editing"
 											required>
+									</td>
+									<td ng-hide="true">
+										<input
+											name="meisai[{{$index}}].version"
+											type="hidden"
+											ng-model="line.version">
+										<input
+											name="meisai[{{$index}}].recordId"
+											type="hidden"
+											ng-model="line.recordId">
 									</td>
 									<td class="col-sm-1">{{ getSubtotal(line) | number }}</td>
 									<td

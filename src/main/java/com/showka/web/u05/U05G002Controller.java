@@ -119,6 +119,8 @@ public class U05G002Controller {
 		// set form
 		form.setHanbaiKubun(u.getHanbaiKubun().getCode());
 		form.setUriageDate(u.getUriageDate().toDate());
+		form.setVersion(u.getVersion());
+		form.setRecordId(u.getRecordId());
 
 		// set 明細
 		List<U05G002MeisaiForm> meisaiList = new ArrayList<U05G002MeisaiForm>();
@@ -128,6 +130,8 @@ public class U05G002Controller {
 			e.setHanbaiNumber(meisai.getHanbaiNumber());
 			e.setHanbaiTanka(meisai.getHanbaiTanka().intValue());
 			e.setShohinCode(meisai.getShohinDomain().getCode());
+			e.setVersion(meisai.getVersion());
+			e.setRecordId(meisai.getRecordId());
 			meisaiList.add(e);
 		}
 		form.setMeisai(meisaiList);
@@ -153,7 +157,7 @@ public class U05G002Controller {
 		meisai.forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
 
 		// meisai number
-		AtomicInteger i = new AtomicInteger();
+		AtomicInteger i = new AtomicInteger(1);
 		meisai.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
@@ -223,8 +227,7 @@ public class U05G002Controller {
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
 			mb.withRecordId(mf.getRecordId());
 			mb.withShohinDomain(shohinCrudService.getDomain(mf.getShohinCode()));
-			mb.withUriageId(form.getRecordId());
-			mb.withUriageId(form.getRecordId());
+			mb.withUriageId(mf.getRecordId());
 			mb.withVersion(mf.getVersion());
 			UriageMeisaiDomain md = mb.build();
 
