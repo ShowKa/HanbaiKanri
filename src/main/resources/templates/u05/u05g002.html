@@ -161,7 +161,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<tbody>
 								<ng-init-iterator
 									for="line in lines"
-									th:each="m, stat:${form.meisai}">
+									th:each="m, stat:${form.meisai}"
+									style="display:none;" >
 									<input
 										type="number"
 										th:value="${m.meisaiNumber}"
@@ -226,11 +227,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									<td ng-hide="true">
 										<input
 											name="meisai[{{$index}}].version"
-											type="hidden"
+											type="number"
 											ng-model="line.version">
 										<input
 											name="meisai[{{$index}}].recordId"
-											type="hidden"
+											type="text"
 											ng-model="line.recordId">
 									</td>
 									<td class="col-sm-1">{{ getSubtotal(line) | number }}</td>

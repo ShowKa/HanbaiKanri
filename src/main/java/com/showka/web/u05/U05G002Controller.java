@@ -182,7 +182,7 @@ public class U05G002Controller {
 	 *
 	 */
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
-	public ModelAndViewExtended update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
@@ -194,13 +194,11 @@ public class U05G002Controller {
 		uriageCrudService.save(uriage);
 
 		// message
-		form.setSuccessMessage("登録成功");
+		form.setSuccessMessage("更新成功");
 
 		// set model
 		model.addForm(form);
-		model.setMode(Mode.REGISTER);
-		model.setViewName("/u05/u05g002");
-		return model;
+		return ResponseEntity.ok(model);
 	}
 
 	/**
