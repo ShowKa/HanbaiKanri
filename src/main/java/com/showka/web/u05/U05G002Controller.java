@@ -26,6 +26,7 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
@@ -53,6 +54,9 @@ public class U05G002Controller {
 
 	@Autowired
 	private MShohinCrudService shohinCrudService;
+
+	@Autowired
+	private UriageMeisaiCrudService uriageMeisaiCrudService;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -191,6 +195,7 @@ public class U05G002Controller {
 		uriageValidateService.validate(uriage);
 
 		// save
+		uriageMeisaiCrudService.setNewMeisaiNumber(uriage.getUriageMeisai());
 		uriageCrudService.save(uriage);
 
 		// message
@@ -217,7 +222,8 @@ public class U05G002Controller {
 		for (U05G002MeisaiForm mf : form.getMeisai()) {
 
 			// record_id 採番
-			mf.setRecordId(mf.getRecordId() == null ? UUID.randomUUID().toString() : mf.getRecordId());
+			String rec = mf.getRecordId();
+			mf.setRecordId(rec == null || rec.length() == 0 ? UUID.randomUUID().toString() : rec);
 
 			// build
 			UriageMeisaiDomainBuilder mb = new UriageMeisaiDomainBuilder();

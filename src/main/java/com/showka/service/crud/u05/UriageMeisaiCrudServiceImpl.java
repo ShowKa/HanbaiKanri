@@ -3,6 +3,8 @@ package com.showka.service.crud.u05;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -139,4 +141,22 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		return meisaiDomainList;
 	}
 
+	@Override
+	public void setNewMeisaiNumber(List<UriageMeisaiDomain> domain) {
+		Optional<UriageMeisaiDomain> d = domain.stream().max((d1, d2) -> {
+			if (d1.getMeisaiNumber() == null)
+				return -1;
+			if (d2.getMeisaiNumber() == null)
+				return 1;
+			return Integer.compare(d1.getMeisaiNumber(), d2.getMeisaiNumber());
+		});
+		Integer max = d.isPresent() ? d.get().getMeisaiNumber() : 0;
+		AtomicInteger i = new AtomicInteger(max + 1);
+
+		domain.forEach(meisai -> {
+			if (meisai.getMeisaiNumber() == null) {
+				meisai.setMeisaiNumber(i.getAndIncrement());
+			}
+		});
+	}
 }

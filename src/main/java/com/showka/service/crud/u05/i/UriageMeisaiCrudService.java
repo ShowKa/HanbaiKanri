@@ -17,4 +17,12 @@ public interface UriageMeisaiCrudService extends CrudService<UriageMeisaiDomain,
 	 */
 	public List<UriageMeisaiDomain> getDomainList(String uriageId);
 
+	/**
+	 * 明細番号採番.
+	 * 
+	 * @param domain
+	 *            売上明細ドメイン
+	 */
+	public void setNewMeisaiNumber(List<UriageMeisaiDomain> domain);
+
 }
