@@ -132,6 +132,11 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Override
 	public void delete(UriageDomain domain) {
+
+		domain.getUriageMeisai().forEach(meisai -> {
+			uriageMeisaiCrudService.delete(meisai);
+		});
+
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(domain.getDenpyoNumber());
 		pk.setKokyakuId(domain.getKokyaku().getRecordId());

@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -207,6 +208,27 @@ public class U05G002Controller {
 	}
 
 	/**
+	 * delete.
+	 *
+	 */
+	@RequestMapping(value = "/u05g002/delete", method = RequestMethod.POST)
+	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+
+		// domain
+		UriageDomain uriage = buildDomainFromForm(form);
+
+		// delete
+		uriageCrudService.delete(uriage);
+
+		// message
+		form.setSuccessMessage("削除成功");
+
+		// set model
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	/**
 	 * form から domain を生成する.
 	 * 
 	 * @param form
@@ -223,7 +245,7 @@ public class U05G002Controller {
 
 			// record_id 採番
 			String rec = mf.getRecordId();
-			mf.setRecordId(rec == null || rec.length() == 0 ? UUID.randomUUID().toString() : rec);
+			mf.setRecordId(StringUtils.isEmpty(rec) ? UUID.randomUUID().toString() : rec);
 
 			// build
 			UriageMeisaiDomainBuilder mb = new UriageMeisaiDomainBuilder();

@@ -190,8 +190,6 @@ function($scope, $http, denpyo, common) {
 
 	// 削除
 	$scope.delete = function() {
-		alert("未実装");
-		return;
 		crud({
 			url : "/u05g002/delete",
 			formId : "uriageDenpyo",
