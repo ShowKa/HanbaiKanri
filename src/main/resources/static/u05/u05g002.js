@@ -1,19 +1,25 @@
-// services
-ngModules.service('denpyo', [ '$rootScope', '$filter',
-// モデルの操作
-function($scope, $filter) {
 
-	this.createLine = function() {
-		return {
-			shohinCode : '',
-			hanbaiNumber : 0,
-			hanbaiTanka : 0,
-			editing : true
+// services
+ngModules.service('meisai', [ '$rootScope', '$filter',
+// 明細
+function($scope, $filster) {
+	
+	this.convertToMeisai = function(meisai, edit) {
+		if (meisai.editing) {
+			return;
+		}
+		edit = edit != null ? edit :false;
+		meisai.editing = edit;
+		meisai.edit = function (e) {
+			e = e != null ? e : true;
+			this.editing = e;
 		};
 	};
 	
-	this.getSubtotal = function (line) {
-		return line.hanbaiNumber * line.hanbaiTanka;
+	this.convertCollectionToMeisai = function(lines, edit) {
+		for (var l of lines) {
+			this.convertToMeisai(l, edit);
+		}
 	};
 	
 	this.checkLines = function (lines) {
@@ -29,7 +35,34 @@ function($scope, $filter) {
 		}
 		return true;
 	};
+}]);
 	
+ngModules.service('denpyo', [ '$rootScope', '$filter', 'meisai',
+// モデルの操作
+function($scope, $filter, meisai) {
+	
+	this.checkLines = function(lines) {
+		return meisai.checkLines(lines);
+	}
+
+	this.createLine = function() {
+		var l = {
+			shohinCode : '',
+			hanbaiNumber : 0,
+			hanbaiTanka : 0
+		};
+		meisai.convertToMeisai(l, true);
+		return l;
+	};
+	
+	this.convertCollectionToMeisai = function(lines) {
+		meisai.convertCollectionToMeisai(lines);
+	};
+	
+	this.getSubtotal = function (line) {
+		return line.hanbaiNumber * line.hanbaiTanka;
+	};
+
 } ])
 // main controller
 .controller('MainController', [ '$scope', '$http', 'denpyo', 'common',
@@ -83,7 +116,7 @@ function($scope, $http, denpyo, common) {
 	// 明細入力完了
 	$scope.done = function(line) {
 		validateMeisai(line, function () {
-			line.editing = false;
+			line.edit(false);
 		});
 	};
 
@@ -108,7 +141,7 @@ function($scope, $http, denpyo, common) {
 		});
 	};
 
-	// 新規登録
+	// 更新
 	$scope.update = function() {
 
 		// check
@@ -144,7 +177,7 @@ function($scope, $http, denpyo, common) {
 
 	// 編集開始
 	$scope.edit = function(line) {
-		line.editing = true;
+		line.edit(true);
 	}
 
 	// 任意の明細行をリストモデルから取り除く
@@ -181,6 +214,9 @@ function($scope, $http, denpyo, common) {
 		if(!$scope.lines){
 			$scope.lines = [];
 		}
+		$scope.$watchCollection('lines', function(newLines, oldLines) {
+			denpyo.convertCollectionToMeisai(newLines);
+		});
 	};
 	
 	// 更新画面へ
