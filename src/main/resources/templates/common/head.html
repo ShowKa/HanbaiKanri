@@ -26,6 +26,8 @@
 <script src="/common/common.js"></script>
 <script th:inline="javascript">
 	var ngModules = angular.module('App', []);
+
+	// services
 	ngModules.service('common', [ '$rootScope', '$filter',
 	// common	
 	function($scope, $filter) {
@@ -40,6 +42,47 @@
 			return "update" === $scope.mode;
 		}
 	} ]);
+	
+	ngModules.service('meisai', [ '$rootScope', '$filter',
+	// 明細
+	function($scope, $filster) {
+	
+		this.convertToMeisai = function(meisai, edit) {
+			if (meisai.editing) {
+				return;
+			}
+			edit = edit != null ? edit :false;
+			meisai.editing = edit;
+			meisai.edit = function (e) {
+				e = e != null ? e : true;
+				this.editing = e;
+			};
+			meisai.editDone = function() {
+				this.editing = false;
+			}
+		};
+	
+		this.convertCollectionToMeisai = function(meisaiList, edit) {
+			for (var l of meisaiList) {
+				this.convertToMeisai(l, edit);
+			}
+		};
+	
+		this.checkMeisaiList = function (meisaiList) {
+			if (meisaiList.length === 0) {
+				showErroeMessage("明細を追加してください。");
+				return false;
+			}
+			for ( var l of meisaiList) {
+				if (l.editing == true) {
+					showErroeMessage("編集中の明細が残っています。");
+					return false;
+				}
+			}
+			return true;
+		};
+	}]);
+	
 	// directive
 	ngModules.directive('ngInitFromValue', function() {
 		return {
@@ -53,6 +96,7 @@
 			}
 		};
 	});
+
 	ngModules.directive('ngInitIterator', function() {
 		return {
 			restrict : 'E',
