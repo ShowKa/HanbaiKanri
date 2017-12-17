@@ -16,18 +16,18 @@ function($scope, $filster) {
 		};
 	};
 	
-	this.convertCollectionToMeisai = function(lines, edit) {
-		for (var l of lines) {
+	this.convertCollectionToMeisai = function(meisaiList, edit) {
+		for (var l of meisaiList) {
 			this.convertToMeisai(l, edit);
 		}
 	};
 	
-	this.checkLines = function (lines) {
-		if (lines.length === 0) {
+	this.checkMeisais = function (meisaiList) {
+		if (meisaiList.length === 0) {
 			showErroeMessage("明細を追加してください。");
 			return false;
 		}
-		for ( var l of lines) {
+		for ( var l of meisaiList) {
 			if (l.editing == true) {
 				showErroeMessage("編集中の明細が残っています。");
 				return false;
@@ -41,11 +41,11 @@ ngModules.service('denpyo', [ '$rootScope', '$filter', 'meisai',
 // モデルの操作
 function($scope, $filter, meisai) {
 	
-	this.checkLines = function(lines) {
-		return meisai.checkLines(lines);
+	this.checkMeisais = function(meisaiList) {
+		return meisai.checkMeisais(meisaiList);
 	}
 
-	this.createLine = function() {
+	this.createMeisai = function() {
 		var l = {
 			shohinCode : '',
 			hanbaiNumber : 0,
@@ -55,12 +55,12 @@ function($scope, $filter, meisai) {
 		return l;
 	};
 	
-	this.convertCollectionToMeisai = function(lines) {
-		meisai.convertCollectionToMeisai(lines);
+	this.convertCollectionToMeisai = function(meisaiList) {
+		meisai.convertCollectionToMeisai(meisaiList);
 	};
 	
-	this.getSubtotal = function (line) {
-		return line.hanbaiNumber * line.hanbaiTanka;
+	this.getSubtotal = function (meisai) {
+		return meisai.hanbaiNumber * meisai.hanbaiTanka;
 	};
 
 } ])
@@ -88,11 +88,11 @@ function($scope, $http, denpyo, common) {
 		});
 	}
 
-	var validateMeisai = function (line, callback) {
+	var validateMeisai = function (meisai, callback) {
 		var meisai = {
-			"meisai[0].shohinCode" : line.shohinCode,
-			"meisai[0].hanbaiNumber" : line.hanbaiNumber,
-			"meisai[0].hanbaiTanka" : line.hanbaiTanka
+			"meisai[0].shohinCode" : meisai.shohinCode,
+			"meisai[0].hanbaiNumber" : meisai.hanbaiNumber,
+			"meisai[0].hanbaiTanka" : meisai.hanbaiTanka
 		}
 		
 		$http({
@@ -114,9 +114,9 @@ function($scope, $http, denpyo, common) {
 	}
 
 	// 明細入力完了
-	$scope.done = function(line) {
-		validateMeisai(line, function () {
-			line.edit(false);
+	$scope.done = function(meisai) {
+		validateMeisai(meisai, function () {
+			meisai.edit(false);
 		});
 	};
 
@@ -124,7 +124,7 @@ function($scope, $http, denpyo, common) {
 	$scope.register = function() {
 
 		// check
-		if (!denpyo.checkLines($scope.lines)) {
+		if (!denpyo.checkMeisais($scope.meisaiList)) {
 			return;
 		}
 
@@ -145,7 +145,7 @@ function($scope, $http, denpyo, common) {
 	$scope.update = function() {
 
 		// check
-		if (!denpyo.checkLines($scope.lines)) {
+		if (!denpyo.checkMeisais($scope.meisaiList)) {
 			return;
 		}
 
@@ -163,42 +163,42 @@ function($scope, $http, denpyo, common) {
 	};
 
 	// リストモデルに新しい明細行を追加する
-	$scope.addLine = function() {
+	$scope.addMeisai = function() {
 		if($scope.header.editing == true && $scope.isRegisterMode()) {
 			validateHeader(function() {
-				$scope.lines.push(denpyo.createLine());
+				$scope.meisaiList.push(denpyo.createMeisai());
 				$scope.header.edit(false);
 			});
 		} else {
-			$scope.lines.push(denpyo.createLine());
+			$scope.meisaiList.push(denpyo.createMeisai());
 		}
 		
 	};
 
 	// 編集開始
-	$scope.edit = function(line) {
-		line.edit(true);
+	$scope.edit = function(meisai) {
+		meisai.edit(true);
 	}
 
 	// 任意の明細行をリストモデルから取り除く
-	$scope.removeLine = function(target) {
-		var lines = $scope.lines;
-		var index = lines.indexOf(target);
+	$scope.removeMeisai = function(target) {
+		var meisaiList = $scope.meisaiList;
+		var index = meisaiList.indexOf(target);
 		if (index !== -1) {
-			lines.splice(index, 1);
+			meisaiList.splice(index, 1);
 		}
 	};
 
 	// 引数から小計を計算して返す
-	$scope.getSubtotal = function(line) {
-		return denpyo.getSubtotal(line);
+	$scope.getSubtotal = function(meisai) {
+		return denpyo.getSubtotal(meisai);
 	};
 
 	// 明細小計の合計
-	$scope.getTotalAmount = function(lines) {
+	$scope.getTotalAmount = function(meisaiList) {
 		var totalAmount = 0;
-		angular.forEach(lines, function(line) {
-			totalAmount += $scope.getSubtotal(line);
+		angular.forEach(meisaiList, function(meisai) {
+			totalAmount += $scope.getSubtotal(meisai);
 		});
 		return totalAmount;
 	};
@@ -211,11 +211,11 @@ function($scope, $http, denpyo, common) {
 				this.editing = editable;
 			},
 		};
-		if(!$scope.lines){
-			$scope.lines = [];
+		if(!$scope.meisaiList){
+			$scope.meisaiList = [];
 		}
-		$scope.$watchCollection('lines', function(newLines, oldLines) {
-			denpyo.convertCollectionToMeisai(newLines);
+		$scope.$watchCollection('meisaiList', function(newMeisais, oldMeisais) {
+			denpyo.convertCollectionToMeisai(newMeisais);
 		});
 	};
 	

@@ -4,7 +4,7 @@
 <head>
 <link th:replace="common/head :: common_link" />
 <script
-	th:inline="javascript"
+	th:inmeisai="javascript"
 	src="/u05/u05g002.js"></script>
 <style>
 /* example.css より一部抜粋 */
@@ -139,7 +139,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<button
 							class="btn btn-primary"
 							type="button"
-							ng-click="addLine()"
+							ng-click="addMeisai()"
 							ng-disabled="uriageDenpyo.$invalid"
 							ng-show="!isReadMode()">明細行を追加</button>
 
@@ -160,41 +160,41 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							</thead>
 							<tbody>
 								<ng-init-iterator
-									for="line in lines"
+									for="meisai in meisaiList"
 									th:each="m, stat:${form.meisai}"
 									style="display:none;" >
 									<input
 										type="number"
 										th:value="${m.meisaiNumber}"
-										ng-model="line.meisaiNumber" />
+										ng-model="meisai.meisaiNumber" />
 									<input
 										type="text"
 										th:value="${m.shohinCode}"
-										ng-model="line.shohinCode" />
+										ng-model="meisai.shohinCode" />
 									<input
 										type="number"
 										th:value="${m.hanbaiNumber}"
-										ng-model="line.hanbaiNumber" />
+										ng-model="meisai.hanbaiNumber" />
 									<input
 										type="number"
 										th:value="${m.hanbaiTanka}"
-										ng-model="line.hanbaiTanka" />
+										ng-model="meisai.hanbaiTanka" />
 									<input
 										type="number"
 										th:value="${m.version}"
-										ng-model="line.version" />
+										ng-model="meisai.version" />
 									<input
 										type="text"
 										th:value="${m.recordId}"
-										ng-model="line.recordId" />
+										ng-model="meisai.recordId" />
 								</ng-init-iterator>
-								<tr ng-repeat="line in lines">
+								<tr ng-repeat="meisai in meisaiList">
 									<td class="col-sm-1">
 										<input
 											name="meisai[{{$index}}].meisaiNumber"
 											class="form-control"
 											type="number"
-											ng-model="line.meisaiNumber"
+											ng-model="meisai.meisaiNumber"
 											ng-readonly="true">
 									</td>
 									<td class="col-sm-5">
@@ -202,8 +202,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											name="meisai[{{$index}}].shohinCode"
 											class="form-control"
 											type="text"
-											ng-model="line.shohinCode"
-											ng-readonly="!line.editing"
+											ng-model="meisai.shohinCode"
+											ng-readonly="!meisai.editing"
 											required>
 									</td>
 									<td class="col-sm-2">
@@ -211,8 +211,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											name="meisai[{{$index}}].hanbaiNumber"
 											class="form-control"
 											type="number"
-											ng-model="line.hanbaiNumber"
-											ng-readonly="!line.editing"
+											ng-model="meisai.hanbaiNumber"
+											ng-readonly="!meisai.editing"
 											required>
 									</td>
 									<td class="col-sm-2">
@@ -220,36 +220,36 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											name="meisai[{{$index}}].hanbaiTanka"
 											class="form-control"
 											type="number"
-											ng-model="line.hanbaiTanka"
-											ng-readonly="!line.editing"
+											ng-model="meisai.hanbaiTanka"
+											ng-readonly="!meisai.editing"
 											required>
 									</td>
 									<td ng-hide="true">
 										<input
 											name="meisai[{{$index}}].version"
 											type="number"
-											ng-model="line.version">
+											ng-model="meisai.version">
 										<input
 											name="meisai[{{$index}}].recordId"
 											type="text"
-											ng-model="line.recordId">
+											ng-model="meisai.recordId">
 									</td>
-									<td class="col-sm-1">{{ getSubtotal(line) | number }}</td>
+									<td class="col-sm-1">{{ getSubtotal(meisai) | number }}</td>
 									<td
 										class="col-sm-1"
 										ng-show="!isReadMode()">
 										<input
 											class="btn btn-default"
 											type="button"
-											ng-click="done(line)"
-											ng-show="line.editing"
+											ng-click="done(meisai)"
+											ng-show="meisai.editing"
 											ng-disabled="uriageDenpyo.$invalid"
 											value="完了" />
 										<button
 											class="btn btn-default"
 											type="button"
-											ng-click="edit(line)"
-											ng-show="!line.editing">編集</button>
+											ng-click="edit(meisai)"
+											ng-show="!meisai.editing">編集</button>
 									</td>
 									<td
 										class="col-sm-1"
@@ -257,12 +257,12 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										<button
 											class="btn btn-default"
 											type="button"
-											ng-click="removeLine(line)">削除</button>
+											ng-click="removeMeisai(meisai)">削除</button>
 									</td>
 								</tr>
-								<tr ng-show="lines.length > 0">
+								<tr ng-show="meisaiList.length > 0">
 									<td colspan="4"></td>
-									<td colspan="3">{{ getTotalAmount(lines) | number }}</td>
+									<td colspan="3">{{ getTotalAmount(meisaiList) | number }}</td>
 								</tr>
 							</tbody>
 						</table>
