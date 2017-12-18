@@ -68,7 +68,7 @@
 			}
 		};
 	
-		this.checkMeisaiList = function (meisaiList) {
+		this.check = function (meisaiList) {
 			if (meisaiList.length === 0) {
 				showErroeMessage("明細を追加してください。");
 				return false;
@@ -83,7 +83,7 @@
 		};
 		
 		// 任意の明細行をリストモデルから取り除く
-		this.removeMeisai = function(target, meisaiList) {
+		this.remove = function(target, meisaiList) {
 			var index = meisaiList.indexOf(target);
 			if (index !== -1) {
 				meisaiList.splice(index, 1);

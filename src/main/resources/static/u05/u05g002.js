@@ -1,28 +1,14 @@
 
-ngModules.service('denpyo', [ '$rootScope', '$filter', 'meisai',
+ngModules.service('denpyo', [ '$rootScope', '$filter',
 // モデルの操作
-function($scope, $filter, meisai) {
+function($scope, $filter) {
 	
-	this.checkMeisaiList = function(meisaiList) {
-		return meisai.checkMeisaiList(meisaiList);
-	}
-
 	this.createMeisai = function() {
-		var l = {
+		return {
 			shohinCode : '',
 			hanbaiNumber : 0,
 			hanbaiTanka : 0
 		};
-		meisai.convertToMeisai(l, true);
-		return l;
-	};
-	
-	this.removeMeisai = function(target, meisaiList) {
-		meisai.removeMeisai(target, meisaiList);
-	}
-	
-	this.convertCollectionToMeisai = function(meisaiList) {
-		meisai.convertCollectionToMeisai(meisaiList);
 	};
 	
 	this.getSubtotal = function (meisai) {
@@ -39,9 +25,9 @@ function($scope, $filter, meisai) {
 
 } ])
 // main controller
-.controller('MainController', [ '$scope', '$http', 'denpyo', 'common',
+.controller('MainController', [ '$scope', '$http', 'denpyo', 'common', 'meisai',
 // HDRと明細
-function($scope, $http, denpyo, common) {
+function($scope, $http, denpyoService, common, meisaiService) {
 
 	// validate header
 	var validateHeader = function (callback) {
@@ -100,7 +86,7 @@ function($scope, $http, denpyo, common) {
 	$scope.register = function() {
 
 		// check
-		if (!denpyo.checkMeisaiList($scope.meisaiList)) {
+		if (!meisaiService.check($scope.meisaiList)) {
 			return;
 		}
 
@@ -121,7 +107,7 @@ function($scope, $http, denpyo, common) {
 	$scope.update = function() {
 
 		// check
-		if (!denpyo.checkMeisaiList($scope.meisaiList)) {
+		if (!meisaiService.check($scope.meisaiList)) {
 			return;
 		}
 
@@ -142,33 +128,39 @@ function($scope, $http, denpyo, common) {
 	$scope.addMeisai = function() {
 		if($scope.header.editing == true && $scope.isRegisterMode()) {
 			validateHeader(function() {
-				$scope.meisaiList.push(denpyo.createMeisai());
+				$scope.meisaiList.push(createNewMeisai());
 				$scope.header.edit(false);
 			});
 		} else {
-			$scope.meisaiList.push(denpyo.createMeisai());
+			$scope.meisaiList.push(createNewMeisai());
 		}
-		
 	};
+	
+	var createNewMeisai = function () {
+		var m = denpyoService.createMeisai();
+		meisaiService.convertToMeisai(m);
+		m.edit();
+		return m;
+	}
 
 	// 編集開始
 	$scope.edit = function(meisai) {
 		meisai.edit();
-	}
+	};
 
 	// 任意の明細行をリストモデルから取り除く
 	$scope.removeMeisai = function(target) {
-		denpyo.removeMeisai(target, $scope.meisaiList);
+		meisaiService.remove(target, $scope.meisaiList);
 	};
 
 	// 引数から小計を計算して返す
 	$scope.getSubtotal = function(meisai) {
-		return denpyo.getSubtotal(meisai);
+		return denpyoService.getSubtotal(meisai);
 	};
 
 	// 明細小計の合計
 	$scope.getTotalAmount = function(meisaiList) {
-		return denpyo.getTotalAmount(meisaiList);
+		return denpyoService.getTotalAmount(meisaiList);
 	};
 
 	// 初期化
@@ -183,7 +175,7 @@ function($scope, $http, denpyo, common) {
 			$scope.meisaiList = [];
 		}
 		$scope.$watchCollection('meisaiList', function(newMeisaiList, oldMeisaiList) {
-			denpyo.convertCollectionToMeisai(newMeisaiList);
+			meisaiService.convertCollectionToMeisai(newMeisaiList);
 		});
 	};
 	
