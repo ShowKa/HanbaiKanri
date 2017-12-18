@@ -81,6 +81,14 @@
 			}
 			return true;
 		};
+		
+		// 任意の明細行をリストモデルから取り除く
+		this.removeMeisai = function(target, meisaiList) {
+			var index = meisaiList.indexOf(target);
+			if (index !== -1) {
+				meisaiList.splice(index, 1);
+			}
+		};
 	}]);
 	
 	// directive

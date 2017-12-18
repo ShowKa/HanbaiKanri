@@ -17,6 +17,10 @@ function($scope, $filter, meisai) {
 		return l;
 	};
 	
+	this.removeMeisai = function(target, meisaiList) {
+		meisai.removeMeisai(target, meisaiList);
+	}
+	
 	this.convertCollectionToMeisai = function(meisaiList) {
 		meisai.convertCollectionToMeisai(meisaiList);
 	};
@@ -154,11 +158,7 @@ function($scope, $http, denpyo, common) {
 
 	// 任意の明細行をリストモデルから取り除く
 	$scope.removeMeisai = function(target) {
-		var meisaiList = $scope.meisaiList;
-		var index = meisaiList.indexOf(target);
-		if (index !== -1) {
-			meisaiList.splice(index, 1);
-		}
+		denpyo.removeMeisai(target, $scope.meisaiList);
 	};
 
 	// 引数から小計を計算して返す
