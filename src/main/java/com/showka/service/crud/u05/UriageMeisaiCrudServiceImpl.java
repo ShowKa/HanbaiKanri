@@ -143,6 +143,7 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 
 	@Override
 	public void setNewMeisaiNumber(List<UriageMeisaiDomain> domain) {
+		System.out.println(domain);
 		Optional<UriageMeisaiDomain> d = domain.stream().max((d1, d2) -> {
 			if (d1.getMeisaiNumber() == null)
 				return -1;
@@ -150,6 +151,7 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 				return 1;
 			return Integer.compare(d1.getMeisaiNumber(), d2.getMeisaiNumber());
 		});
+		System.out.println(d);
 		Integer max = d.isPresent() ? d.get().getMeisaiNumber() : 0;
 		AtomicInteger i = new AtomicInteger(max + 1);
 

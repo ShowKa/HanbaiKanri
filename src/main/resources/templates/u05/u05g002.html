@@ -187,6 +187,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										type="text"
 										th:value="${m.recordId}"
 										ng-model="meisai.recordId" />
+									<input
+										type="text"
+										th:value="${m.editMode}"
+										ng-model="meisai.editMode" />
 								</ng-init-iterator>
 								<tr ng-repeat="meisai in meisaiList">
 									<td class="col-sm-1">

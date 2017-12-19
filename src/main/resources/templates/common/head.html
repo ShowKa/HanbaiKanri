@@ -59,7 +59,42 @@
 			};
 			meisai.editDone = function() {
 				this.editing = false;
+				this.updated();
 			}
+			
+			if(!meisai.editMode) {
+				meisai.editMode = "added";
+			}
+			var tmp = {
+				isNewRegistered: function () {
+					return this.editMode == 'newRegistered';
+				},
+				isUpdated: function() {
+					return this.editMode == "updated"
+				},
+				updated : function() {
+					switch(this.editMode) {
+					case "added":
+						this.editMode = "newRegistered";
+						break;
+					case "notUpdated":
+					case "deleted" :
+						this.editMode = "updated";
+						break;
+					case "newRegistered" : 
+						console.log("this is new-registered meisai, cannot set editMode updated");
+						break;
+					}
+				},
+				isDeleted: function() {
+					return this.editMode == "deleted"
+				},
+				delete: function() {
+					this.editMode = "deleted";
+				}
+			};
+			
+			Object.assign(meisai, tmp);
 		};
 	
 		this.convertCollectionToMeisai = function(meisaiList, edit) {
