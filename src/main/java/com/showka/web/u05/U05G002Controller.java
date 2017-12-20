@@ -189,6 +189,10 @@ public class U05G002Controller {
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
+		form.getMeisai().forEach(m -> {
+			System.out.println(m.getEditMode());
+		});
+
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
 

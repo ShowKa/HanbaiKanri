@@ -149,8 +149,8 @@ function($scope, $http, denpyoService, common, meisaiService) {
 	};
 
 	// 任意の明細行をリストモデルから取り除く
-	$scope.removeMeisai = function(target) {
-		meisaiService.remove(target, $scope.meisaiList);
+	$scope.deleteMeisai = function(target) {
+		meisaiService.delete(target, $scope.meisaiList);
 	};
 
 	// 引数から小計を計算して返す

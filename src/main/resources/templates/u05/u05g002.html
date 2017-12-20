@@ -25,6 +25,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	-webkit-appearance: none;
 	margin: 0;
 }
+.deletedMeisai input {
+	text-decoraton: line-through;
+}
 </style>
 </head>
 <body ng-app="App">
@@ -192,7 +195,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										th:value="${m.editMode}"
 										ng-model="meisai.editMode" />
 								</ng-init-iterator>
-								<tr ng-repeat="meisai in meisaiList">
+								<tr ng-repeat="meisai in meisaiList"
+									ng-present-deleted="meisai">
 									<td class="col-sm-1">
 										<input
 											name="meisai[{{$index}}].meisaiNumber"
@@ -200,7 +204,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											type="number"
 											ng-model="meisai.meisaiNumber"
 											ng-readonly="true"
-											ng-show="isReadMode()">
+											ng-show="isReadMode()" />
 									</td>
 									<td class="col-sm-5">
 										<input
@@ -209,7 +213,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											type="text"
 											ng-model="meisai.shohinCode"
 											ng-readonly="!meisai.editing"
-											required>
+											required />
 									</td>
 									<td class="col-sm-2">
 										<input
@@ -218,7 +222,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											type="number"
 											ng-model="meisai.hanbaiNumber"
 											ng-readonly="!meisai.editing"
-											required>
+											required />
 									</td>
 									<td class="col-sm-2">
 										<input
@@ -227,17 +231,21 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											type="number"
 											ng-model="meisai.hanbaiTanka"
 											ng-readonly="!meisai.editing"
-											required>
+											required />
 									</td>
 									<td ng-hide="true">
 										<input
 											name="meisai[{{$index}}].version"
 											type="number"
-											ng-model="meisai.version">
+											ng-model="meisai.version" />
 										<input
 											name="meisai[{{$index}}].recordId"
 											type="text"
-											ng-model="meisai.recordId">
+											ng-model="meisai.recordId" />
+										<input
+											name="meisai[{{$index}}].editMode"
+											type="text"
+											ng-model="meisai.editMode" />
 									</td>
 									<td class="col-sm-1">{{ getSubtotal(meisai) | number }}</td>
 									<td
@@ -262,7 +270,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										<button
 											class="btn btn-default"
 											type="button"
-											ng-click="removeMeisai(meisai)">削除</button>
+											ng-click="deleteMeisai(meisai)">削除</button>
 									</td>
 								</tr>
 								<tr ng-show="meisaiList.length > 0">
