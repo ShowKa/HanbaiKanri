@@ -189,9 +189,13 @@ public class U05G002Controller {
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
-		form.getMeisai().forEach(m -> {
-			System.out.println(m.getEditMode());
-		});
+		// 新しい売上明細に明細番号付番
+		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
+		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
+		form.getMeisai()
+				.stream()
+				.filter(m -> m.getMeisaiNumber() == null)
+				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
@@ -200,7 +204,6 @@ public class U05G002Controller {
 		uriageValidateService.validate(uriage);
 
 		// save
-		uriageMeisaiCrudService.setNewMeisaiNumber(uriage.getUriageMeisai());
 		uriageCrudService.save(uriage);
 
 		// message

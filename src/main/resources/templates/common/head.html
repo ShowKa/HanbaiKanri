@@ -121,15 +121,10 @@
 		};
 		
 		// 任意の明細行をリストモデルから取り除く
-		this.delete = function(target, meisaiList) {
+		this.remove = function(target, meisaiList) {
 			var index = meisaiList.indexOf(target);
 			if (index !== -1) {
-				if(target.isAdded() || target.isNewRegistered()) {
-					meisaiList.splice(index, 1);
-				} else {
-					target.delete();
-					target.editing = false;
-				}
+				meisaiList.splice(index, 1);
 			}
 		};
 	}]);
@@ -191,23 +186,6 @@
 			}
 		};
 	});
-	
-	ngModules.directive('ngPresentDeleted', function() {
-		return {
-			restrict : 'A',
-			link : function postLink(scope, element, attrs, ctrl) {
-				var target = attrs["ngPresentDeleted"];
-				scope.$watch(target, function(newTarget, oldTarget) {
-					if (newTarget.isDeleted()) {
-						element.addClass("deletedMeisai");
-					} else {
-						element.removeClass("deletedMeisai");
-					}
-				}, true);
-			}
-		};
-	});
-
 
 	/*<![CDATA[*/
 	function isReadMode() {
