@@ -3,6 +3,7 @@ package com.showka.domain;
 import com.showka.kubun.BushoKubun;
 import com.showka.kubun.JigyoKubun;
 import com.showka.system.exception.SystemException;
+import com.showka.value.EigyoDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,6 +29,9 @@ public class BushoDomain extends DomainBase {
 
 	/** 部署名 */
 	private String name;
+
+	/** 営業日 */
+	private EigyoDate eigyoDate;
 
 	@Override
 	public void validate() throws SystemException {
