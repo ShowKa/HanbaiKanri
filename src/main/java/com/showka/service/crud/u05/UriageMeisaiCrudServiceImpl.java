@@ -3,6 +3,7 @@ package com.showka.service.crud.u05;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -119,16 +120,8 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 
 	@Override
 	public List<UriageMeisaiDomain> getDomainList(String uriageId) {
-
-		// 売上IDで検索
-		TUriageMeisai e = new TUriageMeisai();
-		TUriageMeisaiPK pk = new TUriageMeisaiPK();
-		pk.setUriageId(uriageId);
-		e.setPk(pk);
-		Example<TUriageMeisai> example = Example.of(e);
-
 		// 明細
-		List<TUriageMeisai> meisaiList = repo.findAll(example);
+		List<TUriageMeisai> meisaiList = getUriageMeisaiList(uriageId);
 
 		// ドメイン取得
 		List<UriageMeisaiDomain> meisaiDomainList = new ArrayList<UriageMeisaiDomain>();
@@ -139,4 +132,31 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		return meisaiDomainList;
 	}
 
+	@Override
+	public Integer getMaxMeisaiNumber(String uriageId) {
+		// 明細
+		List<TUriageMeisai> meisaiList = getUriageMeisaiList(uriageId);
+		Optional<TUriageMeisai> max = meisaiList.stream().max((m1, m2) -> {
+			return m1.getPk().getMeisaiNumber().compareTo(m2.getPk().getMeisaiNumber());
+		});
+		return max.get().getPk().getMeisaiNumber();
+	}
+
+	/**
+	 * 売上明細のEntityのリストを取得する。
+	 * 
+	 * @param uriageId
+	 * @return 売上明細Entityのリスト
+	 */
+	private List<TUriageMeisai> getUriageMeisaiList(String uriageId) {
+		// 売上IDで検索
+		TUriageMeisai e = new TUriageMeisai();
+		TUriageMeisaiPK pk = new TUriageMeisaiPK();
+		pk.setUriageId(uriageId);
+		e.setPk(pk);
+		Example<TUriageMeisai> example = Example.of(e);
+
+		// 明細
+		return repo.findAll(example);
+	}
 }

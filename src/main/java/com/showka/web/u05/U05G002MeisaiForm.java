@@ -1,6 +1,6 @@
 package com.showka.web.u05;
 
-import com.showka.web.FormBase;
+import com.showka.web.MeisaiFormBase;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class U05G002MeisaiForm extends FormBase {
+public class U05G002MeisaiForm extends MeisaiFormBase {
 
 	/**
 	 * SID.

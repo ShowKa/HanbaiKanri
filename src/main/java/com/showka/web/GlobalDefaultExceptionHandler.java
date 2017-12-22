@@ -30,7 +30,7 @@ public class GlobalDefaultExceptionHandler {
 	 */
 	@ExceptionHandler(value = ValidateException.class)
 	public ResponseEntity<?> defaultErrorHandler(HttpServletRequest req, ValidateException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(convertMessageToJson(e.getMessage()));
 	}
 
 	/**
@@ -44,6 +44,19 @@ public class GlobalDefaultExceptionHandler {
 	 */
 	@ExceptionHandler(value = OptimisticLockException.class)
 	public ResponseEntity<?> optimisticLockExceptionHandler(HttpServletRequest req, OptimisticLockException e) {
-		return ResponseEntity.status(HttpStatus.CONFLICT).body("他のユーザによりすでにデータが更新されています。画面を開き直してください。");
+		return ResponseEntity.status(HttpStatus.CONFLICT)
+				.body(convertMessageToJson("他のユーザによりすでにデータが更新されています。画面を開き直してください。"));
+	}
+
+	/**
+	 * 
+	 * StringのメッセージをJSONにする。
+	 * 
+	 * @param message
+	 *            メッセージ
+	 * @return {"message : " + "引数のメッセージ"}
+	 */
+	private String convertMessageToJson(String message) {
+		return "{\"message\" : \"" + message + "\"}";
 	}
 }
