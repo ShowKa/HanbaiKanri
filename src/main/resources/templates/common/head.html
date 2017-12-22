@@ -1,33 +1,206 @@
-<head th:fragment="common_link" th:remove="tag">
+<head
+	th:fragment="common_link"
+	th:remove="tag">
 <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta
+	http-equiv="X-UA-Compatible"
+	content="IE=edge">
+<meta
+	name="viewport"
+	content="width=device-width, initial-scale=1">
 <title>販売管理</title>
 <!-- Bootstrap -->
-<link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="/bower_components/bootstrap/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 <!-- jQuery読み込み -->
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- jQueryValidate -->
 <script src="/bower_components/jquery.validate/dist/jquery.validate.min.js"></script>
 <!-- BootstrapのJS読み込み -->
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- angular 読み込み -->
+<script src="/bower_components/angular/angular.js"></script>
+<script src="/bower_components/angular-route/angular-route.js"></script>
 <!-- common js -->
 <script src="/common/common.js"></script>
 <script th:inline="javascript">
-/*<![CDATA[*/
-function isReadMode() {
-	return "read" === /*[[${mode}]]*/null;
-}
-function isRegisterMode() {
-	return "register" === /*[[${mode}]]*/null;
-}
-function isUpdateMode() {
-	return "update" === /*[[${mode}]]*/null;
-}
+	var ngModules = angular.module('App', []);
 
-var HanbaiKubun = {};
-HanbaiKubun.kakeuri = /*[[${T(com.showka.kubun.HanbaiKubun).valueOf("掛売").code}]]*/null;
+	// services
+	ngModules.service('common', [ '$rootScope', '$filter',
+	// common	
+	function($scope, $filter) {
+		$scope.mode = /*[[${mode}]]*/null;
+		$scope.isReadMode = function() {
+			return "read" === $scope.mode;
+		};
+		$scope.isRegisterMode = function() {
+			return "register" === $scope.mode;
+		};
+		$scope.isUpdateMode = function() {
+			return "update" === $scope.mode;
+		}
+	} ]);
+	
+	ngModules.service('meisai', [ '$rootScope', '$filter',
+	// 明細
+	function($scope, $filster) {
+	
+		this.convertToMeisai = function(meisai, edit) {
+			if (meisai.editing) {
+				return;
+			}
+			edit = edit != null ? edit :false;
+			meisai.editing = edit;
+			meisai.edit = function (e) {
+				e = e != null ? e : true;
+				this.editing = e;
+			};
+			meisai.editDone = function() {
+				this.editing = false;
+				this.updated();
+			}
+			
+			if(!meisai.editMode) {
+				meisai.editMode = "added";
+			}
+			var tmp = {
+				isNewRegistered: function () {
+					return this.editMode == 'newRegistered';
+				},
+				isUpdated: function() {
+					return this.editMode == "updated"
+				},
+				updated : function() {
+					switch(this.editMode) {
+					case "added":
+						this.editMode = "newRegistered";
+						break;
+					case "notUpdated":
+					case "deleted" :
+						this.editMode = "updated";
+						break;
+					case "newRegistered" : 
+						console.log("this is new-registered meisai, cannot set editMode updated");
+						break;
+					}
+				},
+				isDeleted: function() {
+					return this.editMode == "deleted"
+				},
+				delete: function() {
+					this.editMode = "deleted";
+				},
+				isAdded: function() {
+					return this.editMode == "added";
+				}
+			};
+			
+			Object.assign(meisai, tmp);
+		};
+	
+		this.convertCollectionToMeisai = function(meisaiList, edit) {
+			for (var l of meisaiList) {
+				this.convertToMeisai(l, edit);
+			}
+		};
+	
+		this.check = function (meisaiList) {
+			if (meisaiList.length === 0) {
+				showErroeMessage("明細を追加してください。");
+				return false;
+			}
+			for ( var l of meisaiList) {
+				if (l.editing == true) {
+					showErroeMessage("編集中の明細が残っています。");
+					return false;
+				}
+			}
+			return true;
+		};
+		
+		// 任意の明細行をリストモデルから取り除く
+		this.remove = function(target, meisaiList) {
+			var index = meisaiList.indexOf(target);
+			if (index !== -1) {
+				meisaiList.splice(index, 1);
+			}
+		};
+	}]);
+	
+	// directive
+	ngModules.directive('ngInitFromValue', function() {
+		return {
+			restrict : 'A',
+			link : function postLink(scope, element, attrs, ctrl) {
+				var ngModel = attrs["ngModel"];
+				if (ngModel) {
+					var value = element.val();
+					scope[ngModel] = value;
+				}
+			}
+		};
+	});
 
-/*]]>*/
+	ngModules.directive('ngInitIterator', function() {
+		return {
+			restrict : 'E',
+			priority : 1001,
+			compile : function(tElement, tAttrs) { //Compile関数
+				return {
+					pre : function preLink(scope, element, attrs, ctrl) { //Link関数その1
+						var match = attrs["for"].match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+						var lhs = match[1];
+						var rhs = match[2];
+						scope[rhs] = scope[rhs] ? scope[rhs] : [];
+						 
+						var ngModels = element.find("[ng-model]");
+						var line = {};
+						for(nm of ngModels) {
+							var $nm = $(nm);
+							var attr = $nm.attr("ng-model");
+							attr = attr.split(".");
+							if (attr[0] == lhs) {
+								var target = line;
+								for (var i = 1; i < attr.length; i++) {
+									if (i != attr.length -1) {
+										target[attr[i]] = target[attr[i]] ? target[attr[i]] : {};
+										target = target[attr[i]];
+									} else {
+										var v = $nm.val();
+										if ($nm.attr("type") == "number") {
+											v = parseInt(v);
+										}
+										target[attr[i]] = v;
+									}
+								}
+							}
+						}
+						scope[rhs].push(line);
+						element.remove();
+					},
+					post : function postLink(scope, element, attrs, ctrl) { //Link関数その2
+					}
+				};
+			}
+		};
+	});
+
+	/*<![CDATA[*/
+	function isReadMode() {
+		return "read" === /*[[${mode}]]*/null;
+	}
+	function isRegisterMode() {
+		return "register" === /*[[${mode}]]*/null;
+	}
+	function isUpdateMode() {
+		return "update" === /*[[${mode}]]*/null;
+	}
+
+	var HanbaiKubun = {};
+	HanbaiKubun.kakeuri = /*[[${T(com.showka.kubun.HanbaiKubun).valueOf("掛売").code}]]*/null;
+
+	/*]]>*/
 </script>
 </head>

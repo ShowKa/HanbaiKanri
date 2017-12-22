@@ -17,4 +17,13 @@ public interface UriageMeisaiCrudService extends CrudService<UriageMeisaiDomain,
 	 */
 	public List<UriageMeisaiDomain> getDomainList(String uriageId);
 
+	/**
+	 * 明細番号の最大値を取得する。
+	 * 
+	 * @param uriageId
+	 *            売上ID
+	 * @return 明細番号の最大値
+	 */
+	public Integer getMaxMeisaiNumber(String uriageId);
+
 }

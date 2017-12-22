@@ -153,4 +153,17 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals(2, actual.size());
 	}
 
+	@Test
+	public void test07_getMaxMeisaiNumber() throws Exception {
+
+		// param
+		String uriageId = "KK01-00001";
+
+		// do
+		Integer actual = service.getMaxMeisaiNumber(uriageId);
+
+		// check
+		assertEquals(2, actual.intValue());
+	}
+
 }
