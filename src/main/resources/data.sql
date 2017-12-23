@@ -25,7 +25,14 @@ VALUES
 INSERT INTO m_user
 (id, username, password, record_id)
 VALUES
-(1, 'user01', 'pass', 'user01');
+(1, 'user01', 'pass', 'user01'),
+(2, 'user02', 'pass', 'user02');
+
+INSERT INTO m_shain
+(code, name, shozoku_busho_id, record_id)
+VALUES
+('user01', '社員01', 'BS01', 'user01'),
+('user02', '社員02', 'BS02', 'user02');
 
 INSERT INTO m_shohin
 (code, name, hyojun_tanka, record_id)
