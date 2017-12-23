@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -22,6 +21,9 @@ public class UriageDomainBuilder
 	/** uriageDate */
 	private TheDate uriageDate;
 
+	/** keijoDate */
+	private TheDate keijoDate;
+
 	/** hanbaiKubun */
 	private HanbaiKubun hanbaiKubun;
 
@@ -29,7 +31,7 @@ public class UriageDomainBuilder
 	private TaxRate shohizeiritsu;
 
 	/** uriageMeisai */
-	private List<UriageMeisaiDomain> uriageMeisai;
+	private List uriageMeisai;
 
 	/** recordId */
 	private String recordId;
@@ -43,6 +45,7 @@ public class UriageDomainBuilder
 		builder.withKokyaku(domain.getKokyaku());
 		builder.withDenpyoNumber(domain.getDenpyoNumber());
 		builder.withUriageDate(domain.getUriageDate());
+		builder.withKeijoDate(domain.getKeijoDate());
 		builder.withHanbaiKubun(domain.getHanbaiKubun());
 		builder.withShohizeiritsu(domain.getShohizeiritsu());
 		builder.withUriageMeisai(domain.getUriageMeisai());
@@ -52,7 +55,7 @@ public class UriageDomainBuilder
 
 	@Override
 	protected UriageDomain createDomainObject() {
-		UriageDomain domain = new UriageDomain(kokyaku, denpyoNumber, uriageDate, hanbaiKubun, shohizeiritsu,
+		UriageDomain domain = new UriageDomain(kokyaku, denpyoNumber, uriageDate, keijoDate, hanbaiKubun, shohizeiritsu,
 				uriageMeisai);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
@@ -122,6 +125,23 @@ public class UriageDomainBuilder
 	}
 
 	/**
+	 * {@link UriageDomain}に与えるkeijoDateをこのビルダに設定する。
+	 *
+	 * @param keijoDate
+	 *            keijoDate
+	 * @return {@link UriageDomainBuilder}
+	 */
+	public UriageDomainBuilder withKeijoDate(final TheDate keijoDate) {
+		addConfigurator(new BuilderConfigurator<UriageDomainBuilder>() {
+			@Override
+			public void configure(UriageDomainBuilder builder) {
+				builder.keijoDate = keijoDate;
+			}
+		});
+		return getThis();
+	}
+
+	/**
 	 * {@link UriageDomain}に与えるhanbaiKubunをこのビルダに設定する。
 	 *
 	 * @param hanbaiKubun
@@ -162,7 +182,7 @@ public class UriageDomainBuilder
 	 *            uriageMeisai
 	 * @return {@link UriageDomainBuilder}
 	 */
-	public UriageDomainBuilder withUriageMeisai(final List<UriageMeisaiDomain> uriageMeisai) {
+	public UriageDomainBuilder withUriageMeisai(final List uriageMeisai) {
 		addConfigurator(new BuilderConfigurator<UriageDomainBuilder>() {
 			@Override
 			public void configure(UriageDomainBuilder builder) {

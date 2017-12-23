@@ -57,6 +57,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		e.setPk(pk);
 		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
 		e.setUriageDate(domain.getUriageDate().toDate());
+		e.setKeijoDate(domain.getKeijoDate().toDate());
 		e.setRecordId(domain.getRecordId());
 		e.setVersion(domain.getVersion());
 
@@ -119,6 +120,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		b.withRecordId(e.getRecordId());
 		b.withShohizeiritsu(new TaxRate(e.getShohizeiritsu()));
 		b.withUriageDate(new TheDate(e.getUriageDate()));
+		b.withKeijoDate(new TheDate(e.getKeijoDate()));
 		b.withUriageMeisai(uriageMeisai);
 		b.withVersion(e.getVersion());
 

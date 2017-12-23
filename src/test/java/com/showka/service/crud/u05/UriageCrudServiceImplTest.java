@@ -56,7 +56,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 	// test data
 
 	/** 売上01 */
-	private static final Object[] URIAGE_01 = { "r-KK01", "00001", new Date(), "00", 0.08, "r-KK01-00001" };
+	private static final Object[] URIAGE_01 = { "r-KK01", "00001", new Date(), new Date(), "00", 0.08, "r-KK01-00001" };
 
 	/** 売上明細01 */
 	private static final Object[] URIAGE_MEISAI_01 = { "r-KK01-00001", 1, "r-SH01", 5, 1000, "r-KK01-00001-1" };
@@ -102,6 +102,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("99999")
 				.withUriageDate(new TheDate(2017, 8, 20))
+				.withKeijoDate(new TheDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
@@ -195,6 +196,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
+				.withKeijoDate(new TheDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.99))
 				.withUriageMeisai(meisai)
@@ -271,6 +273,8 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// 売上
 		UriageDomainBuilder b = new UriageDomainBuilder();
 		b.withKokyaku(kokyaku01).withDenpyoNumber("00001").withVersion(0);
+		List<UriageMeisaiDomain> list = new ArrayList<UriageMeisaiDomain>();
+		b.withUriageMeisai(list);
 		UriageDomain uriage01 = b.build();
 
 		// do

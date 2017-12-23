@@ -40,6 +40,18 @@ public class TheDate extends ValueBase {
 		return c;
 	}
 
+	public boolean isAfter(TheDate other) {
+		return this.date.isAfter(other.date);
+	}
+
+	public boolean isBefore(TheDate other) {
+		return this.date.isBefore(other.date);
+	}
+
+	public boolean isEqual(TheDate other) {
+		return this.date.isEqual(other.date);
+	}
+
 	@Override
 	public boolean isEmpty() {
 		if (this.date == null) {

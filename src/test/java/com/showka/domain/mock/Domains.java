@@ -195,8 +195,8 @@ public class Domains {
 	/**
 	 * columns
 	 */
-	public static final String[] T_URIAGE_COLUMN = { "kokyaku_id", "denpyo_number", "uriage_date", "hanbai_kubun",
-			"shohizeiritsu", "record_id" };
+	public static final String[] T_URIAGE_COLUMN = { "kokyaku_id", "denpyo_number", "uriage_date", "keijo_date",
+			"hanbai_kubun", "shohizeiritsu", "record_id" };
 
 	/** 売上01. */
 	private static final Object[] URIAGE_01 = { "r-KK01", "00001", new Date(2017, 8, 20), "00", 0.08, "r-KK01-00001" };

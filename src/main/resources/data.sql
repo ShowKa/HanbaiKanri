@@ -41,10 +41,10 @@ VALUES
 ('SH02', '商品SH02', 1001, 'SH02');
 
 INSERT INTO t_uriage
-(kokyaku_id, denpyo_number, uriage_date, hanbai_kubun, shohizeiritsu, record_id)
+(kokyaku_id, denpyo_number, uriage_date, keijo_date, hanbai_kubun, shohizeiritsu, record_id)
 VALUES
-('KK01', '00001', to_date('2017/08/20', 'yyyy/MM/dd'), '00', 0.08, 'KK01-00001'),
-('KK01', '00002', to_date('2017/08/20', 'yyyy/MM/dd'), '10', 0.08, 'KK01-00002');
+('KK01', '00001', to_date('2017/08/19', 'yyyy/MM/dd'), to_date('2017/08/19', 'yyyy/MM/dd'), '00', 0.08, 'KK01-00001'),
+('KK01', '00002', to_date('2017/08/20', 'yyyy/MM/dd'), to_date('2017/08/20', 'yyyy/MM/dd'), '10', 0.08, 'KK01-00002');
 
 INSERT INTO t_uriage_meisai
 (uriage_id, meisai_number, shohin_id, hanbai_number, hanbai_tanka, record_id)

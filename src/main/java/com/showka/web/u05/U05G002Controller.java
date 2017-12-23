@@ -273,6 +273,9 @@ public class U05G002Controller extends ControllerBase {
 		// 顧客
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 
+		// 営業日取得
+		TheDate eigyoDate = getLoginShain().getShozokuBusho().getEigyoDate();
+
 		// 売上
 		UriageDomainBuilder ub = new UriageDomainBuilder();
 		ub.withUriageMeisai(uriageMeisaiList);
@@ -281,6 +284,7 @@ public class U05G002Controller extends ControllerBase {
 		ub.withRecordId(form.getRecordId());
 		ub.withShohizeiritsu(ZEIRITSU);
 		ub.withUriageDate(new TheDate(form.getUriageDate()));
+		ub.withKeijoDate(eigyoDate);
 		ub.withVersion(form.getVersion());
 		ub.withKokyaku(kokyaku);
 		UriageDomain uriage = ub.build();
