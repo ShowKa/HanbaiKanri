@@ -1,5 +1,6 @@
 package com.showka.service.crud.z00;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.entity.MBusho;
+import com.showka.value.EigyoDate;
 
 /**
  * 部署 CRUD Service Test
@@ -30,19 +32,28 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 	private static final String TABLE_NAME = "m_busho";
 
 	/**
+	 * table name
+	 */
+	private static final String M_BUSHO_DATE = "m_busho_date";
+
+	/**
 	 * columns
 	 */
 	private static final String[] COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
+	private static final String[] M_BUSHO_DATE_COLUMN = { "busho_id", "eigyo_date", "record_id" };
 
 	/**
 	 * test data
 	 */
 	private static final Object[] VALUE01 = { "BS01", "01", "01", "部署01", "BS01" };
 	private static final Object[] VALUE02 = { "BS02", "99", "02", "部署02", "BS02" };
+	private static final Object[] M_BUSHO_DATE_VALUE_01 = { "BS01", new Date("2017/11/12"), "BS01" };
+	private static final Object[] M_BUSHO_DATE_VALUE_02 = { "BS02", new Date("2017/11/12"), "BS02" };
 
 	@Before
 	public void deletTable() {
 		super.deleteAll(TABLE_NAME);
+		super.deleteAll(M_BUSHO_DATE);
 	}
 
 	/**
@@ -53,6 +64,7 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_getDomain1() {
 
 		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO_DATE, M_BUSHO_DATE_COLUMN, M_BUSHO_DATE_VALUE_01, M_BUSHO_DATE_VALUE_02);
 
 		String id = "BS02";
 
@@ -65,7 +77,7 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals("02", result.getJigyoKubun().getCode());
 		assertEquals("部署02", result.getName());
 		assertEquals("BS02", result.getRecordId());
-
+		assertEquals(new EigyoDate(2017, 11, 12), result.getEigyoDate());
 	}
 
 	/**

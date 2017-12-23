@@ -3,26 +3,25 @@ package com.showka.domain.builder;
 import com.showka.domain.BushoDomain;
 import com.showka.kubun.BushoKubun;
 import com.showka.kubun.JigyoKubun;
+import com.showka.value.EigyoDate;
 
-/**
- * 顧客 DomainBuilder
- *
- * @author 25767
- *
- */
 public class BushoDomainBuilder extends com.showka.domain.builder.DomainBuilderBase<BushoDomain, BushoDomainBuilder> {
 
-	/** 顧客コード */
+	// private member
+	/** code */
 	private String code;
 
-	/** 部署区分 */
+	/** bushoKubun */
 	private BushoKubun bushoKubun;
 
-	/** 事業区分 */
+	/** jigyoKubun */
 	private JigyoKubun jigyoKubun;
 
-	/** 部署名 */
+	/** name */
 	private String name;
+
+	/** eigyoDate */
+	private EigyoDate eigyoDate;
 
 	/** recordId */
 	private String recordId;
@@ -30,19 +29,21 @@ public class BushoDomainBuilder extends com.showka.domain.builder.DomainBuilderB
 	/** version */
 	private Integer version;
 
+	// protected method
 	@Override
 	protected void apply(BushoDomain domain, BushoDomainBuilder builder) {
 		builder.withCode(domain.getCode());
 		builder.withBushoKubun(domain.getBushoKubun());
 		builder.withJigyoKubun(domain.getJigyoKubun());
 		builder.withName(domain.getName());
+		builder.withEigyoDate(domain.getEigyoDate());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected BushoDomain createDomainObject() {
-		BushoDomain domain = new BushoDomain(code, bushoKubun, jigyoKubun, name);
+		BushoDomain domain = new BushoDomain(code, bushoKubun, jigyoKubun, name, eigyoDate);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -68,7 +69,6 @@ public class BushoDomainBuilder extends com.showka.domain.builder.DomainBuilderB
 	 */
 	public BushoDomainBuilder withCode(final String code) {
 		addConfigurator(new BuilderConfigurator<BushoDomainBuilder>() {
-
 			@Override
 			public void configure(BushoDomainBuilder builder) {
 				builder.code = code;
@@ -78,33 +78,14 @@ public class BushoDomainBuilder extends com.showka.domain.builder.DomainBuilderB
 	}
 
 	/**
-	 * {@link BushoDomain}に与えるnameをこのビルダに設定する。
-	 *
-	 * @param name
-	 *            name
-	 * @return {@link BushoDomainBuilder}
-	 */
-	public BushoDomainBuilder withName(final String name) {
-		addConfigurator(new BuilderConfigurator<BushoDomainBuilder>() {
-
-			@Override
-			public void configure(BushoDomainBuilder builder) {
-				builder.name = name;
-			}
-		});
-		return getThis();
-	}
-
-	/**
 	 * {@link BushoDomain}に与えるbushoKubunをこのビルダに設定する。
 	 *
 	 * @param bushoKubun
-	 *            address
+	 *            bushoKubun
 	 * @return {@link BushoDomainBuilder}
 	 */
 	public BushoDomainBuilder withBushoKubun(final BushoKubun bushoKubun) {
 		addConfigurator(new BuilderConfigurator<BushoDomainBuilder>() {
-
 			@Override
 			public void configure(BushoDomainBuilder builder) {
 				builder.bushoKubun = bushoKubun;
@@ -122,14 +103,46 @@ public class BushoDomainBuilder extends com.showka.domain.builder.DomainBuilderB
 	 */
 	public BushoDomainBuilder withJigyoKubun(final JigyoKubun jigyoKubun) {
 		addConfigurator(new BuilderConfigurator<BushoDomainBuilder>() {
-
 			@Override
 			public void configure(BushoDomainBuilder builder) {
 				builder.jigyoKubun = jigyoKubun;
 			}
 		});
 		return getThis();
+	}
 
+	/**
+	 * {@link BushoDomain}に与えるnameをこのビルダに設定する。
+	 *
+	 * @param name
+	 *            name
+	 * @return {@link BushoDomainBuilder}
+	 */
+	public BushoDomainBuilder withName(final String name) {
+		addConfigurator(new BuilderConfigurator<BushoDomainBuilder>() {
+			@Override
+			public void configure(BushoDomainBuilder builder) {
+				builder.name = name;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link BushoDomain}に与えるeigyoDateをこのビルダに設定する。
+	 *
+	 * @param eigyoDate
+	 *            eigyoDate
+	 * @return {@link BushoDomainBuilder}
+	 */
+	public BushoDomainBuilder withEigyoDate(final EigyoDate eigyoDate) {
+		addConfigurator(new BuilderConfigurator<BushoDomainBuilder>() {
+			@Override
+			public void configure(BushoDomainBuilder builder) {
+				builder.eigyoDate = eigyoDate;
+			}
+		});
+		return getThis();
 	}
 
 	/**

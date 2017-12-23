@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.showka.domain.BushoDomain;
 import com.showka.domain.DomainBase;
-import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.DomainBuilderBase;
 
 import freemarker.template.Configuration;
@@ -25,7 +25,7 @@ public class BuilderGenerater {
 	private static String DESTINATION = "generated/";
 
 	@SuppressWarnings("rawtypes")
-	static Class TARGET_CLASS = NyukinKakeInfoDomain.class;
+	static Class TARGET_CLASS = BushoDomain.class;
 
 	public static void main(String[] args) {
 
