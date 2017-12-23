@@ -2,7 +2,6 @@ package com.showka.web.u05;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -34,12 +33,13 @@ import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.NotExistException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
+import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
 @Controller
 @EnableAutoConfiguration
-public class U05G002Controller {
+public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private KokyakuCrudService kokyakuCrudService;
@@ -75,7 +75,8 @@ public class U05G002Controller {
 		// 初期入力値設定
 		U05G002Form form = new U05G002Form();
 		form.setKokyakuCode("");
-		form.setUriageDate(new Date());
+		// ログインユーザーの所属部署の営業日をデフォルト値とする
+		form.setUriageDate(getLoginShain().getShozokuBusho().getEigyoDate().toDate());
 		form.setDenpyoNumber("00000");
 		form.setHanbaiKubun(HanbaiKubun.現金.getCode());
 		model.addForm(form);
