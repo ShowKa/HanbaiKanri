@@ -4,6 +4,11 @@ VALUES
 ('BS01', '01', '01', '部署01', 'BS01'),
 ('BS02', '99', '02', '部署02', 'BS02');
 
+INSERT INTO m_busho_date
+(busho_id, eigyo_date, record_id)
+VALUES
+('BS01', to_date('2017/08/20', 'yyyy/MM/dd'), 'BS01'),
+('BS02', to_date('2017/08/20', 'yyyy/MM/dd'), 'BS02');
 
 INSERT INTO m_kokyaku
 (code, name, address, hanbai_kubun, kokyaku_kubun, shukan_busho_id, record_id)
