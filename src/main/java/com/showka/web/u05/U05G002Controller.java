@@ -105,9 +105,6 @@ public class U05G002Controller extends ControllerBase {
 		// 初期入力値設定
 		model = refer(form, model);
 
-		// 計上済み警告
-		uriageKeijoSpecificationService.isKeijoZumi(null);
-
 		// モード
 		model.setMode(Mode.UPDATE);
 		return model;
@@ -285,7 +282,7 @@ public class U05G002Controller extends ControllerBase {
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 
 		// 営業日取得
-		TheDate eigyoDate = getLoginShain().getShozokuBusho().getEigyoDate();
+		TheDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
 
 		// 売上
 		UriageDomainBuilder ub = new UriageDomainBuilder();

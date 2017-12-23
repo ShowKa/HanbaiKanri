@@ -181,6 +181,11 @@ function($scope, $http, denpyoService, common, meisaiService) {
 	
 	// 更新画面へ
 	$scope.updateForm = function() {
+		if(!!$scope.isKeijoZumi == true) {
+			if(!confirm("売上伝票は計上済みです。変更を行いますか？")) {
+				return;
+			}
+		}
 		submitForm("/u05g002/updateForm", "uriageDenpyo");
 	};
 

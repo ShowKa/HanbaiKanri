@@ -136,8 +136,23 @@
 			link : function postLink(scope, element, attrs, ctrl) {
 				var ngModel = attrs["ngModel"];
 				if (ngModel) {
+					
 					var value = element.val();
-					scope[ngModel] = value;
+					var type = attrs["type"];
+					
+					switch(type) {
+					case "checkbox" :
+						if(value == "true") {
+							scope[ngModel] = true;
+						} else {
+							scope[ngModel] = false;
+						}
+						break;
+					default :
+						scope[ngModel] = value;
+						break;
+					}
+					
 				}
 			}
 		};

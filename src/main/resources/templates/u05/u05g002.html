@@ -25,6 +25,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	-webkit-appearance: none;
 	margin: 0;
 }
+
 .deletedMeisai input {
 	text-decoraton: line-through;
 }
@@ -134,8 +135,20 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									ng-readonly="!header.editing || !isRegisterMode()" />
 							</div>
 						</div>
-						<input type="hidden" name ="version" th:value="${form.version}" />
-						<input type="hidden" name ="recordId" th:value="${form.recordId}" />
+						<input
+							type="hidden"
+							name="version"
+							th:value="${form.version}" />
+						<input
+							type="hidden"
+							name="recordId"
+							th:value="${form.recordId}" />
+						<input
+							type="checkbox"
+							th:value="${isKeijoZumi}"
+							ng-hide="true"
+							ng-model="isKeijoZumi"
+							ng-init-from-value/>
 
 						<h4>明細</h4>
 
@@ -165,37 +178,30 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								<ng-init-iterator
 									for="meisai in meisaiList"
 									th:each="m, stat:${form.meisai}"
-									style="display:none;" >
-									<input
-										type="number"
-										th:value="${m.meisaiNumber}"
-										ng-model="meisai.meisaiNumber" />
-									<input
-										type="text"
-										th:value="${m.shohinCode}"
-										ng-model="meisai.shohinCode" />
-									<input
-										type="number"
-										th:value="${m.hanbaiNumber}"
-										ng-model="meisai.hanbaiNumber" />
-									<input
-										type="number"
-										th:value="${m.hanbaiTanka}"
-										ng-model="meisai.hanbaiTanka" />
-									<input
-										type="number"
-										th:value="${m.version}"
-										ng-model="meisai.version" />
-									<input
-										type="text"
-										th:value="${m.recordId}"
-										ng-model="meisai.recordId" />
-									<input
-										type="text"
-										th:value="${m.editMode}"
-										ng-model="meisai.editMode" />
-								</ng-init-iterator>
-								<tr ng-repeat="meisai in meisaiList"
+									style="display:none;"> <input
+									type="number"
+									th:value="${m.meisaiNumber}"
+									ng-model="meisai.meisaiNumber" /> <input
+									type="text"
+									th:value="${m.shohinCode}"
+									ng-model="meisai.shohinCode" /> <input
+									type="number"
+									th:value="${m.hanbaiNumber}"
+									ng-model="meisai.hanbaiNumber" /> <input
+									type="number"
+									th:value="${m.hanbaiTanka}"
+									ng-model="meisai.hanbaiTanka" /> <input
+									type="number"
+									th:value="${m.version}"
+									ng-model="meisai.version" /> <input
+									type="text"
+									th:value="${m.recordId}"
+									ng-model="meisai.recordId" /> <input
+									type="text"
+									th:value="${m.editMode}"
+									ng-model="meisai.editMode" /> </ng-init-iterator>
+								<tr
+									ng-repeat="meisai in meisaiList"
 									ng-present-deleted="meisai">
 									<td class="col-sm-1">
 										<input
