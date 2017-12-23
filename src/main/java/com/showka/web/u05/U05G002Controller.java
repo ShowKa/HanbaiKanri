@@ -28,6 +28,7 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.NotExistException;
@@ -52,6 +53,9 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private UriageValidateService uriageValidateService;
+
+	@Autowired
+	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
 
 	@Autowired
 	private MShohinCrudService shohinCrudService;
@@ -101,6 +105,9 @@ public class U05G002Controller extends ControllerBase {
 		// 初期入力値設定
 		model = refer(form, model);
 
+		// 計上済み警告
+		uriageKeijoSpecificationService.isKeijoZumi(null);
+
 		// モード
 		model.setMode(Mode.UPDATE);
 		return model;
@@ -146,6 +153,10 @@ public class U05G002Controller extends ControllerBase {
 		model.addForm(form);
 		model.setMode(Mode.READ);
 		model.setViewName("/u05/u05g002");
+
+		// 計上済み判定
+		model.addObject("isKeijoZumi", uriageKeijoSpecificationService.isKeijoZumi(u));
+
 		return model;
 	}
 
