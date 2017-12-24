@@ -19,16 +19,16 @@ import lombok.Setter;
  * 
  */
 @Entity
-@Table(name = "t_uriage_rireki")
+@Table(name = "r_uriage")
 @Getter
 @Setter
-public class TUriageRireki extends EntityBase implements Serializable {
+public class RUriage extends EntityBase implements Serializable {
 
 	/** SID. */
 	private static final long serialVersionUID = 5084030502613634293L;
 
 	@EmbeddedId
-	private TUriageRirekiPK pk;
+	private RUriagePK pk;
 
 	/** 売上日 */
 	@Column(name = "uriage_date", unique = false, nullable = false)

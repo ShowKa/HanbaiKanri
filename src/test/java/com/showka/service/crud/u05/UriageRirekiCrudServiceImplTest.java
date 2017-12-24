@@ -12,10 +12,10 @@ import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.entity.TUriageRireki;
-import com.showka.entity.TUriageRirekiPK;
+import com.showka.entity.RUriage;
+import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
-import com.showka.repository.i.TUriageRirekiRepository;
+import com.showka.repository.i.RUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.TaxRate;
@@ -32,7 +32,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Injectable
 	@Autowired
-	private TUriageRirekiRepository repo;
+	private RUriageRepository repo;
 
 	@Injectable
 	private KokyakuCrudService kokyakuCrudService;
@@ -54,14 +54,14 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	// 売上履歴テーブル
-	private static final Object[] T_URIAGE_RIREKI_01 = {
+	private static final Object[] R_URIAGE_01 = {
 			"r-KK01-00001",
 			new Date("2017/08/19"),
 			new Date("2017/08/19"),
 			"00",
 			0.08,
 			"r-KK01-00001-20170819" };
-	private static final Object[] T_URIAGE_RIREKI_02 = {
+	private static final Object[] R_URIAGE_02 = {
 			"r-KK01-00001",
 			new Date("2017/08/19"),
 			new Date("2017/08/20"),
@@ -85,16 +85,16 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test01_Save() throws Exception {
 
-		super.deleteAll(T_URIAGE_RIREKI);
+		super.deleteAll(R_URIAGE);
 
 		// do
 		service.save(uriage01);
 
 		// get saved
-		TUriageRirekiPK pk = new TUriageRirekiPK();
+		RUriagePK pk = new RUriagePK();
 		pk.setUriageId("r-KK01-00001");
 		pk.setKeijoDate(new TheDate(2017, 8, 20).toDate());
-		TUriageRireki actual = repo.getOne(pk);
+		RUriage actual = repo.getOne(pk);
 
 		// check
 		assertEquals("r-KK01-00001", actual.getPk().getUriageId());
@@ -104,7 +104,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test02_GetUriageRireki() throws Exception {
 		// insert data
-		super.deleteAndInsert(T_URIAGE_RIREKI, T_URIAGE_RIREKI_COLUMN, T_URIAGE_RIREKI_01, T_URIAGE_RIREKI_02);
+		super.deleteAndInsert(R_URIAGE, R_URIAGE_COLUMN, R_URIAGE_01, R_URIAGE_02);
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, T_URIAGE_01);
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_01);
 
@@ -112,7 +112,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 		UriageRirekiDomain actual = service.getUriageRireki("r-KK01-00001");
 
 		// check
-		assertEquals(2, actual.getUriageRireki().size());
+		assertEquals(2, actual.getList().size());
 		assertEquals("r-KK01-00001-20170820", actual.getNewest().getRecordId());
 	}
 

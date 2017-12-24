@@ -55,7 +55,7 @@ VALUES
 ('KK01-00002', 2, 'SH02', 10, 1001, 'KK01-00002-2'),
 ;
 
-INSERT INTO t_uriage_rireki
+INSERT INTO r_uriage
 (uriage_id, uriage_date, keijo_date, hanbai_kubun, shohizeiritsu, record_id)
 VALUES
 ('KK01-00001', to_date('2017/08/19', 'yyyy/MM/dd'), to_date('2017/08/19', 'yyyy/MM/dd'), '00', 0.08, 'KK01-00001-20170819'),

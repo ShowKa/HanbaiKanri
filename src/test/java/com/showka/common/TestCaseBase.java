@@ -27,8 +27,8 @@ public abstract class TestCaseBase extends TestCase {
 			"record_id" };
 
 	// 売上履歴
-	protected String T_URIAGE_RIREKI = "t_uriage_rireki";
-	protected static final String[] T_URIAGE_RIREKI_COLUMN = {
+	protected String R_URIAGE = "r_uriage";
+	protected static final String[] R_URIAGE_COLUMN = {
 			"uriage_id",
 			"uriage_date",
 			"keijo_date",

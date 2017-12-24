@@ -13,7 +13,7 @@ import lombok.Getter;
 public class UriageRirekiDomain extends DomainBase {
 
 	/** 売上履歴 */
-	private List<UriageDomain> uriageRireki;
+	private List<UriageDomain> list;
 
 	/**
 	 * 最新伝票取得.
@@ -25,7 +25,7 @@ public class UriageRirekiDomain extends DomainBase {
 	 * @return 最新伝票
 	 */
 	public UriageDomain getNewest() {
-		Optional<UriageDomain> newest = uriageRireki.stream().max((r1, r2) -> {
+		Optional<UriageDomain> newest = list.stream().max((r1, r2) -> {
 			return r1.getKeijoDate().getDate().compareTo(r2.getKeijoDate().getDate());
 		});
 		return newest.get();

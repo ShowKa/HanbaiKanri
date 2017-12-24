@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class TUriageRirekiPK implements Serializable {
+public class RUriagePK implements Serializable {
 
 	/** SID. */
 	private static final long serialVersionUID = 3436525359521983260L;
@@ -34,10 +34,10 @@ public class TUriageRirekiPK implements Serializable {
 		if (this == pk) {
 			return true;
 		}
-		if (!(pk instanceof TUriageRirekiPK)) {
+		if (!(pk instanceof RUriagePK)) {
 			return false;
 		}
-		TUriageRirekiPK p = (TUriageRirekiPK) pk;
+		RUriagePK p = (RUriagePK) pk;
 		return uriageId.equals(p.uriageId) && keijoDate.equals(p.keijoDate);
 	}
 

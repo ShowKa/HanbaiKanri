@@ -13,11 +13,11 @@ import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageRirekiDomainBuilder;
-import com.showka.entity.TUriageRireki;
-import com.showka.entity.TUriageRirekiPK;
+import com.showka.entity.RUriage;
+import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.repository.i.TUriageRirekiRepository;
+import com.showka.repository.i.RUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.value.TaxRate;
@@ -27,7 +27,7 @@ import com.showka.value.TheDate;
 public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 
 	@Autowired
-	private TUriageRirekiRepository repo;
+	private RUriageRepository repo;
 
 	@Autowired
 	private KokyakuCrudService kokyakuCrudService;
@@ -36,12 +36,12 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	public UriageRirekiDomain getUriageRireki(String uriageId) {
 
 		// 売上IDで履歴リスト検索
-		TUriageRireki entity = new TUriageRireki();
-		TUriageRirekiPK pk = new TUriageRirekiPK();
+		RUriage entity = new RUriage();
+		RUriagePK pk = new RUriagePK();
 		pk.setUriageId(uriageId);
 		entity.setPk(pk);
-		Example<TUriageRireki> example = Example.of(entity);
-		List<TUriageRireki> uriageRireki = repo.findAll(example);
+		Example<RUriage> example = Example.of(entity);
+		List<RUriage> uriageRireki = repo.findAll(example);
 
 		// 各履歴を売上ドメインとしてbuild
 		List<UriageDomain> uriageList = new ArrayList<UriageDomain>();
@@ -73,12 +73,12 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	public void save(UriageDomain domain) {
 
 		// pk
-		TUriageRirekiPK pk = new TUriageRirekiPK();
+		RUriagePK pk = new RUriagePK();
 		pk.setUriageId(domain.getRecordId());
 		pk.setKeijoDate(domain.getKeijoDate().toDate());
 
 		// 売上履歴Entity
-		TUriageRireki e = repo.findById(pk).orElse(new TUriageRireki());
+		RUriage e = repo.findById(pk).orElse(new RUriage());
 		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
 		e.setPk(pk);
 		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());

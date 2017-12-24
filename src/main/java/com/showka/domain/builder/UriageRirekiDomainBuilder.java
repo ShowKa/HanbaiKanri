@@ -21,7 +21,7 @@ public class UriageRirekiDomainBuilder
 	// protected method
 	@Override
 	protected void apply(UriageRirekiDomain domain, UriageRirekiDomainBuilder builder) {
-		builder.withUriageRireki(domain.getUriageRireki());
+		builder.withUriageRireki(domain.getList());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
