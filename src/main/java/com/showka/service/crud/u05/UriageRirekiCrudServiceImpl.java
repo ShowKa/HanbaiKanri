@@ -2,6 +2,7 @@ package com.showka.service.crud.u05;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -82,8 +83,10 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		e.setPk(pk);
 		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
 		e.setUriageDate(domain.getUriageDate().toDate());
-		e.setRecordId(domain.getRecordId());
-		e.setVersion(domain.getVersion());
+		String rerocdId = e.getRecordId() != null ? e.getRecordId() : UUID.randomUUID().toString();
+		e.setRecordId(rerocdId);
+
+		// 排他制御省略（売上テーブルで行う）
 
 		// save
 		repo.saveAndFlush(e);

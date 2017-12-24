@@ -97,7 +97,8 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 		TUriageRireki actual = repo.getOne(pk);
 
 		// check
-		assertEquals("r-KK01-00001", actual.getRecordId());
+		assertEquals("r-KK01-00001", actual.getPk().getUriageId());
+		assertEquals(new TheDate(2017, 8, 20).toDate(), actual.getPk().getKeijoDate());
 	}
 
 	@Test

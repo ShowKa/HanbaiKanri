@@ -24,6 +24,7 @@ import com.showka.repository.i.TUriageMeisaiRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
+import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -53,8 +54,10 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 	@Injectable
 	private KokyakuCrudService kokyakuCrudService;
 
-	// test data
+	@Injectable
+	private UriageRirekiCrudService uriageRirekiCrudService;
 
+	// test data
 	/** 売上01 */
 	private static final Object[] URIAGE_01 = { "r-KK01", "00001", new Date(), new Date(), "00", 0.08, "r-KK01-00001" };
 
@@ -124,8 +127,12 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// expectation
 		new Expectations() {
 			{
+				// 売上履歴の保存
+				uriageRirekiCrudService.save(uriage);
+				// 明細の保存
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				uriageMeisaiCrudService.save(uriageMeisai02);
+				// 明細の削除
 				uriageMeisaiCrudService.getDomainList("r-KK99-99999");
 				result = oldList;
 				uriageMeisaiCrudService.delete(uriageMeisai03);
@@ -138,6 +145,8 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
+				uriageRirekiCrudService.save(uriage);
+				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai02);
@@ -207,6 +216,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// expectation
 		new Expectations() {
 			{
+				uriageRirekiCrudService.save(uriage01);
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				uriageMeisaiCrudService.save(uriageMeisai02);
 			}
@@ -218,6 +228,8 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
+				uriageRirekiCrudService.save(uriage01);
+				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai02);

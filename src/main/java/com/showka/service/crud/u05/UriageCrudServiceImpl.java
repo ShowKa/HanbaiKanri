@@ -22,6 +22,7 @@ import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
+import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -43,6 +44,9 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	@Autowired
 	private KokyakuCrudService kokyakuCrudService;
 
+	@Autowired
+	private UriageRirekiCrudService uriageRirekiCrudService;
+
 	@Override
 	public void save(UriageDomain domain) {
 
@@ -63,6 +67,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 		// save
 		repo.saveAndFlush(e);
+		uriageRirekiCrudService.save(domain);
 
 		// delete old
 		List<UriageMeisaiDomain> oldMeisaiList = uriageMeisaiCrudService.getDomainList(domain.getRecordId());
