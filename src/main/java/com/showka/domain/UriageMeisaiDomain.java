@@ -1,6 +1,7 @@
 package com.showka.domain;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.showka.system.exception.SystemException;
 
@@ -59,6 +60,11 @@ public class UriageMeisaiDomain extends DomainBase {
 	@Override
 	public int hashCode() {
 		return generateHashCode(uriageId, meisaiNumber);
+	}
+
+	public List<UriageMeisaiDomain> getUriageMeisai() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

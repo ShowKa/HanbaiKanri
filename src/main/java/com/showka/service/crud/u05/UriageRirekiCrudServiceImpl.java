@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
+import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
+import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
@@ -20,6 +22,7 @@ import com.showka.kubun.i.Kubun;
 import com.showka.repository.i.RUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrudService;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -31,6 +34,9 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 
 	@Autowired
 	private KokyakuCrudService kokyakuCrudService;
+
+	@Autowired
+	private UriageRirekiMeisaiCrudService uriageRirekiMeisaiCrudService;
 
 	@Override
 	public UriageRirekiDomain getUriageRireki(String uriageId) {
@@ -83,12 +89,24 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		e.setPk(pk);
 		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
 		e.setUriageDate(domain.getUriageDate().toDate());
-		String rerocdId = e.getRecordId() != null ? e.getRecordId() : UUID.randomUUID().toString();
-		e.setRecordId(rerocdId);
-
-		// 排他制御省略（売上テーブルで行う）
+		String uriageId = e.getRecordId() != null ? e.getRecordId() : UUID.randomUUID().toString();
+		e.setRecordId(uriageId);
 
 		// save
+		// 排他制御省略（売上テーブルで行う）
 		repo.saveAndFlush(e);
+
+		// 明細 TODO Serviceが煩雑な仕事をしている。売上履歴ドメインに仕事を以上できまいか？
+		List<UriageMeisaiDomain> meisaiList = domain.getUriageMeisai();
+		List<UriageMeisaiDomain> meisaiRirekiList = new ArrayList<UriageMeisaiDomain>();
+		meisaiList.forEach(m -> {
+			// 売上履歴のレコードIDを適用し、売上履歴明細ドメインを生成
+			UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+			b.withUriageId(uriageId);
+			UriageMeisaiDomain rm = b.apply(m);
+			meisaiRirekiList.add(rm);
+		});
+
+		uriageRirekiMeisaiCrudService.overrideList(meisaiRirekiList);
 	}
 }
