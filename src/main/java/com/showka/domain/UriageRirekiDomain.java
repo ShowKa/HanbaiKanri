@@ -1,7 +1,7 @@
 package com.showka.domain;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import com.showka.system.exception.SystemException;
 
@@ -13,7 +13,7 @@ import lombok.Getter;
 public class UriageRirekiDomain extends DomainBase {
 
 	/** 売上履歴 */
-	private List<UriageDomain> list;
+	private Set<UriageDomain> list;
 
 	/**
 	 * 最新伝票取得.

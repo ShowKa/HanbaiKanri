@@ -1,6 +1,6 @@
 package com.showka.domain.builder;
 
-import java.util.List;
+import java.util.Set;
 
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageRirekiDomain;
@@ -10,7 +10,7 @@ public class UriageRirekiDomainBuilder
 
 	// private member
 	/** uriageRireki */
-	private List<UriageDomain> uriageRireki;
+	private Set<UriageDomain> uriageRireki;
 
 	/** recordId */
 	private String recordId;
@@ -52,7 +52,7 @@ public class UriageRirekiDomainBuilder
 	 *            uriageRireki
 	 * @return {@link UriageRirekiDomainBuilder}
 	 */
-	public UriageRirekiDomainBuilder withUriageRireki(final List<UriageDomain> uriageRireki) {
+	public UriageRirekiDomainBuilder withUriageRireki(final Set<UriageDomain> uriageRireki) {
 		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
 			@Override
 			public void configure(UriageRirekiDomainBuilder builder) {
