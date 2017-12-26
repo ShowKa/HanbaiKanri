@@ -8,15 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.UriageRirekiDomain;
-import com.showka.domain.builder.UriageDomainBuilder;
+import com.showka.domain.UriageRirekiListDomain;
+import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.repository.i.RUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
+import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -37,19 +38,23 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Injectable
 	private KokyakuCrudService kokyakuCrudService;
 
+	@Injectable
+	private UriageRirekiMeisaiCrudService uriageRirekiMeisaiCrudService;
+
 	/** 売上01. */
-	private static final UriageDomain uriage01;
+	private static final UriageRirekiDomain uriage01;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
 		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
-		uriage01 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		uriage01 = b.withUriageId("r-KK01-00001")
+				.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
-				.withRecordId("r-KK01-00001")
+				.withRecordId("r-KK01-00001-20170820")
 				.build();
 	}
 
@@ -109,7 +114,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_01);
 
 		// do
-		UriageRirekiDomain actual = service.getUriageRireki("r-KK01-00001");
+		UriageRirekiListDomain actual = service.getUriageRirekiList("r-KK01-00001");
 
 		// check
 		assertEquals(2, actual.getList().size());

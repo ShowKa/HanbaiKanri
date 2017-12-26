@@ -1,53 +1,50 @@
 package com.showka.domain;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
+import com.showka.kubun.HanbaiKubun;
 import com.showka.system.exception.SystemException;
+import com.showka.value.TaxRate;
+import com.showka.value.TheDate;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
+/**
+ * 売上履歴ドメイン
+ * 
+ * <pre>
+ * 売上ドメインを継承。
+ * 異なる点は、「顧客、伝票番号、計上日」で同値判定を行うこと。
+ * </pre>
+ * 
+ * @author ShowKa
+ *
+ */
 @Getter
-public class UriageRirekiDomain extends DomainBase {
+public class UriageRirekiDomain extends UriageDomain {
 
-	/** 売上履歴 */
-	private Set<UriageDomain> list;
+	/** 売上ID. */
+	private String uriageId;
 
-	/**
-	 * 最新伝票取得.
-	 * 
-	 * <pre>
-	 * 計上日が最も新しい売上ドメインを返す。
-	 * </pre>
-	 * 
-	 * @return 最新伝票
-	 */
-	public UriageDomain getNewest() {
-		Optional<UriageDomain> newest = list.stream().max((r1, r2) -> {
-			return r1.getKeijoDate().getDate().compareTo(r2.getKeijoDate().getDate());
-		});
-		return newest.get();
+	public UriageRirekiDomain(String uriageId, KokyakuDomain kokyaku, String denpyoNumber, TheDate uriageDate,
+			TheDate keijoDate, HanbaiKubun hanbaiKubun, TaxRate shohizeiritsu, List<UriageMeisaiDomain> uriageMeisai) {
+		super(kokyaku, denpyoNumber, uriageDate, keijoDate, hanbaiKubun, shohizeiritsu, uriageMeisai);
+		this.uriageId = uriageId;
 	}
 
 	@Override
 	public void validate() throws SystemException {
-		// nothing to do
+		// do nothing
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	public boolean equals(DomainBase other) {
 		UriageRirekiDomain o = (UriageRirekiDomain) other;
-		UriageDomain newest = getNewest();
-		UriageDomain otherNewest = o.getNewest();
-		return newest.equals(otherNewest) && newest.getKeijoDate().equals(otherNewest.getKeijoDate());
+		return uriageId.equals(o.uriageId) && getKeijoDate().equals(o.getKeijoDate());
 	}
 
 	@Override
 	public int hashCode() {
-		UriageDomain newest = getNewest();
-		return generateHashCode(newest, newest.getKeijoDate());
+		return generateHashCode(uriageId, getKeijoDate());
 	}
-
 }

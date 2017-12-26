@@ -128,7 +128,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		new Expectations() {
 			{
 				// 売上履歴の保存
-				uriageRirekiCrudService.save(uriage);
+				// uriageRirekiCrudService.save(uriage);
 				// 明細の保存
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				uriageMeisaiCrudService.save(uriageMeisai02);
@@ -145,7 +145,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
-				uriageRirekiCrudService.save(uriage);
+				// uriageRirekiCrudService.save(uriage);
 				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				times = 1;
@@ -216,7 +216,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// expectation
 		new Expectations() {
 			{
-				uriageRirekiCrudService.save(uriage01);
+				// uriageRirekiCrudService.save(uriage01);
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				uriageMeisaiCrudService.save(uriageMeisai02);
 			}
@@ -228,7 +228,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
-				uriageRirekiCrudService.save(uriage01);
+				// uriageRirekiCrudService.save(uriage01);
 				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				times = 1;

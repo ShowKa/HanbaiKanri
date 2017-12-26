@@ -67,7 +67,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 		// save
 		repo.saveAndFlush(e);
-		uriageRirekiCrudService.save(domain);
 
 		// delete old
 		List<UriageMeisaiDomain> oldMeisaiList = uriageMeisaiCrudService.getDomainList(domain.getRecordId());

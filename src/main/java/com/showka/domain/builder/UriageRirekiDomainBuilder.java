@@ -1,16 +1,40 @@
 package com.showka.domain.builder;
 
-import java.util.Set;
+import java.util.List;
 
-import com.showka.domain.UriageDomain;
+import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageRirekiDomain;
+import com.showka.kubun.HanbaiKubun;
+import com.showka.value.TaxRate;
+import com.showka.value.TheDate;
 
 public class UriageRirekiDomainBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<UriageRirekiDomain, UriageRirekiDomainBuilder> {
 
 	// private member
-	/** uriageRireki */
-	private Set<UriageDomain> uriageRireki;
+	/** uriageId */
+	private String uriageId;
+
+	/** kokyaku */
+	private KokyakuDomain kokyaku;
+
+	/** denpyoNumber */
+	private String denpyoNumber;
+
+	/** uriageDate */
+	private TheDate uriageDate;
+
+	/** keijoDate */
+	private TheDate keijoDate;
+
+	/** hanbaiKubun */
+	private HanbaiKubun hanbaiKubun;
+
+	/** shohizeiritsu */
+	private TaxRate shohizeiritsu;
+
+	/** uriageMeisai */
+	private List uriageMeisai;
 
 	/** recordId */
 	private String recordId;
@@ -21,14 +45,22 @@ public class UriageRirekiDomainBuilder
 	// protected method
 	@Override
 	protected void apply(UriageRirekiDomain domain, UriageRirekiDomainBuilder builder) {
-		builder.withUriageRireki(domain.getList());
+		builder.withUriageId(domain.getUriageId());
+		builder.withKokyaku(domain.getKokyaku());
+		builder.withDenpyoNumber(domain.getDenpyoNumber());
+		builder.withUriageDate(domain.getUriageDate());
+		builder.withKeijoDate(domain.getKeijoDate());
+		builder.withHanbaiKubun(domain.getHanbaiKubun());
+		builder.withShohizeiritsu(domain.getShohizeiritsu());
+		builder.withUriageMeisai(domain.getUriageMeisai());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected UriageRirekiDomain createDomainObject() {
-		UriageRirekiDomain domain = new UriageRirekiDomain(uriageRireki);
+		UriageRirekiDomain domain = new UriageRirekiDomain(uriageId, kokyaku, denpyoNumber, uriageDate, keijoDate,
+				hanbaiKubun, shohizeiritsu, uriageMeisai);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -46,17 +78,136 @@ public class UriageRirekiDomainBuilder
 
 	// public method
 	/**
-	 * {@link UriageRirekiDomain}に与えるuriageRirekiをこのビルダに設定する。
+	 * {@link UriageRirekiDomain}に与えるuriageIdをこのビルダに設定する。
 	 *
-	 * @param uriageRireki
-	 *            uriageRireki
+	 * @param uriageId
+	 *            uriageId
 	 * @return {@link UriageRirekiDomainBuilder}
 	 */
-	public UriageRirekiDomainBuilder withUriageRireki(final Set<UriageDomain> uriageRireki) {
+	public UriageRirekiDomainBuilder withUriageId(final String uriageId) {
 		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
 			@Override
 			public void configure(UriageRirekiDomainBuilder builder) {
-				builder.uriageRireki = uriageRireki;
+				builder.uriageId = uriageId;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiDomain}に与えるkokyakuをこのビルダに設定する。
+	 *
+	 * @param kokyaku
+	 *            kokyaku
+	 * @return {@link UriageRirekiDomainBuilder}
+	 */
+	public UriageRirekiDomainBuilder withKokyaku(final KokyakuDomain kokyaku) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiDomainBuilder builder) {
+				builder.kokyaku = kokyaku;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiDomain}に与えるdenpyoNumberをこのビルダに設定する。
+	 *
+	 * @param denpyoNumber
+	 *            denpyoNumber
+	 * @return {@link UriageRirekiDomainBuilder}
+	 */
+	public UriageRirekiDomainBuilder withDenpyoNumber(final String denpyoNumber) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiDomainBuilder builder) {
+				builder.denpyoNumber = denpyoNumber;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiDomain}に与えるuriageDateをこのビルダに設定する。
+	 *
+	 * @param uriageDate
+	 *            uriageDate
+	 * @return {@link UriageRirekiDomainBuilder}
+	 */
+	public UriageRirekiDomainBuilder withUriageDate(final TheDate uriageDate) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiDomainBuilder builder) {
+				builder.uriageDate = uriageDate;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiDomain}に与えるkeijoDateをこのビルダに設定する。
+	 *
+	 * @param keijoDate
+	 *            keijoDate
+	 * @return {@link UriageRirekiDomainBuilder}
+	 */
+	public UriageRirekiDomainBuilder withKeijoDate(final TheDate keijoDate) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiDomainBuilder builder) {
+				builder.keijoDate = keijoDate;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiDomain}に与えるhanbaiKubunをこのビルダに設定する。
+	 *
+	 * @param hanbaiKubun
+	 *            hanbaiKubun
+	 * @return {@link UriageRirekiDomainBuilder}
+	 */
+	public UriageRirekiDomainBuilder withHanbaiKubun(final HanbaiKubun hanbaiKubun) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiDomainBuilder builder) {
+				builder.hanbaiKubun = hanbaiKubun;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiDomain}に与えるshohizeiritsuをこのビルダに設定する。
+	 *
+	 * @param shohizeiritsu
+	 *            shohizeiritsu
+	 * @return {@link UriageRirekiDomainBuilder}
+	 */
+	public UriageRirekiDomainBuilder withShohizeiritsu(final TaxRate shohizeiritsu) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiDomainBuilder builder) {
+				builder.shohizeiritsu = shohizeiritsu;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiDomain}に与えるuriageMeisaiをこのビルダに設定する。
+	 *
+	 * @param uriageMeisai
+	 *            uriageMeisai
+	 * @return {@link UriageRirekiDomainBuilder}
+	 */
+	public UriageRirekiDomainBuilder withUriageMeisai(final List uriageMeisai) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiDomainBuilder builder) {
+				builder.uriageMeisai = uriageMeisai;
 			}
 		});
 		return getThis();
