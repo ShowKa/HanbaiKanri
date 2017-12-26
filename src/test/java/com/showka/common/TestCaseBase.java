@@ -36,4 +36,14 @@ public abstract class TestCaseBase extends TestCase {
 			"shohizeiritsu",
 			"record_id" };
 
+	// 売上履歴明細
+	protected String R_URIAGE_MEISAI = "r_uriage_meisai";
+	protected static final String[] R_URIAGE_MEISAI_COLUMN = {
+			"uriage_id",
+			"meisai_number",
+			"shohin_id",
+			"hanbai_number",
+			"hanbai_tanka",
+			"record_id" };
+
 }
