@@ -113,7 +113,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 				meisaiRirekiList.add(rm);
 			});
 
-			uriageRirekiMeisaiCrudService.overrideList(meisaiRirekiList);
+			// uriageRirekiMeisaiCrudService.overrideList(meisaiRirekiList);
 		}
 	}
 }
