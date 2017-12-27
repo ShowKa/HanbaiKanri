@@ -1,6 +1,8 @@
 package com.showka.service.crud.u05;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +33,22 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	private MShohinCrudService shohinCrudService;
 
 	/** 売上履歴明細01 */
-	private static UriageRirekiMeisaiDomain meisai01;
+	private static final Object[] R_URIAGE_MEISAI_01 = {
+			"r-KK01-00001-20170820",
+			1,
+			"SH01",
+			5,
+			1000,
+			"r-KK01-00001-20170820-1" };
+	private static final Object[] R_URIAGE_MEISAI_02 = {
+			"r-KK01-00001-20170820",
+			2,
+			"SH02",
+			5,
+			1001,
+			"r-KK01-00001-20170820-2" };
+
+	private static final UriageRirekiMeisaiDomain meisai01;
 	static {
 		// 商品ドメインダミー
 		ShohinDomain shohinDomain = EmptyProxy.domain(ShohinDomain.class);
@@ -58,6 +75,7 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 		deleteAll(R_URIAGE_MEISAI);
 
 		// do
+		meisai01.setVersion(null);
 		service.save(meisai01);
 
 		// check
@@ -67,6 +85,120 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 		RUriageMeisai actual = repo.findById(id).get();
 
 		assertEquals(meisai01.getRecordId(), actual.getRecordId());
+	}
+
+	@Test
+	public void test02_save_update() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01);
+
+		// do
+		meisai01.setVersion(0);
+		service.save(meisai01);
+
+		// check
+		RUriageMeisaiPK id = new RUriageMeisaiPK();
+		id.setUriageId(meisai01.getUriageId());
+		id.setMeisaiNumber(meisai01.getMeisaiNumber());
+		RUriageMeisai actual = repo.findById(id).get();
+
+		assertEquals(meisai01.getRecordId(), actual.getRecordId());
+	}
+
+	@Test
+	public void test03_delete() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01);
+
+		// do
+		meisai01.setVersion(0);
+		service.delete(meisai01);
+
+		// check
+		RUriageMeisaiPK id = new RUriageMeisaiPK();
+		id.setUriageId(meisai01.getUriageId());
+		id.setMeisaiNumber(meisai01.getMeisaiNumber());
+		assertEquals(false, repo.existsById(id));
+	}
+
+	@Test
+	public void test04_delete() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01);
+
+		// do
+		RUriageMeisaiPK id = new RUriageMeisaiPK();
+		id.setUriageId(meisai01.getUriageId());
+		id.setMeisaiNumber(meisai01.getMeisaiNumber());
+
+		service.delete(id, 0);
+
+		// check
+		assertEquals(false, repo.existsById(id));
+	}
+
+	@Test
+	public void test05_getDomain() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01);
+
+		// do
+		RUriageMeisaiPK id = new RUriageMeisaiPK();
+		id.setUriageId(meisai01.getUriageId());
+		id.setMeisaiNumber(meisai01.getMeisaiNumber());
+
+		UriageRirekiMeisaiDomain actual = service.getDomain(id);
+
+		// check
+		assertEquals(meisai01, actual);
+	}
+
+	@Test
+	public void test06_getDomainList() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01, R_URIAGE_MEISAI_02);
+
+		// do
+		List<UriageRirekiMeisaiDomain> actual = service.getDomainList("r-KK01-00001-20170820");
+
+		// check
+		assertEquals(2, actual.size());
+	}
+
+	@Test
+	public void test07_getDomainList() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01);
+
+		// do
+		RUriageMeisaiPK id = new RUriageMeisaiPK();
+		id.setUriageId(meisai01.getUriageId());
+		id.setMeisaiNumber(meisai01.getMeisaiNumber());
+
+		// do
+		boolean actual = service.exsists(id);
+
+		// check
+		assertEquals(true, actual);
+	}
+
+	@Test
+	public void test08_overrideList() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01, R_URIAGE_MEISAI_02);
+
+		// do
+		List<UriageRirekiMeisaiDomain> meisaiList = new ArrayList<UriageRirekiMeisaiDomain>();
+		UriageRirekiMeisaiDomainBuilder b = new UriageRirekiMeisaiDomainBuilder();
+		b.withHanbaiNumber(999);
+		UriageRirekiMeisaiDomain updated = b.apply(meisai01);
+		meisaiList.add(updated);
+		service.overrideList(meisaiList);
+
+		// check
+		List<UriageRirekiMeisaiDomain> actual = service.getDomainList("r-KK01-00001-20170820");
+		assertEquals(1, actual.size());
+		assertEquals(new Integer(999), actual.get(0).getHanbaiNumber());
 	}
 
 }

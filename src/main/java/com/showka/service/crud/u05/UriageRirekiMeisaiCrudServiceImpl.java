@@ -43,6 +43,9 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 		e.setRecordId(domain.getRecordId());
 		e.setShohinId(domain.getShohinDomain().getRecordId());
 
+		// optimistic lock
+		e.setVersion(domain.getVersion());
+
 		// save
 		repo.save(e);
 	}
