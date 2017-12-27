@@ -35,7 +35,7 @@ public class UriageDomain extends DomainBase {
 	private TaxRate shohizeiritsu;
 
 	/** 売上明細. */
-	private List<UriageMeisaiDomain> uriageMeisai;
+	private List<? extends UriageMeisaiDomain> uriageMeisai;
 
 	/**
 	 * 売上合計価格取得.
