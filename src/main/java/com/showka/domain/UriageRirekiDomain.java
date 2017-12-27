@@ -20,16 +20,27 @@ import lombok.Getter;
  * @author ShowKa
  *
  */
-@Getter
+
 public class UriageRirekiDomain extends UriageDomain {
 
 	/** 売上ID. */
+	@Getter
 	private String uriageId;
 
+	/** 売上履歴明細 */
+	private List<UriageRirekiMeisaiDomain> uriageMeisai;
+
+	public List<UriageRirekiMeisaiDomain> getUriageRirekiMeisai() {
+		return this.uriageMeisai;
+	}
+
 	public UriageRirekiDomain(String uriageId, KokyakuDomain kokyaku, String denpyoNumber, TheDate uriageDate,
-			TheDate keijoDate, HanbaiKubun hanbaiKubun, TaxRate shohizeiritsu, List<UriageMeisaiDomain> uriageMeisai) {
-		super(kokyaku, denpyoNumber, uriageDate, keijoDate, hanbaiKubun, shohizeiritsu, uriageMeisai);
+			TheDate keijoDate, HanbaiKubun hanbaiKubun, TaxRate shohizeiritsu,
+			List<UriageRirekiMeisaiDomain> uriageMeisai) {
+		super(kokyaku, denpyoNumber, uriageDate, keijoDate, hanbaiKubun, shohizeiritsu,
+				(List<UriageMeisaiDomain>) (Object) uriageMeisai);
 		this.uriageId = uriageId;
+		this.uriageMeisai = uriageMeisai;
 	}
 
 	@Override

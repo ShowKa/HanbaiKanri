@@ -10,12 +10,12 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.UriageRirekiListDomain;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.UriageRirekiMeisaiDomain;
 import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.domain.builder.UriageRirekiListDomainBuilder;
+import com.showka.domain.builder.UriageRirekiMeisaiDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
@@ -101,19 +101,17 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		// save
 		repo.saveAndFlush(e);
 
-		if (false) {
-			// 明細 TODO Serviceが煩雑な仕事をしている。売上履歴ドメインに仕事を以上できまいか？
-			List<UriageMeisaiDomain> meisaiList = domain.getUriageMeisai();
-			List<UriageMeisaiDomain> meisaiRirekiList = new ArrayList<UriageMeisaiDomain>();
-			meisaiList.forEach(m -> {
-				// 売上履歴のレコードIDを適用し、売上履歴明細ドメインを生成
-				UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
-				b.withUriageId(recordId);
-				UriageMeisaiDomain rm = b.apply(m);
-				meisaiRirekiList.add(rm);
-			});
+		// 明細 TODO Serviceが煩雑な仕事をしている。売上履歴ドメインに仕事を以上できまいか？
+		List<UriageRirekiMeisaiDomain> meisaiList = domain.getUriageRirekiMeisai();
+		List<UriageRirekiMeisaiDomain> meisaiRirekiList = new ArrayList<UriageRirekiMeisaiDomain>();
+		meisaiList.forEach(m -> {
+			// 売上履歴のレコードIDを適用し、売上履歴明細ドメインを生成
+			UriageRirekiMeisaiDomainBuilder b = new UriageRirekiMeisaiDomainBuilder();
+			b.withUriageId(recordId);
+			UriageRirekiMeisaiDomain rm = b.apply(m);
+			meisaiRirekiList.add(rm);
+		});
 
-			// uriageRirekiMeisaiCrudService.overrideList(meisaiRirekiList);
-		}
+		uriageRirekiMeisaiCrudService.overrideList(meisaiRirekiList);
 	}
 }
