@@ -28,7 +28,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	@Override
 	public void validate(UriageDomain domain) throws ValidateException {
 
-		List<UriageMeisaiDomain> meisaiList = domain.getUriageMeisai();
+		List<? extends UriageMeisaiDomain> meisaiList = domain.getUriageMeisai();
 		if (CollectionUtils.isEmpty(meisaiList)) {
 			throw new EmptyException("売上明細");
 		}
@@ -36,7 +36,6 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 		for (UriageMeisaiDomain meisai : meisaiList) {
 			uriageMeisaiValidate.validate(meisai);
 		}
-
 	}
 
 	@Override

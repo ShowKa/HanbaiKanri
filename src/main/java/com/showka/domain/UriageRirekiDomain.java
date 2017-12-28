@@ -34,6 +34,11 @@ public class UriageRirekiDomain extends UriageDomain {
 		this.uriageId = uriageId;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<UriageRirekiMeisaiDomain> getUriageRirekiMeisai() {
+		return (List<UriageRirekiMeisaiDomain>) getUriageMeisai();
+	}
+
 	@Override
 	public void validate() throws SystemException {
 		// do nothing
