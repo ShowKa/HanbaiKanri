@@ -1,6 +1,5 @@
 package com.showka.service.crud.u05;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,7 +14,6 @@ import com.showka.domain.UriageRirekiListDomain;
 import com.showka.domain.UriageRirekiMeisaiDomain;
 import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.domain.builder.UriageRirekiListDomainBuilder;
-import com.showka.domain.builder.UriageRirekiMeisaiDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
@@ -70,6 +68,11 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 			b.withKeijoDate(new TheDate(e.getPk().getKeijoDate()));
 			b.withVersion(e.getVersion());
 
+			// meisai
+			List<UriageRirekiMeisaiDomain> uriageMeisai = uriageRirekiMeisaiCrudService
+					.getDomainList(e.getPk().getUriageId());
+			b.withUriageMeisai(uriageMeisai);
+
 			// add
 			domainList.add(b.build());
 		});
@@ -100,18 +103,6 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 
 		// save
 		repo.saveAndFlush(e);
-
-		// 明細 TODO Serviceが煩雑な仕事をしている。売上履歴ドメインに仕事を以上できまいか？
-		List<UriageRirekiMeisaiDomain> meisaiList = domain.getUriageRirekiMeisai();
-		List<UriageRirekiMeisaiDomain> meisaiRirekiList = new ArrayList<UriageRirekiMeisaiDomain>();
-		meisaiList.forEach(m -> {
-			// 売上履歴のレコードIDを適用し、売上履歴明細ドメインを生成
-			UriageRirekiMeisaiDomainBuilder b = new UriageRirekiMeisaiDomainBuilder();
-			b.withUriageId(recordId);
-			UriageRirekiMeisaiDomain rm = b.apply(m);
-			meisaiRirekiList.add(rm);
-		});
-
-		uriageRirekiMeisaiCrudService.overrideList(meisaiRirekiList);
+		uriageRirekiMeisaiCrudService.overrideList(domain.getUriageRirekiMeisai());
 	}
 }
