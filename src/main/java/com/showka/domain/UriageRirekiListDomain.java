@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.builder.UriageRirekiDomainBuilder;
+import com.showka.domain.builder.UriageRirekiMeisaiDomainBuilder;
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
@@ -36,30 +36,18 @@ public class UriageRirekiListDomain extends DomainBase {
 		return newest.get();
 	}
 
-	// TODO
+	/**
+	 * 売上を履歴ドメインとして履歴りえストにマージする
+	 * 
+	 * @param domain
+	 *            売上
+	 */
 	public void merge(UriageDomain domain) {
 		if (list.contains(domain)) {
 			list.remove(domain);
+			list.add(buildUriageRirekiDomain(domain));
 		} else {
-			// record id
-			String rirekiUriageId = UUID.randomUUID().toString();
-
-			// build 明細
-			List<UriageMeisaiDomain> newUriageMeisaiList = new ArrayList<UriageMeisaiDomain>();
-			domain.getUriageMeisai().forEach(m -> {
-				UriageMeisaiDomainBuilder ub = new UriageMeisaiDomainBuilder();
-				ub.withUriageId(rirekiUriageId);
-				ub.withRecordId(UUID.randomUUID().toString());
-				UriageMeisaiDomain newUriageMeisai = ub.apply(m);
-				newUriageMeisaiList.add(newUriageMeisai);
-			});
-
-			// build 売上
-			UriageDomainBuilder b = new UriageDomainBuilder();
-			b.withRecordId(rirekiUriageId);
-			b.withUriageMeisai(newUriageMeisaiList);
-			UriageDomain copiedUriage = b.apply(domain);
-			// list.add(copiedUriage);
+			list.add(buildUriageRirekiDomain(domain));
 		}
 	}
 
@@ -81,6 +69,48 @@ public class UriageRirekiListDomain extends DomainBase {
 	public int hashCode() {
 		UriageRirekiDomain newest = getNewest();
 		return generateHashCode(newest.getUriageId(), newest.getKeijoDate());
+	}
+
+	/**
+	 * 売上ドメインから履歴を生成する。
+	 * 
+	 * @param domain
+	 *            売上ドメイン
+	 * @return
+	 */
+	private UriageRirekiDomain buildUriageRirekiDomain(UriageDomain domain) {
+		// record id
+		String rirekiUriageId = UUID.randomUUID().toString();
+
+		// build 明細
+		List<UriageRirekiMeisaiDomain> uriageMeisaiList = new ArrayList<UriageRirekiMeisaiDomain>();
+		domain.getUriageMeisai().forEach(m -> {
+			UriageRirekiMeisaiDomainBuilder ub = new UriageRirekiMeisaiDomainBuilder();
+			ub.withUriageId(rirekiUriageId);
+			ub.withRecordId(UUID.randomUUID().toString());
+			ub.withHanbaiNumber(m.getHanbaiNumber());
+			ub.withHanbaiTanka(m.getHanbaiTanka());
+			ub.withMeisaiNumber(m.getMeisaiNumber());
+			ub.withShohinDomain(m.getShohinDomain());
+			ub.withVersion(m.getVersion());
+			// add
+			uriageMeisaiList.add(ub.build());
+		});
+
+		// build 売上
+		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
+		b.withRecordId(rirekiUriageId);
+		b.withUriageMeisai(uriageMeisaiList);
+		b.withDenpyoNumber(domain.getDenpyoNumber());
+		b.withHanbaiKubun(domain.getHanbaiKubun());
+		b.withKeijoDate(domain.getKeijoDate());
+		b.withKokyaku(domain.getKokyaku());
+		b.withShohizeiritsu(domain.getShohizeiritsu());
+		b.withUriageDate(domain.getUriageDate());
+		b.withUriageId(domain.getRecordId());
+		b.withVersion(domain.getVersion());
+
+		return b.build();
 	}
 
 }
