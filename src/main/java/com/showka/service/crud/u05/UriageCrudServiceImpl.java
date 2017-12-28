@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageRirekiListDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.TUriage;
@@ -67,6 +68,11 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 		// save
 		repo.saveAndFlush(e);
+
+		// save 履歴
+		UriageRirekiListDomain uriageRirekiList = uriageRirekiCrudService.getUriageRirekiList(domain.getRecordId());
+		uriageRirekiList.merge(domain);
+		uriageRirekiCrudService.save(uriageRirekiList.getNewest());
 
 		// delete old
 		List<UriageMeisaiDomain> oldMeisaiList = uriageMeisaiCrudService.getDomainList(domain.getRecordId());

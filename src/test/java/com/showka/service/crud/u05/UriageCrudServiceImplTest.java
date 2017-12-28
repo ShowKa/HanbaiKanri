@@ -11,6 +11,7 @@ import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.KokyakuDomainBuilder;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
@@ -128,7 +129,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		new Expectations() {
 			{
 				// 売上履歴の保存
-				// uriageRirekiCrudService.save(uriage);
+				uriageRirekiCrudService.save((UriageRirekiDomain) any);
 				// 明細の保存
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				uriageMeisaiCrudService.save(uriageMeisai02);
@@ -145,7 +146,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
-				// uriageRirekiCrudService.save(uriage);
+				uriageRirekiCrudService.save((UriageRirekiDomain) any);
 				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				times = 1;
@@ -216,7 +217,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// expectation
 		new Expectations() {
 			{
-				// uriageRirekiCrudService.save(uriage01);
+				uriageRirekiCrudService.save((UriageRirekiDomain) any);
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				uriageMeisaiCrudService.save(uriageMeisai02);
 			}
@@ -228,7 +229,7 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
-				// uriageRirekiCrudService.save(uriage01);
+				uriageRirekiCrudService.save((UriageRirekiDomain) any);
 				times = 1;
 				uriageMeisaiCrudService.save(uriageMeisai01);
 				times = 1;
