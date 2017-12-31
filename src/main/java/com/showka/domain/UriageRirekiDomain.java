@@ -1,6 +1,8 @@
 package com.showka.domain;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.showka.kubun.HanbaiKubun;
 import com.showka.system.exception.SystemException;
@@ -54,4 +56,35 @@ public class UriageRirekiDomain extends UriageDomain {
 	public int hashCode() {
 		return generateHashCode(uriageId, getKeijoDate());
 	}
+
+	public boolean hasSameMeisaiNumberWith(UriageMeisaiDomain uriageMeisai) {
+		return getUriageRirekiMeisai().stream().filter(_meisai -> {
+			return _meisai.getMeisaiNumber().equals(uriageMeisai.getMeisaiNumber());
+		}).count() > 0;
+	}
+
+	public UriageRirekiDomain getOverriddenBy(UriageDomain uriage) {
+		List<UriageRirekiMeisaiDomain> newMeisai = new ArrayList<UriageRirekiMeisaiDomain>();
+		uriage.getUriageMeisai().stream().filter(meisaiForMerge -> {
+			return this.hasSameMeisaiNumberWith(meisaiForMerge);
+		}).forEach(meisaiForMerge -> {
+			this.getUriageRirekiMeisai().stream().filter(meisaiOrverridden -> {
+				return meisaiOrverridden.getMeisaiNumber().equals(meisaiForMerge.getMeisaiNumber());
+			}).forEach(meisaiOrverridden -> {
+				newMeisai.add(meisaiOrverridden.getOverriddenBy(meisaiForMerge));
+			});
+		});
+		uriage.getUriageMeisai().stream().filter(meisaiToCreate -> {
+			return !this.hasSameMeisaiNumberWith(meisaiToCreate);
+		}).forEach(meisaiToCreate -> {
+			UriageRirekiMeisaiDomain created = new UriageRirekiMeisaiDomain(getUriageId(),
+					meisaiToCreate.getMeisaiNumber(), meisaiToCreate.getShohinDomain(),
+					meisaiToCreate.getHanbaiNumber(), meisaiToCreate.getHanbaiTanka());
+			created.setRecordId(UUID.randomUUID().toString());
+			newMeisai.add(created);
+		});
+		return new UriageRirekiDomain(getUriageId(), getKokyaku(), getDenpyoNumber(), uriage.getUriageDate(),
+				getKeijoDate(), uriage.getHanbaiKubun(), uriage.getShohizeiritsu(), newMeisai);
+	}
+
 }

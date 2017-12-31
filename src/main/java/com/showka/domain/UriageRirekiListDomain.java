@@ -37,17 +37,46 @@ public class UriageRirekiListDomain extends DomainBase {
 	}
 
 	/**
-	 * 売上を履歴ドメインとして履歴りえストにマージする
+	 * 売上を履歴ドメインとして履歴リストにマージする。
 	 * 
-	 * @param domain
+	 * @param rdomain
 	 *            売上
 	 */
-	public void merge(UriageDomain domain) {
-		if (list.contains(domain)) {
-			list.remove(domain);
-			list.add(buildUriageRirekiDomain(domain));
+	public void merge(UriageDomain uriageForMerge) {
+		if (list.contains(uriageForMerge)) {
+
+			list.stream().filter(uriageRirekiForOverride -> {
+				return uriageRirekiForOverride.getUriageDate().equals(uriageForMerge.getUriageDate());
+			}).forEach(uriageRirekiOverridden -> {
+
+				// set update=true member to builder
+				UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
+				b.withHanbaiKubun(uriageForMerge.getHanbaiKubun());
+				b.withShohizeiritsu(uriageForMerge.getShohizeiritsu());
+				b.withUriageDate(uriageForMerge.getUriageDate());
+
+				// set 明細
+				List<UriageRirekiMeisaiDomain> newMeisai = new ArrayList<UriageRirekiMeisaiDomain>();
+				uriageForMerge.getUriageMeisai().stream().filter(meisaiForMerge -> {
+					return uriageRirekiOverridden.hasSameMeisaiNumberWith(meisaiForMerge);
+				}).forEach(meisaiForMerge -> {
+					// add
+					uriageRirekiOverridden.getUriageRirekiMeisai().stream().filter(meisaiOrverridden -> {
+						return meisaiOrverridden.getMeisaiNumber().equals(meisaiForMerge.getMeisaiNumber());
+					}).forEach(meisaiOrverridden -> {
+						newMeisai.add(meisaiOrverridden.getOverriddenBy(meisaiForMerge));
+					});
+				});
+				b.withUriageMeisai(newMeisai);
+
+				// remove and add new
+				UriageRirekiDomain newDomain = b.apply(uriageRirekiOverridden);
+				list.remove(uriageRirekiOverridden);
+				list.add(newDomain);
+			});
+
 		} else {
-			list.add(buildUriageRirekiDomain(domain));
+			list.add(buildUriageRirekiDomain(uriageForMerge));
 		}
 	}
 

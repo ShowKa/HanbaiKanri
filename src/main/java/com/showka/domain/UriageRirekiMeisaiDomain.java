@@ -46,4 +46,12 @@ public class UriageRirekiMeisaiDomain extends UriageMeisaiDomain {
 		return generateHashCode(getUriageId(), getMeisaiNumber());
 	}
 
+	public boolean sameMeisaiNumberWith(UriageMeisaiDomain uriageMeisai) {
+		return getMeisaiNumber().equals(uriageMeisai.getMeisaiNumber());
+	}
+
+	public UriageRirekiMeisaiDomain getOverriddenBy(UriageMeisaiDomain uriageMeisai) {
+		return new UriageRirekiMeisaiDomain(getUriageId(), uriageMeisai.getHanbaiNumber(),
+				uriageMeisai.getShohinDomain(), uriageMeisai.getHanbaiNumber(), uriageMeisai.getHanbaiTanka());
+	}
 }
