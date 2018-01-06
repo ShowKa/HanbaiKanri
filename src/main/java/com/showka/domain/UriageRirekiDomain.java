@@ -1,10 +1,14 @@
 package com.showka.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
+import com.showka.domain.builder.UriageRirekiMeisaiDomainBuilder;
 import com.showka.kubun.HanbaiKubun;
+import com.showka.system.BiStreamWrapper;
 import com.showka.system.exception.SystemException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -29,16 +33,51 @@ public class UriageRirekiDomain extends UriageDomain {
 	@Getter
 	private String uriageId;
 
+	@SuppressWarnings("unchecked")
 	public UriageRirekiDomain(String uriageId, KokyakuDomain kokyaku, String denpyoNumber, TheDate uriageDate,
 			TheDate keijoDate, HanbaiKubun hanbaiKubun, TaxRate shohizeiritsu,
 			List<UriageRirekiMeisaiDomain> uriageMeisai) {
-		super(kokyaku, denpyoNumber, uriageDate, keijoDate, hanbaiKubun, shohizeiritsu, uriageMeisai);
+		super(kokyaku, denpyoNumber, uriageDate, keijoDate, hanbaiKubun, shohizeiritsu,
+				(List<UriageMeisaiDomain>) (Object) uriageMeisai);
 		this.uriageId = uriageId;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<UriageRirekiMeisaiDomain> getUriageRirekiMeisai() {
-		return (List<UriageRirekiMeisaiDomain>) getUriageMeisai();
+		return (List<UriageRirekiMeisaiDomain>) (Object) getUriageMeisai();
+	}
+
+	public UriageRirekiDomain getOverriddenBy(UriageDomain uriage) {
+
+		BiPredicate<UriageRirekiMeisaiDomain, UriageMeisaiDomain> predicate = (m1, m2) -> {
+			return m1.getMeisaiNumber().equals(m2.getMeisaiNumber());
+		};
+
+		BiFunction<UriageRirekiMeisaiDomain, UriageMeisaiDomain, UriageRirekiMeisaiDomain> function = (m1, m2) -> {
+			return m1.getOverriddenBy(m2);
+		};
+
+		List<UriageRirekiMeisaiDomain> merged = BiStreamWrapper.of(getUriageRirekiMeisai(), uriage.getUriageMeisai())
+				.map(predicate, function)
+				.collect(Collectors.toList());
+
+		List<UriageRirekiMeisaiDomain> newers = BiStreamWrapper.of(getUriageRirekiMeisai(), uriage.getUriageMeisai())
+				.filterNoneMatched(predicate)
+				.second()
+				.collect(Collectors.toList())
+				.stream()
+				.map(meisai -> {
+					UriageRirekiMeisaiDomainBuilder b = new UriageRirekiMeisaiDomainBuilder();
+					b.withUriageId(getUriageId());
+					b.withRecordId(UUID.randomUUID().toString());
+					return b.apply(meisai);
+				})
+				.collect(Collectors.toList());
+
+		merged.addAll(newers);
+
+		return new UriageRirekiDomain(getUriageId(), getKokyaku(), getDenpyoNumber(), uriage.getUriageDate(),
+				getKeijoDate(), uriage.getHanbaiKubun(), uriage.getShohizeiritsu(), merged);
 	}
 
 	@Override
@@ -55,36 +94,6 @@ public class UriageRirekiDomain extends UriageDomain {
 	@Override
 	public int hashCode() {
 		return generateHashCode(uriageId, getKeijoDate());
-	}
-
-	public boolean hasSameMeisaiNumberWith(UriageMeisaiDomain uriageMeisai) {
-		return getUriageRirekiMeisai().stream().filter(_meisai -> {
-			return _meisai.getMeisaiNumber().equals(uriageMeisai.getMeisaiNumber());
-		}).count() > 0;
-	}
-
-	public UriageRirekiDomain getOverriddenBy(UriageDomain uriage) {
-		List<UriageRirekiMeisaiDomain> newMeisai = new ArrayList<UriageRirekiMeisaiDomain>();
-		uriage.getUriageMeisai().stream().filter(meisaiForMerge -> {
-			return this.hasSameMeisaiNumberWith(meisaiForMerge);
-		}).forEach(meisaiForMerge -> {
-			this.getUriageRirekiMeisai().stream().filter(meisaiOrverridden -> {
-				return meisaiOrverridden.getMeisaiNumber().equals(meisaiForMerge.getMeisaiNumber());
-			}).forEach(meisaiOrverridden -> {
-				newMeisai.add(meisaiOrverridden.getOverriddenBy(meisaiForMerge));
-			});
-		});
-		uriage.getUriageMeisai().stream().filter(meisaiToCreate -> {
-			return !this.hasSameMeisaiNumberWith(meisaiToCreate);
-		}).forEach(meisaiToCreate -> {
-			UriageRirekiMeisaiDomain created = new UriageRirekiMeisaiDomain(getUriageId(),
-					meisaiToCreate.getMeisaiNumber(), meisaiToCreate.getShohinDomain(),
-					meisaiToCreate.getHanbaiNumber(), meisaiToCreate.getHanbaiTanka());
-			created.setRecordId(UUID.randomUUID().toString());
-			newMeisai.add(created);
-		});
-		return new UriageRirekiDomain(getUriageId(), getKokyaku(), getDenpyoNumber(), uriage.getUriageDate(),
-				getKeijoDate(), uriage.getHanbaiKubun(), uriage.getShohizeiritsu(), newMeisai);
 	}
 
 }

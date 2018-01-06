@@ -44,37 +44,12 @@ public class UriageRirekiListDomain extends DomainBase {
 	 */
 	public void merge(UriageDomain uriageForMerge) {
 		if (list.contains(uriageForMerge)) {
-
 			list.stream().filter(uriageRirekiForOverride -> {
 				return uriageRirekiForOverride.getUriageDate().equals(uriageForMerge.getUriageDate());
 			}).forEach(uriageRirekiOverridden -> {
-
-				// set update=true member to builder
-				UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
-				b.withHanbaiKubun(uriageForMerge.getHanbaiKubun());
-				b.withShohizeiritsu(uriageForMerge.getShohizeiritsu());
-				b.withUriageDate(uriageForMerge.getUriageDate());
-
-				// set 明細
-				List<UriageRirekiMeisaiDomain> newMeisai = new ArrayList<UriageRirekiMeisaiDomain>();
-				uriageForMerge.getUriageMeisai().stream().filter(meisaiForMerge -> {
-					return uriageRirekiOverridden.hasSameMeisaiNumberWith(meisaiForMerge);
-				}).forEach(meisaiForMerge -> {
-					// add
-					uriageRirekiOverridden.getUriageRirekiMeisai().stream().filter(meisaiOrverridden -> {
-						return meisaiOrverridden.getMeisaiNumber().equals(meisaiForMerge.getMeisaiNumber());
-					}).forEach(meisaiOrverridden -> {
-						newMeisai.add(meisaiOrverridden.getOverriddenBy(meisaiForMerge));
-					});
-				});
-				b.withUriageMeisai(newMeisai);
-
-				// remove and add new
-				UriageRirekiDomain newDomain = b.apply(uriageRirekiOverridden);
 				list.remove(uriageRirekiOverridden);
-				list.add(newDomain);
+				list.add(uriageRirekiOverridden.getOverriddenBy(uriageForMerge));
 			});
-
 		} else {
 			list.add(buildUriageRirekiDomain(uriageForMerge));
 		}

@@ -15,7 +15,6 @@ import lombok.Getter;
 @Getter
 public class UriageRirekiMeisaiDomain extends UriageMeisaiDomain {
 
-	// private member
 	public UriageRirekiMeisaiDomain(String uriageId, Integer meisaiNumber, ShohinDomain shohinDomain,
 			Integer hanbaiNumber, BigDecimal hanbaiTanka) {
 		super(uriageId, meisaiNumber, shohinDomain, hanbaiNumber, hanbaiTanka);
@@ -29,7 +28,6 @@ public class UriageRirekiMeisaiDomain extends UriageMeisaiDomain {
 		return super.getUriageId();
 	}
 
-	// public method
 	@Override
 	public void validate() throws SystemException {
 		// nothing to do
@@ -46,12 +44,12 @@ public class UriageRirekiMeisaiDomain extends UriageMeisaiDomain {
 		return generateHashCode(getUriageId(), getMeisaiNumber());
 	}
 
-	public boolean sameMeisaiNumberWith(UriageMeisaiDomain uriageMeisai) {
-		return getMeisaiNumber().equals(uriageMeisai.getMeisaiNumber());
+	public UriageRirekiMeisaiDomain getOverriddenBy(UriageMeisaiDomain uriageMeisai) {
+		UriageRirekiMeisaiDomain domain = new UriageRirekiMeisaiDomain(getUriageId(), uriageMeisai.getHanbaiNumber(),
+				uriageMeisai.getShohinDomain(), uriageMeisai.getHanbaiNumber(), uriageMeisai.getHanbaiTanka());
+		domain.setRecordId(getRecordId());
+		domain.setVersion(getVersion());
+		return domain;
 	}
 
-	public UriageRirekiMeisaiDomain getOverriddenBy(UriageMeisaiDomain uriageMeisai) {
-		return new UriageRirekiMeisaiDomain(getUriageId(), uriageMeisai.getHanbaiNumber(),
-				uriageMeisai.getShohinDomain(), uriageMeisai.getHanbaiNumber(), uriageMeisai.getHanbaiTanka());
-	}
 }

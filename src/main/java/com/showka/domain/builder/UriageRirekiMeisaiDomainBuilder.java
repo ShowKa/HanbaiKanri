@@ -3,6 +3,7 @@ package com.showka.domain.builder;
 import java.math.BigDecimal;
 
 import com.showka.domain.ShohinDomain;
+import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.UriageRirekiMeisaiDomain;
 
 public class UriageRirekiMeisaiDomainBuilder
@@ -181,4 +182,27 @@ public class UriageRirekiMeisaiDomainBuilder
 		return getThis();
 	}
 
+	/**
+	 * 売上明細から売上履歴明細をコンバートして生成する。
+	 * 
+	 * @param vo
+	 *            売上明細
+	 * @return コンバートした売上履歴明細
+	 */
+	public UriageRirekiMeisaiDomain apply(UriageMeisaiDomain vo) {
+		UriageRirekiMeisaiDomainBuilder builder = newInstance();
+		apply(vo, builder);
+		for (BuilderConfigurator<UriageRirekiMeisaiDomainBuilder> configurator : configurators) {
+			builder.addConfigurator(configurator);
+		}
+		return builder.build();
+	}
+
+	private void apply(UriageMeisaiDomain domain, UriageRirekiMeisaiDomainBuilder builder) {
+		builder.withUriageId(domain.getUriageId());
+		builder.withMeisaiNumber(domain.getMeisaiNumber());
+		builder.withShohinDomain(domain.getShohinDomain());
+		builder.withHanbaiNumber(domain.getHanbaiNumber());
+		builder.withHanbaiTanka(domain.getHanbaiTanka());
+	}
 }
