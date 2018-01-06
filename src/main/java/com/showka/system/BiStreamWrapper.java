@@ -1,14 +1,17 @@
 package com.showka.system;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class BiStreamWrapper<O, N> {
 
-	private final Collection<O> first;
+	private Collection<O> first;
 
-	private final Collection<N> second;
+	private Collection<N> second;
 
 	private Stream<O> firstStream;
 
@@ -47,11 +50,17 @@ public class BiStreamWrapper<O, N> {
 				return predicate.test(f, s);
 			});
 		});
+		Collection<O> tmpFirst = firstStream.collect(Collectors.toList());
 		secondStream = secondStream.filter(s -> {
 			return createFirstStream().anyMatch(f -> {
 				return predicate.test(f, s);
 			});
 		});
+		Collection<N> tmpSecond = secondStream.collect(Collectors.toList());
+		first = tmpFirst;
+		second = tmpSecond;
+		firstStream = first.stream();
+		secondStream = second.stream();
 		return this;
 	}
 
@@ -61,11 +70,30 @@ public class BiStreamWrapper<O, N> {
 				return predicate.test(f, s);
 			});
 		});
+		Collection<O> tmpFirst = firstStream.collect(Collectors.toList());
 		secondStream = secondStream.filter(s -> {
 			return createFirstStream().noneMatch(f -> {
 				return predicate.test(f, s);
 			});
 		});
+		Collection<N> tmpSecond = secondStream.collect(Collectors.toList());
+		first = tmpFirst;
+		second = tmpSecond;
+		firstStream = first.stream();
+		secondStream = second.stream();
 		return this;
+	}
+
+	public <R> Stream<R> map(BiPredicate<O, N> predicate, BiFunction<O, N, R> function) {
+		Collection<R> rCollect = new ArrayList<R>();
+		first.forEach(f -> {
+			second.forEach(s -> {
+				if (predicate.test(f, s)) {
+					R r = function.apply(f, s);
+					rCollect.add(r);
+				}
+			});
+		});
+		return rCollect.stream();
 	}
 }
