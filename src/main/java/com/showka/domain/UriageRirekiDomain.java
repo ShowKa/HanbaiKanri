@@ -76,8 +76,11 @@ public class UriageRirekiDomain extends UriageDomain {
 
 		merged.addAll(newers);
 
-		return new UriageRirekiDomain(getUriageId(), getKokyaku(), getDenpyoNumber(), uriage.getUriageDate(),
-				getKeijoDate(), uriage.getHanbaiKubun(), uriage.getShohizeiritsu(), merged);
+		UriageRirekiDomain newDomain = new UriageRirekiDomain(getUriageId(), getKokyaku(), getDenpyoNumber(),
+				uriage.getUriageDate(), getKeijoDate(), uriage.getHanbaiKubun(), uriage.getShohizeiritsu(), merged);
+		newDomain.setRecordId(getRecordId());
+		newDomain.setVersion(getVersion());
+		return newDomain;
 	}
 
 	@Override
