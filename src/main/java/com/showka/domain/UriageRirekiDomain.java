@@ -33,6 +33,26 @@ public class UriageRirekiDomain extends UriageDomain {
 	@Getter
 	private String uriageId;
 
+	/**
+	 * コンストラクタ.
+	 * 
+	 * @param uriageId
+	 *            売上ID
+	 * @param kokyaku
+	 *            顧客
+	 * @param denpyoNumber
+	 *            伝票番号
+	 * @param uriageDate
+	 *            売上日
+	 * @param keijoDate
+	 *            計上日
+	 * @param hanbaiKubun
+	 *            販売区分
+	 * @param shohizeiritsu
+	 *            消費税率
+	 * @param uriageMeisai
+	 *            売上明細ドメイン
+	 */
 	@SuppressWarnings("unchecked")
 	public UriageRirekiDomain(String uriageId, KokyakuDomain kokyaku, String denpyoNumber, TheDate uriageDate,
 			TheDate keijoDate, HanbaiKubun hanbaiKubun, TaxRate shohizeiritsu,
@@ -42,11 +62,27 @@ public class UriageRirekiDomain extends UriageDomain {
 		this.uriageId = uriageId;
 	}
 
+	/**
+	 * 売上履歴明細取得.
+	 * 
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<UriageRirekiMeisaiDomain> getUriageRirekiMeisai() {
 		return (List<UriageRirekiMeisaiDomain>) (Object) getUriageMeisai();
 	}
 
+	/**
+	 * 売上で売上履歴を上書きしたインスタンスを返却します.
+	 * 
+	 * <pre>
+	 *  上書対象: 売上日、販売区分、消費税率、売上履歴明細
+	 * </pre>
+	 * 
+	 * @param uriage
+	 *            売上ドメイン
+	 * @return 上書き後の売上履歴ドメインのインスタンス
+	 */
 	public UriageRirekiDomain getOverriddenBy(UriageDomain uriage) {
 
 		BiPredicate<UriageRirekiMeisaiDomain, UriageMeisaiDomain> predicate = (m1, m2) -> {
