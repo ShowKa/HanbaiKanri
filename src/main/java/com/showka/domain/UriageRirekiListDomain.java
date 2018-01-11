@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.domain.builder.UriageRirekiMeisaiDomainBuilder;
@@ -43,13 +44,19 @@ public class UriageRirekiListDomain extends DomainBase {
 	 *            売上
 	 */
 	public void merge(UriageDomain uriageForMerge) {
-		if (list.contains(uriageForMerge)) {
+		if (list.stream()
+				.map(l -> l.getKeijoDate())
+				.collect(Collectors.toList())
+				.contains(uriageForMerge.getKeijoDate())) {
+
+			// merge
 			list.stream().filter(uriageRirekiForOverride -> {
-				return uriageRirekiForOverride.getUriageDate().equals(uriageForMerge.getUriageDate());
+				return uriageRirekiForOverride.getKeijoDate().equals(uriageForMerge.getKeijoDate());
 			}).forEach(uriageRirekiOverridden -> {
 				list.remove(uriageRirekiOverridden);
 				list.add(uriageRirekiOverridden.getOverriddenBy(uriageForMerge));
 			});
+
 		} else {
 			list.add(buildUriageRirekiDomain(uriageForMerge));
 		}
