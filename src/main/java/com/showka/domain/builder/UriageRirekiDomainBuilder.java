@@ -1,8 +1,10 @@
 package com.showka.domain.builder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.showka.domain.KokyakuDomain;
+import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.UriageRirekiMeisaiDomain;
 import com.showka.kubun.HanbaiKubun;
@@ -246,6 +248,32 @@ public class UriageRirekiDomainBuilder
 			}
 		});
 		return getThis();
+	}
+
+	public UriageRirekiDomain apply(UriageDomain vo) {
+		UriageRirekiDomainBuilder builder = new UriageRirekiDomainBuilder();
+		this.apply(vo, builder);
+		for (BuilderConfigurator<UriageRirekiDomainBuilder> configurator : configurators) {
+			builder.addConfigurator(configurator);
+		}
+		return builder.build();
+	}
+
+	private void apply(UriageDomain domain, UriageRirekiDomainBuilder builder) {
+		builder.withUriageId(domain.getRecordId());
+		builder.withKokyaku(domain.getKokyaku());
+		builder.withDenpyoNumber(domain.getDenpyoNumber());
+		builder.withUriageDate(domain.getUriageDate());
+		builder.withKeijoDate(domain.getKeijoDate());
+		builder.withHanbaiKubun(domain.getHanbaiKubun());
+		builder.withShohizeiritsu(domain.getShohizeiritsu());
+		List<UriageRirekiMeisaiDomain> list = domain.getUriageMeisai().stream().map(meiai -> {
+			UriageRirekiMeisaiDomainBuilder urmdb = new UriageRirekiMeisaiDomainBuilder();
+			return urmdb.apply(meiai);
+		}).collect(Collectors.toList());
+		builder.withUriageMeisai(list);
+		builder.withRecordId(domain.getRecordId());
+		builder.withVersion(domain.getVersion());
 	}
 
 }

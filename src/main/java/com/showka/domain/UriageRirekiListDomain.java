@@ -1,6 +1,5 @@
 package com.showka.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -94,34 +93,20 @@ public class UriageRirekiListDomain extends DomainBase {
 		String rirekiUriageId = UUID.randomUUID().toString();
 
 		// build 明細
-		List<UriageRirekiMeisaiDomain> uriageMeisaiList = new ArrayList<UriageRirekiMeisaiDomain>();
-		domain.getUriageMeisai().forEach(m -> {
+		List<UriageRirekiMeisaiDomain> uriageMeisaiList = domain.getUriageMeisai().stream().map(m -> {
 			UriageRirekiMeisaiDomainBuilder ub = new UriageRirekiMeisaiDomainBuilder();
 			ub.withUriageId(rirekiUriageId);
 			ub.withRecordId(UUID.randomUUID().toString());
-			ub.withHanbaiNumber(m.getHanbaiNumber());
-			ub.withHanbaiTanka(m.getHanbaiTanka());
-			ub.withMeisaiNumber(m.getMeisaiNumber());
-			ub.withShohinDomain(m.getShohinDomain());
-			ub.withVersion(m.getVersion());
-			// add
-			uriageMeisaiList.add(ub.build());
-		});
+			ub.withVersion(null);
+			return ub.apply(m);
+		}).collect(Collectors.toList());
 
 		// build 売上
 		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
 		b.withRecordId(rirekiUriageId);
 		b.withUriageMeisai(uriageMeisaiList);
-		b.withDenpyoNumber(domain.getDenpyoNumber());
-		b.withHanbaiKubun(domain.getHanbaiKubun());
-		b.withKeijoDate(domain.getKeijoDate());
-		b.withKokyaku(domain.getKokyaku());
-		b.withShohizeiritsu(domain.getShohizeiritsu());
-		b.withUriageDate(domain.getUriageDate());
-		b.withUriageId(domain.getRecordId());
-		b.withVersion(domain.getVersion());
-
-		return b.build();
+		b.withVersion(null);
+		return b.apply(domain);
 	}
 
 }
