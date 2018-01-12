@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.domain.builder.UriageRirekiMeisaiDomainBuilder;
 import com.showka.system.exception.SystemException;
+import com.showka.value.TheDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,19 +44,15 @@ public class UriageRirekiListDomain extends DomainBase {
 	 *            売上
 	 */
 	public void merge(UriageDomain uriageForMerge) {
-		if (list.stream()
-				.map(l -> l.getKeijoDate())
-				.collect(Collectors.toList())
-				.contains(uriageForMerge.getKeijoDate())) {
-
-			// merge
-			list.stream().filter(uriageRirekiForOverride -> {
+		List<TheDate> keijoDateList = list.stream().map(l -> l.getKeijoDate()).collect(Collectors.toList());
+		if (keijoDateList.contains(uriageForMerge.getKeijoDate())) {
+			Set<UriageRirekiDomain> merged = list.stream().filter(uriageRirekiForOverride -> {
 				return uriageRirekiForOverride.getKeijoDate().equals(uriageForMerge.getKeijoDate());
-			}).forEach(uriageRirekiOverridden -> {
-				list.remove(uriageRirekiOverridden);
-				list.add(uriageRirekiOverridden.getOverriddenBy(uriageForMerge));
-			});
-
+			}).map(uriageRirekiOverridden -> {
+				return uriageRirekiOverridden.getOverriddenBy(uriageForMerge);
+			}).collect(Collectors.toSet());
+			list.removeAll(merged);
+			list.addAll(merged);
 		} else {
 			list.add(buildUriageRirekiDomain(uriageForMerge));
 		}

@@ -18,11 +18,11 @@ import com.showka.value.TheDate;
 public class UriageRirekiListDomainTest extends SimpleTestCase {
 
 	/** 売上01. */
-	private static final UriageRirekiDomain uriage01;
+	private static final UriageRirekiDomain uriageRireki01;
 	static {
 		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
 		ArrayList<UriageRirekiMeisaiDomain> meisai = new ArrayList<UriageRirekiMeisaiDomain>();
-		uriage01 = b.withUriageId("r-KK01-00001")
+		uriageRireki01 = b.withUriageId("r-KK01-00001")
 				.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
@@ -35,11 +35,11 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 	}
 
 	/** 売上02. */
-	private static final UriageRirekiDomain uriage02;
+	private static final UriageRirekiDomain uriageRireki02;
 	static {
 		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
 		ArrayList<UriageRirekiMeisaiDomain> meisai = new ArrayList<UriageRirekiMeisaiDomain>();
-		uriage02 = b.withUriageId("r-KK01-00001")
+		uriageRireki02 = b.withUriageId("r-KK01-00001")
 				.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
@@ -52,11 +52,11 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 	}
 
 	/** 売上02_更新後. */
-	private static final UriageDomain uriage02_updated;
+	private static final UriageDomain uriageRireki02_updated;
 	static {
 		UriageDomainBuilder b = new UriageDomainBuilder();
 		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
-		uriage02_updated = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		uriageRireki02_updated = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 21))
@@ -72,8 +72,8 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 		// build
 		UriageRirekiListDomainBuilder b = new UriageRirekiListDomainBuilder();
 		Set<UriageRirekiDomain> uriageRireki = new HashSet<UriageRirekiDomain>();
-		uriageRireki.add(uriage01);
-		uriageRireki.add(uriage02);
+		uriageRireki.add(uriageRireki01);
+		uriageRireki.add(uriageRireki02);
 		b.withUriageRirekiList(uriageRireki);
 		UriageRirekiListDomain uriageRirekiList02 = b.build();
 		// test
@@ -86,14 +86,14 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 		// build
 		UriageRirekiListDomainBuilder b = new UriageRirekiListDomainBuilder();
 		Set<UriageRirekiDomain> uriageRireki = new HashSet<UriageRirekiDomain>();
-		uriageRireki.add(uriage01);
+		uriageRireki.add(uriageRireki01);
 		b.withUriageRirekiList(uriageRireki);
 		UriageRirekiListDomain uriageRirekiList01 = b.build();
 		// before merge
 		UriageRirekiDomain pre = uriageRirekiList01.getNewest();
 		assertEquals(new TheDate(2017, 8, 20), pre.getKeijoDate());
 		// test
-		uriageRirekiList01.merge(uriage02);
+		uriageRirekiList01.merge(uriageRireki02);
 		UriageRirekiDomain actual = uriageRirekiList01.getNewest();
 		assertEquals(new TheDate(2017, 8, 21), actual.getKeijoDate());
 	}
@@ -103,15 +103,15 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 		// build
 		UriageRirekiListDomainBuilder b = new UriageRirekiListDomainBuilder();
 		Set<UriageRirekiDomain> uriageRireki = new HashSet<UriageRirekiDomain>();
-		uriageRireki.add(uriage01);
-		uriageRireki.add(uriage02);
+		uriageRireki.add(uriageRireki01);
+		uriageRireki.add(uriageRireki02);
 		b.withUriageRirekiList(uriageRireki);
 		UriageRirekiListDomain uriageRirekiList02 = b.build();
 		// before merge
 		UriageRirekiDomain pre = uriageRirekiList02.getNewest();
 		assertEquals(new TaxRate(0.09), pre.getShohizeiritsu());
-		uriageRirekiList02.merge(uriage02_updated);
 		// test
+		uriageRirekiList02.merge(uriageRireki02_updated);
 		UriageRirekiDomain actual = uriageRirekiList02.getNewest();
 		assertEquals(new TaxRate(0.10), actual.getShohizeiritsu());
 	}
