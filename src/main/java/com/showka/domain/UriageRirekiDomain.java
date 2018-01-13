@@ -104,7 +104,7 @@ public class UriageRirekiDomain extends UriageDomain {
 				.stream()
 				.map(meisai -> {
 					UriageRirekiMeisaiDomainBuilder b = new UriageRirekiMeisaiDomainBuilder();
-					b.withUriageId(getUriageId());
+					b.withUriageId(getRecordId());
 					b.withRecordId(UUID.randomUUID().toString());
 					return b.apply(meisai);
 				})
