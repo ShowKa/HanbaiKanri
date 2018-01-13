@@ -195,6 +195,7 @@ public class U05G002Controller extends ControllerBase {
 	 * 更新.
 	 *
 	 */
+	@Transactional
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
@@ -227,6 +228,7 @@ public class U05G002Controller extends ControllerBase {
 	 * delete.
 	 *
 	 */
+	@Transactional
 	@RequestMapping(value = "/u05g002/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
