@@ -69,8 +69,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 			b.withVersion(e.getVersion());
 
 			// meisai
-			List<UriageRirekiMeisaiDomain> uriageMeisai = uriageRirekiMeisaiCrudService
-					.getDomainList(e.getPk().getUriageId());
+			List<UriageRirekiMeisaiDomain> uriageMeisai = uriageRirekiMeisaiCrudService.getDomainList(e.getRecordId());
 			b.withUriageMeisai(uriageMeisai);
 
 			// add
