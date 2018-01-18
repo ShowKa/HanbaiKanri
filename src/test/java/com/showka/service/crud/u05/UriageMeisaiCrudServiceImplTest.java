@@ -166,4 +166,18 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals(2, actual.intValue());
 	}
 
+	@Test
+	public void test08_deleteAll() throws Exception {
+		// param
+		String uriageId = "KK01-00001";
+		// do
+		service.deleteAll(uriageId);
+		// test
+		TUriageMeisaiPK pk = new TUriageMeisaiPK();
+		pk.setMeisaiNumber(1);
+		pk.setUriageId(uriageId);
+		boolean actual = service.exsists(pk);
+		assertFalse(actual);
+	}
+
 }

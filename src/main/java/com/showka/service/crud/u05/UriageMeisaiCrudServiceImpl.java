@@ -159,4 +159,10 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		// 明細
 		return repo.findAll(example);
 	}
+
+	@Override
+	public void deleteAll(String uriageId) {
+		List<TUriageMeisai> meisaiList = getUriageMeisaiList(uriageId);
+		repo.deleteAll(meisaiList);
+	}
 }

@@ -26,4 +26,16 @@ public interface UriageMeisaiCrudService extends CrudService<UriageMeisaiDomain,
 	 */
 	public Integer getMaxMeisaiNumber(String uriageId);
 
+	/**
+	 * 全明細削除.
+	 * 
+	 * <pre>
+	 * 排他制御対象外
+	 * </pre>
+	 * 
+	 * @param uriageId
+	 *            売上ID
+	 */
+	public void deleteAll(String uriageId);
+
 }
