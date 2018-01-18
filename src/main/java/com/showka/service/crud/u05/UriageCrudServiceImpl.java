@@ -51,20 +51,8 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	@Override
 	public void save(UriageDomain domain) {
 
-		// pk
-		TUriagePK pk = new TUriagePK();
-		pk.setDenpyoNumber(domain.getDenpyoNumber());
-		pk.setKokyakuId(domain.getKokyaku().getRecordId());
-
-		// 売上Entity
-		TUriage e = repo.findById(pk).orElse(new TUriage());
-		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
-		e.setPk(pk);
-		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
-		e.setUriageDate(domain.getUriageDate().toDate());
-		e.setKeijoDate(domain.getKeijoDate().toDate());
-		e.setRecordId(domain.getRecordId());
-		e.setVersion(domain.getVersion());
+		// entity
+		TUriage e = getEntityFromDomain(domain);
 
 		// save
 		repo.saveAndFlush(e);
@@ -153,6 +141,40 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		pk.setDenpyoNumber(domain.getDenpyoNumber());
 		pk.setKokyakuId(domain.getKokyaku().getRecordId());
 		this.delete(pk, domain.getVersion());
+	}
+
+	@Override
+	public void cancel(UriageDomain domain) {
+		// delte meisai
+		uriageMeisaiCrudService.deleteAll(domain.getRecordId());
+		// save entity
+		TUriage e = getEntityFromDomain(domain);
+		repo.saveAndFlush(e);
+	}
+
+	/**
+	 * Domain -> Entity
+	 * 
+	 * @param domain
+	 *            売上ドメイン
+	 * @return 売上エンティティ
+	 */
+	private TUriage getEntityFromDomain(UriageDomain domain) {
+		// pk
+		TUriagePK pk = new TUriagePK();
+		pk.setDenpyoNumber(domain.getDenpyoNumber());
+		pk.setKokyakuId(domain.getKokyaku().getRecordId());
+
+		// 売上Entity
+		TUriage e = repo.findById(pk).orElse(new TUriage());
+		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
+		e.setPk(pk);
+		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
+		e.setUriageDate(domain.getUriageDate().toDate());
+		e.setKeijoDate(domain.getKeijoDate().toDate());
+		e.setRecordId(domain.getRecordId());
+		e.setVersion(domain.getVersion());
+		return e;
 	}
 
 }
