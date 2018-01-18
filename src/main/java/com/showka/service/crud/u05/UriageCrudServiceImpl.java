@@ -150,6 +150,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		// save entity
 		TUriage e = getEntityFromDomain(domain);
 		repo.saveAndFlush(e);
+		// TODO 履歴も更新!
 	}
 
 	/**
