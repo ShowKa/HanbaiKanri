@@ -78,7 +78,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 
 		// build
 		UriageRirekiListDomainBuilder b = new UriageRirekiListDomainBuilder();
-		b.withUriageRirekiList(domainList);
+		b.withList(domainList);
 		return b.build();
 	}
 

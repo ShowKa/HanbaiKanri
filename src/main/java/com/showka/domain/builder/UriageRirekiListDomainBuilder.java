@@ -1,16 +1,21 @@
 package com.showka.domain.builder;
 
+import java.util.Optional;
 import java.util.Set;
 
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.UriageRirekiListDomain;
+import com.showka.value.TheDate;
 
 public class UriageRirekiListDomainBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<UriageRirekiListDomain, UriageRirekiListDomainBuilder> {
 
 	// private member
-	/** uriageRireki */
-	private Set<UriageRirekiDomain> uriageRireki;
+	/** list */
+	private Set<UriageRirekiDomain> list;
+
+	/** cancelKeijoDate */
+	private Optional<TheDate> cancelKeijoDate;
 
 	/** recordId */
 	private String recordId;
@@ -21,14 +26,15 @@ public class UriageRirekiListDomainBuilder
 	// protected method
 	@Override
 	protected void apply(UriageRirekiListDomain domain, UriageRirekiListDomainBuilder builder) {
-		builder.withUriageRirekiList(domain.getList());
+		builder.withList(domain.getList());
+		builder.withCancelKeijoDate(domain.getCancelKeijoDate());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected UriageRirekiListDomain createDomainObject() {
-		UriageRirekiListDomain domain = new UriageRirekiListDomain(uriageRireki);
+		UriageRirekiListDomain domain = new UriageRirekiListDomain(list, cancelKeijoDate);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -46,17 +52,44 @@ public class UriageRirekiListDomainBuilder
 
 	// public method
 	/**
-	 * {@link UriageRirekiListDomain}に与えるuriageRirekiをこのビルダに設定する。
+	 * {@link UriageRirekiListDomain}に与えるlistをこのビルダに設定する。
 	 *
-	 * @param uriageRireki
-	 *            uriageRireki
+	 * @param list
+	 *            list
 	 * @return {@link UriageRirekiListDomainBuilder}
 	 */
-	public UriageRirekiListDomainBuilder withUriageRirekiList(final Set<UriageRirekiDomain> uriageRireki) {
+	public UriageRirekiListDomainBuilder withList(final Set<UriageRirekiDomain> list) {
 		addConfigurator(new BuilderConfigurator<UriageRirekiListDomainBuilder>() {
 			@Override
 			public void configure(UriageRirekiListDomainBuilder builder) {
-				builder.uriageRireki = uriageRireki;
+				builder.list = list;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageRirekiListDomain}に与えるcancelKeijoDateをこのビルダに設定する。
+	 *
+	 * @param cancelKeijoDate
+	 *            cancelKeijoDate
+	 * @return {@link UriageRirekiListDomainBuilder}
+	 */
+	public UriageRirekiListDomainBuilder withCancelKeijoDate(final Optional<TheDate> cancelKeijoDate) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiListDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiListDomainBuilder builder) {
+				builder.cancelKeijoDate = cancelKeijoDate;
+			}
+		});
+		return getThis();
+	}
+
+	public UriageRirekiListDomainBuilder withCancelKeijoDate(final TheDate cancelKeijoDate) {
+		addConfigurator(new BuilderConfigurator<UriageRirekiListDomainBuilder>() {
+			@Override
+			public void configure(UriageRirekiListDomainBuilder builder) {
+				builder.cancelKeijoDate = Optional.of(cancelKeijoDate);
 			}
 		});
 		return getThis();

@@ -21,6 +21,18 @@ public class UriageRirekiListDomain extends DomainBase {
 	/** 売上履歴 */
 	private Set<UriageRirekiDomain> list;
 
+	/** キャンセル計上日 */
+	private Optional<TheDate> cancelKeijoDate;
+
+	/**
+	 * キャンセル判定.
+	 * 
+	 * @return キャンセルした売上であるならtrue
+	 */
+	public boolean isCanceld() {
+		return cancelKeijoDate.isPresent();
+	}
+
 	/**
 	 * 最新伝票取得.
 	 * 

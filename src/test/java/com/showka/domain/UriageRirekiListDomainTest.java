@@ -74,7 +74,7 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 		Set<UriageRirekiDomain> uriageRireki = new HashSet<UriageRirekiDomain>();
 		uriageRireki.add(uriageRireki01);
 		uriageRireki.add(uriageRireki02);
-		b.withUriageRirekiList(uriageRireki);
+		b.withList(uriageRireki);
 		UriageRirekiListDomain uriageRirekiList02 = b.build();
 		// test
 		UriageRirekiDomain actual = uriageRirekiList02.getNewest();
@@ -87,7 +87,7 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 		UriageRirekiListDomainBuilder b = new UriageRirekiListDomainBuilder();
 		Set<UriageRirekiDomain> uriageRireki = new HashSet<UriageRirekiDomain>();
 		uriageRireki.add(uriageRireki01);
-		b.withUriageRirekiList(uriageRireki);
+		b.withList(uriageRireki);
 		UriageRirekiListDomain uriageRirekiList01 = b.build();
 		// before merge
 		UriageRirekiDomain pre = uriageRirekiList01.getNewest();
@@ -105,7 +105,7 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 		Set<UriageRirekiDomain> uriageRireki = new HashSet<UriageRirekiDomain>();
 		uriageRireki.add(uriageRireki01);
 		uriageRireki.add(uriageRireki02);
-		b.withUriageRirekiList(uriageRireki);
+		b.withList(uriageRireki);
 		UriageRirekiListDomain uriageRirekiList02 = b.build();
 		// before merge
 		UriageRirekiDomain pre = uriageRirekiList02.getNewest();

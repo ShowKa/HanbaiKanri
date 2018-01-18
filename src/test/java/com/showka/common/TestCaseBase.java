@@ -27,17 +27,22 @@ public abstract class TestCaseBase extends TestCase {
 			"record_id" };
 
 	// 売上履歴
-	protected String R_URIAGE = "r_uriage";
+	protected static final String C_URIAGE = "c_uriage";
+	protected static final String[] C_URIAGE_COLUMN = { "kokyaku_id", "denpyo_number", "keijo_date", "record_id" };
+
+	// 売上履歴
+	protected static final String R_URIAGE = "r_uriage";
 	protected static final String[] R_URIAGE_COLUMN = {
 			"uriage_id",
 			"uriage_date",
 			"keijo_date",
 			"hanbai_kubun",
 			"shohizeiritsu",
+			"canceld",
 			"record_id" };
 
 	// 売上履歴明細
-	protected String R_URIAGE_MEISAI = "r_uriage_meisai";
+	protected static final String R_URIAGE_MEISAI = "r_uriage_meisai";
 	protected static final String[] R_URIAGE_MEISAI_COLUMN = {
 			"uriage_id",
 			"meisai_number",
