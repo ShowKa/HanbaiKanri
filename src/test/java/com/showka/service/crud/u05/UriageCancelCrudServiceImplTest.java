@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.KokyakuDomain;
+import com.showka.domain.UriageCancelDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
@@ -43,6 +44,8 @@ public class UriageCancelCrudServiceImplTest extends ServiceCrudTestCase {
 				.build();
 	}
 
+	private static final Object[] C_URIAGE_01 = { "KK01-00001", "r-KK01-00001" };
+
 	@Test
 	public void test01_save() throws Exception {
 
@@ -52,6 +55,14 @@ public class UriageCancelCrudServiceImplTest extends ServiceCrudTestCase {
 		// check
 		CUriage actual = repo.getOne("KK01-00001");
 		assertNotNull(actual);
+	}
+
+	@Test
+	public void test02_getDomain() throws Exception {
+		deleteAndInsert(C_URIAGE, C_URIAGE_COLUMN, C_URIAGE_01);
+		UriageCancelDomain actual = service.getDomain("KK01-00001");
+
+		assertEquals("r-KK01-00001", actual.getRecordId());
 	}
 
 }
