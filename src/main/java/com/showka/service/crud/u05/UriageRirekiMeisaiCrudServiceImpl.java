@@ -130,4 +130,10 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 		b.withVersion(e.getVersion());
 		return b.build();
 	}
+
+	@Override
+	public void deleteAll(String uriageId) {
+		List<UriageRirekiMeisaiDomain> domains = getDomainList(uriageId);
+		domains.forEach(d -> delete(d));
+	}
 }

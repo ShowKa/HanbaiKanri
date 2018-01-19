@@ -201,4 +201,18 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals(new Integer(999), actual.get(0).getHanbaiNumber());
 	}
 
+	@Test
+	public void test09_deleteAll() throws Exception {
+		// data
+		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01, R_URIAGE_MEISAI_02);
+
+		// do
+		String uriageId = "r-KK01-00001-20170820";
+		service.deleteAll(uriageId);
+
+		// check
+		List<UriageRirekiMeisaiDomain> actual = service.getDomainList(uriageId);
+		assertTrue(actual.isEmpty());
+	}
+
 }

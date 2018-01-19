@@ -28,4 +28,16 @@ public interface UriageRirekiMeisaiCrudService extends CrudService<UriageRirekiM
 	 *            売上明細
 	 */
 	public void overrideList(List<UriageRirekiMeisaiDomain> uriageMeisaiList);
+
+	/**
+	 * 明細全削除.
+	 * 
+	 * <pre>
+	 * 排他制御対象外。
+	 * </pre>
+	 * 
+	 * @param uriageId
+	 *            売上ID
+	 */
+	public void deleteAll(String uriageId);
 }
