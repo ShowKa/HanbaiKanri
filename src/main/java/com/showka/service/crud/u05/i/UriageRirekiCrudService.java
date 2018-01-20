@@ -24,7 +24,7 @@ public interface UriageRirekiCrudService {
 	public void save(UriageRirekiDomain domain);
 
 	/**
-	 * 売上履歴保存.
+	 * 売上キャンセルを履歴保存.
 	 * 
 	 * <pre>
 	 * 排他制御対象外
