@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.KokyakuDomain;
+import com.showka.domain.UriageDomain;
+import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.UriageRirekiListDomain;
 import com.showka.domain.UriageRirekiMeisaiDomain;
+import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
@@ -50,11 +53,11 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	private CUriageRepository cUriageRepository;
 
 	/** 売上01. */
-	private static final UriageRirekiDomain uriage01;
+	private static final UriageRirekiDomain rUriage01;
 	static {
 		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
 		ArrayList<UriageRirekiMeisaiDomain> meisai = new ArrayList<UriageRirekiMeisaiDomain>();
-		uriage01 = b.withUriageId("r-KK01-00001")
+		rUriage01 = b.withUriageId("r-KK01-00001")
 				.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
@@ -66,6 +69,22 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 				.build();
 	}
 
+	/** 売上01. */
+	private static final UriageDomain tUriage01;
+	static {
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
+		tUriage01 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+				.withDenpyoNumber("00001")
+				.withUriageDate(new TheDate(2017, 8, 20))
+				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withHanbaiKubun(HanbaiKubun.現金)
+				.withShohizeiritsu(new TaxRate(0.08))
+				.withUriageMeisai(meisai)
+				.withRecordId("r-KK01-00001")
+				.build();
+	}
+
 	// 売上履歴テーブル
 	private static final Object[] R_URIAGE_01 = {
 			"r-KK01-00001",
@@ -73,7 +92,6 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 			new Date("2017/08/19"),
 			"00",
 			0.08,
-			false,
 			"r-KK01-00001-20170819" };
 	private static final Object[] R_URIAGE_02 = {
 			"r-KK01-00001",
@@ -81,7 +99,6 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 			new Date("2017/08/20"),
 			"00",
 			0.08,
-			false,
 			"r-KK01-00001-20170820" };
 	private static final Object[] R_URIAGE_02_CANCELD = {
 			"r-KK01-00001",
@@ -89,7 +106,6 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 			new Date("2017/08/20"),
 			"00",
 			0.08,
-			true,
 			"r-KK01-00001-20170820" };
 
 	// 売上テーブル
@@ -103,7 +119,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 			"r-KK01-00001" };
 
 	// 売上キャンセルテーブル
-	private static final Object[] C_URIAGE_01 = { "r-KK01", "00001", new Date(2017, 8, 21), "r-KK01-00001" };
+	private static final Object[] C_URIAGE_01 = { "r-KK01-00001", "r-KK01-00001" };
 
 	// 顧客
 	private static final Object[] M_KOKYAKU_01 = { "KK01", "顧客01", "左京区", "01", "00", "r-BS01", "r-KK01" };
@@ -121,7 +137,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 		};
 
 		// do
-		service.save(uriage01);
+		service.save(rUriage01);
 
 		// get saved
 		RUriagePK pk = new RUriagePK();
@@ -158,19 +174,60 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	@Test
-	public void test03_getUriageRireki() throws Exception {
-		// insert data
-		super.deleteAndInsert(R_URIAGE, R_URIAGE_COLUMN, R_URIAGE_01, R_URIAGE_02_CANCELD);
-		super.deleteAndInsert(C_URIAGE, C_URIAGE_COLUMN, C_URIAGE_01);
-		super.deleteAll(T_URIAGE);
-		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_01);
+	public void test03_cancel_with_new_record() throws Exception {
+		// data
+		String uriageId = "r-KK01-00001";
+		super.deleteAll(R_URIAGE);
 
 		// do
-		UriageRirekiListDomain actual = service.getUriageRirekiList("r-KK01-00001");
+		service.cancel(tUriage01);
 
 		// check
-		assertEquals(2, actual.getList().size());
-		assertEquals("r-KK01-00001-20170820", actual.getNewest().getRecordId());
+		RUriagePK pk = new RUriagePK();
+		pk.setKeijoDate(new TheDate(2017, 8, 20).toDate());
+		pk.setUriageId(uriageId);
+		RUriage actual = repo.findById(pk).get();
+		assertEquals(uriageId, actual.getPk().getUriageId());
+
+		new Verifications() {
+			{
+				uriageRirekiMeisaiCrudService.deleteAll(anyString);
+				times = 0;
+			}
+		};
+	}
+
+	@Test
+	public void test04_cancel_with_existing_record() throws Exception {
+		// data
+		String uriageId = "r-KK01-00001";
+		String rUriageId = "r-KK01-00001-20170820";
+		super.deleteAndInsert(R_URIAGE, R_URIAGE_COLUMN, R_URIAGE_01, R_URIAGE_02);
+
+		// expect
+		new Expectations() {
+			{
+				uriageRirekiMeisaiCrudService.deleteAll(rUriageId);
+			}
+		};
+
+		// do
+		service.cancel(tUriage01);
+
+		// check
+		RUriagePK pk = new RUriagePK();
+		pk.setKeijoDate(new TheDate(2017, 8, 20).toDate());
+		pk.setUriageId(uriageId);
+		RUriage actual = repo.findById(pk).get();
+		assertEquals("r-KK01-00001-20170820", actual.getRecordId());
+
+		// verify
+		new Verifications() {
+			{
+				uriageRirekiMeisaiCrudService.deleteAll(rUriageId);
+				times = 1;
+			}
+		};
 	}
 
 }

@@ -2,13 +2,16 @@ package com.showka.service.crud.u05;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.KokyakuDomain;
+import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.UriageRirekiListDomain;
 import com.showka.domain.UriageRirekiMeisaiDomain;
@@ -103,5 +106,29 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		// save
 		repo.saveAndFlush(e);
 		uriageRirekiMeisaiCrudService.overrideList(domain.getUriageRirekiMeisai());
+	}
+
+	@Override
+	public void cancel(UriageDomain domain) {
+		// pk
+		RUriagePK pk = new RUriagePK();
+		pk.setUriageId(domain.getRecordId());
+		pk.setKeijoDate(domain.getKeijoDate().toDate());
+
+		// 売上履歴Entity
+		Optional<RUriage> entity = repo.findById(pk);
+		String recordId = entity.isPresent() ? entity.get().getRecordId() : UUID.randomUUID().toString();
+		RUriage e = entity.orElse(new RUriage());
+		e.setPk(pk);
+		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
+		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
+		e.setUriageDate(domain.getUriageDate().toDate());
+		e.setRecordId(recordId);
+		repo.saveAndFlush(e);
+
+		// Delete 明細
+		if (entity.isPresent()) {
+			uriageRirekiMeisaiCrudService.deleteAll(recordId);
+		}
 	}
 }

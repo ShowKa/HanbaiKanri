@@ -38,7 +38,6 @@ public abstract class TestCaseBase extends TestCase {
 			"keijo_date",
 			"hanbai_kubun",
 			"shohizeiritsu",
-			"canceld",
 			"record_id" };
 
 	// 売上履歴明細
