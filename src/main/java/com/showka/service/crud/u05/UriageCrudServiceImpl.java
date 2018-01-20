@@ -21,6 +21,7 @@ import com.showka.repository.i.MKokyakuRepository;
 import com.showka.repository.i.TUriageMeisaiRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
+import com.showka.service.crud.u05.i.UriageCancelCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
@@ -47,6 +48,9 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Autowired
 	private UriageRirekiCrudService uriageRirekiCrudService;
+
+	@Autowired
+	private UriageCancelCrudService uriageCancelCrudService;
 
 	@Override
 	public void save(UriageDomain domain) {
@@ -145,12 +149,18 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Override
 	public void cancel(UriageDomain domain) {
-		// delte meisai
+		// delete meisai if exists
 		uriageMeisaiCrudService.deleteAll(domain.getRecordId());
+
 		// save entity
 		TUriage e = getEntityFromDomain(domain);
 		repo.saveAndFlush(e);
-		// TODO 履歴も更新!
+
+		// cancel 履歴
+		uriageRirekiCrudService.cancel(domain);
+
+		// cancel
+		uriageCancelCrudService.save(domain);
 	}
 
 	/**

@@ -24,6 +24,7 @@ import com.showka.repository.i.MKokyakuRepository;
 import com.showka.repository.i.TUriageMeisaiRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
+import com.showka.service.crud.u05.i.UriageCancelCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.value.TaxRate;
@@ -57,6 +58,9 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Injectable
 	private UriageRirekiCrudService uriageRirekiCrudService;
+
+	@Injectable
+	private UriageCancelCrudService uriageCancelCrudService;
 
 	// test data
 	/** 売上01 */
@@ -386,6 +390,61 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		assertEquals("r-KK01", d.getKokyaku().getRecordId());
 		assertEquals(1, d.getUriageMeisai().size());
 		assertEquals("r-KK01-00001-1", d.getUriageMeisai().get(0).getRecordId());
+	}
+
+	@Test
+	public void test08_cancel() throws Exception {
+
+		// data
+		super.deleteAll(T_URIAGE);
+
+		// build domain
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		KokyakuDomainBuilder bk = new KokyakuDomainBuilder();
+		bk.withRecordId("r-KK99");
+		KokyakuDomain kokyaku01 = bk.build();
+		b.withKokyaku(kokyaku01)
+				.withDenpyoNumber("99999")
+				.withUriageDate(new TheDate(2017, 8, 20))
+				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withHanbaiKubun(HanbaiKubun.現金)
+				.withShohizeiritsu(new TaxRate(0.08))
+				.withRecordId("r-KK99-99999");
+		UriageDomain uriage = b.build();
+
+		// expect
+		new Expectations() {
+			{
+				// 明細削除
+				uriageMeisaiCrudService.deleteAll("r-KK99-99999");
+				// cancel 履歴
+				uriageRirekiCrudService.cancel(uriage);
+				// cancel
+				uriageCancelCrudService.save(uriage);
+			}
+		};
+
+		// do
+		service.cancel(uriage);
+
+		// check
+		TUriage actual = repo.findByRecordId("r-KK99-99999");
+		assertNotNull(actual);
+
+		// verify
+		new Verifications() {
+			{
+				// 明細削除
+				uriageMeisaiCrudService.deleteAll("r-KK99-99999");
+				times = 1;
+				// cancel 履歴
+				uriageRirekiCrudService.cancel(uriage);
+				times = 1;
+				// cancel
+				uriageCancelCrudService.save(uriage);
+				times = 1;
+			}
+		};
 	}
 
 }
