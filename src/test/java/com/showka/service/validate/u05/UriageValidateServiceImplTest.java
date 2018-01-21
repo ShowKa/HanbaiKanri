@@ -15,9 +15,11 @@ import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
+import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.system.exception.AlreadyExistsException;
+import com.showka.system.exception.CanNotUpdateException;
 import com.showka.system.exception.EmptyException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -38,6 +40,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private TUriageRepository uriageRepo;
+
+	@Injectable
+	private CUriageRepository cUriageRepository;
 
 	// data
 	/** 顧客01. */
@@ -153,4 +158,59 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 			}
 		};
 	}
+
+	/**
+	 * すでにキャンセル済みの場合はエラー
+	 * 
+	 * @throws Exception
+	 */
+	@Test(expected = CanNotUpdateException.class)
+	public void test_validateForUpdate01() throws Exception {
+		// input
+		String uriageId = "r-KK01-00001";
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withRecordId(uriageId);
+		UriageDomain domain = b.build();
+		// expect
+		new Expectations() {
+			{
+				cUriageRepository.existsById(uriageId);
+				result = true;
+			}
+		};
+		service.validateForUpdate(domain);
+	}
+
+	/**
+	 * まだキャンセルしてなければOK
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void test_validateForUpdate02() throws Exception {
+		// input
+		String uriageId = "r-KK01-00001";
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withRecordId(uriageId);
+		UriageDomain domain = b.build();
+		// expect
+		new Expectations() {
+			{
+				cUriageRepository.existsById(uriageId);
+				result = false;
+			}
+		};
+		// do
+		service.validateForUpdate(domain);
+		// verify
+		new Verifications() {
+			{
+				cUriageRepository.existsById(uriageId);
+				times = 1;
+			}
+		};
+		// assert
+		assertTrue(true);
+	}
+
 }

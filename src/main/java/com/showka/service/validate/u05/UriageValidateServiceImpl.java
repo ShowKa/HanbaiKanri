@@ -9,10 +9,12 @@ import org.springframework.util.CollectionUtils;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.entity.TUriagePK;
+import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.AlreadyExistsException;
+import com.showka.system.exception.CanNotUpdateException;
 import com.showka.system.exception.EmptyException;
 import com.showka.system.exception.ValidateException;
 
@@ -24,6 +26,9 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 
 	@Autowired
 	private UriageMeisaiValidateService uriageMeisaiValidate;
+
+	@Autowired
+	private CUriageRepository cUriageRepository;
 
 	@Override
 	public void validate(UriageDomain domain) throws ValidateException {
@@ -49,4 +54,11 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 		}
 	}
 
+	@Override
+	public void validateForUpdate(UriageDomain domain) throws ValidateException {
+		boolean exists = cUriageRepository.existsById(domain.getRecordId());
+		if (exists) {
+			throw new CanNotUpdateException("キャンセル済の売上のため");
+		}
+	}
 }
