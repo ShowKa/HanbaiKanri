@@ -211,6 +211,7 @@ public class U05G002Controller extends ControllerBase {
 		UriageDomain uriage = buildDomainFromForm(form);
 
 		// validate
+		uriageValidateService.validateForUpdate(uriage);
 		uriageValidateService.validate(uriage);
 
 		// save
@@ -335,6 +336,28 @@ public class U05G002Controller extends ControllerBase {
 
 		UriageDomain d = buildDomainFromForm(form);
 		uriageValidateService.validate(d);
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	@RequestMapping(value = "/u05g002/validateMeisai", method = RequestMethod.POST)
+	public ResponseEntity<?> cancel(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+
+		// domain
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
+		pk.setDenpyoNumber(form.getDenpyoNumber());
+		UriageDomain domain = uriageCrudService.getDomain(pk);
+		domain.setVersion(form.getVersion());
+
+		// cancel
+		uriageValidateService.validateForUpdate(domain);
+		uriageCrudService.cancel(domain);
+
+		// message
+		form.setSuccessMessage("売上伝票をキャンセルしました.");
+
+		// set model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
