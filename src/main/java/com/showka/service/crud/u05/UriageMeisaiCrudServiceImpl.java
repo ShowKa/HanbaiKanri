@@ -139,7 +139,7 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		Optional<TUriageMeisai> max = meisaiList.stream().max((m1, m2) -> {
 			return m1.getPk().getMeisaiNumber().compareTo(m2.getPk().getMeisaiNumber());
 		});
-		return max.get().getPk().getMeisaiNumber();
+		return max.isPresent() ? max.get().getPk().getMeisaiNumber() : 0;
 	}
 
 	/**

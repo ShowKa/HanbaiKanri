@@ -340,7 +340,8 @@ public class U05G002Controller extends ControllerBase {
 		return ResponseEntity.ok(model);
 	}
 
-	@RequestMapping(value = "/u05g002/validateMeisai", method = RequestMethod.POST)
+	@Transactional
+	@RequestMapping(value = "/u05g002/cancel", method = RequestMethod.POST)
 	public ResponseEntity<?> cancel(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// domain

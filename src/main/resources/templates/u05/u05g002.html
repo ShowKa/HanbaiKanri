@@ -58,13 +58,19 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							</div>
 							<div class="col-sm-1 col-xs-1">
 								<input
-									onClick="deleteKokyaku();"
 									id="deleteBtn"
 									type="button"
 									class="btn btn-primary btn-sm"
 									value="削除"
-									ng-show="isReadMode()"
+									ng-show="isReadMode() && !isKeijoZumi"
 									ng-click="delete()" />
+								<input
+									id="cancelBtn"
+									type="button"
+									class="btn btn-primary btn-sm"
+									value="キャンセル"
+									ng-show="isReadMode() && isKeijoZumi"
+									ng-click="cancel()" />
 							</div>
 						</div>
 
