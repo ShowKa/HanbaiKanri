@@ -38,4 +38,16 @@ public interface UriageMeisaiCrudService extends CrudService<UriageMeisaiDomain,
 	 */
 	public void deleteAll(String uriageId);
 
+	/**
+	 * リスト保存.
+	 * 
+	 * <pre>
+	 * 注意：引数のリストに含まれない古いレコードは削除されます。
+	 * </pre>
+	 * 
+	 * @param uriageMeisai
+	 *            売上明細
+	 */
+	public void overrideList(List<UriageMeisaiDomain> meisaiList);
+
 }

@@ -3,11 +3,10 @@ package com.showka.domain;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.showka.domain.builder.UriageRirekiDomainBuilder;
-import com.showka.domain.builder.UriageRirekiMeisaiDomainBuilder;
+import com.showka.domain.builder.UriageDomainBuilder;
+import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.system.exception.SystemException;
 import com.showka.value.TheDate;
 
@@ -15,13 +14,17 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-@Getter
 public class UriageRirekiListDomain extends DomainBase {
 
-	/** 売上履歴 */
-	private Set<UriageRirekiDomain> list;
+	/** 売上ID */
+	@Getter
+	private String uriageId;
+
+	/** 売上履歴(直接返却禁止) */
+	private Set<UriageDomain> list;
 
 	/** キャンセル計上日 */
+	@Getter
 	private Optional<TheDate> cancelKeijoDate;
 
 	/**
@@ -42,32 +45,23 @@ public class UriageRirekiListDomain extends DomainBase {
 	 * 
 	 * @return 最新伝票
 	 */
-	public UriageRirekiDomain getNewest() {
-		Optional<UriageRirekiDomain> newest = list.stream().max((r1, r2) -> {
+	public UriageDomain getNewest() {
+		// get new one
+		UriageDomain newest = list.stream().max((r1, r2) -> {
 			return r1.getKeijoDate().getDate().compareTo(r2.getKeijoDate().getDate());
-		});
-		return newest.get();
+		}).get();
+		return convert(newest);
 	}
 
 	/**
-	 * 売上を履歴ドメインとして履歴リストにマージする。
+	 * 全履歴売上のリスト取得.
 	 * 
-	 * @param rdomain
-	 *            売上
+	 * @return 全履歴売上
 	 */
-	public void merge(UriageDomain uriageForMerge) {
-		List<TheDate> keijoDateList = list.stream().map(l -> l.getKeijoDate()).collect(Collectors.toList());
-		if (keijoDateList.contains(uriageForMerge.getKeijoDate())) {
-			Set<UriageRirekiDomain> merged = list.stream().filter(uriageRirekiForOverride -> {
-				return uriageRirekiForOverride.getKeijoDate().equals(uriageForMerge.getKeijoDate());
-			}).map(uriageRirekiOverridden -> {
-				return uriageRirekiOverridden.getOverriddenBy(uriageForMerge);
-			}).collect(Collectors.toSet());
-			list.removeAll(merged);
-			list.addAll(merged);
-		} else {
-			list.add(buildUriageRirekiDomain(uriageForMerge));
-		}
+	public Set<UriageDomain> getList() {
+		return list.stream().map(l -> {
+			return convert(l);
+		}).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -78,44 +72,36 @@ public class UriageRirekiListDomain extends DomainBase {
 	@Override
 	protected boolean equals(DomainBase other) {
 		UriageRirekiListDomain o = (UriageRirekiListDomain) other;
-		UriageRirekiDomain newest = getNewest();
-		UriageRirekiDomain otherNewest = o.getNewest();
-		return newest.getUriageId().equals(otherNewest.getUriageId())
-				&& newest.getKeijoDate().equals(otherNewest.getKeijoDate());
+		UriageDomain newest = getNewest();
+		UriageDomain otherNewest = o.getNewest();
+		return newest.equals(otherNewest);
 	}
 
 	@Override
 	public int hashCode() {
-		UriageRirekiDomain newest = getNewest();
-		return generateHashCode(newest.getUriageId(), newest.getKeijoDate());
+		UriageDomain newest = getNewest();
+		return newest.hashCode();
 	}
 
 	/**
-	 * 売上ドメインから履歴を生成する。
+	 * 内包する履歴データを売上ドメインにコンバートして返却
 	 * 
-	 * @param domain
-	 *            売上ドメイン
+	 * @param uriage
+	 *            売上履歴リストの一部
 	 * @return
 	 */
-	private UriageRirekiDomain buildUriageRirekiDomain(UriageDomain domain) {
-		// record id
-		String rirekiUriageId = UUID.randomUUID().toString();
-
-		// build 明細
-		List<UriageRirekiMeisaiDomain> uriageMeisaiList = domain.getUriageMeisai().stream().map(m -> {
-			UriageRirekiMeisaiDomainBuilder ub = new UriageRirekiMeisaiDomainBuilder();
-			ub.withUriageId(rirekiUriageId);
-			ub.withRecordId(UUID.randomUUID().toString());
-			ub.withVersion(null);
-			return ub.apply(m);
+	private UriageDomain convert(UriageDomain uriage) {
+		// set uriage id
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withRecordId(uriageId);
+		// set uriage id to list
+		List<UriageMeisaiDomain> meisai = uriage.getUriageMeisai().stream().map(m -> {
+			UriageMeisaiDomainBuilder bm = new UriageMeisaiDomainBuilder();
+			bm.withUriageId(uriageId);
+			return bm.apply(m);
 		}).collect(Collectors.toList());
-
-		// build 売上
-		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
-		b.withRecordId(rirekiUriageId);
-		b.withUriageMeisai(uriageMeisaiList);
-		b.withVersion(null);
-		return b.apply(domain);
+		b.withUriageMeisai(meisai);
+		// build & return
+		return b.apply(uriage);
 	}
-
 }

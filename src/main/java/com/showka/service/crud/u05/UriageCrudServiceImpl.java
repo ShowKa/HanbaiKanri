@@ -62,22 +62,10 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		repo.saveAndFlush(e);
 
 		// save 履歴
-		UriageRirekiListDomain uriageRirekiList = uriageRirekiCrudService.getUriageRirekiList(domain.getRecordId());
-		uriageRirekiList.merge(domain);
-		uriageRirekiCrudService.save(uriageRirekiList.getNewest());
+		uriageRirekiCrudService.save(domain);
 
-		// delete old
-		List<UriageMeisaiDomain> oldMeisaiList = uriageMeisaiCrudService.getDomainList(domain.getRecordId());
-		for (UriageMeisaiDomain old : oldMeisaiList) {
-			if (!domain.getUriageMeisai().contains(old)) {
-				uriageMeisaiCrudService.delete(old);
-			}
-		}
-
-		// save 明細
-		for (UriageMeisaiDomain meisai : domain.getUriageMeisai()) {
-			uriageMeisaiCrudService.save(meisai);
-		}
+		// 明細更新
+		uriageMeisaiCrudService.overrideList(domain.getUriageMeisai());
 
 		// set 顧客
 		MKokyaku kokyaku = kokyakuRepo.findByRecordId(domain.getKokyaku().getRecordId());
@@ -139,16 +127,29 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		// 売上履歴削除
 		uriageRirekiCrudService.delete(domain);
 
-		// 明細削除
-		domain.getUriageMeisai().forEach(meisai -> {
-			uriageMeisaiCrudService.delete(meisai);
-		});
+		// 残った履歴取得
+		String uriageId = domain.getRecordId();
+		UriageRirekiListDomain rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
 
-		// 売上削除
-		TUriagePK pk = new TUriagePK();
-		pk.setDenpyoNumber(domain.getDenpyoNumber());
-		pk.setKokyakuId(domain.getKokyaku().getRecordId());
-		this.delete(pk, domain.getVersion());
+		// 計上済みの履歴があれば、それで売上を上書きし直す。
+		// ない場合は、売上データ自体をすべて削除して終了。
+		if (rirekiList.getList().size() > 0) {
+			UriageDomain domainForOverride = rirekiList.getNewest();
+			UriageDomainBuilder b = new UriageDomainBuilder();
+			// ここで排他制御
+			b.withVersion(domain.getVersion());
+			this.save(b.apply(domainForOverride));
+		} else {
+			// 明細削除
+			domain.getUriageMeisai().forEach(meisai -> {
+				uriageMeisaiCrudService.delete(meisai);
+			});
+			// 売上削除
+			TUriagePK pk = new TUriagePK();
+			pk.setDenpyoNumber(domain.getDenpyoNumber());
+			pk.setKokyakuId(domain.getKokyaku().getRecordId());
+			this.delete(pk, domain.getVersion());
+		}
 	}
 
 	@Override
