@@ -11,15 +11,11 @@ import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.UriageRirekiListDomain;
-import com.showka.domain.UriageRirekiMeisaiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
-import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.RUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrudService;
@@ -48,17 +44,12 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Injectable
 	private UriageRirekiMeisaiCrudService uriageRirekiMeisaiCrudService;
 
-	@Injectable
-	@Autowired
-	private CUriageRepository cUriageRepository;
-
 	/** 売上01. */
-	private static final UriageRirekiDomain rUriage01;
+	private static final UriageDomain rUriage01;
 	static {
-		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
-		ArrayList<UriageRirekiMeisaiDomain> meisai = new ArrayList<UriageRirekiMeisaiDomain>();
-		rUriage01 = b.withUriageId("r-KK01-00001")
-				.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
+		rUriage01 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 20))
@@ -132,7 +123,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 
 		new Expectations() {
 			{
-				uriageRirekiMeisaiCrudService.overrideList((List<UriageRirekiMeisaiDomain>) any);
+				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisaiDomain>) any);
 			}
 		};
 
@@ -148,7 +139,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiMeisaiCrudService.overrideList((List<UriageRirekiMeisaiDomain>) any);
+				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisaiDomain>) any);
 				times = 1;
 			}
 		};
@@ -159,7 +150,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 	}
 
 	@Test
-	public void test02_GetUriageRireki() throws Exception {
+	public void test02_GetUriage() throws Exception {
 		// insert data
 		super.deleteAndInsert(R_URIAGE, R_URIAGE_COLUMN, R_URIAGE_01, R_URIAGE_02);
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, T_URIAGE_01);
@@ -170,7 +161,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 
 		// check
 		assertEquals(2, actual.getList().size());
-		assertEquals("r-KK01-00001-20170820", actual.getNewest().getRecordId());
+		assertEquals(new TheDate(2017, 8, 20), actual.getNewest().getKeijoDate());
 	}
 
 	@Test

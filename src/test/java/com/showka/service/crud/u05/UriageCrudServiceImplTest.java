@@ -11,7 +11,6 @@ import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.KokyakuDomainBuilder;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
@@ -117,30 +116,13 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 				.withRecordId("r-KK99-99999");
 		UriageDomain uriage = b.build();
 
-		// 売上明細03 削除対象
-		UriageMeisaiDomainBuilder bm3 = new UriageMeisaiDomainBuilder();
-		bm3.withUriageId("r-KK99-99999");
-		bm3.withMeisaiNumber(3);
-		UriageMeisaiDomain uriageMeisai03 = bm3.build();
-
-		// old
-		List<UriageMeisaiDomain> oldList = new ArrayList<UriageMeisaiDomain>();
-		oldList.add(uriageMeisai01);
-		oldList.add(uriageMeisai02);
-		oldList.add(uriageMeisai03);
-
 		// expectation
 		new Expectations() {
 			{
 				// 売上履歴の保存
-				uriageRirekiCrudService.save((UriageRirekiDomain) any);
-				// 明細の保存
-				uriageMeisaiCrudService.save(uriageMeisai01);
-				uriageMeisaiCrudService.save(uriageMeisai02);
-				// 明細の削除
-				uriageMeisaiCrudService.getDomainList("r-KK99-99999");
-				result = oldList;
-				uriageMeisaiCrudService.delete(uriageMeisai03);
+				uriageRirekiCrudService.save(uriage);
+				// 明細上書き
+				uriageMeisaiCrudService.overrideList(uriage.getUriageMeisai());
 			}
 		};
 
@@ -150,16 +132,10 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
-				uriageRirekiCrudService.save((UriageRirekiDomain) any);
+				uriageRirekiCrudService.save(uriage);
 				times = 1;
-				uriageMeisaiCrudService.save(uriageMeisai01);
+				uriageMeisaiCrudService.overrideList(uriage.getUriageMeisai());
 				times = 1;
-				uriageMeisaiCrudService.save(uriageMeisai02);
-				times = 1;
-				uriageMeisaiCrudService.delete(uriageMeisai03);
-				times = 1;
-				uriageMeisaiCrudService.delete(uriageMeisai01);
-				times = 0;
 			}
 		};
 
@@ -221,9 +197,8 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// expectation
 		new Expectations() {
 			{
-				uriageRirekiCrudService.save((UriageRirekiDomain) any);
-				uriageMeisaiCrudService.save(uriageMeisai01);
-				uriageMeisaiCrudService.save(uriageMeisai02);
+				uriageRirekiCrudService.save(uriage01);
+				uriageMeisaiCrudService.overrideList(uriage01.getUriageMeisai());
 			}
 		};
 
@@ -233,11 +208,9 @@ public class UriageCrudServiceImplTest extends ServiceCrudTestCase {
 		// verification
 		new Verifications() {
 			{
-				uriageRirekiCrudService.save((UriageRirekiDomain) any);
+				uriageRirekiCrudService.save(uriage01);
 				times = 1;
-				uriageMeisaiCrudService.save(uriageMeisai01);
-				times = 1;
-				uriageMeisaiCrudService.save(uriageMeisai02);
+				uriageMeisaiCrudService.overrideList(uriage01.getUriageMeisai());
 				times = 1;
 			}
 		};

@@ -25,8 +25,17 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Autowired
 	private TUriageMeisaiRepository repo;
 
+	/** 売上明細01 */
+	private static final Object[] T_URIAGE_MEISAI_01 = { "r-KK01-00001", 1, "SH01", 5, 1000, "r-KK01-00001-1" };
+
+	/** 売上明細02 */
+	private static final Object[] T_URIAGE_MEISAI_02 = { "r-KK01-00001", 2, "SH02", 6, 1001, "r-KK01-00001-2" };
+
 	@Test
 	public void test01_save() {
+
+		// data
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01);
 
 		// 商品ドメインダミー
 		ShohinDomainBuilder sh = new ShohinDomainBuilder();
@@ -34,7 +43,7 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 		ShohinDomain shohinDomain = sh.build();
 
 		// 売上明細主キー
-		String uriageId = "KK01-TEST001";
+		String uriageId = "r-KK01-00001";
 		Integer meisaiNumber = 1;
 		String recordID = uriageId + "-" + meisaiNumber;
 
@@ -64,15 +73,18 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test02_delete() {
 
+		// data
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01);
+
 		// set pk
 		TUriageMeisaiPK pk = new TUriageMeisaiPK();
-		String uriageId = "KK01-00001";
+		String uriageId = "r-KK01-00001";
 		Integer meisaiNumber = 1;
 		pk.setUriageId(uriageId);
 		pk.setMeisaiNumber(meisaiNumber);
 
 		// set version
-		Integer version = 1;
+		Integer version = 0;
 
 		// check exists
 		TUriageMeisai before = repo.findById(pk).get();
@@ -90,9 +102,12 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Transactional
 	public void test03_getDomain() {
 
+		// data
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01);
+
 		// set pk
 		TUriageMeisaiPK pk = new TUriageMeisaiPK();
-		String uriageId = "KK01-00001";
+		String uriageId = "r-KK01-00001";
 		Integer meisaiNumber = 1;
 		pk.setUriageId(uriageId);
 		pk.setMeisaiNumber(meisaiNumber);
@@ -109,9 +124,12 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test04_exists() {
 
+		// data
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01);
+
 		// set pk
 		TUriageMeisaiPK pk = new TUriageMeisaiPK();
-		String uriageId = "KK01-00001";
+		String uriageId = "r-KK01-00001";
 		Integer meisaiNumber = 1;
 		pk.setUriageId(uriageId);
 		pk.setMeisaiNumber(meisaiNumber);
@@ -143,8 +161,11 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test06_getDomainList() throws Exception {
 
+		// data
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01, T_URIAGE_MEISAI_02);
+
 		// param
-		String uriageId = "KK01-00001";
+		String uriageId = "r-KK01-00001";
 
 		// do
 		List<UriageMeisaiDomain> actual = service.getDomainList(uriageId);
@@ -156,8 +177,11 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test07_getMaxMeisaiNumber() throws Exception {
 
+		// data
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01, T_URIAGE_MEISAI_02);
+
 		// param
-		String uriageId = "KK01-00001";
+		String uriageId = "r-KK01-00001";
 
 		// do
 		Integer actual = service.getMaxMeisaiNumber(uriageId);
@@ -168,8 +192,12 @@ public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
 
 	@Test
 	public void test08_deleteAll() throws Exception {
+
+		// data
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01, T_URIAGE_MEISAI_02);
+
 		// param
-		String uriageId = "KK01-00001";
+		String uriageId = "r-KK01-00001";
 		// do
 		service.deleteAll(uriageId);
 		// test
