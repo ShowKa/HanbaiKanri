@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiListDomain;
+import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.TUriage;
@@ -129,7 +129,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 		// 残った履歴取得
 		String uriageId = domain.getRecordId();
-		UriageRirekiListDomain rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
+		UriageRirekiDomain rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
 
 		// 計上済みの履歴があれば、それで売上を上書きし直す。
 		// ない場合は、売上データ自体をすべて削除して終了。

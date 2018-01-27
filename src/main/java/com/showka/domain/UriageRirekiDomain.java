@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public class UriageRirekiListDomain extends DomainBase {
+public class UriageRirekiDomain extends DomainBase {
 
 	/** 売上ID */
 	@Getter
@@ -70,7 +70,7 @@ public class UriageRirekiListDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		UriageRirekiListDomain o = (UriageRirekiListDomain) other;
+		UriageRirekiDomain o = (UriageRirekiDomain) other;
 		UriageDomain newest = getNewest();
 		UriageDomain otherNewest = o.getNewest();
 		return newest.equals(otherNewest);

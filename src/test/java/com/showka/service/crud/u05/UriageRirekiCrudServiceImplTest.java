@@ -11,7 +11,7 @@ import com.showka.common.ServiceCrudTestCase;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiListDomain;
+import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
@@ -157,7 +157,7 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_01);
 
 		// do
-		UriageRirekiListDomain actual = service.getUriageRirekiList("r-KK01-00001");
+		UriageRirekiDomain actual = service.getUriageRirekiList("r-KK01-00001");
 
 		// check
 		assertEquals(2, actual.getList().size());

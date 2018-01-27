@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiListDomain;
+import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
-import com.showka.domain.builder.UriageRirekiListDomainBuilder;
+import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
@@ -41,7 +41,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	private UriageRirekiMeisaiCrudService uriageRirekiMeisaiCrudService;
 
 	@Override
-	public UriageRirekiListDomain getUriageRirekiList(String uriageId) {
+	public UriageRirekiDomain getUriageRirekiList(String uriageId) {
 
 		// 売上IDで履歴リスト検索
 		RUriage entity = new RUriage();
@@ -79,7 +79,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		});
 
 		// build
-		UriageRirekiListDomainBuilder b = new UriageRirekiListDomainBuilder();
+		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
 		b.withUriageId(uriageId);
 		b.withList(domainList);
 		return b.build();

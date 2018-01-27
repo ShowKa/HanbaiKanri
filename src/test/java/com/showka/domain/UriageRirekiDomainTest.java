@@ -7,13 +7,13 @@ import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageRirekiListDomainBuilder;
+import com.showka.domain.builder.UriageRirekiDomainBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.system.EmptyProxy;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
-public class UriageRirekiListDomainTest extends SimpleTestCase {
+public class UriageRirekiDomainTest extends SimpleTestCase {
 
 	/** 売上01. */
 	private static final UriageDomain uriageRireki01;
@@ -50,12 +50,12 @@ public class UriageRirekiListDomainTest extends SimpleTestCase {
 	@Test
 	public void test01_getNewest() throws Exception {
 		// build
-		UriageRirekiListDomainBuilder b = new UriageRirekiListDomainBuilder();
+		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
 		List<UriageDomain> uriageRireki = new ArrayList<UriageDomain>();
 		uriageRireki.add(uriageRireki01);
 		uriageRireki.add(uriageRireki02);
 		b.withList(uriageRireki);
-		UriageRirekiListDomain uriageRirekiList02 = b.build();
+		UriageRirekiDomain uriageRirekiList02 = b.build();
 		// test
 		UriageDomain actual = uriageRirekiList02.getNewest();
 		assertEquals(new TheDate(2017, 8, 21), actual.getKeijoDate());
