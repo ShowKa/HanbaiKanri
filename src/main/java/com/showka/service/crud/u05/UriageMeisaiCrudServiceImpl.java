@@ -58,7 +58,8 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		e.setHanbaiTanka(domain.getHanbaiTanka().intValue());
 		e.setRecordId(domain.getRecordId());
 		e.setShohinId(domain.getShohinDomain().getRecordId());
-		e.setVersion(e.getVersion());
+
+		// 排他制御対象外
 
 		// save
 		repo.save(e);
@@ -139,7 +140,7 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		Optional<TUriageMeisai> max = meisaiList.stream().max((m1, m2) -> {
 			return m1.getPk().getMeisaiNumber().compareTo(m2.getPk().getMeisaiNumber());
 		});
-		return max.get().getPk().getMeisaiNumber();
+		return max.isPresent() ? max.get().getPk().getMeisaiNumber() : 0;
 	}
 
 	/**
@@ -158,5 +159,28 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 
 		// 明細
 		return repo.findAll(example);
+	}
+
+	@Override
+	public void deleteAll(String uriageId) {
+		List<TUriageMeisai> meisaiList = getUriageMeisaiList(uriageId);
+		repo.deleteAll(meisaiList);
+	}
+
+	@Override
+	public void overrideList(List<UriageMeisaiDomain> meisaiList) {
+		if (meisaiList.isEmpty()) {
+			// TODO 全削除
+			return;
+		}
+		// delete removed
+		List<UriageMeisaiDomain> oldList = getDomainList(meisaiList.get(0).getUriageId());
+		oldList.stream().filter(o -> {
+			return !meisaiList.contains(o);
+		}).forEach(o -> {
+			delete(o);
+		});
+		// save
+		meisaiList.forEach(m -> save(m));
 	}
 }

@@ -24,4 +24,15 @@ public interface UriageValidateService {
 	 *             整合性例外
 	 */
 	public void validateForRegister(UriageDomain domain) throws ValidateException;
+
+	/**
+	 * 更新時整合性検証.
+	 * 
+	 * @param domain
+	 *            売上ドメイン
+	 * @throws ValidateException
+	 *             整合性例外
+	 */
+	public void validateForUpdate(UriageDomain domain) throws ValidateException;
+
 }

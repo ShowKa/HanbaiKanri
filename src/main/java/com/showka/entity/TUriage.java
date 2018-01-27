@@ -36,6 +36,10 @@ public class TUriage extends EntityBase implements Serializable {
 	@Column(name = "uriage_date", unique = false, nullable = false)
 	private Date uriageDate;
 
+	/** 計上日 */
+	@Column(name = "keijo_date", unique = false, nullable = false)
+	private Date keijoDate;
+
 	/** 販売区分 */
 	@Column(name = "hanbai_kubun", unique = false, nullable = false, length = 2)
 	private String hanbaiKubun;
@@ -52,4 +56,16 @@ public class TUriage extends EntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "kokyaku_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MKokyaku kokyaku;
+
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	private CUriage cancel;
+
+	/**
+	 * キャンセル済チェック
+	 * 
+	 * @return ture = キャンセル済
+	 */
+	public boolean isCanceld() {
+		return cancel != null;
+	}
 }

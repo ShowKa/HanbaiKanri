@@ -28,11 +28,11 @@ public abstract class DomainBuilderBase<T extends DomainBase, S extends DomainBu
 	List<BuilderConfigurator<S>> configurators = new ArrayList<BuilderConfigurator<S>>();
 
 	/**
-	 * ビルダの設定に基づき、引数の{@link AbstractDomain}の内容を変更した新しいインスタンスを生成する。
+	 * ビルダの設定に基づき、引数の{@link DomainBase}の内容を変更した新しいインスタンスを生成する。
 	 *
 	 * @param vo
-	 *            状態を引用する{@link AbstractDomain}
-	 * @return vo の内容に対して、このビルダの設定を上書きした{@link AbstractDomain}の新しいインスタンス
+	 *            状態を引用する{@link DomainBase}
+	 * @return vo の内容に対して、このビルダの設定を上書きした{@link DomainBase}の新しいインスタンス
 	 */
 	public T apply(T vo) {
 		S builder = newInstance();

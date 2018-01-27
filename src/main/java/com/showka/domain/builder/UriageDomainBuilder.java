@@ -22,6 +22,9 @@ public class UriageDomainBuilder
 	/** uriageDate */
 	private TheDate uriageDate;
 
+	/** keijoDate */
+	private TheDate keijoDate;
+
 	/** hanbaiKubun */
 	private HanbaiKubun hanbaiKubun;
 
@@ -43,6 +46,7 @@ public class UriageDomainBuilder
 		builder.withKokyaku(domain.getKokyaku());
 		builder.withDenpyoNumber(domain.getDenpyoNumber());
 		builder.withUriageDate(domain.getUriageDate());
+		builder.withKeijoDate(domain.getKeijoDate());
 		builder.withHanbaiKubun(domain.getHanbaiKubun());
 		builder.withShohizeiritsu(domain.getShohizeiritsu());
 		builder.withUriageMeisai(domain.getUriageMeisai());
@@ -52,7 +56,7 @@ public class UriageDomainBuilder
 
 	@Override
 	protected UriageDomain createDomainObject() {
-		UriageDomain domain = new UriageDomain(kokyaku, denpyoNumber, uriageDate, hanbaiKubun, shohizeiritsu,
+		UriageDomain domain = new UriageDomain(kokyaku, denpyoNumber, uriageDate, keijoDate, hanbaiKubun, shohizeiritsu,
 				uriageMeisai);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
@@ -116,6 +120,23 @@ public class UriageDomainBuilder
 			@Override
 			public void configure(UriageDomainBuilder builder) {
 				builder.uriageDate = uriageDate;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link UriageDomain}に与えるkeijoDateをこのビルダに設定する。
+	 *
+	 * @param keijoDate
+	 *            keijoDate
+	 * @return {@link UriageDomainBuilder}
+	 */
+	public UriageDomainBuilder withKeijoDate(final TheDate keijoDate) {
+		addConfigurator(new BuilderConfigurator<UriageDomainBuilder>() {
+			@Override
+			public void configure(UriageDomainBuilder builder) {
+				builder.keijoDate = keijoDate;
 			}
 		});
 		return getThis();

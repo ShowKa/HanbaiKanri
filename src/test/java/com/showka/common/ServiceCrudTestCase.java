@@ -30,8 +30,6 @@ import com.ninja_squad.dbsetup.operation.Insert.Builder;
 import com.ninja_squad.dbsetup.operation.Operation;
 import com.showka.system.Entry;
 
-import junit.framework.TestCase;
-
 /**
  * Base Test Case Class for Crud1 Service Class.
  * 
@@ -41,7 +39,7 @@ import junit.framework.TestCase;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public abstract class ServiceCrudTestCase extends TestCase {
+public abstract class ServiceCrudTestCase extends TestCaseBase {
 
 	@Autowired
 	protected HttpSession session;
@@ -78,14 +76,26 @@ public abstract class ServiceCrudTestCase extends TestCase {
 	/**
 	 * common columns name
 	 */
-	private static final String[] COMMON_COLUMN = { "create_user_id", "create_function", "create_timestamp",
-			"update_user_id", "update_function", "update_timestamp", "version" };
+	private static final String[] COMMON_COLUMN = {
+			"create_user_id",
+			"create_function",
+			"create_timestamp",
+			"update_user_id",
+			"update_function",
+			"update_timestamp",
+			"version" };
 
 	/**
 	 * common columns value
 	 */
-	private static final Object[] COMMON_VALUE = { "test_create", "test_create", new Timestamp(0), "test_update",
-			"test_update", new Timestamp(0), 0 };
+	private static final Object[] COMMON_VALUE = {
+			"test_create",
+			"test_create",
+			new Timestamp(0),
+			"test_update",
+			"test_update",
+			new Timestamp(0),
+			0 };
 
 	/**
 	 * db setup.

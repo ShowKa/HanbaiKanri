@@ -33,7 +33,7 @@ public abstract class EntityBase {
 	/**
 	 * id
 	 */
-	@Column(name = "record_id", unique = true, nullable = false, length = 255)
+	@Column(name = "record_id", unique = true, nullable = false, length = 255, insertable = true, updatable = false)
 	@Setter
 	private String recordId;
 
