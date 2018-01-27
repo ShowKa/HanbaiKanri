@@ -1,5 +1,6 @@
 package com.showka.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +51,7 @@ public class UriageRirekiDomain extends DomainBase {
 				mb.withHanbaiNumber(meisai.getHanbaiNumber() * -1);
 				return mb.apply(meisai);
 			}).collect(Collectors.toList());
+			b.withKeijoDate(keijoDate);
 			b.withUriageMeisai(_meisai);
 			return Optional.of(b.apply(_u));
 		}
@@ -58,7 +60,7 @@ public class UriageRirekiDomain extends DomainBase {
 	}
 
 	/**
-	 * (赤)訂正伝票取得.
+	 * (赤)訂正伝票も含めた全伝票取得.
 	 * 
 	 * <pre>
 	 * 訂正伝票が不要な場合は、getList()を利用すること。
@@ -67,7 +69,24 @@ public class UriageRirekiDomain extends DomainBase {
 	 * @return 全伝票
 	 */
 	public List<UriageDomain> getAllWithTeiseiDenpyo() {
-		return null;
+		// create return value
+		List<UriageDomain> ret = new ArrayList<UriageDomain>();
+
+		// order by keijoDate desc
+		list.sort(new UriageComparatorByKejoDate());
+		Collections.reverse(list);
+
+		// add 伝票
+		new ArrayList<UriageDomain>(list).stream().forEach(uriage -> {
+			ret.add(uriage);
+			Optional<UriageDomain> teisei = getTeiseiUriage(uriage.getKeijoDate());
+			if (teisei.isPresent()) {
+				ret.add(teisei.get());
+			}
+		});
+
+		// sort and return
+		return ret;
 	}
 
 	/**
@@ -102,9 +121,11 @@ public class UriageRirekiDomain extends DomainBase {
 	 * @return 全履歴売上
 	 */
 	public List<UriageDomain> getList() {
-		return list.stream().map(l -> {
+		List<UriageDomain> ret = list.stream().map(l -> {
 			return convert(l);
 		}).collect(Collectors.toList());
+		ret.sort(new UriageComparatorByKejoDate());
+		return ret;
 	}
 
 	@Override

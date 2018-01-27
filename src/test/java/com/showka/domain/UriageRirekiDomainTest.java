@@ -60,7 +60,7 @@ public class UriageRirekiDomainTest extends SimpleTestCase {
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 21))
 				.withHanbaiKubun(HanbaiKubun.現金)
-				.withShohizeiritsu(new TaxRate(0.09))
+				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
 				.withRecordId("r-KK01-00001")
 				.build();
@@ -104,8 +104,27 @@ public class UriageRirekiDomainTest extends SimpleTestCase {
 		UriageRirekiDomain uriageRirekiList02 = b.build();
 		// test
 		Optional<UriageDomain> actual = uriageRirekiList02.getTeiseiUriage(new TheDate(2017, 8, 21));
-		assertEquals(new TheDate(2017, 8, 20), actual.get().getKeijoDate());
+		assertEquals(new TheDate(2017, 8, 21), actual.get().getKeijoDate());
 		assertEquals(-5, actual.get().getUriageMeisai().get(0).getHanbaiNumber().intValue());
+	}
+
+	@Test
+	public void test04_getAllWithTeiseiDenpyo() throws Exception {
+		// build
+		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
+		List<UriageDomain> uriageRireki = new ArrayList<UriageDomain>();
+		uriageRireki.add(uriageRireki01);
+		uriageRireki.add(uriageRireki02);
+		b.withList(uriageRireki);
+		UriageRirekiDomain uriageRirekiList = b.build();
+		List<UriageDomain> actual = uriageRirekiList.getAllWithTeiseiDenpyo();
+
+		assertEquals(new TheDate(2017, 8, 21), actual.get(0).getKeijoDate());
+		assertEquals(0, actual.get(0).getUriageGokeiKakaku().getZeinukiKakaku().intValue());
+		assertEquals(new TheDate(2017, 8, 21), actual.get(1).getKeijoDate());
+		assertEquals(-5000, actual.get(1).getUriageGokeiKakaku().getZeinukiKakaku().intValue());
+		assertEquals(new TheDate(2017, 8, 20), actual.get(2).getKeijoDate());
+		assertEquals(5000, actual.get(2).getUriageGokeiKakaku().getZeinukiKakaku().intValue());
 	}
 
 }
