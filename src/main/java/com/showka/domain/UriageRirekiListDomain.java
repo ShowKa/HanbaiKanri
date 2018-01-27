@@ -2,7 +2,6 @@ package com.showka.domain;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.showka.domain.builder.UriageDomainBuilder;
@@ -21,7 +20,7 @@ public class UriageRirekiListDomain extends DomainBase {
 	private String uriageId;
 
 	/** 売上履歴(直接返却禁止) */
-	private Set<UriageDomain> list;
+	private List<UriageDomain> list;
 
 	/** キャンセル計上日 */
 	@Getter
@@ -58,10 +57,10 @@ public class UriageRirekiListDomain extends DomainBase {
 	 * 
 	 * @return 全履歴売上
 	 */
-	public Set<UriageDomain> getList() {
+	public List<UriageDomain> getList() {
 		return list.stream().map(l -> {
 			return convert(l);
-		}).collect(Collectors.toSet());
+		}).collect(Collectors.toList());
 	}
 
 	@Override

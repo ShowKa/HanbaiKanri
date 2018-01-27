@@ -1,9 +1,8 @@
 package com.showka.service.crud.u05;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -53,7 +52,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		List<RUriage> entityList = repo.findAll(example);
 
 		// 各履歴を売上ドメインとしてbuild
-		Set<UriageDomain> domainList = new HashSet<UriageDomain>();
+		List<UriageDomain> domainList = new ArrayList<UriageDomain>();
 		entityList.forEach(e -> {
 
 			// 顧客ドメイン

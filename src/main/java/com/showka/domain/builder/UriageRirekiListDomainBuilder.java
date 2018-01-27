@@ -1,7 +1,7 @@
 package com.showka.domain.builder;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageRirekiListDomain;
@@ -15,7 +15,7 @@ public class UriageRirekiListDomainBuilder
 	private String uriageId;
 
 	/** list */
-	private Set<UriageDomain> list;
+	private List<UriageDomain> list;
 
 	/** cancelKeijoDate */
 	private Optional<TheDate> cancelKeijoDate;
@@ -79,7 +79,7 @@ public class UriageRirekiListDomainBuilder
 	 *            list
 	 * @return {@link UriageRirekiListDomainBuilder}
 	 */
-	public UriageRirekiListDomainBuilder withList(final Set<UriageDomain> list) {
+	public UriageRirekiListDomainBuilder withList(final List<UriageDomain> list) {
 		addConfigurator(new BuilderConfigurator<UriageRirekiListDomainBuilder>() {
 			@Override
 			public void configure(UriageRirekiListDomainBuilder builder) {
