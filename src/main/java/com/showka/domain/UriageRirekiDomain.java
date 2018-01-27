@@ -1,9 +1,11 @@
 package com.showka.domain;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.showka.domain.UriageDomain.UriageComparatorByKejoDate;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.system.exception.SystemException;
@@ -24,6 +26,49 @@ public class UriageRirekiDomain extends DomainBase {
 
 	/** キャンセル計上日 */
 	private Optional<TheDate> cancelKeijoDate;
+
+	/**
+	 * (赤)訂正売上伝票取得.
+	 * 
+	 * @param keijoDate
+	 *            訂正した計上日
+	 * @return 訂正した伝票
+	 */
+	public Optional<UriageDomain> getTeiseiUriage(TheDate keijoDate) {
+
+		list.sort(new UriageComparatorByKejoDate());
+		Collections.reverse(list);
+		Optional<UriageDomain> uriage = list.stream().filter(l -> {
+			return l.getKeijoDate().compareTo(keijoDate) < 0;
+		}).findFirst();
+
+		if (uriage.isPresent()) {
+			UriageDomain _u = uriage.get();
+			UriageDomainBuilder b = new UriageDomainBuilder();
+			List<UriageMeisaiDomain> _meisai = _u.getUriageMeisai().stream().map(meisai -> {
+				UriageMeisaiDomainBuilder mb = new UriageMeisaiDomainBuilder();
+				mb.withHanbaiNumber(meisai.getHanbaiNumber() * -1);
+				return mb.apply(meisai);
+			}).collect(Collectors.toList());
+			b.withUriageMeisai(_meisai);
+			return Optional.of(b.apply(_u));
+		}
+
+		return Optional.empty();
+	}
+
+	/**
+	 * (赤)訂正伝票取得.
+	 * 
+	 * <pre>
+	 * 訂正伝票が不要な場合は、getList()を利用すること。
+	 * </pre>
+	 * 
+	 * @return 全伝票
+	 */
+	public List<UriageDomain> getAllWithTeiseiDenpyo() {
+		return null;
+	}
 
 	/**
 	 * キャンセル判定.
@@ -64,7 +109,13 @@ public class UriageRirekiDomain extends DomainBase {
 
 	@Override
 	public void validate() throws SystemException {
-		// nothing to do
+		for (int i = 0; i < list.size(); i++) {
+			for (int j = i + 1; j < list.size(); j++) {
+				if (list.get(i).getKeijoDate().equals(list.get(j).getKeijoDate())) {
+					throw new SystemException("売上履歴に同じ計上日の伝票が混じっています。");
+				}
+			}
+		}
 	}
 
 	@Override
