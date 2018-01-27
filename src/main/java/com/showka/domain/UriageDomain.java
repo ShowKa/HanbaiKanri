@@ -25,6 +25,9 @@ public class UriageDomain extends DomainBase {
 	/** 売上日. */
 	private TheDate uriageDate;
 
+	/** 計上日. */
+	private TheDate keijoDate;
+
 	/** 販売区分. */
 	private HanbaiKubun hanbaiKubun;
 

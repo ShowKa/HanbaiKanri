@@ -22,6 +22,6 @@ public class TUriageRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_02_recordId() {
 		TUriage actual = repository.findByRecordId("KK01-00001");
-		System.out.println(actual);
+		assertEquals("KK01-00001", actual.getRecordId());
 	}
 }

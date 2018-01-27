@@ -28,6 +28,7 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.NotExistException;
@@ -52,6 +53,9 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private UriageValidateService uriageValidateService;
+
+	@Autowired
+	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
 
 	@Autowired
 	private MShohinCrudService shohinCrudService;
@@ -146,6 +150,10 @@ public class U05G002Controller extends ControllerBase {
 		model.addForm(form);
 		model.setMode(Mode.READ);
 		model.setViewName("/u05/u05g002");
+
+		// 計上済み判定
+		model.addObject("isKeijoZumi", uriageKeijoSpecificationService.isKeijoZumi(u));
+
 		return model;
 	}
 
@@ -187,6 +195,7 @@ public class U05G002Controller extends ControllerBase {
 	 * 更新.
 	 *
 	 */
+	@Transactional
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
@@ -202,6 +211,7 @@ public class U05G002Controller extends ControllerBase {
 		UriageDomain uriage = buildDomainFromForm(form);
 
 		// validate
+		uriageValidateService.validateForUpdate(uriage);
 		uriageValidateService.validate(uriage);
 
 		// save
@@ -219,11 +229,14 @@ public class U05G002Controller extends ControllerBase {
 	 * delete.
 	 *
 	 */
+	@Transactional
 	@RequestMapping(value = "/u05g002/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
+
+		// TODO validateForDelete -> 計上済みは削除できない。
 
 		// delete
 		uriageCrudService.delete(uriage);
@@ -273,6 +286,9 @@ public class U05G002Controller extends ControllerBase {
 		// 顧客
 		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 
+		// 営業日取得
+		TheDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
+
 		// 売上
 		UriageDomainBuilder ub = new UriageDomainBuilder();
 		ub.withUriageMeisai(uriageMeisaiList);
@@ -281,6 +297,7 @@ public class U05G002Controller extends ControllerBase {
 		ub.withRecordId(form.getRecordId());
 		ub.withShohizeiritsu(ZEIRITSU);
 		ub.withUriageDate(new TheDate(form.getUriageDate()));
+		ub.withKeijoDate(eigyoDate);
 		ub.withVersion(form.getVersion());
 		ub.withKokyaku(kokyaku);
 		UriageDomain uriage = ub.build();
@@ -321,6 +338,36 @@ public class U05G002Controller extends ControllerBase {
 
 		UriageDomain d = buildDomainFromForm(form);
 		uriageValidateService.validate(d);
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	@Transactional
+	@RequestMapping(value = "/u05g002/cancel", method = RequestMethod.POST)
+	public ResponseEntity<?> cancel(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+		// domain
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
+		pk.setDenpyoNumber(form.getDenpyoNumber());
+		UriageDomain oldDomain = uriageCrudService.getDomain(pk);
+
+		// 営業日取得
+		TheDate eigyoDate = oldDomain.getKokyaku().getShukanBusho().getEigyoDate();
+
+		// override domain
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withKeijoDate(eigyoDate);
+		b.withVersion(form.getVersion());
+		UriageDomain domain = b.apply(oldDomain);
+
+		// cancel
+		uriageValidateService.validateForUpdate(domain);
+		uriageCrudService.cancel(domain);
+
+		// message
+		form.setSuccessMessage("売上伝票をキャンセルしました.");
+
+		// set model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
