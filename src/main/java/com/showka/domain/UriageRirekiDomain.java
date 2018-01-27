@@ -13,17 +13,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public class UriageRirekiDomain extends DomainBase {
 
 	/** 売上ID */
-	@Getter
 	private String uriageId;
 
 	/** 売上履歴(直接返却禁止) */
 	private List<UriageDomain> list;
 
 	/** キャンセル計上日 */
-	@Getter
 	private Optional<TheDate> cancelKeijoDate;
 
 	/**
