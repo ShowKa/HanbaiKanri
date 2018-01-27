@@ -1,13 +1,11 @@
 package com.showka.domain;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 売上明細
@@ -24,7 +22,6 @@ public class UriageMeisaiDomain extends DomainBase {
 	private String uriageId;
 
 	/** 明細番号. */
-	@Setter
 	private Integer meisaiNumber;
 
 	/** 商品. */
@@ -60,11 +57,6 @@ public class UriageMeisaiDomain extends DomainBase {
 	@Override
 	public int hashCode() {
 		return generateHashCode(uriageId, meisaiNumber);
-	}
-
-	public List<UriageMeisaiDomain> getUriageMeisai() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

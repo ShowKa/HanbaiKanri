@@ -195,6 +195,7 @@ public class U05G002Controller extends ControllerBase {
 	 * 更新.
 	 *
 	 */
+	@Transactional
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
@@ -210,6 +211,7 @@ public class U05G002Controller extends ControllerBase {
 		UriageDomain uriage = buildDomainFromForm(form);
 
 		// validate
+		uriageValidateService.validateForUpdate(uriage);
 		uriageValidateService.validate(uriage);
 
 		// save
@@ -227,11 +229,14 @@ public class U05G002Controller extends ControllerBase {
 	 * delete.
 	 *
 	 */
+	@Transactional
 	@RequestMapping(value = "/u05g002/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
+
+		// TODO validateForDelete -> 計上済みは削除できない。
 
 		// delete
 		uriageCrudService.delete(uriage);
@@ -333,6 +338,36 @@ public class U05G002Controller extends ControllerBase {
 
 		UriageDomain d = buildDomainFromForm(form);
 		uriageValidateService.validate(d);
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	@Transactional
+	@RequestMapping(value = "/u05g002/cancel", method = RequestMethod.POST)
+	public ResponseEntity<?> cancel(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+		// domain
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
+		pk.setDenpyoNumber(form.getDenpyoNumber());
+		UriageDomain oldDomain = uriageCrudService.getDomain(pk);
+
+		// 営業日取得
+		TheDate eigyoDate = oldDomain.getKokyaku().getShukanBusho().getEigyoDate();
+
+		// override domain
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withKeijoDate(eigyoDate);
+		b.withVersion(form.getVersion());
+		UriageDomain domain = b.apply(oldDomain);
+
+		// cancel
+		uriageValidateService.validateForUpdate(domain);
+		uriageCrudService.cancel(domain);
+
+		// message
+		form.setSuccessMessage("売上伝票をキャンセルしました.");
+
+		// set model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}

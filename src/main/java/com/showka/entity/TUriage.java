@@ -56,4 +56,16 @@ public class TUriage extends EntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "kokyaku_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MKokyaku kokyaku;
+
+	@ManyToOne(optional = true, fetch = FetchType.EAGER)
+	private CUriage cancel;
+
+	/**
+	 * キャンセル済チェック
+	 * 
+	 * @return ture = キャンセル済
+	 */
+	public boolean isCanceld() {
+		return cancel != null;
+	}
 }

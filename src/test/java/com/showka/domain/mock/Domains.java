@@ -24,6 +24,7 @@ import com.showka.value.TheDate;
 import lombok.Getter;
 
 @Getter
+@SuppressWarnings("unused")
 public class Domains {
 
 	/** 部署01. */
@@ -59,8 +60,14 @@ public class Domains {
 	/**
 	 * columns
 	 */
-	public static final String[] M_KOKYAKU_COLUMN = { "code", "name", "address", "kokyaku_kubun", "hanbai_kubun",
-			"shukan_busho_id", "record_id" };
+	public static final String[] M_KOKYAKU_COLUMN = {
+			"code",
+			"name",
+			"address",
+			"kokyaku_kubun",
+			"hanbai_kubun",
+			"shukan_busho_id",
+			"record_id" };
 
 	/** 顧客01. */
 	public static final Object[] KOKYAKU01 = { "KK01", "顧客01", "左京区", "01", "00", "r-BS01", "r-KK01" };
@@ -130,8 +137,13 @@ public class Domains {
 	/**
 	 * columns
 	 */
-	public static final String[] T_URIAGE_MEISAI_COLUMN = { "uriage_id", "meisai_number", "shohin_id", "hanbai_number",
-			"hanbai_tanka", "record_id" };
+	public static final String[] T_URIAGE_MEISAI_COLUMN = {
+			"uriage_id",
+			"meisai_number",
+			"shohin_id",
+			"hanbai_number",
+			"hanbai_tanka",
+			"record_id" };
 
 	/** 売上明細01. */
 	public static final Object[] URIAGE_MEISAI_01 = { "r-KK01-00001", 1, "r-SH01", 5, 1000, "r-KK01-00001-1" };
@@ -195,8 +207,14 @@ public class Domains {
 	/**
 	 * columns
 	 */
-	public static final String[] T_URIAGE_COLUMN = { "kokyaku_id", "denpyo_number", "uriage_date", "keijo_date",
-			"hanbai_kubun", "shohizeiritsu", "record_id" };
+	public static final String[] T_URIAGE_COLUMN = {
+			"kokyaku_id",
+			"denpyo_number",
+			"uriage_date",
+			"keijo_date",
+			"hanbai_kubun",
+			"shohizeiritsu",
+			"record_id" };
 
 	/** 売上01. */
 	private static final Object[] URIAGE_01 = { "r-KK01", "00001", new Date(2017, 8, 20), "00", 0.08, "r-KK01-00001" };
@@ -234,5 +252,4 @@ public class Domains {
 				.withRecordId("KK01-00002")
 				.build();
 	}
-
 }

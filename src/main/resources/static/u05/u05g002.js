@@ -200,6 +200,21 @@ function($scope, $http, denpyoService, common, meisaiService) {
 		});
 	};
 	
+	// キャンセル
+	$scope.cancel = function() {
+		crud({
+			url : "/u05g002/cancel",
+			formId : "uriageDenpyo",
+			redirect : {
+				url : "/u05g002/refer",
+				param : {
+					kokyakuCode : $scope.kokyakuCode,
+					denpyoNumber : $scope.denpyoNumber
+				}
+			}
+		});
+	};
+
 	$scope.initialize();
 } ]);
 

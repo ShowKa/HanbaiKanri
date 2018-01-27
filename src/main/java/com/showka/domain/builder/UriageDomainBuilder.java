@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
+import com.showka.domain.UriageMeisaiDomain;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -31,7 +32,7 @@ public class UriageDomainBuilder
 	private TaxRate shohizeiritsu;
 
 	/** uriageMeisai */
-	private List uriageMeisai;
+	private List<UriageMeisaiDomain> uriageMeisai;
 
 	/** recordId */
 	private String recordId;
@@ -182,7 +183,7 @@ public class UriageDomainBuilder
 	 *            uriageMeisai
 	 * @return {@link UriageDomainBuilder}
 	 */
-	public UriageDomainBuilder withUriageMeisai(final List uriageMeisai) {
+	public UriageDomainBuilder withUriageMeisai(final List<UriageMeisaiDomain> uriageMeisai) {
 		addConfigurator(new BuilderConfigurator<UriageDomainBuilder>() {
 			@Override
 			public void configure(UriageDomainBuilder builder) {

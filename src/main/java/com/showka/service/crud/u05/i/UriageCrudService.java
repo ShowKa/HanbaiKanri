@@ -6,4 +6,12 @@ import com.showka.service.crud.CrudService;
 
 public interface UriageCrudService extends CrudService<UriageDomain, TUriagePK> {
 
+	/**
+	 * 売上キャンセル.
+	 * 
+	 * @param domain
+	 *            売上ドメイン
+	 */
+	public void cancel(UriageDomain domain);
+
 }
