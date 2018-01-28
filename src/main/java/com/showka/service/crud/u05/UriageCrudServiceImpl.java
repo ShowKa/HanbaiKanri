@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageMeisaiDomain.UriageMeisaiComparatorByMeisaiNumber;
 import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.entity.MKokyaku;
@@ -101,6 +102,9 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		for (TUriageMeisai m : meisaiEntityList) {
 			uriageMeisai.add(uriageMeisaiCrudService.getDomain(m.getPk()));
 		}
+
+		// sort
+		uriageMeisai.sort(new UriageMeisaiComparatorByMeisaiNumber());
 
 		// set builder
 		UriageDomainBuilder b = new UriageDomainBuilder();

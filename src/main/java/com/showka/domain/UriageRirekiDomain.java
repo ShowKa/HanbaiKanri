@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.showka.domain.UriageDomain.UriageComparatorByKejoDate;
+import com.showka.domain.UriageMeisaiDomain.UriageMeisaiComparatorByMeisaiNumber;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.system.exception.SystemException;
@@ -46,12 +47,15 @@ public class UriageRirekiDomain extends DomainBase {
 		if (uriage.isPresent()) {
 			UriageDomain _u = uriage.get();
 			UriageDomainBuilder b = new UriageDomainBuilder();
+			b.withKeijoDate(keijoDate);
+			// convert
 			List<UriageMeisaiDomain> _meisai = _u.getUriageMeisai().stream().map(meisai -> {
 				UriageMeisaiDomainBuilder mb = new UriageMeisaiDomainBuilder();
 				mb.withHanbaiNumber(meisai.getHanbaiNumber() * -1);
 				return mb.apply(meisai);
 			}).collect(Collectors.toList());
-			b.withKeijoDate(keijoDate);
+			// sort
+			_meisai.sort(new UriageMeisaiComparatorByMeisaiNumber());
 			b.withUriageMeisai(_meisai);
 			return Optional.of(b.apply(_u));
 		}
