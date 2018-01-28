@@ -139,6 +139,7 @@ function($scope, $http, denpyoService, common, meisaiService) {
 	// 履歴取得
 	$scope.getRireki = function() {
 		var callback = function(model) {
+			// TODO bug
 			$scope.meisaiList = [];
 			var rirekiList = model.rirekiList;
 			for (var rireki of rirekiList) {
