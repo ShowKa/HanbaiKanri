@@ -2,7 +2,9 @@ package com.showka.web.u05;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageRirekiDomain;
 import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.entity.TUriagePK;
@@ -27,6 +30,7 @@ import com.showka.kubun.i.Kubun;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
+import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
@@ -62,6 +66,9 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private UriageMeisaiCrudService uriageMeisaiCrudService;
+
+	@Autowired
+	private UriageRirekiCrudService uriageRirekiCrudService;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -368,6 +375,30 @@ public class U05G002Controller extends ControllerBase {
 		form.setSuccessMessage("売上伝票をキャンセルしました.");
 
 		// set model
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	@RequestMapping(value = "/u05g002/getRireki", method = RequestMethod.POST)
+	public ResponseEntity<?> getRireki(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+		// 履歴取得
+		UriageRirekiDomain rireki = uriageRirekiCrudService.getUriageRirekiList(form.getRecordId());
+
+		// 画面に必要な履歴情報をmapに入れる。
+		List<Map<String, Object>> rirekiList = new ArrayList<Map<String, Object>>();
+		rireki.getAllWithTeiseiDenpyo().stream().forEach(uriage -> {
+			uriage.getUriageMeisai().forEach(meisai -> {
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("shohinCode", meisai.getShohinDomain().getCode());
+				m.put("hanbaiNumber", meisai.getHanbaiNumber());
+				m.put("hanbaiTanka", meisai.getHanbaiTanka());
+				m.put("meisaiNumber", meisai.getMeisaiNumber());
+				rirekiList.add(m);
+			});
+		});
+
+		// set model
+		model.addObject("rirekiList", rirekiList);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}

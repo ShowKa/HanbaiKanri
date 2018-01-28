@@ -161,6 +161,12 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<button
 							class="btn btn-primary"
 							type="button"
+							ng-click="getRireki()"
+							ng-show="isReadMode()">履歴</button>
+
+						<button
+							class="btn btn-primary"
+							type="button"
 							ng-click="addMeisai()"
 							ng-disabled="uriageDenpyo.$invalid"
 							ng-show="!isReadMode()">明細行を追加</button>
