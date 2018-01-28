@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class TheDate extends ValueBase {
+public class TheDate extends ValueBase implements Comparable<TheDate> {
 
 	private LocalDate date = LocalDate.MIN;
 
@@ -72,6 +72,11 @@ public class TheDate extends ValueBase {
 	@Override
 	public String toString() {
 		return date.toString();
+	}
+
+	@Override
+	public int compareTo(TheDate o) {
+		return date.compareTo(o.date);
 	}
 
 }

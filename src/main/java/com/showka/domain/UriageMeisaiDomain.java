@@ -1,6 +1,7 @@
 package com.showka.domain;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 import com.showka.system.exception.SystemException;
 
@@ -59,4 +60,14 @@ public class UriageMeisaiDomain extends DomainBase {
 		return generateHashCode(uriageId, meisaiNumber);
 	}
 
+	/**
+	 * 明細番号による売上明細比較クラス.
+	 * 
+	 */
+	public static class UriageMeisaiComparatorByMeisaiNumber implements Comparator<UriageMeisaiDomain> {
+		@Override
+		public int compare(UriageMeisaiDomain o1, UriageMeisaiDomain o2) {
+			return o1.meisaiNumber.compareTo(o2.meisaiNumber);
+		}
+	}
 }

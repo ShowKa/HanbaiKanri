@@ -136,6 +136,26 @@ function($scope, $http, denpyoService, common, meisaiService) {
 		}
 	};
 	
+	// 履歴取得
+	$scope.getRireki = function() {
+		var callback = function(model) {
+			// TODO bug
+			$scope.meisaiList = [];
+			var rirekiList = model.rirekiList;
+			for (var rireki of rirekiList) {
+				var meisai = createNewMeisai();
+				meisai.meisaiNumber = rireki.meisaiNumber;
+				meisai.shohinCode = rireki.shohinCode;
+				meisai.hanbaiNumber = rireki.hanbaiNumber;
+				meisai.hanbaiTanka = rireki.hanbaiTanka;
+				meisai.editing = false;
+				$scope.meisaiList.push(meisai);
+			}
+		};
+		_.simpleRequest("/u05g002/getRireki", "uriageDenpyo", callback);
+		return;
+	};
+	
 	var createNewMeisai = function () {
 		var m = denpyoService.createMeisai();
 		meisaiService.convertToMeisai(m);

@@ -1,3 +1,27 @@
+var _ = {};
+
+/**
+ * 単純なAjaxリクエスト.
+ */
+_.simpleRequest = function (url, form, successCallback, erroCallback) {
+	var url = url + "?" + $("#" + form).serialize();
+	$.ajax({
+		type : "POST",
+		url : url,
+		dataType : "json",
+		success : function(data, status, xhr) {
+			if (successCallback) {
+				successCallback(data.model);
+			}
+		},
+		error : function(data, status, xhr) {
+			if (erroCallback) {
+				erroCallback(data.model);
+			}
+		}
+	})
+}
+
 /**
  * 検索 & 検索結果のリスト構築.
  * 
