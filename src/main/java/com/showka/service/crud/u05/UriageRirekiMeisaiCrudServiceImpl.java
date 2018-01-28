@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.ShohinDomain;
 import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageMeisaiDomain.UriageMeisaiComparatorByMeisaiNumber;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.entity.RUriageMeisai;
 import com.showka.entity.RUriageMeisaiPK;
@@ -107,6 +108,7 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 		List<RUriageMeisai> entities = repo.findAll(example);
 		List<UriageMeisaiDomain> list = new ArrayList<UriageMeisaiDomain>();
 		entities.forEach(e -> list.add(buildDomainByEntity(e)));
+		list.sort(new UriageMeisaiComparatorByMeisaiNumber());
 		return list;
 	}
 

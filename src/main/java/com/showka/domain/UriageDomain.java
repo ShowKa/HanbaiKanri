@@ -1,6 +1,7 @@
 package com.showka.domain;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
 
 import com.showka.kubun.HanbaiKubun;
@@ -66,4 +67,14 @@ public class UriageDomain extends DomainBase {
 		return generateHashCode(kokyaku, denpyoNumber);
 	}
 
+	/**
+	 * 計上日による売上比較クラス.
+	 *
+	 */
+	public static class UriageComparatorByKejoDate implements Comparator<UriageDomain> {
+		@Override
+		public int compare(UriageDomain o1, UriageDomain o2) {
+			return o1.getKeijoDate().compareTo(o2.getKeijoDate());
+		}
+	}
 }

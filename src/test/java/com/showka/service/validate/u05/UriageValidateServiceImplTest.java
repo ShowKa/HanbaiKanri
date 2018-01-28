@@ -17,6 +17,7 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
+import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.CanNotUpdateException;
@@ -43,6 +44,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private CUriageRepository cUriageRepository;
+
+	@Injectable
+	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
 
 	// data
 	/** 顧客01. */
@@ -178,6 +182,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 				result = true;
 			}
 		};
+		// do
 		service.validateForUpdate(domain);
 	}
 
@@ -211,6 +216,88 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		};
 		// assert
 		assertTrue(true);
+	}
+
+	/**
+	 * キャンセル済みの場合エラー
+	 * 
+	 * @throws Exception
+	 */
+	@Test(expected = CanNotUpdateException.class)
+	public void test_validateForDelete01() throws Exception {
+		// input
+		String uriageId = "r-KK01-00001";
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withRecordId(uriageId);
+		UriageDomain domain = b.build();
+		// expect
+		new Expectations() {
+			{
+				cUriageRepository.existsById(uriageId);
+				result = true;
+			}
+		};
+		// do
+		service.validateForDelete(domain);
+	}
+
+	/**
+	 * 計上済みの場合エラー
+	 * 
+	 * @throws Exception
+	 */
+	@Test(expected = CanNotUpdateException.class)
+	public void test_validateForDelete02() throws Exception {
+		// input
+		String uriageId = "r-KK01-00001";
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withRecordId(uriageId);
+		UriageDomain domain = b.build();
+		// expect
+		new Expectations() {
+			{
+				cUriageRepository.existsById(uriageId);
+				result = false;
+				uriageKeijoSpecificationService.isKeijoZumi(domain);
+				result = true;
+			}
+		};
+		// do
+		service.validateForDelete(domain);
+	}
+
+	/**
+	 * 計上済でない、キャンセル済でない場合OK
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void test_validateForDelete03() throws Exception {
+		// input
+		String uriageId = "r-KK01-00001";
+		UriageDomainBuilder b = new UriageDomainBuilder();
+		b.withRecordId(uriageId);
+		UriageDomain domain = b.build();
+		// expect
+		new Expectations() {
+			{
+				cUriageRepository.existsById(uriageId);
+				result = false;
+				uriageKeijoSpecificationService.isKeijoZumi(domain);
+				result = false;
+			}
+		};
+		// do
+		service.validateForDelete(domain);
+		// verify
+		new Verifications() {
+			{
+				cUriageRepository.existsById(uriageId);
+				times = 1;
+				uriageKeijoSpecificationService.isKeijoZumi(domain);
+				times = 1;
+			}
+		};
 	}
 
 }
