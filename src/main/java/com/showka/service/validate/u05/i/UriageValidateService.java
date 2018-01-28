@@ -35,4 +35,14 @@ public interface UriageValidateService {
 	 */
 	public void validateForUpdate(UriageDomain domain) throws ValidateException;
 
+	/**
+	 * 削除時整合性検証.
+	 * 
+	 * @param domain
+	 *            ドメイン
+	 * @throws ValidateException
+	 *             整合性例外
+	 */
+	public void validateForDelete(UriageDomain domain) throws ValidateException;
+
 }

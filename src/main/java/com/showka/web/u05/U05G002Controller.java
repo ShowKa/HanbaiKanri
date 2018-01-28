@@ -241,9 +241,17 @@ public class U05G002Controller extends ControllerBase {
 	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// domain
-		UriageDomain uriage = buildDomainFromForm(form);
+		TUriagePK pk = new TUriagePK();
+		pk.setDenpyoNumber(form.getDenpyoNumber());
+		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		pk.setKokyakuId(kokyaku.getRecordId());
+		UriageDomain uriage = uriageCrudService.getDomain(pk);
 
-		// TODO validateForDelete -> 計上済みは削除できない。
+		// 排他制御
+		uriage.setVersion(form.getVersion());
+
+		// validate
+		uriageValidateService.validateForDelete(uriage);
 
 		// delete
 		uriageCrudService.delete(uriage);
