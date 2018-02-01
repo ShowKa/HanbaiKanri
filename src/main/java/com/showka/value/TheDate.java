@@ -21,7 +21,7 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 
 	public TheDate(Calendar calendar) {
 		int y = calendar.get(Calendar.YEAR);
-		int m = calendar.get(Calendar.MONTH);
+		int m = calendar.get(Calendar.MONTH + 1);
 		int d = calendar.get(Calendar.DATE);
 		this.date = LocalDate.of(y, m, d);
 	}
