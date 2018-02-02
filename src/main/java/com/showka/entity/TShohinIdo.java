@@ -13,7 +13,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,7 +53,6 @@ public class TShohinIdo extends EntityBase implements Serializable {
 				nullable = false,
 				length = 255,
 				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	@Setter(AccessLevel.PRIVATE)
 	private Date timestamp;
 
 	/** 部署. */

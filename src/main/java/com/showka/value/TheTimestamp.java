@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
- * 時刻型 : 分まで保持
+ * 時刻型 : ミリまで保持
  *
  */
 public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> {
@@ -67,13 +68,12 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 	}
 
 	/**
-	 * yyyy/MM/dd にフォーマット
+	 * Date型に変換.
 	 * 
-	 * @return フォーマット後のString
+	 * @return Date
 	 */
-	public String formatToDate() {
-		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		return timestamp.format(f);
+	public Date toDate() {
+		return java.util.Date.from(this.timestamp.atZone(ZoneId.systemDefault()).toInstant());
 	}
 
 	/**
@@ -111,5 +111,4 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 	public int compareTo(TheTimestamp o) {
 		return this.timestamp.compareTo(o.timestamp);
 	}
-
 }

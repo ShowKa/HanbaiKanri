@@ -15,11 +15,11 @@ import com.showka.domain.builder.ShohinIdoMeisaiDomainBuilder;
 import com.showka.entity.TShohinIdoMeisai;
 import com.showka.entity.TShohinIdoMeisaiPK;
 import com.showka.repository.i.TShohinIdoMeisaiRepository;
-import com.showka.service.crud.MeisaiCrudService;
+import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
 
 @Service
-public class ShohinIdoMeisaiCrudService implements MeisaiCrudService<ShohinIdoMeisaiDomain, TShohinIdoMeisaiPK> {
+public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudService {
 
 	@Autowired
 	private TShohinIdoMeisaiRepository repo;
