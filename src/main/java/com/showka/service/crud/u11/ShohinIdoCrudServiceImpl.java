@@ -48,6 +48,8 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		entity.setTimestamp(domain.getTimestamp().toDate());
 		// occ
 		entity.setVersion(domain.getVersion());
+		// record id
+		domain.setRecordId(entity.getRecordId());
 		// save
 		repo.save(entity);
 		// meisai

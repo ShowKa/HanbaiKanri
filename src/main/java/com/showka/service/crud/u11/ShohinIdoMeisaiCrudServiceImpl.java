@@ -36,12 +36,16 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 		Optional<TShohinIdoMeisai> _e = repo.findById(pk);
 		TShohinIdoMeisai entity = _e.isPresent() ? _e.get() : new TShohinIdoMeisai();
 		if (!_e.isPresent()) {
-			entity.setRecordId(UUID.randomUUID().toString());
+			String recordId = UUID.randomUUID().toString();
+			entity.setRecordId(recordId);
 		}
 		entity.setNumber(shohinIdoMeisai.getNumber());
 		entity.setPk(pk);
 		entity.setShohinId(shohinIdoMeisai.getShohinDomain().getRecordId());
+		// occ
 		entity.setVersion(shohinIdoMeisai.getVersion());
+		// record id
+		shohinIdoMeisai.setRecordId(entity.getRecordId());
 		// save
 		repo.save(entity);
 	}
