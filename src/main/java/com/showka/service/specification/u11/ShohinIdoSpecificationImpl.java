@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.showka.domain.ShohinIdoDomain;
 import com.showka.domain.ShohinIdoMeisaiDomain;
@@ -19,6 +20,7 @@ import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.value.TheTimestamp;
 
+@Service
 public class ShohinIdoSpecificationImpl implements ShohinIdoSpecification {
 
 	@Autowired

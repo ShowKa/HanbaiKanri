@@ -6,7 +6,6 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -23,15 +22,12 @@ import lombok.Setter;
 @Table(name = "t_sohin_ido")
 @Getter
 @Setter
-public class TShohinIdo extends EntityBase implements Serializable {
+public class TShohinIdo extends EntityUsingRecordIdAsId implements Serializable {
 
 	/** SID. */
 	private static final long serialVersionUID = -3616584102119932640L;
 
-	/** 商品移動ID(レコードID). */
-	@Id
-	@Column(name = "record_id", unique = true, nullable = false, length = 255, insertable = true, updatable = false)
-	private String recordId;
+	/** 商品移動ID(レコードIDをオーバーライド). */
 
 	/** 部署ID */
 	@Column(name = "busho_id", nullable = false, length = 255)
