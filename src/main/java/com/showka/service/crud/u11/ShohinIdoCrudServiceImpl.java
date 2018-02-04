@@ -1,17 +1,22 @@
 package com.showka.service.crud.u11;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.BushoDomain;
+import com.showka.domain.ShohinDomain;
 import com.showka.domain.ShohinIdoDomain;
 import com.showka.domain.ShohinIdoMeisaiDomain;
 import com.showka.domain.builder.ShohinIdoDomainBuilder;
 import com.showka.entity.TShohinIdo;
+import com.showka.entity.TShohinIdoMeisai;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.kubun.i.Kubun;
 import com.showka.repository.i.TShohinIdoRepository;
@@ -95,5 +100,25 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	@Override
 	public boolean exsists(String pk) {
 		return repo.existsById(pk);
+	}
+
+	@Override
+	public List<ShohinIdoDomain> getShohinIdoListInDate(BushoDomain busho, TheDate date, ShohinDomain shohin) {
+		// criteria
+		TShohinIdo ido = new TShohinIdo();
+		TShohinIdoMeisai idoMeisai = new TShohinIdoMeisai();
+		ido.setBushoId(busho.getRecordId());
+		ido.setDate(date.toDate());
+		idoMeisai.setShohinId(shohin.getRecordId());
+		List<TShohinIdoMeisai> list = new ArrayList<TShohinIdoMeisai>();
+		list.add(idoMeisai);
+		ido.setMeisai(list);
+		// search
+		Example<TShohinIdo> example = Example.of(ido);
+		List<TShohinIdo> idoList = repo.findAll(example);
+		// build & return
+		return idoList.stream().map(i -> {
+			return getDomain(i.getRecordId());
+		}).collect(Collectors.toList());
 	}
 }

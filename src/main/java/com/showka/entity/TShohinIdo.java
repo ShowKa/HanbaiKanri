@@ -2,12 +2,14 @@ package com.showka.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +21,7 @@ import lombok.Setter;
  * 商品移動.
  */
 @Entity
-@Table(name = "t_sohin_ido")
+@Table(name = "t_shohin_ido")
 @Getter
 @Setter
 public class TShohinIdo extends EntityUsingRecordIdAsId implements Serializable {
@@ -50,6 +52,10 @@ public class TShohinIdo extends EntityUsingRecordIdAsId implements Serializable 
 				length = 255,
 				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Date timestamp;
+
+	/** 商品移動明細. */
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "shohinIdo")
+	private List<TShohinIdoMeisai> meisai;
 
 	/** 部署. */
 	@ManyToOne(fetch = FetchType.LAZY)

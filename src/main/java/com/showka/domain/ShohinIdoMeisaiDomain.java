@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 売上明細
+ * 商品移動明細
  * 
  * @author ShowKa
  *

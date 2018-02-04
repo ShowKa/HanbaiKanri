@@ -61,7 +61,7 @@ public abstract class TestCaseBase extends TestCase {
 			"record_id" };
 
 	// 商品移動
-	protected static final String T_SHOHIN_IDO = "t_sohin_ido";
+	protected static final String T_SHOHIN_IDO = "t_shohin_ido";
 	protected static final String[] T_SHOHIN_IDO_COLUMN = {
 			"busho_id",
 			"date",

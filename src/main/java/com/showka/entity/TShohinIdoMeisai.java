@@ -18,7 +18,7 @@ import lombok.Setter;
  * 商品在庫.
  */
 @Entity
-@Table(name = "t_sohin_ido_meisai")
+@Table(name = "t_shohin_ido_meisai")
 @Getter
 @Setter
 public class TShohinIdoMeisai extends EntityBase implements Serializable {
