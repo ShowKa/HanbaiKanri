@@ -121,7 +121,7 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		// distinct
 		Stream<TShohinIdo> idoList = idoMeisaiList.stream().map(meisai -> {
 			return meisai.getShohinIdo();
-		}).collect(Collectors.toList()).stream().distinct();
+		}).distinct();
 		// build & return
 		return idoList.map(i -> {
 			return getDomain(i.getRecordId());
