@@ -3,6 +3,8 @@ package com.showka.repository.i;
 import java.util.Date;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,6 +17,7 @@ public class TShohinIdoRepositoryTest extends RepositoryTestCase {
 	private TShohinIdoRepository repo;
 
 	@Test
+	@Transactional
 	public void test01_save() {
 		// data
 		super.deleteAll(T_SHOHIN_IDO);
