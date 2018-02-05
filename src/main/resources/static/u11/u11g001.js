@@ -17,4 +17,20 @@ function($scope, $http, zaikoService, common, meisaiService) {
 		// request
 		_.simpleRequest("/u11g001/getAll", "searchForm", successCallback);
 	};
+	// 部署商品在庫取得(1つだけ)
+	$scope.get = function(shohinCode) {
+		$http({
+			method : "POST",
+			url : "/u11g001/get",
+			params : {
+				bushoCode : $scope.bushoCode,
+				date : $scope.date,
+				shohinCode : shohinCode,
+			}
+		}).then(function successCallback(response) {
+			$scope.shohinIdoList = response.data.model.shohinIdoList;
+		}, function errorCallback(response) {
+			showErroeMessage(response.data.message);
+		});
+	};
 } ]);

@@ -47,6 +47,5 @@ public class TShohinIdoMeisai extends EntityBase implements Serializable {
 	/** 商品移動. */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "shohin_ido_id", referencedColumnName = "record_id", insertable = false, updatable = false)
-	@Setter(value = AccessLevel.NONE)
 	private TShohinIdo shohinIdo;
 }

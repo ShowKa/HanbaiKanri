@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.BushoDomain;
+import com.showka.domain.ShohinDomain;
 import com.showka.domain.ShohinZaikoDomain;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.service.crud.z00.i.MShohinCrudService;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -31,6 +33,9 @@ public class U11G001Controller extends ControllerBase {
 
 	@Autowired
 	private BushoCrudService bushoCrudService;
+
+	@Autowired
+	private MShohinCrudService mShohinCrudService;
 
 	/**
 	 * 参照.
@@ -68,6 +73,31 @@ public class U11G001Controller extends ControllerBase {
 		}).collect(Collectors.toList());
 		// set model
 		model.addObject("zaikoList", zaikoList);
+		model.addForm(form);
+		// return
+		return ResponseEntity.ok(model);
+	}
+
+	/**
+	 * 商品在庫取得.
+	 *
+	 */
+	@RequestMapping(value = "/u11g001/get", method = RequestMethod.POST)
+	public ResponseEntity<?> get(@ModelAttribute U11G001FormForShohinIdoMeisai form, ModelAndViewExtended model) {
+		// get 商品在庫
+		BushoDomain busho = bushoCrudService.getDomain(form.getBushoCode());
+		ShohinDomain shohin = mShohinCrudService.getDomain(form.getShohinCode());
+		ShohinZaikoDomain _zaiko = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()), shohin);
+		// to map
+		List<Map<String, Object>> shohinIdoLisst = _zaiko.getShohinIdoList().stream().map(z -> {
+			Map<String, Object> ret = new HashMap<String, Object>();
+			ret.put("timestamp", z.getTimestamp().toString("HH:mm:ss"));
+			ret.put("kubun", z.getKubun().name());
+			ret.put("number", z.getIncreaseOrDecreaseNumber());
+			return ret;
+		}).collect(Collectors.toList());
+		// set model
+		model.addObject("shohinIdoList", shohinIdoLisst);
 		model.addForm(form);
 		// return
 		return ResponseEntity.ok(model);

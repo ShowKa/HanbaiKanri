@@ -76,11 +76,33 @@
 					</thead>
 					<tbody id="zaikoList">
 						<tr ng-repeat="zaiko in zaikoList">
-							<td class="col-sm-1">{{zaiko.name}}</td>
+							<td class="col-sm-1">
+								<span
+									class="glyphicon glyphicon-list-alt"
+									style="padding-right: 5px; cursor: pointer;"
+									ng-click="get(zaiko.code);"> </span>{{zaiko.name}}
+							</td>
 							<td class="col-sm-1">{{zaiko.number}}</td>
 						</tr>
 					</tbody>
 				</table>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>時刻</th>
+							<th>移動区分</th>
+							<th>移動数</th>
+						</tr>
+					</thead>
+					<tbody id="zaikoList">
+						<tr ng-repeat="ido in shohinIdoList">
+							<td class="col-sm-1">{{ido.timestamp}}</td>
+							<td class="col-sm-1">{{ido.kubun}}</td>
+							<td class="col-sm-1">{{ido.number}}</td>
+						</tr>
+					</tbody>
+				</table>
+
 			</div>
 		</div>
 	</div>

@@ -82,6 +82,7 @@ INSERT INTO t_shohin_ido
 (id, busho_id, date, kubun, sagyo_timestamp, record_id)
 VALUES
 ('r-001', 'BS01', to_date('2017/08/20', 'yyyy/MM/dd'), '10', CURRENT_TIMESTAMP(), 'r-001'),
+('r-002', 'BS01', to_date('2017/08/20', 'yyyy/MM/dd'), '00', CURRENT_TIMESTAMP(), 'r-002'),
 ;
 
 -- 商品移動明細
@@ -90,4 +91,6 @@ INSERT INTO t_shohin_ido_meisai
 VALUES
 ('r-001', 1, 'SH01', 10, 'r-001-1'),
 ('r-001', 2, 'SH02', 10, 'r-001-2'),
+('r-002', 1, 'SH02',  5, 'r-002-1'),
+('r-002', 2, 'SH03', 10, 'r-002-2'),
 ;

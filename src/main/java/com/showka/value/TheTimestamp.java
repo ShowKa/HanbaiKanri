@@ -88,6 +88,19 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 	}
 
 	/**
+	 * 文字列フォーマット.
+	 * 
+	 * @param pattern
+	 *            フォーマットパターン
+	 * @return フォーマット後のString
+	 */
+
+	public String toString(String pattern) {
+		DateTimeFormatter f = DateTimeFormatter.ofPattern(pattern);
+		return timestamp.format(f);
+	}
+
+	/**
 	 * 同値判定
 	 * 
 	 * @return 時刻 が一致するならtrue
