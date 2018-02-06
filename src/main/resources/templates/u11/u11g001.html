@@ -68,6 +68,7 @@
 			</div>
 			<div class="col-md-6 col-sm-6 col-xs-12">
 				<table class="table table-striped">
+					<caption>{{bushoNameForCaption}} {{eigyoDateForCaption}}</caption>
 					<thead>
 						<tr>
 							<th>商品名</th>
@@ -87,6 +88,7 @@
 					</tbody>
 				</table>
 				<table class="table table-striped">
+					<caption>{{shohinNameForCaption}}</caption>
 					<thead>
 						<tr>
 							<th>時刻</th>
@@ -95,6 +97,11 @@
 						</tr>
 					</thead>
 					<tbody id="zaikoList">
+						<tr ng-if="kurikoshiZaiko != null">
+							<td>-</td>
+							<td>前日繰越</td>
+							<td>{{kurikoshiZaiko}}</td>
+						</tr>
 						<tr ng-repeat="ido in shohinIdoList">
 							<td class="col-sm-1">{{ido.timestamp}}</td>
 							<td class="col-sm-1">{{ido.kubun}}</td>

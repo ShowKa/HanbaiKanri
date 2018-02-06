@@ -75,6 +75,15 @@ public class ShohinZaikoDomain extends DomainBase {
 		return getNumber() < 0;
 	}
 
+	/**
+	 * 前日時点の繰越数(前日の終わり時点での在庫数)を返却.
+	 * 
+	 * @return 繰越数
+	 */
+	public Integer getKurikoshiNumber() {
+		return number;
+	}
+
 	// override method
 	@Override
 	public void validate() throws SystemException {

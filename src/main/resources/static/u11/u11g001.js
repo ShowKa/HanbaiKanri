@@ -11,14 +11,28 @@ function($scope, $http, zaikoService, common, meisaiService) {
 	$scope.getAll = function() {
 		// callback
 		var successCallback = function(model) {
-			$scope.zaikoList = model.zaikoList;
+			var zaikoList = model.zaikoList;
+			$scope.zaikoList = zaikoList;
+			$scope.bushoNameForCaption = model.bushoName;
+			$scope.eigyoDateForCaption = $scope.date;
 			$scope.$apply();
+			if (zaikoList.length > 0) {
+				$scope.get(zaikoList[0].code);
+			} else {
+				clearShohinIdoList();
+			}
 		};
 		// request
 		_.simpleRequest("/u11g001/getAll", "searchForm", successCallback);
 	};
 	// 部署商品在庫取得(1つだけ)
 	$scope.get = function(shohinCode) {
+		var successCallback = function(response) {
+			var model = response.data.model;
+			$scope.shohinIdoList = model.shohinIdoList;
+			$scope.kurikoshiZaiko = model.kurikoshiZaiko;
+			$scope.shohinNameForCaption = model.shohinName;
+		}
 		$http({
 			method : "POST",
 			url : "/u11g001/get",
@@ -27,10 +41,13 @@ function($scope, $http, zaikoService, common, meisaiService) {
 				date : $scope.date,
 				shohinCode : shohinCode,
 			}
-		}).then(function successCallback(response) {
-			$scope.shohinIdoList = response.data.model.shohinIdoList;
-		}, function errorCallback(response) {
-			showErroeMessage(response.data.message);
-		});
+		}).then(successCallback);
+	};
+	// 商品移動クリア
+	var clearShohinIdoList = function() {
+		$scope.shohinIdoList = {};
+		$scope.kurikoshiZaiko = null;
+		$scope.shohinNameForCaption = "";
+		$scope.$apply();
 	};
 } ]);

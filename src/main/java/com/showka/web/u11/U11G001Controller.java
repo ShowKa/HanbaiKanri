@@ -73,6 +73,7 @@ public class U11G001Controller extends ControllerBase {
 		}).collect(Collectors.toList());
 		// set model
 		model.addObject("zaikoList", zaikoList);
+		model.addObject("bushoName", busho.getName());
 		model.addForm(form);
 		// return
 		return ResponseEntity.ok(model);
@@ -89,7 +90,7 @@ public class U11G001Controller extends ControllerBase {
 		ShohinDomain shohin = mShohinCrudService.getDomain(form.getShohinCode());
 		ShohinZaikoDomain _zaiko = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()), shohin);
 		// to map
-		List<Map<String, Object>> shohinIdoLisst = _zaiko.getShohinIdoList().stream().map(z -> {
+		List<Map<String, Object>> shohinIdoList = _zaiko.getShohinIdoList().stream().map(z -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			ret.put("timestamp", z.getTimestamp().toString("HH:mm:ss"));
 			ret.put("kubun", z.getKubun().name());
@@ -97,7 +98,9 @@ public class U11G001Controller extends ControllerBase {
 			return ret;
 		}).collect(Collectors.toList());
 		// set model
-		model.addObject("shohinIdoList", shohinIdoLisst);
+		model.addObject("shohinIdoList", shohinIdoList);
+		model.addObject("shohinName", shohin.getName());
+		model.addObject("kurikoshiZaiko", _zaiko.getKurikoshiNumber());
 		model.addForm(form);
 		// return
 		return ResponseEntity.ok(model);
