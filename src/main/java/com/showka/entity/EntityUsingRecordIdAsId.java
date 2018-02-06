@@ -23,6 +23,7 @@ public abstract class EntityUsingRecordIdAsId extends EntityBase {
 
 	@Override
 	public void setRecordId(String recordId) {
+		super.setRecordId(recordId);
 		this.id = recordId;
 	}
 }
