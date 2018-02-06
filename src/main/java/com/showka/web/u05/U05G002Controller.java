@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.KokyakuDomain;
-import com.showka.domain.ShohinIdoDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.UriageRirekiDomain;
@@ -32,10 +31,8 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
-import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.z00.i.MShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
-import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.NotExistException;
@@ -72,12 +69,6 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private UriageRirekiCrudService uriageRirekiCrudService;
-
-	@Autowired
-	private ShohinIdoSpecification shohinIdoSpecification;
-
-	@Autowired
-	private ShohinIdoCrudService shohinIdoCrudService;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -194,16 +185,12 @@ public class U05G002Controller extends ControllerBase {
 		// domain
 		UriageDomain uriage = buildDomainFromForm(form);
 
-		// shohin ido
-		List<ShohinIdoDomain> idoList = shohinIdoSpecification.buildShohinIdo(uriage);
-
 		// validate
 		uriageValidateService.validateForRegister(uriage);
 		uriageValidateService.validate(uriage);
 
 		// save
 		uriageCrudService.save(uriage);
-		idoList.forEach(ido -> shohinIdoCrudService.save(ido));
 
 		// jump refer
 		form.setSuccessMessage("登録成功");
