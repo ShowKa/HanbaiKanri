@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<link th:replace="common/head :: common_link" />
+<script src="/u17/u17g001.js"></script>
+</head>
+
+<body ng-app="App">
+	<div th:replace="common/header :: common_header"></div>
+	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
+	<div class="bootstrap-iso">
+		<div
+			class="container"
+			ng-controller="MainController">
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>部署コード</th>
+							<th>部署名</th>
+							<th>営業日</th>
+						</tr>
+					</thead>
+					<tbody id="bushoList">
+						<tr ng-repeat="busho in bushoList">
+							<td class="col-sm-1">{{busho.code}}</td>
+							<td class="col-sm-1">{{busho.name}}</td>
+							<td class="col-sm-1">{{busho.eigyoDate}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div th:replace="common/footer :: common_footer"></div>
+</body>
+</html>

@@ -9,6 +9,9 @@ public interface BushoCrudService {
 
 	public BushoDomain getDomain(String pk);
 
+	public List<BushoDomain> getDomains();
+
+	@Deprecated
 	public List<MBusho> getMBushoList();
 
 }
