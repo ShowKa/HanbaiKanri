@@ -1,5 +1,7 @@
 package com.showka.service.crud.u17;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +23,7 @@ public class BushoDateCrudServiceImplTest extends ServiceCrudTestCase {
 	private Object[] M_BUSHO_DATE_01 = { "r-BS01", d("20170101"), "r-BS01" };
 
 	@Test
+	@Transactional
 	public void test01_toNextEigyoDate() throws Exception {
 		// insert DB
 		super.deleteAndInsert(M_BUSHO_DATE, M_BUSHO_DATE_COLUMN, M_BUSHO_DATE_01);

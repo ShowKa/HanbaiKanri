@@ -1,6 +1,5 @@
 package com.showka.service.crud.z00;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -27,32 +26,16 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 	private BushoCrudServiceImpl service;
 
 	/**
-	 * table name
-	 */
-	private static final String TABLE_NAME = "m_busho";
-
-	/**
-	 * table name
-	 */
-	private static final String M_BUSHO_DATE = "m_busho_date";
-
-	/**
-	 * columns
-	 */
-	private static final String[] COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
-	private static final String[] M_BUSHO_DATE_COLUMN = { "busho_id", "eigyo_date", "record_id" };
-
-	/**
 	 * test data
 	 */
 	private static final Object[] VALUE01 = { "BS01", "01", "01", "部署01", "BS01" };
 	private static final Object[] VALUE02 = { "BS02", "99", "02", "部署02", "BS02" };
-	private static final Object[] M_BUSHO_DATE_VALUE_01 = { "BS01", new Date("2017/11/12"), "BS01" };
-	private static final Object[] M_BUSHO_DATE_VALUE_02 = { "BS02", new Date("2017/11/12"), "BS02" };
+	private static final Object[] M_BUSHO_DATE_VALUE_01 = { "BS01", d("20171112"), "BS01" };
+	private static final Object[] M_BUSHO_DATE_VALUE_02 = { "BS02", d("20171112"), "BS02" };
 
 	@Before
 	public void deletTable() {
-		super.deleteAll(TABLE_NAME);
+		super.deleteAll(M_BUSHO);
 		super.deleteAll(M_BUSHO_DATE);
 	}
 
@@ -63,7 +46,7 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 	@Transactional
 	public void test_getDomain1() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 		super.insert(M_BUSHO_DATE, M_BUSHO_DATE_COLUMN, M_BUSHO_DATE_VALUE_01, M_BUSHO_DATE_VALUE_02);
 
 		String id = "BS02";
@@ -102,13 +85,24 @@ public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
 	@Transactional
 	public void test_getMBushoList() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		// getDomain
 		List<MBusho> bushoList = service.getMBushoList();
 
 		assertEquals(2, bushoList.size());
 
+	}
+
+	/**
+	 * 全部署取得
+	 */
+	@Test
+	public void test_getDomains() throws Exception {
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO_DATE, M_BUSHO_DATE_COLUMN, M_BUSHO_DATE_VALUE_01, M_BUSHO_DATE_VALUE_02);
+		List<BushoDomain> actual = service.getDomains();
+		assertEquals(2, actual.size());
 	}
 
 }
