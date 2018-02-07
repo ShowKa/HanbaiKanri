@@ -81,11 +81,12 @@ public class U17G001Controller extends ControllerBase {
 	public ResponseEntity<?> close(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// input
 		String bushoCode = form.getBushoCode();
+		BushoDomain busho = bushoCrudService.getDomain(bushoCode);
 		EigyoDate eigyoDate = new EigyoDate(form.getEigyoDate());
 		// validate
 		bushoDateValidateService.validateForClosing(bushoCode, eigyoDate);
 		// close
-		bushoDateCrudService.toNextEigyoDate(bushoCode);
+		bushoDateCrudService.toNextEigyoDate(busho);
 		// set model
 		form.setSuccessMessage("締め完了（部署コード : " + bushoCode + "）");
 		model.addForm(form);
