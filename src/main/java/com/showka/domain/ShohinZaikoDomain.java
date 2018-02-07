@@ -24,8 +24,8 @@ public class ShohinZaikoDomain extends DomainBase {
 	/** 商品. */
 	private ShohinDomain shohin;
 
-	/** 在庫. */
-	private Integer number;
+	/** 繰越在庫数. */
+	private Integer kurikoshiNumber;
 
 	/** 商品移動 */
 	private List<ShohinIdoOnDate> shohinIdoList;
@@ -40,7 +40,7 @@ public class ShohinZaikoDomain extends DomainBase {
 		int idoNumber = shohinIdoList.stream().mapToInt(ido -> {
 			return ido.getIncreaseOrDecreaseNumber();
 		}).sum();
-		return number + idoNumber;
+		return kurikoshiNumber + idoNumber;
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class ShohinZaikoDomain extends DomainBase {
 		}).mapToInt(ido -> {
 			return ido.getIncreaseOrDecreaseNumber();
 		}).sum();
-		return number + idoNumber;
+		return kurikoshiNumber + idoNumber;
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class ShohinZaikoDomain extends DomainBase {
 	 * @return 繰越数
 	 */
 	public Integer getKurikoshiNumber() {
-		return number;
+		return kurikoshiNumber;
 	}
 
 	// override method

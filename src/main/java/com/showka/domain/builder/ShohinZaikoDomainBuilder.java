@@ -21,8 +21,8 @@ public class ShohinZaikoDomainBuilder
 	/** shohin */
 	private ShohinDomain shohin;
 
-	/** zaiko */
-	private Integer zaiko;
+	/** number */
+	private Integer kurikoshiNumber;
 
 	/** shohinIdoList */
 	private List<ShohinIdoOnDate> shohinIdoList;
@@ -39,7 +39,7 @@ public class ShohinZaikoDomainBuilder
 		builder.withBusho(domain.getBusho());
 		builder.withDate(domain.getDate());
 		builder.withShohin(domain.getShohin());
-		builder.withZaiko(domain.getNumber());
+		builder.withKurikoshiNumber(domain.getNumber());
 		builder.withShohinIdoList(domain.getShohinIdoList());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
@@ -47,7 +47,7 @@ public class ShohinZaikoDomainBuilder
 
 	@Override
 	protected ShohinZaikoDomain createDomainObject() {
-		ShohinZaikoDomain domain = new ShohinZaikoDomain(busho, date, shohin, zaiko, shohinIdoList);
+		ShohinZaikoDomain domain = new ShohinZaikoDomain(busho, date, shohin, kurikoshiNumber, shohinIdoList);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -122,11 +122,11 @@ public class ShohinZaikoDomainBuilder
 	 *            zaiko
 	 * @return {@link ShohinZaikoDomainBuilder}
 	 */
-	public ShohinZaikoDomainBuilder withZaiko(final Integer zaiko) {
+	public ShohinZaikoDomainBuilder withKurikoshiNumber(final Integer number) {
 		addConfigurator(new BuilderConfigurator<ShohinZaikoDomainBuilder>() {
 			@Override
 			public void configure(ShohinZaikoDomainBuilder builder) {
-				builder.zaiko = zaiko;
+				builder.kurikoshiNumber = number;
 			}
 		});
 		return getThis();

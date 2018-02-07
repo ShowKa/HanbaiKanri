@@ -61,6 +61,13 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 	}
 
 	/**
+	 * 年月日の数字から生成。ただし時刻は00:00:00.000
+	 */
+	public TheTimestamp(int year, int month, int day) {
+		this.timestamp = LocalDateTime.of(year, month, day, 0, 0, 0, 0);
+	}
+
+	/**
 	 * 数字から生成
 	 */
 	public TheTimestamp(int year, int month, int day, int hour, int minute, int second, int milliSecond) {

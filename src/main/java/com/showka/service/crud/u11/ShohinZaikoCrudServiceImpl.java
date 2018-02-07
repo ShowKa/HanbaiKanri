@@ -50,7 +50,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 			b.withDate(date);
 			b.withRecordId("");
 			b.withShohin(shohin);
-			b.withZaiko(0);
+			b.withKurikoshiNumber(0);
 			b.withShohinIdoList(new ArrayList<ShohinIdoOnDate>());
 			// build & return
 			return b.build();
@@ -62,7 +62,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 		b.withDate(date);
 		b.withRecordId(e.getRecordId());
 		b.withShohin(shohin);
-		b.withZaiko(e.getNumber());
+		b.withKurikoshiNumber(e.getNumber());
 		// 商品移動リスト
 		List<ShohinIdoDomain> _idoList = shohinIdoCrudService.getShohinIdoListInDate(busho, date, shohin);
 		List<ShohinIdoOnDate> idoList = _idoList.stream().map(ido -> {
