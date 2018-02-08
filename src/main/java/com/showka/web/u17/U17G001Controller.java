@@ -84,7 +84,7 @@ public class U17G001Controller extends ControllerBase {
 		BushoDomain busho = bushoCrudService.getDomain(bushoCode);
 		EigyoDate eigyoDate = new EigyoDate(form.getEigyoDate());
 		// validate
-		bushoDateValidateService.validateForClosing(bushoCode, eigyoDate);
+		bushoDateValidateService.validateForClosing(busho, eigyoDate);
 		// close
 		bushoDateCrudService.toNextEigyoDate(busho);
 		// set model
