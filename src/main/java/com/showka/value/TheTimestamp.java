@@ -70,8 +70,8 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 	/**
 	 * 数字から生成
 	 */
-	public TheTimestamp(int year, int month, int day, int hour, int minute, int second, int milliSecond) {
-		this.timestamp = LocalDateTime.of(year, month, day, hour, minute, second, milliSecond);
+	public TheTimestamp(int year, int month, int day, int hour, int minute, int second, int nanoSecond) {
+		this.timestamp = LocalDateTime.of(year, month, day, hour, minute, second, nanoSecond);
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 
 	@Override
 	public String toString() {
-		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
+		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSSSSS");
 		return timestamp.format(f);
 	}
 
