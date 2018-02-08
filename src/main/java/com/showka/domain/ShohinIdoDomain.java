@@ -27,7 +27,7 @@ public class ShohinIdoDomain extends DomainBase implements Comparable<ShohinIdoD
 	/** 商品移動タイムスタンプ(営業日とは関係のないシステム日付). */
 	private TheTimestamp timestamp;
 
-	/** 売上明細. */
+	/** 商品移動明細. */
 	private List<ShohinIdoMeisaiDomain> meisai;
 
 	// public method

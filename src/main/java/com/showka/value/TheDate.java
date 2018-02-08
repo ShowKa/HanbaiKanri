@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TheDate extends ValueBase implements Comparable<TheDate> {
 
-	private LocalDate date = LocalDate.MIN;
+	private LocalDate date = LocalDate.now();
 
 	public TheDate(java.util.Date date) {
 		this.date = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
