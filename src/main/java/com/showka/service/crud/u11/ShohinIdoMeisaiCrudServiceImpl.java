@@ -35,13 +35,14 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 		pk.setShohinIdoId(id);
 		Optional<TShohinIdoMeisai> _e = repo.findById(pk);
 		TShohinIdoMeisai entity = _e.isPresent() ? _e.get() : new TShohinIdoMeisai();
+		entity.setNumber(shohinIdoMeisai.getNumber());
+		entity.setPk(pk);
+		entity.setShohinId(shohinIdoMeisai.getShohinDomain().getRecordId());
+		// record id
 		if (!_e.isPresent()) {
 			String recordId = UUID.randomUUID().toString();
 			entity.setRecordId(recordId);
 		}
-		entity.setNumber(shohinIdoMeisai.getNumber());
-		entity.setPk(pk);
-		entity.setShohinId(shohinIdoMeisai.getShohinDomain().getRecordId());
 		// occ
 		entity.setVersion(shohinIdoMeisai.getVersion());
 		// record id
@@ -53,6 +54,7 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 	@Override
 	public void delete(TShohinIdoMeisaiPK pk, int version) {
 		TShohinIdoMeisai entity = repo.getOne(pk);
+		// occ
 		entity.setVersion(version);
 		repo.delete(entity);
 	}
@@ -76,7 +78,7 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 		}).forEach(o -> {
 			TShohinIdoMeisaiPK _id = new TShohinIdoMeisaiPK();
 			_id.setMeisaiNumber(o.getMeisaiNumber());
-			_id.setShohinIdoId(o.getShohinDomain().getRecordId());
+			_id.setShohinIdoId(id);
 			delete(_id, o.getVersion());
 		});
 		// save
