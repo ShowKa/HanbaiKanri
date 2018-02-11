@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TheDate extends ValueBase implements Comparable<TheDate> {
 
-	private LocalDate date = LocalDate.MIN;
+	private LocalDate date = LocalDate.now();
 
 	public TheDate(java.util.Date date) {
 		this.date = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -21,7 +21,7 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 
 	public TheDate(Calendar calendar) {
 		int y = calendar.get(Calendar.YEAR);
-		int m = calendar.get(Calendar.MONTH);
+		int m = calendar.get(Calendar.MONTH + 1);
 		int d = calendar.get(Calendar.DATE);
 		this.date = LocalDate.of(y, m, d);
 	}

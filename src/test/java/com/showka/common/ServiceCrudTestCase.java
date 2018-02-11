@@ -45,7 +45,7 @@ public abstract class ServiceCrudTestCase extends TestCaseBase {
 	protected HttpSession session;
 
 	@Autowired
-	private Entry e;
+	protected Entry e;
 
 	@Before
 	public void setAuthToSecurityContext() {

@@ -4,6 +4,11 @@ import java.time.LocalDate;
 import java.util.Calendar;
 
 public class EigyoDate extends TheDate {
+
+	public EigyoDate() {
+		super();
+	}
+
 	public EigyoDate(Calendar calendar) {
 		super(calendar);
 	}
