@@ -198,6 +198,24 @@ function showErroeMessage(message) {
 }
 
 /**
+ * 成功メッセージ表示.
+ * 
+ * @param message
+ *            メッセージ
+ */
+function showSuccessMessage(message) {
+	var $message = $("#successMessage");
+	if ($message.length > 0) {
+		$message.text(message).show();
+	} else {
+		var $new = $("<div>").attr("id", "successMessage").addClass(
+				'alert alert-success').text(message);
+		$("#message-container").append($new);
+	}
+}
+
+
+/**
  * エラーメッセージを消す。
  */
 function hideErrorMessage() {

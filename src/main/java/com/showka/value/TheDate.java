@@ -2,6 +2,7 @@ package com.showka.value;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
 import lombok.AllArgsConstructor;
@@ -52,6 +53,22 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return this.date.isEqual(other.date);
 	}
 
+	public TheDate plusDays(long daysToAdd) {
+		return new TheDate(this.date.plusDays(daysToAdd));
+	}
+
+	/**
+	 * 文字列フォーマット.
+	 * 
+	 * @param pattern
+	 *            フォーマットパターン
+	 * @return フォーマット後のString
+	 */
+	public String toString(String pattern) {
+		DateTimeFormatter f = DateTimeFormatter.ofPattern(pattern);
+		return date.format(f);
+	}
+
 	@Override
 	public boolean isEmpty() {
 		if (this.date == null) {
@@ -71,7 +88,8 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 
 	@Override
 	public String toString() {
-		return date.toString();
+		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		return date.format(f);
 	}
 
 	@Override

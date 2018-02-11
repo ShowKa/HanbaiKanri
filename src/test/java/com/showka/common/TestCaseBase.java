@@ -1,8 +1,32 @@
 package com.showka.common;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import junit.framework.TestCase;
 
 public abstract class TestCaseBase extends TestCase {
+
+	/** date format yyyyMMdd . */
+	private static final DateFormat DF = new SimpleDateFormat("yyyyMMdd");
+
+	public static Date d(String yyyyMMdd) {
+		try {
+			return DF.parse(yyyyMMdd);
+		} catch (ParseException e) {
+			throw new RuntimeException("unexpected date formater : " + yyyyMMdd);
+		}
+	}
+
+	// 部署
+	protected static final String M_BUSHO = "m_busho";
+	protected static final String[] M_BUSHO_COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
+
+	// 部署日付
+	protected static final String M_BUSHO_DATE = "m_busho_date";
+	protected static final String[] M_BUSHO_DATE_COLUMN = { "busho_id", "eigyo_date", "record_id" };
 
 	// 顧客
 	protected static final String M_KOKYAKU = "m_kokyaku";
