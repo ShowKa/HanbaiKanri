@@ -3,6 +3,7 @@ package com.showka.system;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -193,6 +194,28 @@ public class EmptyProxy {
 				});
 				if (isKubun) {
 					method.setBody("return " + returnType.getName() + ".EMPTY;");
+				}
+
+				// Collection
+				boolean isCollection = Arrays.asList(interfaces).stream().anyMatch(i -> {
+					try {
+						return i.equals(cp.get(Collection.class.getName()));
+					} catch (NotFoundException e) {
+						throw new SystemException("ClassPool にないかもしれません : " + Collection.class.getName(), e);
+					}
+				});
+				if (isCollection) {
+					if (returnType.getName().equals("java.util.Collection")) {
+						method.setBody("return new java.util.ArrayList();");
+					} else if (returnType.getName().equals("java.util.List")) {
+						method.setBody("return new java.util.ArrayList();");
+					} else if (returnType.getName().equals("java.util.Set")) {
+						method.setBody("return new java.util.HashSet();");
+					} else if (returnType.getName().equals("java.util.Map")) {
+						method.setBody("return new java.util.HashMap();");
+					} else {
+						method.setBody("return new " + returnType.getName() + "();");
+					}
 				}
 
 				// add method
