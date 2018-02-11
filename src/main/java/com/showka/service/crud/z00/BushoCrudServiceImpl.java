@@ -1,6 +1,7 @@
 package com.showka.service.crud.z00;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,10 +49,17 @@ public class BushoCrudServiceImpl implements BushoCrudService {
 	}
 
 	@Override
+	public List<BushoDomain> getDomains() {
+		List<MBusho> bushoList = repo.findAll();
+		return bushoList.stream().map(busho -> {
+			return getDomain(busho.getCode());
+		}).collect(Collectors.toList());
+	}
+
+	@Override
 	public List<MBusho> getMBushoList() {
 
 		return repo.findAll();
 
 	}
-
 }
