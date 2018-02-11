@@ -84,4 +84,36 @@ public abstract class TestCaseBase extends TestCase {
 			"hanbai_tanka",
 			"record_id" };
 
+	// 商品
+	protected static final String M_SHOHIN = "M_SHOHIN";
+	protected static final String[] M_SHOHIN_COLUMN = { "code", "name", "hyojun_tanka", "record_id" };
+
+	// 商品在庫
+	protected static final String T_SHOHIN_ZAIKO = "t_shohin_zaiko";
+	protected static final String[] T_SHOHIN_ZAIKO_COLUMN = {
+			"busho_id",
+			"eigyo_date",
+			"shohin_id",
+			"number",
+			"record_id" };
+
+	// 商品移動
+	protected static final String T_SHOHIN_IDO = "t_shohin_ido";
+	protected static final String[] T_SHOHIN_IDO_COLUMN = {
+			"id",
+			"busho_id",
+			"date",
+			"kubun",
+			"sagyo_timestamp",
+			"record_id" };
+
+	// 商品移動明細
+	protected static final String T_SHOHIN_IDO_MEISAI = "t_shohin_ido_meisai";
+	protected static final String[] T_SHOHIN_IDO_MEISAI_COLUMN = {
+			"shohin_ido_id",
+			"meisai_number",
+			"shohin_id",
+			"number",
+			"record_id" };
+
 }

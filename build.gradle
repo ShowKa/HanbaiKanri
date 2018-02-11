@@ -47,7 +47,7 @@ dependencies {
 	compile 'org.apache.commons:commons-collections4:4.1'
 	
 	// test
-	testCompile group: 'org.jmockit', name: 'jmockit', version: '1.27'	
+	testCompile group: 'org.jmockit', name: 'jmockit', version: '1.30'	
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('com.ninja-squad:DbSetup:2.0.0')
 	testCompile group: 'org.dbunit', name: 'dbunit', version: '2.4.3'
