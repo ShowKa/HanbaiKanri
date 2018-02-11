@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +80,7 @@ public class U17G001Controller extends ControllerBase {
 	 *
 	 */
 	@RequestMapping(value = "/u17g001/close", method = RequestMethod.POST)
+	@Transactional
 	public ResponseEntity<?> close(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// input
 		String bushoCode = form.getBushoCode();
@@ -88,7 +91,7 @@ public class U17G001Controller extends ControllerBase {
 		// close
 		bushoDateCrudService.toNextEigyoDate(busho);
 		// set model
-		form.setSuccessMessage("締め完了（部署コード : " + bushoCode + "）");
+		form.setSuccessMessage("締め完了（部署コード : " + bushoCode + ", 営業日 : " + eigyoDate + "）");
 		model.addForm(form);
 		// return
 		return ResponseEntity.ok(model);

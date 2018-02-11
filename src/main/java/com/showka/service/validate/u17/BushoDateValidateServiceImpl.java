@@ -22,7 +22,7 @@ public class BushoDateValidateServiceImpl implements BushoDateValidateService {
 		MBushoDate dateEntity = repo.getOne(busho.getRecordId());
 		TheDate trueDate = new TheDate(dateEntity.getEigyoDate());
 		if (!trueDate.isEqual(today)) {
-			throw new CanNotUpdateException("すでに営業日が更新されている可能性があります（現在の営業日 : + " + trueDate + "）");
+			throw new CanNotUpdateException("すでに営業日が更新されている可能性があります（現在の営業日 : " + trueDate + "）");
 		}
 	}
 }
