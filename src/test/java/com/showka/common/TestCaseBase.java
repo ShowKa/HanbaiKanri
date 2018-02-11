@@ -64,6 +64,15 @@ public abstract class TestCaseBase extends TestCase {
 	protected static final String M_SHOHIN = "M_SHOHIN";
 	protected static final String[] M_SHOHIN_COLUMN = { "code", "name", "hyojun_tanka", "record_id" };
 
+	// 商品在庫
+	protected static final String T_SHOHIN_ZAIKO = "t_shohin_zaiko";
+	protected static final String[] T_SHOHIN_ZAIKO_COLUMN = {
+			"busho_id",
+			"eigyo_date",
+			"shohin_id",
+			"number",
+			"record_id" };
+
 	// 商品移動
 	protected static final String T_SHOHIN_IDO = "t_shohin_ido";
 	protected static final String[] T_SHOHIN_IDO_COLUMN = {
