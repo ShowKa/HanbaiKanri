@@ -67,6 +67,5 @@ function($scope, $http, zaikoService, common, meisaiService) {
 		$scope.shohinIdoList = {};
 		$scope.kurikoshiZaiko = null;
 		$scope.shohinNameForCaption = "";
-		$scope.$apply();
 	};
 } ]);
