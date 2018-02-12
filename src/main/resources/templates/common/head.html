@@ -48,6 +48,8 @@
 				if (model.form && model.form.successMessage) {
 					showSuccessMessage(model.form.successMessage);
 				}
+				// hide error message
+				hideErrorMessage();
 			}, errorCallback);
 		};
 	} ]);
