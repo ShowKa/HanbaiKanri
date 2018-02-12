@@ -3,7 +3,7 @@ var _ = {};
 /**
  * 単純なAjaxリクエスト.
  */
-_.simpleRequest = function (url, form, successCallback, erroCallback) {
+_.simpleRequest = function(url, form, successCallback, erroCallback) {
 	var url = url + "?" + $("#" + form).serialize();
 	$.ajax({
 		type : "POST",
@@ -32,7 +32,7 @@ _.simpleRequest = function (url, form, successCallback, erroCallback) {
  * @param targetId
  *            検索結果のリストのid属性値
  */
-function searchAndBuildList(url, formId, targetId) {
+_.searchAndBuildList = function(url, formId, targetId) {
 	var paramUrl = url + "?" + $("#" + formId).serialize();
 	$.ajax({
 		type : "GET",
@@ -42,7 +42,7 @@ function searchAndBuildList(url, formId, targetId) {
 			$("#" + targetId).html(data);
 		},
 		error : function(data, status, xhr) {
-			showErroeMessage(data.responseText);
+			_.showErroeMessage(data.responseText);
 		}
 	});
 }
@@ -65,7 +65,7 @@ function searchAndBuildList(url, formId, targetId) {
  * @param redirect.param
  *            リダイレクト先に渡すパラメータ
  */
-function crud(param) {
+_.crud = function(param) {
 
 	// set parameters
 	var url = param.url;
@@ -94,17 +94,13 @@ function crud(param) {
 				if (form) {
 					// リダイレクト先にメッセージを引き継ぐ
 					if (form.successMessage) {
-						$form
-								.appendInput("successMessage",
-										form.successMessage);
+						$form.appendInput("successMessage", form.successMessage);
 					}
 					if (form.infoMessage) {
 						$form.appendInput("infoMessage", form.infoMessage);
 					}
 					if (form.warningMessage) {
-						$form
-								.appendInput("warningMessage",
-										form.warningMessage);
+						$form.appendInput("warningMessage", form.warningMessage);
 					}
 					if (form.errorMessage) {
 						$form.appendInput("errorMessage", form.errorMessage);
@@ -120,52 +116,15 @@ function crud(param) {
 		error : function(data, status, xhr) {
 			if (data.status === 400) {
 				console.log(data);
-				showErroeMessage(data.responseJSON.message);
+				_.showErroeMessage(data.responseJSON.message);
 				return;
 			} else if (data.status === 409) {
-				showErroeMessage(data.responseJSON.message);
+				_.showErroeMessage(data.responseJSON.message);
 				return;
 			}
 			$("html").html(data.responseText);
 		}
 	});
-}
-
-function validate(param) {
-	// set parameters
-	var url = param.url;
-	var detailName = param.detail.name;
-	var detailIndex = param.detail.index;
-
-	var $form;
-	if (param.form instanceof String) {
-		$form = $(param.form);
-	} else {
-		$form = param.form;
-	}
-
-	var $clonedForm = $form.clone();
-	var $inputs = $clonedForm.find("[name]");
-	var data = {};
-	var reg = new RegExp("^" + detailName + "\\[\\d\\]");
-	var regStrictly = new RegExp("^" + detailName + "\\[" + detailIndex + "\\]");
-	$inputs.each(function() {
-		if (this.name.match(reg)) {
-			if (this.name.match(regStrictly)) {
-				data[this.name] = this.value;
-			}
-		} else {
-			data[this.name] = this.value;
-		}
-	});
-
-	$.ajax({
-		type : "POST",
-		url : url,
-		dataType : "json",
-		data : data
-	});
-
 }
 
 /**
@@ -176,7 +135,7 @@ function validate(param) {
  * @param formId
  *            formのid属性値
  */
-function submitForm(url, formId) {
+_.submitForm = function(url, formId) {
 	$("#" + formId).attr("action", url).submit();
 }
 
@@ -186,13 +145,12 @@ function submitForm(url, formId) {
  * @param message
  *            メッセージ
  */
-function showErroeMessage(message) {
+_.showErroeMessage = function(message) {
 	var $message = $("#errorMessage");
 	if ($message.length > 0) {
 		$message.text(message).show();
 	} else {
-		var $new = $("<div>").attr("id", "errorMessage").addClass(
-				'alert alert-danger').text(message);
+		var $new = $("<div>").attr("id", "errorMessage").addClass('alert alert-danger').text(message);
 		$("#message-container").append($new);
 	}
 }
@@ -203,23 +161,66 @@ function showErroeMessage(message) {
  * @param message
  *            メッセージ
  */
-function showSuccessMessage(message) {
+_.showSuccessMessage = function(message) {
 	var $message = $("#successMessage");
 	if ($message.length > 0) {
 		$message.text(message).show();
 	} else {
-		var $new = $("<div>").attr("id", "successMessage").addClass(
-				'alert alert-success').text(message);
+		var $new = $("<div>").attr("id", "successMessage").addClass('alert alert-success').text(message);
 		$("#message-container").append($new);
 	}
 }
 
-
 /**
  * エラーメッセージを消す。
  */
-function hideErrorMessage() {
+_.hideErrorMessage = function() {
 	$("#errorMessage").hide();
+}
+
+/**
+ * 要素の活性化状態をモードで切替る。
+ */
+_.swithElementActivationByMode = function() {
+	var $elements = $(".whenRead,.whenRegister,.whenUpdate");
+	if (isReadMode()) {
+		$elements.each(function(event) {
+			var $this = $(this);
+			if ($this.hasClass("whenRead")) {
+				$this.activate();
+			} else {
+				$this.inactivate();
+			}
+		});
+	} else if (isRegisterMode()) {
+		$elements.each(function(event) {
+			var $this = $(this);
+			if ($this.hasClass("whenRegister")) {
+				$this.activate();
+			} else {
+				$this.inactivate();
+			}
+		});
+	} else if (isUpdateMode()) {
+		$elements.each(function(event) {
+			var $this = $(this);
+			if ($this.hasClass("whenUpdate")) {
+				$this.activate();
+			} else {
+				$this.inactivate();
+			}
+		});
+	}
+}
+
+/**
+ * escape jquery's selector value
+ * 
+ * @param val
+ * @returns
+ */
+function selectorEscape(val) {
+	return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
 }
 
 /**
@@ -279,55 +280,11 @@ function hideErrorMessage() {
 	};
 })(jQuery);
 
-/**
- * 要素の活性化状態をモードで切替る。
- */
-function swithElementActivationByMode() {
-	var $elements = $(".whenRead,.whenRegister,.whenUpdate");
-	if (isReadMode()) {
-		$elements.each(function(event) {
-			var $this = $(this);
-			if ($this.hasClass("whenRead")) {
-				$this.activate();
-			} else {
-				$this.inactivate();
-			}
-		});
-	} else if (isRegisterMode()) {
-		$elements.each(function(event) {
-			var $this = $(this);
-			if ($this.hasClass("whenRegister")) {
-				$this.activate();
-			} else {
-				$this.inactivate();
-			}
-		});
-	} else if (isUpdateMode()) {
-		$elements.each(function(event) {
-			var $this = $(this);
-			if ($this.hasClass("whenUpdate")) {
-				$this.activate();
-			} else {
-				$this.inactivate();
-			}
-		});
-	}
-}
-
-/**
- * escape jquery's selector value
- * @param val
- * @returns
- */
-function selectorEscape(val) {
-	return val.replace(/[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g, '\\$&');
-}
-
 $(document).ready(function() {
 	// set select readonly
 	$("body").on("mousedown keydown", "select[readonly]", function(e) {
 		// tab
-		if(e.which === 9) {
+		if (e.which === 9) {
 			return;
 		}
 		return false;

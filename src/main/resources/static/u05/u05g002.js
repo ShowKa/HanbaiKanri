@@ -77,23 +77,19 @@ function($scope, $http, denpyoService, common, meisaiService) {
 		};
 		denpyoService.validateMeisai(header, meisai, callback);
 	}
-
 	// 明細入力完了
 	$scope.done = function(meisai) {
 		validateMeisai(meisai, function () {
 			meisai.editDone();
 		});
 	};
-
 	// 新規登録
 	$scope.register = function() {
-
 		// check
 		if (!meisaiService.check($scope.meisaiList)) {
 			return;
 		}
-
-		crud({
+		_.crud({
 			url : "/u05g002/register",
 			formId : "uriageDenpyo",
 			redirect : {
@@ -105,16 +101,13 @@ function($scope, $http, denpyoService, common, meisaiService) {
 			}
 		});
 	};
-
 	// 更新
 	$scope.update = function() {
-
 		// check
 		if (!meisaiService.check($scope.meisaiList)) {
 			return;
 		}
-
-		crud({
+		_.crud({
 			url : "/u05g002/update",
 			formId : "uriageDenpyo",
 			redirect : {
@@ -126,7 +119,6 @@ function($scope, $http, denpyoService, common, meisaiService) {
 			}
 		});
 	};
-
 	// リストモデルに新しい明細行を追加する
 	$scope.addMeisai = function() {
 		if($scope.header.editing == true && $scope.isRegisterMode()) {
@@ -138,7 +130,6 @@ function($scope, $http, denpyoService, common, meisaiService) {
 			$scope.meisaiList.push(createNewMeisai());
 		}
 	};
-	
 	// 履歴取得
 	$scope.getRireki = function() {
 		var callback = function(model) {
@@ -158,34 +149,29 @@ function($scope, $http, denpyoService, common, meisaiService) {
 		_.simpleRequest("/u05g002/getRireki", "uriageDenpyo", callback);
 		return;
 	};
-	
+	// 新規明細作成
 	var createNewMeisai = function () {
 		var m = denpyoService.createMeisai();
 		meisaiService.convertToMeisai(m);
 		m.edit();
 		return m;
 	}
-
 	// 編集開始
 	$scope.edit = function(meisai) {
 		meisai.edit();
 	};
-
 	// 任意の明細行をリストモデルから取り除く
 	$scope.removeMeisai = function(target) {
 		meisaiService.remove(target, $scope.meisaiList);
 	};
-
 	// 引数から小計を計算して返す
 	$scope.getSubtotal = function(meisai) {
 		return denpyoService.getSubtotal(meisai);
 	};
-
 	// 明細小計の合計
 	$scope.getTotalAmount = function(meisaiList) {
 		return denpyoService.getTotalAmount(meisaiList);
 	};
-
 	// 初期化
 	$scope.initialize = function() {
 		$scope.header = {
@@ -201,7 +187,6 @@ function($scope, $http, denpyoService, common, meisaiService) {
 			meisaiService.convertCollectionToMeisai(newMeisaiList);
 		});
 	};
-	
 	// 更新画面へ
 	$scope.updateForm = function() {
 		if(!!$scope.isKeijoZumi == true) {
@@ -209,12 +194,11 @@ function($scope, $http, denpyoService, common, meisaiService) {
 				return;
 			}
 		}
-		submitForm("/u05g002/updateForm", "uriageDenpyo");
+		_.submitForm("/u05g002/updateForm", "uriageDenpyo");
 	};
-
 	// 削除
 	$scope.delete = function() {
-		crud({
+		_.crud({
 			url : "/u05g002/delete",
 			formId : "uriageDenpyo",
 			redirect : {
@@ -222,10 +206,9 @@ function($scope, $http, denpyoService, common, meisaiService) {
 			}
 		});
 	};
-	
 	// キャンセル
 	$scope.cancel = function() {
-		crud({
+		_.crud({
 			url : "/u05g002/cancel",
 			formId : "uriageDenpyo",
 			redirect : {
@@ -237,7 +220,5 @@ function($scope, $http, denpyoService, common, meisaiService) {
 			}
 		});
 	};
-
 	$scope.initialize();
 } ]);
-

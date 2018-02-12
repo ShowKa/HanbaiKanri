@@ -33,7 +33,7 @@
 	function($scope, $http, $filter) {
 		// エラーメッセージ表示
 		var errorCallback = function(response) {
-			showErroeMessage(response.data.message);
+			_.showErroeMessage(response.data.message);
 		};
 		// post
 		this.post = function(url, params, successCallback) {
@@ -46,10 +46,10 @@
 				successCallback(model);
 				// show success message if exists
 				if (model.form && model.form.successMessage) {
-					showSuccessMessage(model.form.successMessage);
+					_.showSuccessMessage(model.form.successMessage);
 				}
 				// hide error message
-				hideErrorMessage();
+				_.hideErrorMessage();
 			}, errorCallback);
 		};
 	} ]);
@@ -134,12 +134,12 @@
 	
 		this.check = function (meisaiList) {
 			if (meisaiList.length === 0) {
-				showErroeMessage("明細を追加してください。");
+				_.showErroeMessage("明細を追加してください。");
 				return false;
 			}
 			for ( var l of meisaiList) {
 				if (l.editing == true) {
-					showErroeMessage("編集中の明細が残っています。");
+					_.showErroeMessage("編集中の明細が残っています。");
 					return false;
 				}
 			}
