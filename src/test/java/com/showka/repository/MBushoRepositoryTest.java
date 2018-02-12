@@ -219,12 +219,10 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	// 結果：失敗
 	@Test(expected = EntityNotFoundException.class)
 	public void test_08() {
-
-		super.insert(TABLE_NAME, COLUMN, VALUE02);
-
-		MBusho result = repository.getOne("BS01");
-		result.getCode();
-
+		super.deleteAll(TABLE_NAME);
+		MBusho result = repository.getOne("XXX");
+		// error occurs here
+		result.getName();
 	}
 
 	// delete 該当する部署を削除
