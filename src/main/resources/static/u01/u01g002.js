@@ -11,7 +11,7 @@ function register() {
 				}
 			}
 		};
-		crud(param);
+		_.crud(param);
 	}
 }
 function update() {
@@ -27,7 +27,7 @@ function update() {
 				}
 			}
 		};
-		crud(param);
+		_.crud(param);
 	}
 }
 function deleteKokyaku() {
@@ -38,7 +38,7 @@ function deleteKokyaku() {
 			url : "/u01g001"
 		}
 	};
-	crud(param);
+	_.crud(param);
 }
 function updateForm() {
    var form = document.forms["registerForm"];
@@ -67,6 +67,6 @@ function kokyakuValid(form){
 	return form.valid() && nyukinKakeInfoValidResult;
 }
 $(document).ready(function() {
-	swithElementActivationByMode();
+	_.swithElementActivationByMode();
 	controlNyukinKakeInfoForm();
 });

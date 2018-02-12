@@ -1,39 +1,45 @@
-ngModules.controller('MainController', [ '$scope', '$http', 'common', 'meisai',
-// main controller
-function($scope, $http, common, meisaiService) {
-	// エラーメッセージ表示
-	var errorCallback = function(response) {
-		showErroeMessage(response.data.message);
+ngModules.service('close', [ '$rootScope', '$filter', '$httpw',
+// モデルの操作・取得
+function($scope, $filter, $httpw) {
+	/**
+	 * 部署リスト取得.
+	 */
+	this.getBushoList = function(callback) {
+		$httpw.post("/u17g001/getBushoList", {}, callback);
 	};
-	// 部署リスト
+	/**
+	 * 締め処理.
+	 */
+	this.close = function(params, callback) {
+		$httpw.post("/u17g001/close", {
+			bushoCode : params.bushoCode,
+			eigyoDate : params.eigyoDate,
+		}, callback);
+	}
+} ])
+// controllers
+.controller('MainController', [ '$scope', '$http', 'close',
+// main
+function($scope, $http, closeService) {
+	// 部署リスト取得
 	$scope.getBushoList = function() {
-		var successCallback = function(response) {
-			$scope.bushoList = response.data.model.bushoList;
+		var callback = function(model) {
+			$scope.bushoList = model.bushoList;
 		};
-		$http({
-			method : "POST",
-			url : "/u17g001/getBushoList",
-		}).then(successCallback, errorCallback);
+		closeService.getBushoList(callback);
 	};
 	// 締め
 	$scope.close = function(bushoCode, eigyoDate) {
-		if (!confirm("締め処理を開始します。\n" 
-				+ "部署コード : "+bushoCode + "\n"
-				+ "営業日 : "+eigyoDate)) {
+		if (!confirm("締め処理を開始します。\n" + "部署コード : " + bushoCode + "\n" + "営業日 : " + eigyoDate)) {
 			return;
 		}
-		var successCallback = function(response) {
-			showSuccessMessage(response.data.model.form.successMessage);
+		var callback = function(model) {
 			$scope.getBushoList();
 		};
-		$http({
-			method : "POST",
-			url : "/u17g001/close",
-			params : {
-				bushoCode : bushoCode,
-				eigyoDate : eigyoDate,
-			},
-		}).then(successCallback, errorCallback);
+		closeService.close({
+			bushoCode : bushoCode,
+			eigyoDate : eigyoDate,
+		}, callback);
 	};
 	// execute after loading
 	$scope.getBushoList();

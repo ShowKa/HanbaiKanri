@@ -28,6 +28,32 @@
 	var ngModules = angular.module('App', []);
 
 	// services
+	ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
+	// $http wrapper	
+	function($scope, $http, $filter) {
+		// エラーメッセージ表示
+		var errorCallback = function(response) {
+			_.showErroeMessage(response.data.message);
+		};
+		// post
+		this.post = function(url, params, successCallback) {
+			$http({
+				method : "POST",
+				url : url,
+				params : params,
+			}).then(function(response) {
+				var model = response.data.model;
+				successCallback(model);
+				// show success message if exists
+				if (model.form && model.form.successMessage) {
+					_.showSuccessMessage(model.form.successMessage);
+				}
+				// hide error message
+				_.hideErrorMessage();
+			}, errorCallback);
+		};
+	} ]);
+	
 	ngModules.service('common', [ '$rootScope', '$filter',
 	// common	
 	function($scope, $filter) {
@@ -108,12 +134,12 @@
 	
 		this.check = function (meisaiList) {
 			if (meisaiList.length === 0) {
-				showErroeMessage("明細を追加してください。");
+				_.showErroeMessage("明細を追加してください。");
 				return false;
 			}
 			for ( var l of meisaiList) {
 				if (l.editing == true) {
-					showErroeMessage("編集中の明細が残っています。");
+					_.showErroeMessage("編集中の明細が残っています。");
 					return false;
 				}
 			}
