@@ -28,6 +28,30 @@
 	var ngModules = angular.module('App', []);
 
 	// services
+	ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
+	// $http wrapper	
+	function($scope, $http, $filter) {
+		// エラーメッセージ表示
+		var errorCallback = function(response) {
+			showErroeMessage(response.data.message);
+		};
+		// post
+		this.post = function(url, params, successCallback) {
+			$http({
+				method : "POST",
+				url : url,
+				params : params,
+			}).then(function(response) {
+				var model = response.data.model;
+				successCallback(model);
+				// show success message if exists
+				if (model.form && model.form.successMessage) {
+					showSuccessMessage(model.form.successMessage);
+				}
+			}, errorCallback);
+		};
+	} ]);
+	
 	ngModules.service('common', [ '$rootScope', '$filter',
 	// common	
 	function($scope, $filter) {
