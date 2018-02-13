@@ -32,30 +32,19 @@ public class KokyakuValidateServiceImplTest extends ServiceCrudTestCase {
 	private BushoCrudService bushoCRUDService;
 
 	/**
-	 * table name
-	 */
-	private static final String TABLE_NAME = "m_kokyaku";
-
-	/**
-	 * columns
-	 */
-	private static final String[] COLUMN = { "code", "name", "address", "hanbai_kubun", "kokyaku_kubun",
-			"shukan_busho_id", "record_id" };
-
-	/**
 	 * test data
 	 */
-	private static final Object[] VALUE01 = { "KK01", "aaaa", "左京区", "00", "01", "BS01", "KK01" };
-	private static final Object[] VALUE02 = { "KK02", "aaaa", "右京区", "00", "01", "BS02", "KK02" };
-	private static final Object[] VALUE03 = { "KK03", "bbbb", "上京区", "00", "01", "BS02", "KK03" };
+	private static final Object[] VALUE01 = { "KK01", "aaaa", "左京区", "01", "00", "BS01", "KK01" };
+	private static final Object[] VALUE02 = { "KK02", "aaaa", "右京区", "01", "00", "BS02", "KK02" };
+	private static final Object[] VALUE03 = { "KK03", "bbbb", "上京区", "01", "00", "BS02", "KK03" };
 
 	/**
 	 * Before
 	 */
 	@Before
 	public void before() {
-		super.deleteAll(TABLE_NAME);
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
+		super.deleteAll(M_KOKYAKU);
+		super.insert(M_KOKYAKU, M_KOKYAKU_COLUMN, VALUE01, VALUE02, VALUE03);
 	}
 
 	@Test(expected = NotExistException.class)
