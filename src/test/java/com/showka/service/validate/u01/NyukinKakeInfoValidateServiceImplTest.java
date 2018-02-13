@@ -3,7 +3,7 @@ package com.showka.service.validate.u01;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
 import com.showka.kubun.NyukinHohoKubun;
@@ -16,7 +16,7 @@ import com.showka.system.exception.ValidateException;
  * @author 25767
  *
  */
-public class NyukinKakeInfoValidateServiceImplTest extends ServiceCrudTestCase {
+public class NyukinKakeInfoValidateServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private NyukinKakeInfoValidateServiceImpl service;

@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
 import com.showka.entity.MNyukinKakeInfo;
@@ -15,7 +15,7 @@ import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
 
-public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
+public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private NyukinKakeInfoCrudServiceImpl service;
@@ -23,20 +23,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	@Autowired
 	private MNyukinKakeInfoRepository repo;
 
-	/**
-	 * table name
-	 */
-	private static final String TABLE_NAME = "m_nyukin_kake_info";
-
-	/**
-	 * columns
-	 */
-	private static final String[] COLUMN = { "kokyaku_id", "nyukin_hoho_kubun", "nyukin_tsuki_kubun", "shimebi",
-			"nyukin_date", "record_id" };
-
-	/**
-	 * test data
-	 */
+	/** 入金掛売情報01. */
 	private static final Object[] VALUE01 = { "KK03", "00", "10", "20", "30", "KK03" };
 
 	/**
@@ -44,7 +31,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	 */
 	@Before
 	public void before() {
-		super.deleteAll(TABLE_NAME);
+		super.deleteAll(M_NYUKIN_KAKE_INFO);
 	}
 
 	/**
@@ -84,7 +71,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_update() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "KK03";
 		Integer version = 0;
@@ -123,7 +110,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_optimistic_lock_error() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "KK03";
 		Integer version = 999;
@@ -152,7 +139,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_deleted() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "KK03";
 		Integer version = 0;
@@ -170,7 +157,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_getDomain() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "KK03";
 
@@ -191,7 +178,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_exists01() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "KK03";
 
@@ -206,7 +193,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_exists02() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "AAAAAAA";
 
@@ -221,7 +208,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_deleteForciblyIfExists01() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "KK03";
 		assertTrue(repo.existsById(id));
@@ -237,7 +224,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
 	public void test_deleteForciblyIfExists02() {
 
 		// insert data
-		super.insert(TABLE_NAME, COLUMN, VALUE01);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "AAAAAA";
 		assertFalse(repo.existsById(id));

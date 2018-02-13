@@ -7,11 +7,22 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+/**
+ * Test Case Class.
+ * 
+ */
 public abstract class TestCaseBase extends TestCase {
 
 	/** date format yyyyMMdd . */
 	private static final DateFormat DF = new SimpleDateFormat("yyyyMMdd");
 
+	/**
+	 * 文字列からjava.util.Dateのインスタンスを作る.
+	 * 
+	 * @param yyyyMMdd
+	 *            日付文字列
+	 * @return Date
+	 */
 	public static Date d(String yyyyMMdd) {
 		try {
 			return DF.parse(yyyyMMdd);
@@ -28,6 +39,10 @@ public abstract class TestCaseBase extends TestCase {
 	protected static final String M_BUSHO_DATE = "m_busho_date";
 	protected static final String[] M_BUSHO_DATE_COLUMN = { "busho_id", "eigyo_date", "record_id" };
 
+	// 社員
+	protected static final String M_SHAIN = "m_shain";
+	protected static final String[] M_SHAIN_COLUMN = { "code", "name", "shozoku_busho_id", "record_id" };
+
 	// 顧客
 	protected static final String M_KOKYAKU = "m_kokyaku";
 	protected static final String[] M_KOKYAKU_COLUMN = {
@@ -37,6 +52,16 @@ public abstract class TestCaseBase extends TestCase {
 			"kokyaku_kubun",
 			"hanbai_kubun",
 			"shukan_busho_id",
+			"record_id" };
+
+	// 入金掛売情報
+	protected static final String M_NYUKIN_KAKE_INFO = "m_nyukin_kake_info";
+	protected static final String[] M_NYUKIN_KAKE_INFO_COLUMN = {
+			"kokyaku_id",
+			"nyukin_hoho_kubun",
+			"nyukin_tsuki_kubun",
+			"shimebi",
+			"nyukin_date",
 			"record_id" };
 
 	// 売上

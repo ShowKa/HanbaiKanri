@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
@@ -29,7 +29,7 @@ import mockit.Tested;
 import mockit.Verifications;
 
 @SuppressWarnings("deprecation")
-public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
+public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
 	private UriageRirekiCrudServiceImpl service;
@@ -91,13 +91,6 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 			"00",
 			0.08,
 			"r-KK01-00001-20170820" };
-	private static final Object[] R_URIAGE_02_CANCELD = {
-			"r-KK01-00001",
-			new Date("2017/08/19"),
-			new Date("2017/08/20"),
-			"00",
-			0.08,
-			"r-KK01-00001-20170820" };
 
 	// 売上テーブル
 	private static final Object[] T_URIAGE_01 = {
@@ -108,9 +101,6 @@ public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
 			"00",
 			0.08,
 			"r-KK01-00001" };
-
-	// 売上キャンセルテーブル
-	private static final Object[] C_URIAGE_01 = { "r-KK01-00001", "r-KK01-00001" };
 
 	// 顧客
 	private static final Object[] M_KOKYAKU_01 = { "KK01", "顧客01", "左京区", "01", "00", "r-BS01", "r-KK01" };

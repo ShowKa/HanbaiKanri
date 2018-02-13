@@ -1,4 +1,4 @@
-package com.showka.repository;
+package com.showka.repository.i;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.RepositoryTestCase;
 import com.showka.entity.MBusho;
-import com.showka.repository.i.MBushoRepository;
 
 @Transactional
 public class MBushoRepositoryTest extends RepositoryTestCase {
@@ -20,25 +19,14 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Autowired
 	private MBushoRepository repository;
 
-	/**
-	 * table name
-	 */
-	private static final String TABLE_NAME = "m_busho";
-
-	/**
-	 * columns
-	 */
-	private static final String[] COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
-
-	/**
-	 * test data
-	 */
+	/** 部署01. */
 	private static final Object[] VALUE01 = { "BS01", "00", "00", "部署01", "BS01" };
+	/** 部署02. */
 	private static final Object[] VALUE02 = { "BS02", "00", "00", "部署02", "BS02" };
 
 	@Before
 	public void deletTable() {
-		super.deleteAll(TABLE_NAME);
+		super.deleteAll(M_BUSHO);
 	}
 
 	/**
@@ -54,7 +42,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_01() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		Optional<MBusho> result = repository.findById("BS01");
 
@@ -75,7 +63,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_02() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		Optional<MBusho> result = repository.findById("BS10");
 		assertFalse(result.isPresent());
@@ -124,7 +112,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_04() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		MBusho beforeBusho = repository.findById("BS01").get();
 
@@ -174,7 +162,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_05() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		boolean result = repository.existsById("BS01");
 		assertTrue(result);
@@ -187,7 +175,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_06() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		boolean result = repository.existsById("BS03");
 		assertFalse(result);
@@ -200,7 +188,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_07() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		MBusho result = repository.getOne("BS01");
 
@@ -219,12 +207,10 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	// 結果：失敗
 	@Test(expected = EntityNotFoundException.class)
 	public void test_08() {
-
-		super.insert(TABLE_NAME, COLUMN, VALUE02);
-
-		MBusho result = repository.getOne("BS01");
-		result.getCode();
-
+		super.deleteAll(M_BUSHO);
+		MBusho result = repository.getOne("XXX");
+		// error occurs at here
+		result.getName();
 	}
 
 	// delete 該当する部署を削除
@@ -234,7 +220,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	@Test
 	public void test_09() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02);
+		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 
 		// entity
 		MBusho e = repository.getOne("BS01");

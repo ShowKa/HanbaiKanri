@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.entity.MBusho;
 import com.showka.value.EigyoDate;
@@ -20,7 +20,7 @@ import com.showka.value.EigyoDate;
  * @author 25767
  *
  */
-public class BushoCrudServiceImplTest extends ServiceCrudTestCase {
+public class BushoCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private BushoCrudServiceImpl service;

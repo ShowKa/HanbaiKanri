@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.NyukinKakeInfoDomain;
@@ -29,7 +29,7 @@ import com.showka.service.crud.z00.i.BushoCrudService;
  * @author 25767
  *
  */
-public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
+public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private KokyakuCrudServiceImpl service;
@@ -43,63 +43,32 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	@Autowired
 	private BushoCrudService bushoService;
 
-	/**
-	 * table name
-	 */
-	private static final String TABLE_NAME = "m_kokyaku";
+	/** 顧客01. */
+	private static final Object[] M_KOKYAKU_V01 = { "KK01", "aaaa", "左京区", "01", "00", "BS01", "KK01" };
+	/** 顧客02. */
+	private static final Object[] M_KOKYAKU_V02 = { "KK02", "aaaa", "右京区", "02", "00", "BS02", "KK02" };
+	/** 顧客03. */
+	private static final Object[] M_KOKYAKU_V03 = { "KK03", "bbbb", "上京区", "01", "10", "BS02", "KK03" };
 
-	/**
-	 * columns
-	 */
-	private static final String[] COLUMN = { "code", "name", "address", "hanbai_kubun", "kokyaku_kubun",
-			"shukan_busho_id", "record_id" };
+	/** 入金掛売情報01. */
+	private static final Object[] M_NYUKIN_KAKE_V01 = { "KK03", "00", "10", "20", "30", "KK03" };
 
-	/**
-	 * test data
-	 */
-	private static final Object[] VALUE01 = { "KK01", "aaaa", "左京区", "00", "01", "BS01", "KK01" };
-	private static final Object[] VALUE02 = { "KK02", "aaaa", "右京区", "00", "01", "BS02", "KK02" };
-	private static final Object[] VALUE03 = { "KK03", "bbbb", "上京区", "10", "01", "BS02", "KK03" };
+	/** 部署01. */
+	private static final Object[] M_BUSHO_V01 = { "BS01", "01", "01", "部署01", "BS01" };
+	/** 部署02. */
+	private static final Object[] M_BUSHO_V02 = { "BS02", "99", "02", "部署02", "BS02" };
 
-	/**
-	 * table name
-	 */
-	private static final String BUSHO_TABLE_NAME = "m_busho";
-
-	/**
-	 * columns
-	 */
-	private static final String[] BUSHO_COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
-
-	/**
-	 * test data
-	 */
-	private static final Object[] BUSHO_VALUE01 = { "BS01", "01", "01", "部署01", "BS01" };
-	private static final Object[] BUSHO_VALUE02 = { "BS02", "99", "02", "部署02", "BS02" };
-
-	/**
-	 * table name
-	 */
-	private static final String NYUKIN_KAKE_TABLE_NAME = "m_nyukin_kake_info";
-
-	/**
-	 * columns
-	 */
-	private static final String[] NYUKIN_KAKE_COLUMN = { "kokyaku_id", "nyukin_hoho_kubun", "nyukin_tsuki_kubun",
-			"shimebi", "nyukin_date", "record_id" };
-
-	/**
-	 * test data
-	 */
-	private static final Object[] NYUKIN_KAKE_VALUE01 = { "KK03", "00", "10", "20", "30", "KK03" };
+	/** 部署日付01. */
+	private static final Object[] M_BUSHO_DATE_V01 = { "BS01", d("20170820"), "BS01" };
+	/** 部署日付02. */
+	private static final Object[] M_BUSHO_DATE_V02 = { "BS02", d("20170820"), "BS02" };
 
 	@Before
 	public void deletTable() {
-		super.deleteAll(TABLE_NAME);
-		super.deleteAll(BUSHO_TABLE_NAME);
-		super.deleteAll(NYUKIN_KAKE_TABLE_NAME);
-
-		super.insert(BUSHO_TABLE_NAME, BUSHO_COLUMN, BUSHO_VALUE01, BUSHO_VALUE02);
+		super.deleteAll(M_KOKYAKU);
+		super.deleteAll(M_NYUKIN_KAKE_INFO);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01, M_BUSHO_V02);
+		super.deleteAndInsert(M_BUSHO_DATE, M_BUSHO_DATE_COLUMN, M_BUSHO_DATE_V01, M_BUSHO_DATE_V02);
 	}
 
 	/**
@@ -190,8 +159,8 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	@Transactional
 	public void test_update() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
-		super.insert(NYUKIN_KAKE_TABLE_NAME, NYUKIN_KAKE_COLUMN, NYUKIN_KAKE_VALUE01);
+		super.insert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01, M_KOKYAKU_V02, M_KOKYAKU_V03);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, M_NYUKIN_KAKE_V01);
 
 		// kokyaku
 		final String id = "KK03";
@@ -255,8 +224,8 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	@Transactional
 	public void test_delete1() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
-		super.insert(NYUKIN_KAKE_TABLE_NAME, NYUKIN_KAKE_COLUMN, NYUKIN_KAKE_VALUE01);
+		super.insert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01, M_KOKYAKU_V02, M_KOKYAKU_V03);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, M_NYUKIN_KAKE_V01);
 
 		final String id = "KK03";
 		final String bushoId = "BS01";
@@ -306,7 +275,7 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	public void test_exsists1() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
+		super.insert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01, M_KOKYAKU_V02, M_KOKYAKU_V03);
 
 		String id = "KK03";
 
@@ -348,8 +317,8 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	@Transactional
 	public void test_getDomain1() {
 
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
-		super.insert(NYUKIN_KAKE_TABLE_NAME, NYUKIN_KAKE_COLUMN, NYUKIN_KAKE_VALUE01);
+		super.insert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01, M_KOKYAKU_V02, M_KOKYAKU_V03);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, M_NYUKIN_KAKE_V01);
 
 		String id = "KK03";
 
@@ -385,8 +354,8 @@ public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
 	@Test
 	@Transactional
 	public void test_getDomain2() {
-		super.insert(TABLE_NAME, COLUMN, VALUE01, VALUE02, VALUE03);
-		super.insert(NYUKIN_KAKE_TABLE_NAME, NYUKIN_KAKE_COLUMN, NYUKIN_KAKE_VALUE01);
+		super.insert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01, M_KOKYAKU_V02, M_KOKYAKU_V03);
+		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, M_NYUKIN_KAKE_V01);
 
 		String id = "KK01";
 

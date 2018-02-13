@@ -5,13 +5,13 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.system.EmptyProxy;
 
-public class BushoDateCrudServiceImplTest extends ServiceCrudTestCase {
+public class BushoDateCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private BushoDateCrudServiceImpl bushoDateCrudServiceImpl;

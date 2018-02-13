@@ -1,5 +1,9 @@
 package com.showka.common;
 
-public abstract class RepositoryTestCase extends ServiceCrudTestCase {
+/**
+ * Test Case Class for Repository.
+ *
+ */
+public abstract class RepositoryTestCase extends CrudServiceTestCase {
 
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.domain.ShohinDomain;
 import com.showka.domain.ShohinIdoDomain;
@@ -31,7 +31,7 @@ import mockit.MockUp;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class ShohinIdoCrudServiceImplTest extends ServiceCrudTestCase {
+public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
 	private ShohinIdoCrudServiceImpl service;
@@ -100,9 +100,7 @@ public class ShohinIdoCrudServiceImplTest extends ServiceCrudTestCase {
 		ido01 = b;
 	}
 
-	// 部署 FIXME
-	protected static final String M_BUSHO = "m_busho";
-	protected static final String[] M_BUSHO_COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
+	/** 部署01. */
 	private static final Object[] VALUE01 = { "BS01", "01", "01", "部署01", "r-BS01" };
 
 	/**

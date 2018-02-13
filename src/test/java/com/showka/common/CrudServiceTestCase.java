@@ -39,7 +39,7 @@ import com.showka.system.Entry;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public abstract class ServiceCrudTestCase extends TestCaseBase {
+public abstract class CrudServiceTestCase extends TestCaseBase {
 
 	@Autowired
 	protected HttpSession session;
