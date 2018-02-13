@@ -1,4 +1,4 @@
-package com.showka.repository;
+package com.showka.repository.i;
 
 import java.util.List;
 import java.util.Optional;
