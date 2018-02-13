@@ -8,22 +8,22 @@ import java.util.Optional;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
-import com.showka.domain.builder.UriageRirekiDomainBuilder;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
+import com.showka.domain.builder.UriageRirekiBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.SystemException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
-public class UriageRirekiDomainTest extends SimpleTestCase {
+public class UriageRirekiTest extends SimpleTestCase {
 
 	/** 売上明細01. */
-	private static final UriageMeisaiDomain uriageMeisai01;
+	private static final UriageMeisai uriageMeisai01;
 	static {
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
-		ShohinDomain shohin01 = EmptyProxy.domain(ShohinDomain.class);
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
+		Shohin shohin01 = EmptyProxy.domain(Shohin.class);
 		b.withUriageId("KK01-00001")
 				.withMeisaiNumber(1)
 				.withShohinDomain(shohin01)
@@ -34,12 +34,12 @@ public class UriageRirekiDomainTest extends SimpleTestCase {
 	}
 
 	/** 売上01. */
-	private static final UriageDomain uriageRireki01;
+	private static final Uriage uriageRireki01;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		meisai.add(uriageMeisai01);
-		uriageRireki01 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		uriageRireki01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 20))
@@ -51,11 +51,11 @@ public class UriageRirekiDomainTest extends SimpleTestCase {
 	}
 
 	/** 売上02. */
-	private static final UriageDomain uriageRireki02;
+	private static final Uriage uriageRireki02;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
-		uriageRireki02 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
+		uriageRireki02 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 21))
@@ -69,22 +69,22 @@ public class UriageRirekiDomainTest extends SimpleTestCase {
 	@Test
 	public void test01_getNewest() throws Exception {
 		// build
-		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
-		List<UriageDomain> uriageRireki = new ArrayList<UriageDomain>();
+		UriageRirekiBuilder b = new UriageRirekiBuilder();
+		List<Uriage> uriageRireki = new ArrayList<Uriage>();
 		uriageRireki.add(uriageRireki01);
 		uriageRireki.add(uriageRireki02);
 		b.withList(uriageRireki);
-		UriageRirekiDomain uriageRirekiList02 = b.build();
+		UriageRireki uriageRirekiList02 = b.build();
 		// test
-		UriageDomain actual = uriageRirekiList02.getNewest();
+		Uriage actual = uriageRirekiList02.getNewest();
 		assertEquals(new TheDate(2017, 8, 21), actual.getKeijoDate());
 	}
 
 	@Test(expected = SystemException.class)
 	public void test02_validate() throws Exception {
 		// build
-		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
-		List<UriageDomain> uriageRireki = new ArrayList<UriageDomain>();
+		UriageRirekiBuilder b = new UriageRirekiBuilder();
+		List<Uriage> uriageRireki = new ArrayList<Uriage>();
 		uriageRireki.add(uriageRireki01);
 		uriageRireki.add(uriageRireki02);
 		uriageRireki.add(uriageRireki02);
@@ -96,14 +96,14 @@ public class UriageRirekiDomainTest extends SimpleTestCase {
 	@Test
 	public void test03_getTeiseiUriage() throws Exception {
 		// build
-		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
-		List<UriageDomain> uriageRireki = new ArrayList<UriageDomain>();
+		UriageRirekiBuilder b = new UriageRirekiBuilder();
+		List<Uriage> uriageRireki = new ArrayList<Uriage>();
 		uriageRireki.add(uriageRireki01);
 		uriageRireki.add(uriageRireki02);
 		b.withList(uriageRireki);
-		UriageRirekiDomain uriageRirekiList02 = b.build();
+		UriageRireki uriageRirekiList02 = b.build();
 		// test
-		Optional<UriageDomain> actual = uriageRirekiList02.getTeiseiUriage(new TheDate(2017, 8, 21));
+		Optional<Uriage> actual = uriageRirekiList02.getTeiseiUriage(new TheDate(2017, 8, 21));
 		assertEquals(new TheDate(2017, 8, 21), actual.get().getKeijoDate());
 		assertEquals(-5, actual.get().getUriageMeisai().get(0).getHanbaiNumber().intValue());
 	}
@@ -111,13 +111,13 @@ public class UriageRirekiDomainTest extends SimpleTestCase {
 	@Test
 	public void test04_getAllWithTeiseiDenpyo() throws Exception {
 		// build
-		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
-		List<UriageDomain> uriageRireki = new ArrayList<UriageDomain>();
+		UriageRirekiBuilder b = new UriageRirekiBuilder();
+		List<Uriage> uriageRireki = new ArrayList<Uriage>();
 		uriageRireki.add(uriageRireki01);
 		uriageRireki.add(uriageRireki02);
 		b.withList(uriageRireki);
-		UriageRirekiDomain uriageRirekiList = b.build();
-		List<UriageDomain> actual = uriageRirekiList.getAllWithTeiseiDenpyo();
+		UriageRireki uriageRirekiList = b.build();
+		List<Uriage> actual = uriageRirekiList.getAllWithTeiseiDenpyo();
 
 		assertEquals(new TheDate(2017, 8, 21), actual.get(0).getKeijoDate());
 		assertEquals(0, actual.get(0).getUriageGokeiKakaku().getZeinukiKakaku().intValue());

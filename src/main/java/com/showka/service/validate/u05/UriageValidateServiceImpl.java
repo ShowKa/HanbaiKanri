@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
@@ -35,20 +35,20 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
 
 	@Override
-	public void validate(UriageDomain domain) throws ValidateException {
+	public void validate(Uriage domain) throws ValidateException {
 
-		List<? extends UriageMeisaiDomain> meisaiList = domain.getUriageMeisai();
+		List<? extends UriageMeisai> meisaiList = domain.getUriageMeisai();
 		if (CollectionUtils.isEmpty(meisaiList)) {
 			throw new EmptyException("売上明細");
 		}
 
-		for (UriageMeisaiDomain meisai : meisaiList) {
+		for (UriageMeisai meisai : meisaiList) {
 			uriageMeisaiValidate.validate(meisai);
 		}
 	}
 
 	@Override
-	public void validateForRegister(UriageDomain domain) throws ValidateException {
+	public void validateForRegister(Uriage domain) throws ValidateException {
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(domain.getDenpyoNumber());
 		pk.setKokyakuId(domain.getKokyaku().getRecordId());
@@ -59,7 +59,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	}
 
 	@Override
-	public void validateForUpdate(UriageDomain domain) throws ValidateException {
+	public void validateForUpdate(Uriage domain) throws ValidateException {
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
 			throw new CanNotUpdateException("キャンセル済の売上のため");
@@ -67,7 +67,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	}
 
 	@Override
-	public void validateForDelete(UriageDomain domain) throws ValidateException {
+	public void validateForDelete(Uriage domain) throws ValidateException {
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
 			throw new CanNotUpdateException("キャンセル済の売上のため");

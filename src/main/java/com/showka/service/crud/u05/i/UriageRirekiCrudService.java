@@ -1,7 +1,7 @@
 package com.showka.service.crud.u05.i;
 
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageRirekiDomain;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageRireki;
 import com.showka.entity.RUriagePK;
 
 public interface UriageRirekiCrudService {
@@ -13,7 +13,7 @@ public interface UriageRirekiCrudService {
 	 *            売上ID
 	 * @return 売上履歴
 	 */
-	public UriageRirekiDomain getUriageRirekiList(String uriageId);
+	public UriageRireki getUriageRirekiList(String uriageId);
 
 	/**
 	 * 売上履歴保存.
@@ -21,7 +21,7 @@ public interface UriageRirekiCrudService {
 	 * @param domain
 	 *            売上
 	 */
-	public void save(UriageDomain domain);
+	public void save(Uriage domain);
 
 	/**
 	 * 売上履歴削除.
@@ -33,7 +33,7 @@ public interface UriageRirekiCrudService {
 	 * @param domain
 	 *            売上
 	 */
-	public void delete(UriageDomain domain);
+	public void delete(Uriage domain);
 
 	/**
 	 * 
@@ -54,6 +54,6 @@ public interface UriageRirekiCrudService {
 	 * @param domain
 	 *            売上ドメイン
 	 */
-	public void cancel(UriageDomain domain);
+	public void cancel(Uriage domain);
 
 }

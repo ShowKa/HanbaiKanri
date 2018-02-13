@@ -3,7 +3,7 @@ package com.showka.service.validate.u01;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.KokyakuDomain;
+import com.showka.domain.Kokyaku;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
@@ -36,14 +36,14 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 	}
 
 	@Override
-	public void validateForRegister(KokyakuDomain domain) throws ValidateException {
+	public void validateForRegister(Kokyaku domain) throws ValidateException {
 		if (repo.existsById(domain.getCode())) {
 			throw new AlreadyExistsException("顧客コード", domain.getCode());
 		}
 	}
 
 	@Override
-	public void validate(KokyakuDomain domain) throws ValidateException {
+	public void validate(Kokyaku domain) throws ValidateException {
 
 		if (domain.getKokyakuKubun() == KokyakuKubun.個人 && domain.getHanbaiKubun() == HanbaiKubun.掛売) {
 			throw new IncorrectKubunException("販売区分", HanbaiKubun.掛売, "個人顧客は掛売できません");

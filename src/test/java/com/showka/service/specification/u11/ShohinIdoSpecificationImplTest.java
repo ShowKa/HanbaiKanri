@@ -7,14 +7,14 @@ import java.util.List;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoDomain;
-import com.showka.domain.ShohinIdoMeisaiDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdo;
+import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.ShohinIdoKubun;
@@ -37,10 +37,10 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 	private UriageCrudService uriageCrudService;
 
 	/** 売上明細01. */
-	public static final UriageMeisaiDomain uriageMeisai01;
+	public static final UriageMeisai uriageMeisai01;
 	static {
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withUriageId("KK01-00001")
 				.withMeisaiNumber(1)
 				.withShohinDomain(shohin)
@@ -51,10 +51,10 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 	}
 
 	/** 売上明細02. */
-	public static final UriageMeisaiDomain uriageMeisai02;
+	public static final UriageMeisai uriageMeisai02;
 	static {
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withMeisaiNumber(2)
 				.withShohinDomain(shohin)
 				.withHanbaiNumber(6)
@@ -64,13 +64,13 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 	}
 
 	/** 売上01. */
-	public static final UriageDomain uriage01;
+	public static final Uriage uriage01;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		meisai.add(uriageMeisai01);
 		meisai.add(uriageMeisai02);
-		uriage01 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		uriage01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 20))
@@ -91,7 +91,7 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<ShohinIdoDomain> actual = shohinIdoSpecificationImpl.buildShohinIdo(uriage01);
+		List<ShohinIdo> actual = shohinIdoSpecificationImpl.buildShohinIdo(uriage01);
 		// verify
 		new Verifications() {
 			{
@@ -101,10 +101,10 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 		};
 		// check
 		assertEquals(1, actual.size());
-		ShohinIdoDomain ido = actual.get(0);
+		ShohinIdo ido = actual.get(0);
 		assertEquals(ShohinIdoKubun.売上, ido.getKubun());
 		// 明細
-		List<ShohinIdoMeisaiDomain> meisai = ido.getMeisai();
+		List<ShohinIdoMeisai> meisai = ido.getMeisai();
 		assertEquals(2, meisai.size());
 		meisai.stream().filter(p -> {
 			return p.getMeisaiNumber().intValue() == 1;
@@ -125,7 +125,7 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<ShohinIdoDomain> actual = shohinIdoSpecificationImpl.buildShohinIdo(uriage01);
+		List<ShohinIdo> actual = shohinIdoSpecificationImpl.buildShohinIdo(uriage01);
 		// verify
 		new Verifications() {
 			{
@@ -137,7 +137,7 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 		};
 		// check
 		assertEquals(2, actual.size());
-		ShohinIdoDomain ido = actual.get(1);
+		ShohinIdo ido = actual.get(1);
 		assertEquals(ShohinIdoKubun.売上訂正, ido.getKubun());
 	}
 

@@ -6,36 +6,36 @@ import java.util.List;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.ShohinZaikoDomain.ShohinIdoOnDate;
-import com.showka.domain.builder.ShohinDomainBuilder;
-import com.showka.domain.builder.ShohinIdoDomainBuilder;
-import com.showka.domain.builder.ShohinIdoMeisaiDomainBuilder;
-import com.showka.domain.builder.ShohinZaikoDomainBuilder;
+import com.showka.domain.ShohinZaiko.ShohinIdoOnDate;
+import com.showka.domain.builder.ShohinBuilder;
+import com.showka.domain.builder.ShohinIdoBuilder;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
+import com.showka.domain.builder.ShohinZaikoBuilder;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.value.TheTimestamp;
 
-public class ShohinZaikoDomainTest extends SimpleTestCase {
+public class ShohinZaikoTest extends SimpleTestCase {
 
 	/** 商品01. */
-	private static final ShohinDomain shohinDomain01;
+	private static final Shohin shohinDomain01;
 	static {
-		ShohinDomainBuilder b = new ShohinDomainBuilder();
+		ShohinBuilder b = new ShohinBuilder();
 		b.withCode("SH01");
 		shohinDomain01 = b.build();
 	}
 
 	/** 商品02. */
-	private static final ShohinDomain shohinDomain02;
+	private static final Shohin shohinDomain02;
 	static {
-		ShohinDomainBuilder b = new ShohinDomainBuilder();
+		ShohinBuilder b = new ShohinBuilder();
 		b.withCode("SH02");
 		shohinDomain02 = b.build();
 	}
 
 	/** 移動明細01. 商品01を1つ移動 */
-	private static final ShohinIdoMeisaiDomain idoMeisai01;
+	private static final ShohinIdoMeisai idoMeisai01;
 	static {
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(1);
 		b.withNumber(1);
 		b.withShohinDomain(shohinDomain01);
@@ -43,9 +43,9 @@ public class ShohinZaikoDomainTest extends SimpleTestCase {
 	}
 
 	/** 移動明細02. 商品01を2つ移動 */
-	private static final ShohinIdoMeisaiDomain idoMeisai02;
+	private static final ShohinIdoMeisai idoMeisai02;
 	static {
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(2);
 		b.withNumber(2);
 		b.withShohinDomain(shohinDomain01);
@@ -53,9 +53,9 @@ public class ShohinZaikoDomainTest extends SimpleTestCase {
 	}
 
 	/** 移動明細03. 商品02を3つ移動 */
-	private static final ShohinIdoMeisaiDomain idoMeisai03;
+	private static final ShohinIdoMeisai idoMeisai03;
 	static {
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(3);
 		b.withNumber(3);
 		b.withShohinDomain(shohinDomain02);
@@ -63,13 +63,13 @@ public class ShohinZaikoDomainTest extends SimpleTestCase {
 	}
 
 	/** 移動01. 2017/1/1 0時 売上による消費 */
-	private static final ShohinIdoDomain ido01;
+	private static final ShohinIdo ido01;
 	static {
-		List<ShohinIdoMeisaiDomain> meisai = new ArrayList<ShohinIdoMeisaiDomain>();
+		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
 		meisai.add(idoMeisai01);
 		meisai.add(idoMeisai02);
 		meisai.add(idoMeisai03);
-		ShohinIdoDomainBuilder b = new ShohinIdoDomainBuilder();
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withTimestamp(new TheTimestamp(2017, 1, 1, 0, 0, 0, 0));
 		b.withKubun(ShohinIdoKubun.売上);
 		b.withMeisai(meisai);
@@ -77,13 +77,13 @@ public class ShohinZaikoDomainTest extends SimpleTestCase {
 	}
 
 	/** 移動02. 2017/1/1 3時 売上訂正による戻し */
-	private static final ShohinIdoDomain ido02;
+	private static final ShohinIdo ido02;
 	static {
-		List<ShohinIdoMeisaiDomain> meisai = new ArrayList<ShohinIdoMeisaiDomain>();
+		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
 		meisai.add(idoMeisai01);
 		meisai.add(idoMeisai02);
 		meisai.add(idoMeisai03);
-		ShohinIdoDomainBuilder b = new ShohinIdoDomainBuilder();
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withTimestamp(new TheTimestamp(2017, 1, 1, 3, 0, 0, 0));
 		b.withKubun(ShohinIdoKubun.売上訂正);
 		b.withMeisai(meisai);
@@ -91,45 +91,45 @@ public class ShohinZaikoDomainTest extends SimpleTestCase {
 	}
 
 	/** 在庫01 = 商品01.(4 -> 3使う) */
-	private static final ShohinZaikoDomain zaiko01;
+	private static final ShohinZaiko zaiko01;
 	static {
 		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
 		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain01));
-		ShohinZaikoDomainBuilder b = new ShohinZaikoDomainBuilder();
+		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(4);
 		b.withShohinIdoList(shohinIdoList);
 		zaiko01 = b.build();
 	}
 
 	/** 在庫02 = 商品02.(3 -> 3使う) */
-	private static final ShohinZaikoDomain zaiko02;
+	private static final ShohinZaiko zaiko02;
 	static {
 		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
 		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain02));
-		ShohinZaikoDomainBuilder b = new ShohinZaikoDomainBuilder();
+		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(3);
 		b.withShohinIdoList(shohinIdoList);
 		zaiko02 = b.build();
 	}
 
 	/** 在庫03 = 商品02.(2 -> 3使う) */
-	private static final ShohinZaikoDomain zaiko03;
+	private static final ShohinZaiko zaiko03;
 	static {
 		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
 		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain02));
-		ShohinZaikoDomainBuilder b = new ShohinZaikoDomainBuilder();
+		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(2);
 		b.withShohinIdoList(shohinIdoList);
 		zaiko03 = b.build();
 	}
 
 	/** 在庫04 = 商品02.(2 -> 0時に3使う -> 3時に3戻す) */
-	private static final ShohinZaikoDomain zaiko04;
+	private static final ShohinZaiko zaiko04;
 	static {
 		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
 		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain02));
 		shohinIdoList.add(new ShohinIdoOnDate(ido02, shohinDomain02));
-		ShohinZaikoDomainBuilder b = new ShohinZaikoDomainBuilder();
+		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(2);
 		b.withShohinIdoList(shohinIdoList);
 		zaiko04 = b.build();

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.showka.domain.UriageDomain.UriageComparatorByKejoDate;
-import com.showka.domain.UriageMeisaiDomain.UriageMeisaiComparatorByMeisaiNumber;
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Uriage.UriageComparatorByKejoDate;
+import com.showka.domain.UriageMeisai.UriageMeisaiComparatorByMeisaiNumber;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.system.exception.SystemException;
 import com.showka.value.TheDate;
 
@@ -18,13 +18,13 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UriageRirekiDomain extends DomainBase {
+public class UriageRireki extends DomainBase {
 
 	/** 売上ID */
 	private String uriageId;
 
 	/** 売上履歴(直接返却禁止) */
-	private List<UriageDomain> list;
+	private List<Uriage> list;
 
 	/** キャンセル計上日 */
 	private Optional<TheDate> cancelKeijoDate;
@@ -36,21 +36,21 @@ public class UriageRirekiDomain extends DomainBase {
 	 *            訂正した計上日
 	 * @return 訂正した伝票
 	 */
-	public Optional<UriageDomain> getTeiseiUriage(TheDate keijoDate) {
+	public Optional<Uriage> getTeiseiUriage(TheDate keijoDate) {
 
 		list.sort(new UriageComparatorByKejoDate());
 		Collections.reverse(list);
-		Optional<UriageDomain> uriage = list.stream().filter(l -> {
+		Optional<Uriage> uriage = list.stream().filter(l -> {
 			return l.getKeijoDate().compareTo(keijoDate) < 0;
 		}).findFirst();
 
 		if (uriage.isPresent()) {
-			UriageDomain _u = uriage.get();
-			UriageDomainBuilder b = new UriageDomainBuilder();
+			Uriage _u = uriage.get();
+			UriageBuilder b = new UriageBuilder();
 			b.withKeijoDate(keijoDate);
 			// convert
-			List<UriageMeisaiDomain> _meisai = _u.getUriageMeisai().stream().map(meisai -> {
-				UriageMeisaiDomainBuilder mb = new UriageMeisaiDomainBuilder();
+			List<UriageMeisai> _meisai = _u.getUriageMeisai().stream().map(meisai -> {
+				UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
 				mb.withHanbaiNumber(meisai.getHanbaiNumber() * -1);
 				return mb.apply(meisai);
 			}).collect(Collectors.toList());
@@ -72,18 +72,18 @@ public class UriageRirekiDomain extends DomainBase {
 	 * 
 	 * @return 全伝票
 	 */
-	public List<UriageDomain> getAllWithTeiseiDenpyo() {
+	public List<Uriage> getAllWithTeiseiDenpyo() {
 		// create return value
-		List<UriageDomain> ret = new ArrayList<UriageDomain>();
+		List<Uriage> ret = new ArrayList<Uriage>();
 
 		// order by keijoDate desc
 		list.sort(new UriageComparatorByKejoDate());
 		Collections.reverse(list);
 
 		// add 伝票
-		new ArrayList<UriageDomain>(list).stream().forEach(uriage -> {
+		new ArrayList<Uriage>(list).stream().forEach(uriage -> {
 			ret.add(uriage);
-			Optional<UriageDomain> teisei = getTeiseiUriage(uriage.getKeijoDate());
+			Optional<Uriage> teisei = getTeiseiUriage(uriage.getKeijoDate());
 			if (teisei.isPresent()) {
 				ret.add(teisei.get());
 			}
@@ -111,9 +111,9 @@ public class UriageRirekiDomain extends DomainBase {
 	 * 
 	 * @return 最新伝票
 	 */
-	public UriageDomain getNewest() {
+	public Uriage getNewest() {
 		// get new one
-		UriageDomain newest = list.stream().max((r1, r2) -> {
+		Uriage newest = list.stream().max((r1, r2) -> {
 			return r1.getKeijoDate().getDate().compareTo(r2.getKeijoDate().getDate());
 		}).get();
 		return convert(newest);
@@ -124,8 +124,8 @@ public class UriageRirekiDomain extends DomainBase {
 	 * 
 	 * @return 全履歴売上
 	 */
-	public List<UriageDomain> getList() {
-		List<UriageDomain> ret = list.stream().map(l -> {
+	public List<Uriage> getList() {
+		List<Uriage> ret = list.stream().map(l -> {
 			return convert(l);
 		}).collect(Collectors.toList());
 		ret.sort(new UriageComparatorByKejoDate());
@@ -145,15 +145,15 @@ public class UriageRirekiDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		UriageRirekiDomain o = (UriageRirekiDomain) other;
-		UriageDomain newest = getNewest();
-		UriageDomain otherNewest = o.getNewest();
+		UriageRireki o = (UriageRireki) other;
+		Uriage newest = getNewest();
+		Uriage otherNewest = o.getNewest();
 		return newest.equals(otherNewest);
 	}
 
 	@Override
 	public int hashCode() {
-		UriageDomain newest = getNewest();
+		Uriage newest = getNewest();
 		return newest.hashCode();
 	}
 
@@ -164,13 +164,13 @@ public class UriageRirekiDomain extends DomainBase {
 	 *            売上履歴リストの一部
 	 * @return
 	 */
-	private UriageDomain convert(UriageDomain uriage) {
+	private Uriage convert(Uriage uriage) {
 		// set uriage id
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
 		// set uriage id to list
-		List<UriageMeisaiDomain> meisai = uriage.getUriageMeisai().stream().map(m -> {
-			UriageMeisaiDomainBuilder bm = new UriageMeisaiDomainBuilder();
+		List<UriageMeisai> meisai = uriage.getUriageMeisai().stream().map(m -> {
+			UriageMeisaiBuilder bm = new UriageMeisaiBuilder();
 			bm.withUriageId(uriageId);
 			return bm.apply(m);
 		}).collect(Collectors.toList());

@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.BushoDomain;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.domain.builder.KokyakuDomainBuilder;
-import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.kubun.HanbaiKubun;
@@ -102,20 +102,20 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		final Integer shimeDate = 12;
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
 		nyukinBuilder.withNyukinDate(nyukinDate);
 		nyukinBuilder.withNyukinHohoKubun(nyukinHohoKubun);
 		nyukinBuilder.withNyukinTsukiKubun(nyukinTukiKubun);
 		nyukinBuilder.withShimeDate(shimeDate);
 		nyukinBuilder.withRecordId(record_id);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoService.getDomain(bushoId);
+		Busho bushoDomain = bushoService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withName(name);
 		builder.withAddress(address);
@@ -124,7 +124,7 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		builder.withShukanBusho(bushoDomain);
 		builder.withNyukinKakeInfo(nyukinDomain);
 		builder.withRecordId(record_id);
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 
 		// save = insert
 		service.save(domain);
@@ -174,15 +174,15 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		final String record_id = "KK03";
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoService.getDomain(bushoId);
+		Busho bushoDomain = bushoService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withName(name);
 		builder.withAddress(address);
@@ -192,7 +192,7 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		builder.withNyukinKakeInfo(nyukinDomain);
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 
 		// save = insert
 		service.save(domain);
@@ -234,22 +234,22 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		final String record_id = "KK03";
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
 		nyukinBuilder.withVersion(nyukinVersion);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoService.getDomain(bushoId);
+		Busho bushoDomain = bushoService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withShukanBusho(bushoDomain);
 		builder.withNyukinKakeInfo(nyukinDomain);
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 		// delete
 
 		service.delete(domain);
@@ -323,7 +323,7 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		String id = "KK03";
 
 		// getDomain
-		KokyakuDomain result = service.getDomain(id);
+		Kokyaku result = service.getDomain(id);
 
 		// assert
 		assertEquals("KK03", result.getCode());
@@ -334,7 +334,7 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		assertEquals("BS02", result.getShukanBusho().getRecordId());
 		assertEquals("KK03", result.getRecordId());
 
-		NyukinKakeInfoDomain resultNyukin = result.getNyukinKakeInfo();
+		NyukinKakeInfo resultNyukin = result.getNyukinKakeInfo();
 		assertEquals("00", resultNyukin.getNyukinHohoKubun().getCode());
 		assertEquals("10", resultNyukin.getNyukinTsukiKubun().getCode());
 		assertEquals(20, resultNyukin.getShimeDate().intValue());
@@ -360,7 +360,7 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		String id = "KK01";
 
 		// getDomain
-		KokyakuDomain result = service.getDomain(id);
+		Kokyaku result = service.getDomain(id);
 
 		// assert
 		assertEquals("KK01", result.getCode());

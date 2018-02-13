@@ -1,6 +1,6 @@
 package com.showka.service.validate.u01.i;
 
-import com.showka.domain.KokyakuDomain;
+import com.showka.domain.Kokyaku;
 import com.showka.system.exception.ValidateException;
 
 public interface KokyakuValidateService {
@@ -23,7 +23,7 @@ public interface KokyakuValidateService {
 	 * @param domain
 	 * @throws ValidateException
 	 */
-	public void validateForRegister(KokyakuDomain domain) throws ValidateException;
+	public void validateForRegister(Kokyaku domain) throws ValidateException;
 
 	/**
 	 *
@@ -37,6 +37,6 @@ public interface KokyakuValidateService {
 	 * @param domain
 	 * @throws ValidateException
 	 */
-	public void validate(KokyakuDomain domain) throws ValidateException;
+	public void validate(Kokyaku domain) throws ValidateException;
 
 }

@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.UriageCancelDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.builder.UriageCancelDomainBuilder;
+import com.showka.domain.UriageCancel;
+import com.showka.domain.Uriage;
+import com.showka.domain.builder.UriageCancelBuilder;
 import com.showka.entity.CUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
@@ -25,7 +25,7 @@ public class UriageCancelCrudServiceImpl implements UriageCancelCrudService {
 	private UriageCrudService uriageCrudService;
 
 	@Override
-	public void save(UriageDomain domain) {
+	public void save(Uriage domain) {
 		// get
 		String uriageId = domain.getRecordId();
 		Optional<CUriage> canceldUriageEntity = repo.findById(uriageId);
@@ -43,7 +43,7 @@ public class UriageCancelCrudServiceImpl implements UriageCancelCrudService {
 	}
 
 	@Override
-	public UriageCancelDomain getDomain(String uriageId) {
+	public UriageCancel getDomain(String uriageId) {
 		// get entity
 		CUriage e = repo.findById(uriageId).get();
 
@@ -51,10 +51,10 @@ public class UriageCancelCrudServiceImpl implements UriageCancelCrudService {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(e.getUriage().getPk().getKokyakuId());
 		pk.setDenpyoNumber(e.getUriage().getPk().getDenpyoNumber());
-		UriageDomain uriage = uriageCrudService.getDomain(pk);
+		Uriage uriage = uriageCrudService.getDomain(pk);
 
 		// set builder
-		UriageCancelDomainBuilder b = new UriageCancelDomainBuilder();
+		UriageCancelBuilder b = new UriageCancelBuilder();
 		b.withUriageDomain(uriage);
 
 		// common column

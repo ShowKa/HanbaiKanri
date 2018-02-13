@@ -16,7 +16,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class BushoDomain extends DomainBase {
+public class Busho extends DomainBase {
 
 	/** 顧客コード */
 	private String code;
@@ -39,7 +39,7 @@ public class BushoDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		BushoDomain o = (BushoDomain) other;
+		Busho o = (Busho) other;
 		return code.equals(o.code);
 	}
 

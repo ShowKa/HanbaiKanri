@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.builder.ShohinDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Shohin;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.ShohinBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.system.exception.NotAllowedNumberException;
 
 public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
@@ -30,9 +30,9 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 	@Test
 	public void test01_validate() {
 		// 商品ドメインダミー
-		ShohinDomainBuilder sh = new ShohinDomainBuilder();
+		ShohinBuilder sh = new ShohinBuilder();
 		sh.withRecordId("shohin_record_id");
-		ShohinDomain shohinDomain = sh.build();
+		Shohin shohinDomain = sh.build();
 
 		// 売上明細主キー
 		String uriageId = "KK01-TEST001";
@@ -40,7 +40,7 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 		String recordID = uriageId + "-" + meisaiNumber;
 
 		// 売上明細ドメイン
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withHanbaiNumber(10);
 		b.withHanbaiTanka(BigDecimal.valueOf(0));
 		b.withMeisaiNumber(meisaiNumber);
@@ -48,7 +48,7 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 		b.withShohinDomain(shohinDomain);
 		b.withUriageId(uriageId);
 		b.withVersion(0);
-		UriageMeisaiDomain d = b.build();
+		UriageMeisai d = b.build();
 
 		// do
 		service.validate(d);
@@ -68,9 +68,9 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 	@Test(expected = NotAllowedNumberException.class)
 	public void test02_validate() {
 		// 商品ドメインダミー
-		ShohinDomainBuilder sh = new ShohinDomainBuilder();
+		ShohinBuilder sh = new ShohinBuilder();
 		sh.withRecordId("shohin_record_id");
-		ShohinDomain shohinDomain = sh.build();
+		Shohin shohinDomain = sh.build();
 
 		// 売上明細主キー
 		String uriageId = "KK01-TEST001";
@@ -78,7 +78,7 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 		String recordID = uriageId + "-" + meisaiNumber;
 
 		// 売上明細ドメイン
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withHanbaiNumber(10);
 		b.withHanbaiTanka(BigDecimal.valueOf(-1));
 		b.withMeisaiNumber(meisaiNumber);
@@ -86,7 +86,7 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 		b.withShohinDomain(shohinDomain);
 		b.withUriageId(uriageId);
 		b.withVersion(0);
-		UriageMeisaiDomain d = b.build();
+		UriageMeisai d = b.build();
 
 		// do
 		service.validate(d);

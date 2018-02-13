@@ -13,14 +13,14 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class ShohinIdoMeisaiDomain extends DomainBase implements Comparable<ShohinIdoMeisaiDomain> {
+public class ShohinIdoMeisai extends DomainBase implements Comparable<ShohinIdoMeisai> {
 
 	// private member
 	/** 明細番号. */
 	private Integer meisaiNumber;
 
 	/** 商品. */
-	private ShohinDomain shohinDomain;
+	private Shohin shohinDomain;
 
 	/** 移動数. */
 	private Integer number;
@@ -33,7 +33,7 @@ public class ShohinIdoMeisaiDomain extends DomainBase implements Comparable<Shoh
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		ShohinIdoMeisaiDomain o = (ShohinIdoMeisaiDomain) other;
+		ShohinIdoMeisai o = (ShohinIdoMeisai) other;
 		return meisaiNumber.equals(o.meisaiNumber);
 	}
 
@@ -47,7 +47,7 @@ public class ShohinIdoMeisaiDomain extends DomainBase implements Comparable<Shoh
 	 * 
 	 */
 	@Override
-	public int compareTo(ShohinIdoMeisaiDomain o) {
+	public int compareTo(ShohinIdoMeisai o) {
 		return this.meisaiNumber.compareTo(o.meisaiNumber);
 	}
 }

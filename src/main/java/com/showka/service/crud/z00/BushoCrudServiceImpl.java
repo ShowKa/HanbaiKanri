@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.builder.BushoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.builder.BushoBuilder;
 import com.showka.entity.MBusho;
 import com.showka.entity.MBushoDate;
 import com.showka.kubun.BushoKubun;
@@ -28,11 +28,11 @@ public class BushoCrudServiceImpl implements BushoCrudService {
 	private MBushoDateRepository dateRepo;
 
 	@Override
-	public BushoDomain getDomain(String pk) {
+	public Busho getDomain(String pk) {
 
 		MBusho result = repo.getOne(pk);
 
-		BushoDomainBuilder builder = new BushoDomainBuilder();
+		BushoBuilder builder = new BushoBuilder();
 		builder.withCode(result.getCode());
 		builder.withName(result.getName());
 		builder.withBushoKubun(Kubun.get(BushoKubun.class, result.getBushoKubun()));
@@ -49,7 +49,7 @@ public class BushoCrudServiceImpl implements BushoCrudService {
 	}
 
 	@Override
-	public List<BushoDomain> getDomains() {
+	public List<Busho> getDomains() {
 		List<MBusho> bushoList = repo.findAll();
 		return bushoList.stream().map(busho -> {
 			return getDomain(busho.getCode());

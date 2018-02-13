@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiDomain;
-import com.showka.domain.builder.UriageDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.UriageRireki;
+import com.showka.domain.builder.UriageBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
@@ -45,11 +45,11 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 	private UriageRirekiMeisaiCrudService uriageRirekiMeisaiCrudService;
 
 	/** 売上01. */
-	private static final UriageDomain rUriage01;
+	private static final Uriage rUriage01;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
-		rUriage01 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
+		rUriage01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 20))
@@ -61,11 +61,11 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	/** 売上01. */
-	private static final UriageDomain tUriage01;
+	private static final Uriage tUriage01;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
-		tUriage01 = b.withKokyaku(EmptyProxy.domain(KokyakuDomain.class))
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
+		tUriage01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 20))
@@ -113,7 +113,7 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 
 		new Expectations() {
 			{
-				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisaiDomain>) any);
+				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisai>) any);
 			}
 		};
 
@@ -129,7 +129,7 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisaiDomain>) any);
+				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisai>) any);
 				times = 1;
 			}
 		};
@@ -147,7 +147,7 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_01);
 
 		// do
-		UriageRirekiDomain actual = service.getUriageRirekiList("r-KK01-00001");
+		UriageRireki actual = service.getUriageRirekiList("r-KK01-00001");
 
 		// check
 		assertEquals(2, actual.getList().size());

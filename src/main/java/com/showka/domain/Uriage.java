@@ -15,10 +15,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UriageDomain extends DomainBase {
+public class Uriage extends DomainBase {
 
 	/** 顧客. */
-	private KokyakuDomain kokyaku;
+	private Kokyaku kokyaku;
 
 	/** 伝票番号. */
 	private String denpyoNumber;
@@ -36,7 +36,7 @@ public class UriageDomain extends DomainBase {
 	private TaxRate shohizeiritsu;
 
 	/** 売上明細. */
-	private List<UriageMeisaiDomain> uriageMeisai;
+	private List<UriageMeisai> uriageMeisai;
 
 	/**
 	 * 売上合計価格取得.
@@ -45,7 +45,7 @@ public class UriageDomain extends DomainBase {
 	 */
 	public Kakaku getUriageGokeiKakaku() {
 		BigDecimal gokei = BigDecimal.ZERO;
-		for (UriageMeisaiDomain m : uriageMeisai) {
+		for (UriageMeisai m : uriageMeisai) {
 			gokei = gokei.add(m.getMeisaiGokeiKakaku());
 		}
 		return new Kakaku(gokei, shohizeiritsu);
@@ -58,7 +58,7 @@ public class UriageDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		UriageDomain o = (UriageDomain) other;
+		Uriage o = (Uriage) other;
 		return kokyaku.equals(o.getKokyaku()) && denpyoNumber.equals(o.getDenpyoNumber());
 	}
 
@@ -71,9 +71,9 @@ public class UriageDomain extends DomainBase {
 	 * 計上日による売上比較クラス.
 	 *
 	 */
-	public static class UriageComparatorByKejoDate implements Comparator<UriageDomain> {
+	public static class UriageComparatorByKejoDate implements Comparator<Uriage> {
 		@Override
-		public int compare(UriageDomain o1, UriageDomain o2) {
+		public int compare(Uriage o1, Uriage o2) {
 			return o1.getKeijoDate().compareTo(o2.getKeijoDate());
 		}
 	}

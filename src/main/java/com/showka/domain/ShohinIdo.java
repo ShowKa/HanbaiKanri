@@ -12,11 +12,11 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ShohinIdoDomain extends DomainBase implements Comparable<ShohinIdoDomain> {
+public class ShohinIdo extends DomainBase implements Comparable<ShohinIdo> {
 
 	// private member
 	/** 部署. */
-	private BushoDomain busho;
+	private Busho busho;
 
 	/** 商品移動日(営業日が割り当てられる). */
 	private TheDate date;
@@ -28,7 +28,7 @@ public class ShohinIdoDomain extends DomainBase implements Comparable<ShohinIdoD
 	private TheTimestamp timestamp;
 
 	/** 商品移動明細. */
-	private List<ShohinIdoMeisaiDomain> meisai;
+	private List<ShohinIdoMeisai> meisai;
 
 	// public method
 	@Override
@@ -38,7 +38,7 @@ public class ShohinIdoDomain extends DomainBase implements Comparable<ShohinIdoD
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		ShohinIdoDomain o = (ShohinIdoDomain) other;
+		ShohinIdo o = (ShohinIdo) other;
 		return this.getRecordId().equals(o.getRecordId());
 	}
 
@@ -56,7 +56,7 @@ public class ShohinIdoDomain extends DomainBase implements Comparable<ShohinIdoD
 	 * <pre>
 	 */
 	@Override
-	public int compareTo(ShohinIdoDomain o) {
+	public int compareTo(ShohinIdo o) {
 		int r1 = this.busho.getCode().compareTo(o.busho.getCode());
 		if (r1 != 0) {
 			return r1;

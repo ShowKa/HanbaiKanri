@@ -1,34 +1,36 @@
 package com.showka.domain;
 
-import java.math.BigDecimal;
-
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 社員Domain
+ *
+ * @author ShowKa
+ *
+ */
 @AllArgsConstructor
 @Getter
-public class ShohinDomain extends DomainBase {
+public class Shain extends DomainBase {
 
-	// private member
-	/** 商品コード. */
+	/** コード */
 	private String code;
 
-	/** 商品名. */
+	/** 名前 */
 	private String name;
 
-	/** 商品標準単価. */
-	private BigDecimal hyojunTanka;
+	/** 所属部署 */
+	private Busho shozokuBusho;
 
 	@Override
 	public void validate() throws SystemException {
-		// nothing to do
 	}
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		ShohinDomain o = (ShohinDomain) other;
+		Shain o = (Shain) other;
 		return code.equals(o.code);
 	}
 

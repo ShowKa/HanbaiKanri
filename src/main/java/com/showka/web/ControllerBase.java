@@ -5,7 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
-import com.showka.domain.ShainDomain;
+import com.showka.domain.Shain;
 import com.showka.service.crud.z00.i.ShainCrudService;
 
 /**
@@ -36,7 +36,7 @@ public abstract class ControllerBase {
 	 * 
 	 * @return 社員ドメイン
 	 */
-	protected ShainDomain getLoginShain() {
+	protected Shain getLoginShain() {
 		String code = getLoginUserCode();
 		return shainCrudService.getDomain(code);
 	}

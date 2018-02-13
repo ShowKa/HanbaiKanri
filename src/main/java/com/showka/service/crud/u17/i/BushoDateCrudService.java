@@ -1,6 +1,6 @@
 package com.showka.service.crud.u17.i;
 
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 
 public interface BushoDateCrudService {
 
@@ -10,6 +10,6 @@ public interface BushoDateCrudService {
 	 * @param busho
 	 *            部署
 	 */
-	public void toNextEigyoDate(BushoDomain busho);
+	public void toNextEigyoDate(Busho busho);
 
 }

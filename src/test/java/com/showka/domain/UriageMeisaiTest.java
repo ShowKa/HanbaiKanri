@@ -5,18 +5,18 @@ import java.math.BigDecimal;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 
-public class UriageMeisaiDomainTest extends SimpleTestCase {
+public class UriageMeisaiTest extends SimpleTestCase {
 
 	@Test
 	public void test01_getMeisaiGokeiKakaku() {
 
 		// domain
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withHanbaiNumber(3);
 		b.withHanbaiTanka(new BigDecimal(500));
-		UriageMeisaiDomain d = b.build();
+		UriageMeisai d = b.build();
 
 		// do
 		BigDecimal actual = d.getMeisaiGokeiKakaku();

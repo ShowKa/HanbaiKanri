@@ -12,17 +12,17 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ShohinZaikoDomain extends DomainBase {
+public class ShohinZaiko extends DomainBase {
 
 	// private member
 	/** 部署. */
-	private BushoDomain busho;
+	private Busho busho;
 
 	/** 営業日. */
 	private TheDate date;
 
 	/** 商品. */
-	private ShohinDomain shohin;
+	private Shohin shohin;
 
 	/** 繰越在庫数. */
 	private Integer kurikoshiNumber;
@@ -92,7 +92,7 @@ public class ShohinZaikoDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		ShohinZaikoDomain o = (ShohinZaikoDomain) other;
+		ShohinZaiko o = (ShohinZaiko) other;
 		return busho.equals(o.busho) && date.equals(o.date) && shohin.equals(o.shohin);
 	}
 
@@ -116,7 +116,7 @@ public class ShohinZaikoDomain extends DomainBase {
 		/**
 		 * コンストラクタ.
 		 */
-		public ShohinIdoOnDate(ShohinIdoDomain ido, ShohinDomain target) {
+		public ShohinIdoOnDate(ShohinIdo ido, Shohin target) {
 			this.timestamp = ido.getTimestamp();
 			this.kubun = ido.getKubun();
 			this.number = ido.getMeisai().stream().filter(m -> {

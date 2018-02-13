@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoMeisaiDomain;
-import com.showka.domain.builder.ShohinIdoMeisaiDomainBuilder;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.entity.TShohinIdoMeisai;
 import com.showka.entity.TShohinIdoMeisaiPK;
 import com.showka.repository.i.TShohinIdoMeisaiRepository;
@@ -37,13 +37,13 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	private static final Object[] T_SHOHIN_IDO_MEISAI_V02 = { "r-001", 2, "r-SH02", 11, "r-001-2" };
 
 	/** 商品移動明細01. */
-	private static ShohinIdoMeisaiDomainBuilder shohinIdoMeisai01;
+	private static ShohinIdoMeisaiBuilder shohinIdoMeisai01;
 	static {
 		// 商品
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
 		// build
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(1);
 		b.withShohinDomain(shohin);
 		b.withNumber(10);
@@ -51,13 +51,13 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	/** 商品移動明細03. */
-	private static ShohinIdoMeisaiDomainBuilder shohinIdoMeisai03;
+	private static ShohinIdoMeisaiBuilder shohinIdoMeisai03;
 	static {
 		// 商品
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH03");
 		// build
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(3);
 		b.withShohinDomain(shohin);
 		b.withNumber(12);
@@ -72,14 +72,14 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		// table
 		super.deleteAll(T_SHOHIN_IDO_MEISAI);
 		// other
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
 		// data
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(1);
 		b.withShohinDomain(shohin);
 		b.withNumber(10);
-		ShohinIdoMeisaiDomain shohinIdoMeisai = b.build();
+		ShohinIdoMeisai shohinIdoMeisai = b.build();
 		// do
 		String id = "r-001";
 		service.save(id, shohinIdoMeisai);
@@ -99,15 +99,15 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		// table
 		super.deleteAndInsert(T_SHOHIN_IDO_MEISAI, T_SHOHIN_IDO_MEISAI_COLUMN, T_SHOHIN_IDO_MEISAI_V01);
 		// other
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
 		// data
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(1);
 		b.withShohinDomain(shohin);
 		b.withNumber(20);
 		b.withVersion(0);
-		ShohinIdoMeisaiDomain shohinIdoMeisai = b.build();
+		ShohinIdoMeisai shohinIdoMeisai = b.build();
 		// do
 		String id = "r-001";
 		service.save(id, shohinIdoMeisai);
@@ -165,11 +165,11 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 				T_SHOHIN_IDO_MEISAI_V02);
 		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01, M_SHOHIN_V02, M_SHOHIN_V03);
 		// data
-		List<ShohinIdoMeisaiDomain> meisaiList = new ArrayList<ShohinIdoMeisaiDomain>();
-		ShohinIdoMeisaiDomain meisai01 = shohinIdoMeisai01.build();
+		List<ShohinIdoMeisai> meisaiList = new ArrayList<ShohinIdoMeisai>();
+		ShohinIdoMeisai meisai01 = shohinIdoMeisai01.build();
 		meisai01.setVersion(0); // occ
 		meisaiList.add(meisai01);
-		ShohinIdoMeisaiDomain meisai03 = shohinIdoMeisai03.build();
+		ShohinIdoMeisai meisai03 = shohinIdoMeisai03.build();
 		meisaiList.add(meisai03);
 		// do
 		service.overrideList("r-001", meisaiList);
@@ -186,7 +186,7 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 				T_SHOHIN_IDO_MEISAI_V02);
 		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01, M_SHOHIN_V02, M_SHOHIN_V03);
 		// data
-		List<ShohinIdoMeisaiDomain> meisaiList = new ArrayList<ShohinIdoMeisaiDomain>();
+		List<ShohinIdoMeisai> meisaiList = new ArrayList<ShohinIdoMeisai>();
 		// do
 		service.overrideList("r-001", meisaiList);
 		// check
@@ -202,7 +202,7 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01, M_SHOHIN_V02);
 		// do
 		TShohinIdoMeisaiPK pk = new TShohinIdoMeisaiPK("r-001", 1);
-		ShohinIdoMeisaiDomain actual = service.getDomain(pk);
+		ShohinIdoMeisai actual = service.getDomain(pk);
 		assertEquals("r-001-1", actual.getRecordId());
 	}
 
@@ -213,7 +213,7 @@ public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 				T_SHOHIN_IDO_MEISAI_V02);
 		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01, M_SHOHIN_V02);
 		// do
-		List<ShohinIdoMeisaiDomain> actual = service.getDomainList("r-001");
+		List<ShohinIdoMeisai> actual = service.getDomainList("r-001");
 		assertEquals(2, actual.size());
 	}
 

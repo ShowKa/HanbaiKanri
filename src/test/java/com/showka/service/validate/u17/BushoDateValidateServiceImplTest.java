@@ -3,8 +3,8 @@ package com.showka.service.validate.u17;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.BushoDomain;
-import com.showka.domain.builder.BushoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.builder.BushoBuilder;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.system.exception.CanNotUpdateException;
@@ -33,9 +33,9 @@ public class BushoDateValidateServiceImplTest extends SimpleTestCase {
 	public void test01_validateForClosing() throws Exception {
 		// data
 		EigyoDate today = new EigyoDate(2017, 1, 1);
-		BushoDomainBuilder b = new BushoDomainBuilder();
+		BushoBuilder b = new BushoBuilder();
 		b.withRecordId("r-BS01");
-		BushoDomain busho = b.build();
+		Busho busho = b.build();
 		// expect
 		MBushoDate dateExpected = new MBushoDate();
 		dateExpected.setEigyoDate(new TheDate(2017, 1, 1).toDate());
@@ -67,9 +67,9 @@ public class BushoDateValidateServiceImplTest extends SimpleTestCase {
 	public void test02_validateForClosing() throws Exception {
 		// data
 		EigyoDate today = new EigyoDate(2017, 1, 1);
-		BushoDomainBuilder b = new BushoDomainBuilder();
+		BushoBuilder b = new BushoBuilder();
 		b.withRecordId("r-BS01");
-		BushoDomain busho = b.build();
+		Busho busho = b.build();
 		// expect
 		MBushoDate dateExpected = new MBushoDate();
 		dateExpected.setEigyoDate(new TheDate(2017, 1, 2).toDate());

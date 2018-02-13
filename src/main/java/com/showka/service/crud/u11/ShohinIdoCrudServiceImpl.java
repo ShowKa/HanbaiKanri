@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoDomain;
-import com.showka.domain.ShohinIdoMeisaiDomain;
-import com.showka.domain.builder.ShohinIdoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdo;
+import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.entity.TShohinIdo;
 import com.showka.entity.TShohinIdoMeisai;
 import com.showka.kubun.ShohinIdoKubun;
@@ -43,7 +43,7 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	private BushoCrudService bushoCrudService;
 
 	@Override
-	public void save(ShohinIdoDomain domain) {
+	public void save(ShohinIdo domain) {
 		// domain -> entity
 		Optional<TShohinIdo> _e = repo.findById(domain.getRecordId());
 		TShohinIdo entity = _e.isPresent() ? _e.get() : new TShohinIdo();
@@ -78,19 +78,19 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 
 	@Override
 	@Deprecated
-	public void delete(ShohinIdoDomain domain) {
+	public void delete(ShohinIdo domain) {
 		throw new RuntimeException("forbidden");
 	}
 
 	@Override
-	public ShohinIdoDomain getDomain(String pk) {
+	public ShohinIdo getDomain(String pk) {
 		// get entity
 		TShohinIdo entity = repo.getOne(pk);
 		// get other domains
-		BushoDomain busho = bushoCrudService.getDomain(entity.getBusho().getCode());
-		List<ShohinIdoMeisaiDomain> meisai = shohinIdoMeisaiCrudService.getDomainList(pk);
+		Busho busho = bushoCrudService.getDomain(entity.getBusho().getCode());
+		List<ShohinIdoMeisai> meisai = shohinIdoMeisaiCrudService.getDomainList(pk);
 		// build domain
-		ShohinIdoDomainBuilder b = new ShohinIdoDomainBuilder();
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withBusho(busho);
 		b.withDate(new TheDate(entity.getDate()));
 		b.withKubun(Kubun.get(ShohinIdoKubun.class, entity.getKubun()));
@@ -107,7 +107,7 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	}
 
 	@Override
-	public List<ShohinIdoDomain> getShohinIdoListInDate(BushoDomain busho, TheDate date, ShohinDomain shohin) {
+	public List<ShohinIdo> getShohinIdoListInDate(Busho busho, TheDate date, Shohin shohin) {
 		// criteria
 		TShohinIdo ido = new TShohinIdo();
 		TShohinIdoMeisai idoMeisai = new TShohinIdoMeisai();

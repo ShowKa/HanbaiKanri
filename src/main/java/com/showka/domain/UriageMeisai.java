@@ -16,7 +16,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class UriageMeisaiDomain extends DomainBase {
+public class UriageMeisai extends DomainBase {
 
 	// private member
 	/** ID. */
@@ -26,7 +26,7 @@ public class UriageMeisaiDomain extends DomainBase {
 	private Integer meisaiNumber;
 
 	/** 商品. */
-	private ShohinDomain shohinDomain;
+	private Shohin shohinDomain;
 
 	/** 売上数. */
 	private Integer hanbaiNumber;
@@ -51,7 +51,7 @@ public class UriageMeisaiDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		UriageMeisaiDomain o = (UriageMeisaiDomain) other;
+		UriageMeisai o = (UriageMeisai) other;
 		return (uriageId.equals(o.uriageId) && meisaiNumber.equals(o.meisaiNumber));
 	}
 
@@ -64,9 +64,9 @@ public class UriageMeisaiDomain extends DomainBase {
 	 * 明細番号による売上明細比較クラス.
 	 * 
 	 */
-	public static class UriageMeisaiComparatorByMeisaiNumber implements Comparator<UriageMeisaiDomain> {
+	public static class UriageMeisaiComparatorByMeisaiNumber implements Comparator<UriageMeisai> {
 		@Override
-		public int compare(UriageMeisaiDomain o1, UriageMeisaiDomain o2) {
+		public int compare(UriageMeisai o1, UriageMeisai o2) {
 			return o1.meisaiNumber.compareTo(o2.meisaiNumber);
 		}
 	}

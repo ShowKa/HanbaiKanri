@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoDomain;
-import com.showka.domain.ShohinZaikoDomain;
-import com.showka.domain.ShohinZaikoDomain.ShohinIdoOnDate;
-import com.showka.domain.builder.ShohinZaikoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdo;
+import com.showka.domain.ShohinZaiko;
+import com.showka.domain.ShohinZaiko.ShohinIdoOnDate;
+import com.showka.domain.builder.ShohinZaikoBuilder;
 import com.showka.entity.TShohinZaiko;
 import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
@@ -36,7 +36,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	private MShohinCrudService shohinCrudService;
 
 	@Override
-	public ShohinZaikoDomain getShohinZaiko(BushoDomain busho, TheDate date, ShohinDomain shohin) {
+	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin) {
 		// 在庫データ取得
 		TShohinZaikoPK pk = new TShohinZaikoPK();
 		pk.setBushoId(busho.getRecordId());
@@ -45,7 +45,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 		Optional<TShohinZaiko> _e = repo.findById(pk);
 		// 在庫データがない場合
 		if (!_e.isPresent()) {
-			ShohinZaikoDomainBuilder b = new ShohinZaikoDomainBuilder();
+			ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 			b.withBusho(busho);
 			b.withDate(date);
 			b.withRecordId("");
@@ -57,14 +57,14 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 		}
 		// ある場合
 		TShohinZaiko e = _e.get();
-		ShohinZaikoDomainBuilder b = new ShohinZaikoDomainBuilder();
+		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withBusho(busho);
 		b.withDate(date);
 		b.withRecordId(e.getRecordId());
 		b.withShohin(shohin);
 		b.withKurikoshiNumber(e.getNumber());
 		// 商品移動リスト
-		List<ShohinIdoDomain> _idoList = shohinIdoCrudService.getShohinIdoListInDate(busho, date, shohin);
+		List<ShohinIdo> _idoList = shohinIdoCrudService.getShohinIdoListInDate(busho, date, shohin);
 		List<ShohinIdoOnDate> idoList = _idoList.stream().map(ido -> {
 			return new ShohinIdoOnDate(ido, shohin);
 		}).collect(Collectors.toList());
@@ -74,7 +74,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	}
 
 	@Override
-	public List<ShohinZaikoDomain> getShohinZaiko(BushoDomain busho, TheDate date) {
+	public List<ShohinZaiko> getShohinZaiko(Busho busho, TheDate date) {
 		TShohinZaiko entity = new TShohinZaiko();
 		TShohinZaikoPK pk = new TShohinZaikoPK();
 		pk.setBushoId(busho.getRecordId());

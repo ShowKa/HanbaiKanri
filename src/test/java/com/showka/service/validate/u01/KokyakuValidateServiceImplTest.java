@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.BushoDomain;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.domain.builder.KokyakuDomainBuilder;
-import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.service.crud.z00.i.BushoCrudService;
@@ -81,15 +81,15 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		String bushoId = "BS01";
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withShukanBusho(bushoDomain);
 		builder.withNyukinKakeInfo(nyukinDomain);
@@ -98,7 +98,7 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 
 		service.validateForRegister(domain);
 	}
@@ -123,15 +123,15 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		String bushoId = "BS01";
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withShukanBusho(bushoDomain);
 		builder.withNyukinKakeInfo(nyukinDomain);
@@ -140,7 +140,7 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 
 		service.validateForRegister(domain);
 
@@ -169,15 +169,15 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		HanbaiKubun hanbaiKubun = HanbaiKubun.現金;
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withKokyakuKubun(kokyakuKubun);
 		builder.withHanbaiKubun(hanbaiKubun);
@@ -188,7 +188,7 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 
 		service.validate(domain);
 	}
@@ -215,15 +215,15 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		HanbaiKubun hanbaiKubun = HanbaiKubun.現金;
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withKokyakuKubun(kokyakuKubun);
 		builder.withHanbaiKubun(hanbaiKubun);
@@ -234,7 +234,7 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 
 		service.validate(domain);
 	}
@@ -261,15 +261,15 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		HanbaiKubun hanbaiKubun = HanbaiKubun.掛売;
 
 		// build nyukinKakeInfo domain
-		NyukinKakeInfoDomainBuilder nyukinBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
 		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfoDomain nyukinDomain = nyukinBuilder.build();
+		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
 
 		// get busho domain
-		BushoDomain bushoDomain = bushoCRUDService.getDomain(bushoId);
+		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
 
 		// build kokyaku domain
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(id);
 		builder.withKokyakuKubun(kokyakuKubun);
 		builder.withHanbaiKubun(hanbaiKubun);
@@ -280,7 +280,7 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		KokyakuDomain domain = builder.build();
+		Kokyaku domain = builder.build();
 
 		service.validate(domain);
 	}

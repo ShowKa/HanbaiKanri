@@ -1,6 +1,6 @@
 package com.showka.service.specification.u05.i;
 
-import com.showka.domain.UriageDomain;
+import com.showka.domain.Uriage;
 
 /**
  * 売上の計上の仕様.
@@ -22,5 +22,5 @@ public interface UriageKeijoSpecificationService {
 	 *            売上ドメイン
 	 * @return true=計上済み
 	 */
-	public boolean isKeijoZumi(UriageDomain uriage);
+	public boolean isKeijoZumi(Uriage uriage);
 }

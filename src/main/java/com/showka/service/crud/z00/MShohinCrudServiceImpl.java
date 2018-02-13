@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.builder.ShohinDomainBuilder;
+import com.showka.domain.Shohin;
+import com.showka.domain.builder.ShohinBuilder;
 import com.showka.entity.MShohin;
 import com.showka.repository.i.MShohinRepository;
 import com.showka.service.crud.z00.i.MShohinCrudService;
@@ -27,12 +27,12 @@ public class MShohinCrudServiceImpl implements MShohinCrudService {
 	private MShohinRepository repo;
 
 	@Override
-	public ShohinDomain getDomain(String code) {
+	public Shohin getDomain(String code) {
 		// get entity
 		MShohin e = repo.getOne(code);
 
 		// set up builder
-		ShohinDomainBuilder b = new ShohinDomainBuilder();
+		ShohinBuilder b = new ShohinBuilder();
 		b.withCode(e.getCode());
 		b.withHyojunTanka(BigDecimal.valueOf(e.getHyojunTanka()));
 		b.withName(e.getName());
@@ -40,7 +40,7 @@ public class MShohinCrudServiceImpl implements MShohinCrudService {
 		b.withVersion(e.getVersion());
 
 		// build domain
-		ShohinDomain m = b.build();
+		Shohin m = b.build();
 		return m;
 	}
 

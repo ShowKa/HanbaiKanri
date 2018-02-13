@@ -15,7 +15,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class KokyakuDomain extends DomainBase {
+public class Kokyaku extends DomainBase {
 
 	/** 顧客コード */
 	private String code;
@@ -33,10 +33,10 @@ public class KokyakuDomain extends DomainBase {
 	private HanbaiKubun hanbaiKubun;
 
 	/** 主幹部署 */
-	private BushoDomain shukanBusho;
+	private Busho shukanBusho;
 
 	/** 入金掛情報 */
-	private NyukinKakeInfoDomain nyukinKakeInfo;
+	private NyukinKakeInfo nyukinKakeInfo;
 
 	@Override
 	public void validate() throws SystemException {
@@ -44,7 +44,7 @@ public class KokyakuDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		KokyakuDomain o = (KokyakuDomain) other;
+		Kokyaku o = (Kokyaku) other;
 		return code.equals(o.code);
 	}
 

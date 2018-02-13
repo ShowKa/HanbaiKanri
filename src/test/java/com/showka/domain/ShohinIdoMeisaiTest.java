@@ -3,20 +3,20 @@ package com.showka.domain;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.builder.ShohinIdoMeisaiDomainBuilder;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 
-public class ShohinIdoMeisaiDomainTest extends SimpleTestCase {
+public class ShohinIdoMeisaiTest extends SimpleTestCase {
 
-	private static final ShohinIdoMeisaiDomain ido1;
+	private static final ShohinIdoMeisai ido1;
 	static {
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(1);
 		ido1 = b.build();
 	}
 
-	private static final ShohinIdoMeisaiDomain ido2;
+	private static final ShohinIdoMeisai ido2;
 	static {
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(2);
 		ido2 = b.build();
 	}

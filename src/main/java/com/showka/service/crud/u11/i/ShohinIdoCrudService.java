@@ -2,13 +2,13 @@ package com.showka.service.crud.u11.i;
 
 import java.util.List;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoDomain;
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdo;
 import com.showka.service.crud.CrudService;
 import com.showka.value.TheDate;
 
-public interface ShohinIdoCrudService extends CrudService<ShohinIdoDomain, String> {
+public interface ShohinIdoCrudService extends CrudService<ShohinIdo, String> {
 
 	/**
 	 * 商品移動リスト取得.
@@ -26,5 +26,5 @@ public interface ShohinIdoCrudService extends CrudService<ShohinIdoDomain, Strin
 	 *            商品
 	 * @return 商品移動リスト
 	 */
-	public List<ShohinIdoDomain> getShohinIdoListInDate(BushoDomain busho, TheDate date, ShohinDomain shohin);
+	public List<ShohinIdo> getShohinIdoListInDate(Busho busho, TheDate date, Shohin shohin);
 }

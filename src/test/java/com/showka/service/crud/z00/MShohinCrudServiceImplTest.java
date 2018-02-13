@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.ShohinDomain;
+import com.showka.domain.Shohin;
 
 public class MShohinCrudServiceImplTest extends CrudServiceTestCase {
 
@@ -34,7 +34,7 @@ public class MShohinCrudServiceImplTest extends CrudServiceTestCase {
 	public void test_get_domain() {
 		// get
 		String code = "SH01";
-		ShohinDomain domain = service.getDomain(code);
+		Shohin domain = service.getDomain(code);
 		// assert
 		assertEquals(code, domain.getCode());
 		assertEquals("商品01", domain.getName());

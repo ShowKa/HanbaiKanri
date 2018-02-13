@@ -1,6 +1,6 @@
 package com.showka.service.crud.z00.i;
 
-import com.showka.domain.ShohinDomain;
+import com.showka.domain.Shohin;
 
 public interface MShohinCrudService {
 
@@ -11,6 +11,6 @@ public interface MShohinCrudService {
 	 *            商品コード
 	 * @return 商品ドメイン
 	 */
-	ShohinDomain getDomain(String code);
+	Shohin getDomain(String code);
 
 }

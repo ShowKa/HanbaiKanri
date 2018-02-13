@@ -7,10 +7,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UriageCancelDomain extends DomainBase {
+public class UriageCancel extends DomainBase {
 
 	/** 売上. */
-	private UriageDomain uriageDomain;
+	private Uriage uriageDomain;
 
 	/**
 	 * 売上ID取得.
@@ -32,7 +32,7 @@ public class UriageCancelDomain extends DomainBase {
 
 	@Override
 	protected boolean equals(DomainBase other) {
-		UriageCancelDomain o = (UriageCancelDomain) other;
+		UriageCancel o = (UriageCancel) other;
 		return uriageDomain.equals(o.uriageDomain);
 	}
 

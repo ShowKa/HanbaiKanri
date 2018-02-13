@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageMeisaiDomain.UriageMeisaiComparatorByMeisaiNumber;
-import com.showka.domain.UriageRirekiDomain;
-import com.showka.domain.builder.UriageDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.UriageMeisai.UriageMeisaiComparatorByMeisaiNumber;
+import com.showka.domain.UriageRireki;
+import com.showka.domain.builder.UriageBuilder;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisai;
@@ -54,7 +54,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	private UriageCancelCrudService uriageCancelCrudService;
 
 	@Override
-	public void save(UriageDomain domain) {
+	public void save(Uriage domain) {
 
 		// entity
 		TUriage e = getEntityFromDomain(domain);
@@ -74,7 +74,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 		// set 明細
 		List<TUriageMeisai> m = new ArrayList<TUriageMeisai>();
-		for (UriageMeisaiDomain meisai : domain.getUriageMeisai()) {
+		for (UriageMeisai meisai : domain.getUriageMeisai()) {
 			m.add(meisaiRepository.findByRecordId(meisai.getRecordId()));
 		}
 		e.setMeisai(m);
@@ -89,15 +89,15 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	public UriageDomain getDomain(TUriagePK pk) {
+	public Uriage getDomain(TUriagePK pk) {
 		// get
 		TUriage e = repo.findById(pk).get();
 
 		// 顧客ドメイン
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(e.getKokyaku().getCode());
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(e.getKokyaku().getCode());
 
 		// 売上明細ドメイン
-		List<UriageMeisaiDomain> uriageMeisai = new ArrayList<UriageMeisaiDomain>();
+		List<UriageMeisai> uriageMeisai = new ArrayList<UriageMeisai>();
 		List<TUriageMeisai> meisaiEntityList = e.getMeisai();
 		for (TUriageMeisai m : meisaiEntityList) {
 			uriageMeisai.add(uriageMeisaiCrudService.getDomain(m.getPk()));
@@ -107,7 +107,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		uriageMeisai.sort(new UriageMeisaiComparatorByMeisaiNumber());
 
 		// set builder
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withDenpyoNumber(e.getPk().getDenpyoNumber());
 		b.withHanbaiKubun(Kubun.get(HanbaiKubun.class, e.getHanbaiKubun()));
 		b.withKokyaku(kokyaku);
@@ -127,19 +127,19 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	public void delete(UriageDomain domain) {
+	public void delete(Uriage domain) {
 		// 売上履歴削除
 		uriageRirekiCrudService.delete(domain);
 
 		// 残った履歴取得
 		String uriageId = domain.getRecordId();
-		UriageRirekiDomain rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
+		UriageRireki rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
 
 		// 計上済みの履歴があれば、それで売上を上書きし直す。
 		// ない場合は、売上データ自体をすべて削除して終了。
 		if (rirekiList.getList().size() > 0) {
-			UriageDomain domainForOverride = rirekiList.getNewest();
-			UriageDomainBuilder b = new UriageDomainBuilder();
+			Uriage domainForOverride = rirekiList.getNewest();
+			UriageBuilder b = new UriageBuilder();
 			// ここで排他制御
 			b.withVersion(domain.getVersion());
 			this.save(b.apply(domainForOverride));
@@ -157,7 +157,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	public void cancel(UriageDomain domain) {
+	public void cancel(Uriage domain) {
 		// delete meisai if exists
 		uriageMeisaiCrudService.deleteAll(domain.getRecordId());
 
@@ -179,7 +179,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	 *            売上ドメイン
 	 * @return 売上エンティティ
 	 */
-	private TUriage getEntityFromDomain(UriageDomain domain) {
+	private TUriage getEntityFromDomain(Uriage domain) {
 		// pk
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(domain.getDenpyoNumber());

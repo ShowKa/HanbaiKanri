@@ -6,11 +6,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageCancelDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.builder.UriageDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.UriageCancel;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.UriageBuilder;
 import com.showka.entity.CUriage;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriagePK;
@@ -41,11 +41,11 @@ public class UriageCancelCrudServiceImplTest extends CrudServiceTestCase {
 	private UriageCrudService uriageCrudService;
 
 	/** 売上01. */
-	public static final UriageDomain uriage01;
+	public static final Uriage uriage01;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
-		KokyakuDomain kokyaku = EmptyProxy.domain(KokyakuDomain.class);
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
+		Kokyaku kokyaku = EmptyProxy.domain(Kokyaku.class);
 		kokyaku.setRecordId("dummy");
 		uriage01 = b.withKokyaku(kokyaku)
 				.withDenpyoNumber("00001")
@@ -91,7 +91,7 @@ public class UriageCancelCrudServiceImplTest extends CrudServiceTestCase {
 		new Expectations() {
 			{
 				uriageCrudService.getDomain(pk);
-				result = new UriageDomainBuilder().build();
+				result = new UriageBuilder().build();
 			}
 		};
 		// mock
@@ -102,7 +102,7 @@ public class UriageCancelCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// do
-		UriageCancelDomain actual = service.getDomain("KK01-00001");
+		UriageCancel actual = service.getDomain("KK01-00001");
 		// verify
 		new Verifications() {
 			{

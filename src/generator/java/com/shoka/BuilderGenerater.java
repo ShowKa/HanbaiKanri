@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 import com.showka.domain.DomainBase;
 import com.showka.domain.builder.DomainBuilderBase;
 
@@ -25,7 +25,7 @@ public class BuilderGenerater {
 	private static String DESTINATION = "generated/";
 
 	@SuppressWarnings("rawtypes")
-	static Class TARGET_CLASS = BushoDomain.class;
+	static Class TARGET_CLASS = Busho.class;
 
 	public static void main(String[] args) {
 

@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.builder.KokyakuDomainBuilder;
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
@@ -50,9 +50,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 
 	// data
 	/** 顧客01. */
-	public static final KokyakuDomain kokyaku01;
+	public static final Kokyaku kokyaku01;
 	static {
-		KokyakuDomainBuilder b = new KokyakuDomainBuilder();
+		KokyakuBuilder b = new KokyakuBuilder();
 		kokyaku01 = b.withCode("KK01")
 				.withName("顧客01")
 				.withCode("左京区")
@@ -62,9 +62,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 				.build();
 	}
 	/** 売上明細01. */
-	public static final UriageMeisaiDomain uriageMeisai01;
+	public static final UriageMeisai uriageMeisai01;
 	static {
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		uriageMeisai01 = b.withUriageId("KK01-00001")
 				.withMeisaiNumber(1)
 				.withHanbaiNumber(5)
@@ -73,10 +73,10 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 				.build();
 	}
 	/** 売上01. */
-	public static final UriageDomain uriage01;
+	public static final Uriage uriage01;
 	static {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		meisai.add(uriageMeisai01);
 		uriage01 = b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("00001")
@@ -91,8 +91,8 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	// test
 	@Test(expected = EmptyException.class)
 	public void test_validate01() {
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		UriageDomain d = b.build();
+		UriageBuilder b = new UriageBuilder();
+		Uriage d = b.build();
 		service.validate(d);
 	}
 
@@ -172,9 +172,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	public void test_validateForUpdate01() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
-		UriageDomain domain = b.build();
+		Uriage domain = b.build();
 		// expect
 		new Expectations() {
 			{
@@ -195,9 +195,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	public void test_validateForUpdate02() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
-		UriageDomain domain = b.build();
+		Uriage domain = b.build();
 		// expect
 		new Expectations() {
 			{
@@ -227,9 +227,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	public void test_validateForDelete01() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
-		UriageDomain domain = b.build();
+		Uriage domain = b.build();
 		// expect
 		new Expectations() {
 			{
@@ -250,9 +250,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	public void test_validateForDelete02() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
-		UriageDomain domain = b.build();
+		Uriage domain = b.build();
 		// expect
 		new Expectations() {
 			{
@@ -275,9 +275,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	public void test_validateForDelete03() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
-		UriageDomain domain = b.build();
+		Uriage domain = b.build();
 		// expect
 		new Expectations() {
 			{

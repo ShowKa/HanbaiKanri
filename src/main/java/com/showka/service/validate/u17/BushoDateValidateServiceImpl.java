@@ -3,7 +3,7 @@ package com.showka.service.validate.u17;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.validate.u17.i.BushoDateValidateService;
@@ -18,7 +18,7 @@ public class BushoDateValidateServiceImpl implements BushoDateValidateService {
 	private MBushoDateRepository repo;
 
 	@Override
-	public void validateForClosing(BushoDomain busho, EigyoDate today) {
+	public void validateForClosing(Busho busho, EigyoDate today) {
 		MBushoDate dateEntity = repo.getOne(busho.getRecordId());
 		TheDate trueDate = new TheDate(dateEntity.getEigyoDate());
 		if (!trueDate.isEqual(today)) {
