@@ -18,7 +18,7 @@ import com.showka.entity.RUriageMeisai;
 import com.showka.entity.RUriageMeisaiPK;
 import com.showka.repository.i.RUriageMeisaiRepository;
 import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 
 @Service
 public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrudService {
@@ -27,7 +27,7 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 	private RUriageMeisaiRepository repo;
 
 	@Autowired
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	@Override
 	public void save(UriageMeisai domain) {

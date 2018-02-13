@@ -16,7 +16,7 @@ import com.showka.entity.MShohin;
 import com.showka.entity.TShohinZaiko;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.TheDate;
 
@@ -40,7 +40,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 	private ShohinIdoCrudService shohinIdoCrudService;
 
 	@Injectable
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	/** 商品. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "r-SH01" };

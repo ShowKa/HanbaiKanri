@@ -9,7 +9,7 @@ import com.showka.domain.Shohin;
 import com.showka.domain.builder.ShohinBuilder;
 import com.showka.entity.MShohin;
 import com.showka.repository.i.MShohinRepository;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 
 /**
  * 商品CRUDサービス
@@ -18,7 +18,7 @@ import com.showka.service.crud.z00.i.MShohinCrudService;
  *
  */
 @Service
-public class MShohinCrudServiceImpl implements MShohinCrudService {
+public class ShohinCrudServiceImpl implements ShohinCrudService {
 
 	/**
 	 * 商品マスタリポジトリ.

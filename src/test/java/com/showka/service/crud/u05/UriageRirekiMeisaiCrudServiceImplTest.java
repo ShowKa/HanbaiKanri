@@ -15,7 +15,7 @@ import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.RUriageMeisai;
 import com.showka.entity.RUriageMeisaiPK;
 import com.showka.repository.i.RUriageMeisaiRepository;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.system.EmptyProxy;
 
 import mockit.Injectable;
@@ -31,7 +31,7 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	private RUriageMeisaiRepository repo;
 
 	@Injectable
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	/** 売上履歴明細01. */
 	private static final Object[] R_URIAGE_MEISAI_01 = {

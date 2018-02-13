@@ -16,7 +16,7 @@ import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.repository.i.TUriageMeisaiRepository;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 
 /**
  * 売上明細CrudeService
@@ -37,7 +37,7 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 	 * 商品なマスタCRUDサービス.
 	 */
 	@Autowired
-	private MShohinCrudService shohinService;
+	private ShohinCrudService shohinService;
 
 	/**
 	 * ドメイン保存.

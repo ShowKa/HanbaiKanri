@@ -2,7 +2,7 @@ package com.showka.service.crud.z00.i;
 
 import com.showka.domain.Shohin;
 
-public interface MShohinCrudService {
+public interface ShohinCrudService {
 
 	/**
 	 * 商品ドメイン取得.

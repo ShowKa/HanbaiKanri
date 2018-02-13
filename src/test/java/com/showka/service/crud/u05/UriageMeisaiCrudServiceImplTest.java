@@ -17,7 +17,7 @@ import com.showka.entity.MShohin;
 import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.repository.i.TUriageMeisaiRepository;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.system.EmptyProxy;
 
 import mockit.Expectations;
@@ -37,7 +37,7 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	private TUriageMeisaiRepository repo;
 
 	@Injectable
-	private MShohinCrudService shohinService;
+	private ShohinCrudService shohinService;
 
 	/** 売上明細01 */
 	private static final Object[] T_URIAGE_MEISAI_01 = { "r-KK01-00001", 1, "r-SH01", 5, 1000, "r-KK01-00001-1" };

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.Shohin;
 
-public class MShohinCrudServiceImplTest extends CrudServiceTestCase {
+public class ShohinCrudServiceImplTest extends CrudServiceTestCase {
 
 	/** 商品01. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "SH01" };
@@ -20,7 +20,7 @@ public class MShohinCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	@Autowired
-	private MShohinCrudServiceImpl service;
+	private ShohinCrudServiceImpl service;
 
 	/**
 	 * get domain test

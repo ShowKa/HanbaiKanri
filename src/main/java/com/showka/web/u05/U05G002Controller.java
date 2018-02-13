@@ -31,7 +31,7 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
@@ -62,7 +62,7 @@ public class U05G002Controller extends ControllerBase {
 	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
 
 	@Autowired
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	@Autowired
 	private UriageMeisaiCrudService uriageMeisaiCrudService;

@@ -18,7 +18,7 @@ import com.showka.domain.Shohin;
 import com.showka.domain.ShohinZaiko;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -35,7 +35,7 @@ public class U11G001Controller extends ControllerBase {
 	private BushoCrudService bushoCrudService;
 
 	@Autowired
-	private MShohinCrudService mShohinCrudService;
+	private ShohinCrudService mShohinCrudService;
 
 	/**
 	 * 参照.

@@ -16,7 +16,7 @@ import com.showka.entity.TShohinIdoMeisai;
 import com.showka.entity.TShohinIdoMeisaiPK;
 import com.showka.repository.i.TShohinIdoMeisaiRepository;
 import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 
 @Service
 public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudService {
@@ -25,7 +25,7 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 	private TShohinIdoMeisaiRepository repo;
 
 	@Autowired
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	@Override
 	public void save(String id, ShohinIdoMeisai shohinIdoMeisai) {

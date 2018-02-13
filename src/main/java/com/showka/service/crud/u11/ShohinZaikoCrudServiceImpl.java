@@ -20,7 +20,7 @@ import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.value.TheDate;
 
 @Service
@@ -33,7 +33,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	private ShohinIdoCrudService shohinIdoCrudService;
 
 	@Autowired
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	@Override
 	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin) {
