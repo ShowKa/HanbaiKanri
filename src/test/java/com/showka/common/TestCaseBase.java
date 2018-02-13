@@ -35,6 +35,10 @@ public abstract class TestCaseBase extends TestCase {
 	protected static final String M_BUSHO_DATE = "m_busho_date";
 	protected static final String[] M_BUSHO_DATE_COLUMN = { "busho_id", "eigyo_date", "record_id" };
 
+	// 社員
+	protected static final String M_SHAIN = "m_shain";
+	protected static final String[] M_SHAIN_COLUMN = { "code", "name", "shozoku_busho_id", "record_id" };
+
 	// 顧客
 	protected static final String M_KOKYAKU = "m_kokyaku";
 	protected static final String[] M_KOKYAKU_COLUMN = {
