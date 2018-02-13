@@ -100,9 +100,7 @@ public class ShohinIdoCrudServiceImplTest extends ServiceCrudTestCase {
 		ido01 = b;
 	}
 
-	// 部署 FIXME
-	protected static final String M_BUSHO = "m_busho";
-	protected static final String[] M_BUSHO_COLUMN = { "code", "busho_kubun", "jigyo_kubun", "name", "record_id" };
+	/** 部署01. */
 	private static final Object[] VALUE01 = { "BS01", "01", "01", "部署01", "r-BS01" };
 
 	/**
