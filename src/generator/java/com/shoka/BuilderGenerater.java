@@ -99,7 +99,7 @@ public class BuilderGenerater {
 			map.put("memberListWithComma", memberListWithComma.toString().replaceAll("^,", ""));
 
 			// write
-			File file = new File(DESTINATION + domainConfig.getDomain() + "DomainBuilder.java");
+			File file = new File(DESTINATION + domainConfig.getDomain() + "Builder.java");
 			PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 			template.process(map, writer);
 
