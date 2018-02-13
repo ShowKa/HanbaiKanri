@@ -39,6 +39,16 @@ public abstract class TestCaseBase extends TestCase {
 			"shukan_busho_id",
 			"record_id" };
 
+	// 入金掛売情報
+	protected static final String M_NYUKIN_KAKE_INFO = "m_nyukin_kake_info";
+	protected static final String[] M_NYUKIN_KAKE_INFO_COLUMN = {
+			"kokyaku_id",
+			"nyukin_hoho_kubun",
+			"nyukin_tsuki_kubun",
+			"shimebi",
+			"nyukin_date",
+			"record_id" };
+
 	// 売上
 	protected static final String T_URIAGE = "t_uriage";
 	protected static final String[] T_URIAGE_COLUMN = {
