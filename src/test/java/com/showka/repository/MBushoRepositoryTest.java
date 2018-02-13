@@ -221,7 +221,7 @@ public class MBushoRepositoryTest extends RepositoryTestCase {
 	public void test_08() {
 		super.deleteAll(TABLE_NAME);
 		MBusho result = repository.getOne("XXX");
-		// error occurs here
+		// error occurs at here
 		result.getName();
 	}
 
