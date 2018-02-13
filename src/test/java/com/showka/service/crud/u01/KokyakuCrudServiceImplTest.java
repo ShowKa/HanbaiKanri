@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.NyukinKakeInfoDomain;
@@ -29,7 +29,7 @@ import com.showka.service.crud.z00.i.BushoCrudService;
  * @author 25767
  *
  */
-public class KokyakuCrudServiceImplTest extends ServiceCrudTestCase {
+public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private KokyakuCrudServiceImpl service;

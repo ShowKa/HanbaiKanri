@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
 import com.showka.domain.UriageMeisaiDomain;
@@ -29,7 +29,7 @@ import mockit.Tested;
 import mockit.Verifications;
 
 @SuppressWarnings("deprecation")
-public class UriageRirekiCrudServiceImplTest extends ServiceCrudTestCase {
+public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
 	private UriageRirekiCrudServiceImpl service;

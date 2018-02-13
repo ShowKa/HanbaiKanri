@@ -5,14 +5,14 @@ import java.math.BigDecimal;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.ShohinDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.builder.ShohinDomainBuilder;
 import com.showka.domain.builder.UriageMeisaiDomainBuilder;
 import com.showka.system.exception.NotAllowedNumberException;
 
-public class UriageMeisaiValidateServiceImplTest extends ServiceCrudTestCase {
+public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private UriageMeisaiValidateServiceImpl service;

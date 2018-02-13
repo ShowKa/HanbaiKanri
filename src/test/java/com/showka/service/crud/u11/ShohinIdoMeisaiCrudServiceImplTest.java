@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.ShohinDomain;
 import com.showka.domain.ShohinIdoMeisaiDomain;
 import com.showka.domain.builder.ShohinIdoMeisaiDomainBuilder;
@@ -17,7 +17,7 @@ import com.showka.entity.TShohinIdoMeisaiPK;
 import com.showka.repository.i.TShohinIdoMeisaiRepository;
 import com.showka.system.EmptyProxy;
 
-public class ShohinIdoMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
+public class ShohinIdoMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private ShohinIdoMeisaiCrudServiceImpl service;

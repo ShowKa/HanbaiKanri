@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.domain.ShohinDomain;
 import com.showka.domain.ShohinIdoDomain;
@@ -27,7 +27,7 @@ import mockit.MockUp;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class ShohinZaikoCrudServiceImplTest extends ServiceCrudTestCase {
+public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
 	private ShohinZaikoCrudServiceImpl service;

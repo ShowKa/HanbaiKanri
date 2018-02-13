@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageCancelDomain;
 import com.showka.domain.UriageDomain;
@@ -28,7 +28,7 @@ import mockit.MockUp;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class UriageCancelCrudServiceImplTest extends ServiceCrudTestCase {
+public class UriageCancelCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
 	private UriageCancelCrudServiceImpl service;

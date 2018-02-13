@@ -3,7 +3,7 @@ package com.showka.service.crud.z00;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.domain.ShainDomain;
 import com.showka.repository.i.MShainRepository;
@@ -15,7 +15,7 @@ import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class ShainCrudServiceImplTest extends ServiceCrudTestCase {
+public class ShainCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
 	private ShainCrudServiceImpl service;

@@ -3,7 +3,7 @@ package com.showka.service.specification.u05;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.BushoDomain;
 import com.showka.domain.KokyakuDomain;
 import com.showka.domain.UriageDomain;
@@ -13,7 +13,7 @@ import com.showka.domain.builder.UriageDomainBuilder;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
-public class UriageKeijoSpecificationServiceImplTest extends ServiceCrudTestCase {
+public class UriageKeijoSpecificationServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private UriageKeijoSpecificationServiceImpl service;

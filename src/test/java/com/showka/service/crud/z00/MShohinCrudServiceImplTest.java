@@ -5,10 +5,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.ShohinDomain;
 
-public class MShohinCrudServiceImplTest extends ServiceCrudTestCase {
+public class MShohinCrudServiceImplTest extends CrudServiceTestCase {
 
 	/** 商品01. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "SH01" };

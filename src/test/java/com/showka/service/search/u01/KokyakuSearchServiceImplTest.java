@@ -6,10 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.entity.MKokyaku;
 
-public class KokyakuSearchServiceImplTest extends ServiceCrudTestCase {
+public class KokyakuSearchServiceImplTest extends CrudServiceTestCase {
 
 	/**
 	 * service.

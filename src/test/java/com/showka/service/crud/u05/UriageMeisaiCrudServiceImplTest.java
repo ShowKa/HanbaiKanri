@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.ShohinDomain;
 import com.showka.domain.UriageMeisaiDomain;
 import com.showka.domain.builder.ShohinDomainBuilder;
@@ -27,7 +27,7 @@ import mockit.MockUp;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class UriageMeisaiCrudServiceImplTest extends ServiceCrudTestCase {
+public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
 	private UriageMeisaiCrudServiceImpl service;

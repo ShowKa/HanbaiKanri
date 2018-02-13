@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.ServiceCrudTestCase;
+import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.NyukinKakeInfoDomain;
 import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
 import com.showka.entity.MNyukinKakeInfo;
@@ -15,7 +15,7 @@ import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
 
-public class NyukinKakeInfoCrudServiceImplTest extends ServiceCrudTestCase {
+public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Autowired
 	private NyukinKakeInfoCrudServiceImpl service;

@@ -7,6 +7,14 @@ import org.junit.runner.RunWith;
 import junit.framework.TestCase;
 import mockit.integration.junit4.JMockit;
 
+/**
+ * Test Case Class for simple class.
+ *
+ * <pre>
+ * this class doesn't launch SpringBoot.
+ * 
+ * <pre>
+ */
 @RunWith(JMockit.class)
 public abstract class SimpleTestCase extends TestCase {
 

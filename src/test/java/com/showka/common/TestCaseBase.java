@@ -7,6 +7,10 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
+/**
+ * Test Case Class.
+ * 
+ */
 public abstract class TestCaseBase extends TestCase {
 
 	/** date format yyyyMMdd . */
