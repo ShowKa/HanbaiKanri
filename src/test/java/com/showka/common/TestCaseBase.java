@@ -12,6 +12,13 @@ public abstract class TestCaseBase extends TestCase {
 	/** date format yyyyMMdd . */
 	private static final DateFormat DF = new SimpleDateFormat("yyyyMMdd");
 
+	/**
+	 * 文字列からjava.util.Dateのインスタンスを作る.
+	 * 
+	 * @param yyyyMMdd
+	 *            日付文字列
+	 * @return Date
+	 */
 	public static Date d(String yyyyMMdd) {
 		try {
 			return DF.parse(yyyyMMdd);
