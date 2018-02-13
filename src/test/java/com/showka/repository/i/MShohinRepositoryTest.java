@@ -13,8 +13,12 @@ public class MShohinRepositoryTest extends RepositoryTestCase {
 	@Autowired
 	private MShohinRepository repository;
 
+	/** 商品01. */
+	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "r-SH01" };
+
 	@Test
 	public void test01() {
+		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01);
 		String code = "SH01";
 		Optional<MShohin> actual = repository.findById(code);
 		assertEquals(code, actual.get().getCode());
