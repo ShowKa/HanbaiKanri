@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -43,24 +44,26 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 	 * ドメイン保存.
 	 */
 	@Override
-	public void save(UriageMeisai domain) {
+	public void save(String uriageId, UriageMeisai domain) {
 		// set primary key
 		TUriageMeisaiPK pk = new TUriageMeisaiPK();
-		pk.setUriageId(domain.getUriageId());
+		pk.setUriageId(uriageId);
 		pk.setMeisaiNumber(domain.getMeisaiNumber());
-
 		// get entity
-		TUriageMeisai e = repo.findById(pk).orElse(new TUriageMeisai());
-
+		Optional<TUriageMeisai> _e = repo.findById(pk);
+		TUriageMeisai e = _e.isPresent() ? _e.get() : new TUriageMeisai();
 		// override entity
 		e.setPk(pk);
 		e.setHanbaiNumber(domain.getHanbaiNumber());
 		e.setHanbaiTanka(domain.getHanbaiTanka().intValue());
 		e.setRecordId(domain.getRecordId());
 		e.setShohinId(domain.getShohinDomain().getRecordId());
-
-		// 排他制御対象外
-
+		// record id
+		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
+		e.setRecordId(recordId);
+		domain.setRecordId(e.getRecordId());
+		// occ
+		e.setVersion(domain.getVersion());
 		// save
 		repo.save(e);
 	}
@@ -69,9 +72,10 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 	 * 削除
 	 */
 	@Override
-	public void delete(TUriageMeisaiPK pk, Integer version) {
+	public void delete(TUriageMeisaiPK pk, int version) {
 		TUriageMeisai entity = repo.getOne(pk);
 		entity.setPk(pk);
+		// occ
 		entity.setVersion(version);
 		repo.delete(entity);
 	}
@@ -81,13 +85,10 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 	 */
 	@Override
 	public UriageMeisai getDomain(TUriageMeisaiPK pk) {
-
 		// get entity
 		TUriageMeisai e = repo.findById(pk).get();
-
 		// get shohin domain
 		Shohin shohin = shohinService.getDomain(e.getShohin().getCode());
-
 		// set builder
 		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withHanbaiNumber(e.getHanbaiNumber());
@@ -95,35 +96,15 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		b.withMeisaiNumber(e.getPk().getMeisaiNumber());
 		b.withRecordId(e.getRecordId());
 		b.withShohinDomain(shohin);
-		b.withUriageId(e.getPk().getUriageId());
 		b.withVersion(e.getVersion());
-
 		// build domain
-		UriageMeisai d = b.build();
-		return d;
-	}
-
-	/**
-	 * 存在チェック.
-	 */
-	@Override
-	public boolean exsists(TUriageMeisaiPK pk) {
-		return repo.findById(pk).isPresent();
-	}
-
-	@Override
-	public void delete(UriageMeisai domain) {
-		TUriageMeisaiPK pk = new TUriageMeisaiPK();
-		pk.setUriageId(domain.getUriageId());
-		pk.setMeisaiNumber(domain.getMeisaiNumber());
-		this.delete(pk, domain.getVersion());
+		return b.build();
 	}
 
 	@Override
 	public List<UriageMeisai> getDomainList(String uriageId) {
 		// 明細
 		List<TUriageMeisai> meisaiList = getUriageMeisaiList(uriageId);
-
 		// ドメイン取得
 		List<UriageMeisai> meisaiDomainList = new ArrayList<UriageMeisai>();
 		for (TUriageMeisai meisai : meisaiList) {
@@ -143,6 +124,33 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		return max.isPresent() ? max.get().getPk().getMeisaiNumber() : 0;
 	}
 
+	@Override
+	public void deleteAll(String uriageId) {
+		List<TUriageMeisai> meisaiList = getUriageMeisaiList(uriageId);
+		repo.deleteAll(meisaiList);
+	}
+
+	@Override
+	public void overrideList(String uriageId, List<UriageMeisai> meisaiList) {
+		// delete all if empty
+		if (meisaiList.isEmpty()) {
+			this.deleteAll(uriageId);
+			return;
+		}
+		// delete removed 明細
+		List<UriageMeisai> oldList = getDomainList(uriageId);
+		oldList.stream().filter(o -> {
+			return !meisaiList.contains(o);
+		}).forEach(o -> {
+			TUriageMeisaiPK pk = new TUriageMeisaiPK();
+			pk.setUriageId(uriageId);
+			pk.setMeisaiNumber(o.getMeisaiNumber());
+			delete(pk, o.getVersion());
+		});
+		// save
+		meisaiList.forEach(m -> save(uriageId, m));
+	}
+
 	/**
 	 * 売上明細のEntityのリストを取得する。
 	 * 
@@ -156,31 +164,7 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		pk.setUriageId(uriageId);
 		e.setPk(pk);
 		Example<TUriageMeisai> example = Example.of(e);
-
-		// 明細
+		// 明細取得
 		return repo.findAll(example);
-	}
-
-	@Override
-	public void deleteAll(String uriageId) {
-		List<TUriageMeisai> meisaiList = getUriageMeisaiList(uriageId);
-		repo.deleteAll(meisaiList);
-	}
-
-	@Override
-	public void overrideList(List<UriageMeisai> meisaiList) {
-		if (meisaiList.isEmpty()) {
-			// TODO 全削除
-			return;
-		}
-		// delete removed
-		List<UriageMeisai> oldList = getDomainList(meisaiList.get(0).getUriageId());
-		oldList.stream().filter(o -> {
-			return !meisaiList.contains(o);
-		}).forEach(o -> {
-			delete(o);
-		});
-		// save
-		meisaiList.forEach(m -> save(m));
 	}
 }

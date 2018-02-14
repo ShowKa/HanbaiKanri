@@ -4,9 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.Shohin;
@@ -49,6 +50,7 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	private static final Object[] M_SHOHIN_02 = { "SH02", "商品01", 11, "r-SH02" };
 
 	@Test
+	@Transactional
 	public void test01_save() {
 		// table
 		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01);
@@ -67,11 +69,10 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		b.withMeisaiNumber(meisaiNumber);
 		b.withRecordId(recordID);
 		b.withShohinDomain(shohinDomain);
-		b.withUriageId(uriageId);
 		b.withVersion(0);
 		UriageMeisai domain = b.build();
 		// do
-		service.save(domain);
+		service.save(uriageId, domain);
 		// check
 		TUriageMeisaiPK id = new TUriageMeisaiPK();
 		id.setUriageId(uriageId);
@@ -81,6 +82,7 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	@Test
+	@Transactional
 	public void test02_delete() {
 		// table
 		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01);
@@ -103,7 +105,6 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	@Test
-	@Transactional
 	public void test03_getDomain() {
 		// table
 		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, T_URIAGE_MEISAI_01);
@@ -139,7 +140,6 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// check
-		assertEquals(uriageId, d.getUriageId());
 		assertEquals(meisaiNumber, d.getMeisaiNumber());
 		assertNotNull(d.getShohinDomain());
 	}
@@ -155,7 +155,7 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		pk.setUriageId(uriageId);
 		pk.setMeisaiNumber(meisaiNumber);
 		// do
-		boolean actual = service.exsists(pk);
+		boolean actual = repo.existsById(pk);
 		// check
 		assertTrue(actual);
 	}
@@ -169,7 +169,7 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		pk.setUriageId(uriageId);
 		pk.setMeisaiNumber(meisaiNumber);
 		// do
-		boolean actual = service.exsists(pk);
+		boolean actual = repo.existsById(pk);
 		// check
 		assertFalse(actual);
 	}
@@ -229,7 +229,7 @@ public class UriageMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		TUriageMeisaiPK pk = new TUriageMeisaiPK();
 		pk.setMeisaiNumber(1);
 		pk.setUriageId(uriageId);
-		boolean actual = service.exsists(pk);
+		boolean actual = repo.existsById(pk);
 		assertFalse(actual);
 	}
 }

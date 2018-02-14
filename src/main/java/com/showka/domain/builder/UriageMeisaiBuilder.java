@@ -9,9 +9,6 @@ public class UriageMeisaiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<UriageMeisai, UriageMeisaiBuilder> {
 
 	// private member
-	/** uriageId */
-	private String uriageId;
-
 	/** meisaiNumber */
 	private Integer meisaiNumber;
 
@@ -33,7 +30,6 @@ public class UriageMeisaiBuilder
 	// protected method
 	@Override
 	protected void apply(UriageMeisai domain, UriageMeisaiBuilder builder) {
-		builder.withUriageId(domain.getUriageId());
 		builder.withMeisaiNumber(domain.getMeisaiNumber());
 		builder.withShohinDomain(domain.getShohinDomain());
 		builder.withHanbaiNumber(domain.getHanbaiNumber());
@@ -44,8 +40,7 @@ public class UriageMeisaiBuilder
 
 	@Override
 	protected UriageMeisai createDomainObject() {
-		UriageMeisai domain = new UriageMeisai(uriageId, meisaiNumber, shohinDomain, hanbaiNumber,
-				hanbaiTanka);
+		UriageMeisai domain = new UriageMeisai(meisaiNumber, shohinDomain, hanbaiNumber, hanbaiTanka);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -62,23 +57,6 @@ public class UriageMeisaiBuilder
 	}
 
 	// public method
-	/**
-	 * {@link UriageMeisai}に与えるuriageIdをこのビルダに設定する。
-	 *
-	 * @param uriageId
-	 *            uriageId
-	 * @return {@link UriageMeisaiBuilder}
-	 */
-	public UriageMeisaiBuilder withUriageId(final String uriageId) {
-		addConfigurator(new BuilderConfigurator<UriageMeisaiBuilder>() {
-			@Override
-			public void configure(UriageMeisaiBuilder builder) {
-				builder.uriageId = uriageId;
-			}
-		});
-		return getThis();
-	}
-
 	/**
 	 * {@link UriageMeisai}に与えるmeisaiNumberをこのビルダに設定する。
 	 *

@@ -65,8 +65,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	public static final UriageMeisai uriageMeisai01;
 	static {
 		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
-		uriageMeisai01 = b.withUriageId("KK01-00001")
-				.withMeisaiNumber(1)
+		uriageMeisai01 = b.withMeisaiNumber(1)
 				.withHanbaiNumber(5)
 				.withHanbaiTanka(BigDecimal.valueOf(1000))
 				.withRecordId("KK01-00001-1")

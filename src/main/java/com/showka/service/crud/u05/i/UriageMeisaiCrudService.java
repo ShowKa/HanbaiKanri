@@ -1,22 +1,10 @@
 package com.showka.service.crud.u05.i;
 
-import java.util.List;
-
 import com.showka.domain.UriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
-import com.showka.service.crud.CrudService;
+import com.showka.service.crud.MeisaiCrudService;
 
-public interface UriageMeisaiCrudService extends CrudService<UriageMeisai, TUriageMeisaiPK> {
-
-	/**
-	 * ドメインをリストで取得.
-	 * 
-	 * @param uriageId
-	 *            売上ID
-	 * @return
-	 */
-	public List<UriageMeisai> getDomainList(String uriageId);
-
+public interface UriageMeisaiCrudService extends MeisaiCrudService<UriageMeisai, TUriageMeisaiPK> {
 	/**
 	 * 明細番号の最大値を取得する。
 	 * 
@@ -25,29 +13,4 @@ public interface UriageMeisaiCrudService extends CrudService<UriageMeisai, TUria
 	 * @return 明細番号の最大値
 	 */
 	public Integer getMaxMeisaiNumber(String uriageId);
-
-	/**
-	 * 全明細削除.
-	 * 
-	 * <pre>
-	 * 排他制御対象外
-	 * </pre>
-	 * 
-	 * @param uriageId
-	 *            売上ID
-	 */
-	public void deleteAll(String uriageId);
-
-	/**
-	 * リスト保存.
-	 * 
-	 * <pre>
-	 * 注意：引数のリストに含まれない古いレコードは削除されます。
-	 * </pre>
-	 * 
-	 * @param uriageMeisai
-	 *            売上明細
-	 */
-	public void overrideList(List<UriageMeisai> meisaiList);
-
 }

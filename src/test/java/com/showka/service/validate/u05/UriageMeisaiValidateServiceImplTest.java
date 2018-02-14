@@ -46,7 +46,6 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 		b.withMeisaiNumber(meisaiNumber);
 		b.withRecordId(recordID);
 		b.withShohinDomain(shohinDomain);
-		b.withUriageId(uriageId);
 		b.withVersion(0);
 		UriageMeisai d = b.build();
 
@@ -84,7 +83,6 @@ public class UriageMeisaiValidateServiceImplTest extends CrudServiceTestCase {
 		b.withMeisaiNumber(meisaiNumber);
 		b.withRecordId(recordID);
 		b.withShohinDomain(shohinDomain);
-		b.withUriageId(uriageId);
 		b.withVersion(0);
 		UriageMeisai d = b.build();
 

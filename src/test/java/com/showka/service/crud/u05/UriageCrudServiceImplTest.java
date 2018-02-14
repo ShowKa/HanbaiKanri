@@ -81,12 +81,10 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		assertEquals(0, repo.findAll().size());
 		// 売上明細01
 		UriageMeisaiBuilder bm1 = new UriageMeisaiBuilder();
-		bm1.withUriageId("r-KK99-99999");
 		bm1.withMeisaiNumber(1);
 		UriageMeisai uriageMeisai01 = bm1.build();
 		// 売上明細02
 		UriageMeisaiBuilder bm2 = new UriageMeisaiBuilder();
-		bm2.withUriageId("r-KK99-99999");
 		bm2.withMeisaiNumber(2);
 		UriageMeisai uriageMeisai02 = bm2.build();
 		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
@@ -113,7 +111,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 				// 売上履歴の保存
 				uriageRirekiCrudService.save(uriage);
 				// 明細上書き
-				uriageMeisaiCrudService.overrideList(uriage.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList("r-KK99-99999", uriage.getUriageMeisai());
 			}
 		};
 		// save
@@ -123,7 +121,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 			{
 				uriageRirekiCrudService.save(uriage);
 				times = 1;
-				uriageMeisaiCrudService.overrideList(uriage.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList("r-KK99-99999", uriage.getUriageMeisai());
 				times = 1;
 			}
 		};
@@ -149,12 +147,10 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		assertEquals(1, repo.findAll().size());
 		// 売上明細01
 		UriageMeisaiBuilder bm1 = new UriageMeisaiBuilder();
-		bm1.withUriageId("r-KK01-00001");
 		bm1.withMeisaiNumber(1);
 		UriageMeisai uriageMeisai01 = bm1.build();
 		// 売上明細02
 		UriageMeisaiBuilder bm2 = new UriageMeisaiBuilder();
-		bm2.withUriageId("r-KK01-00001");
 		bm2.withMeisaiNumber(2);
 		UriageMeisai uriageMeisai02 = bm2.build();
 		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
@@ -180,7 +176,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		new Expectations() {
 			{
 				uriageRirekiCrudService.save(uriage01);
-				uriageMeisaiCrudService.overrideList(uriage01.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList("KK01-00001", uriage01.getUriageMeisai());
 			}
 		};
 		// save
@@ -190,7 +186,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 			{
 				uriageRirekiCrudService.save(uriage01);
 				times = 1;
-				uriageMeisaiCrudService.overrideList(uriage01.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList("KK01-00001", uriage01.getUriageMeisai());
 				times = 1;
 			}
 		};

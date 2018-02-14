@@ -114,10 +114,11 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		// 明細
 		List<UriageMeisai> meisaiList = domain.getUriageMeisai().stream().map(meisai -> {
 			UriageMeisaiBuilder b = new UriageMeisaiBuilder();
-			b.withUriageId(recordId);
+			// TODO OK??
+			// b.withUriageId(recordId);
 			return b.apply(meisai);
 		}).collect(Collectors.toList());
-		uriageRirekiMeisaiCrudService.overrideList(meisaiList);
+		uriageRirekiMeisaiCrudService.overrideList(recordId, meisaiList);
 	}
 
 	@Override

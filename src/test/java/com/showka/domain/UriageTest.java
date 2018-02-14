@@ -17,8 +17,8 @@ public class UriageTest extends SimpleTestCase {
 	public void test01_getUriageGokeiKakaku() {
 		// uriage meisai
 		List<UriageMeisai> m = new ArrayList<UriageMeisai>();
-		UriageMeisai m1 = new UriageMeisai(null, null, null, 1, new BigDecimal(100));
-		UriageMeisai m2 = new UriageMeisai(null, null, null, 2, new BigDecimal(200));
+		UriageMeisai m1 = new UriageMeisai(null, null, 1, new BigDecimal(100));
+		UriageMeisai m2 = new UriageMeisai(null, null, 2, new BigDecimal(200));
 		m.add(m1);
 		m.add(m2);
 

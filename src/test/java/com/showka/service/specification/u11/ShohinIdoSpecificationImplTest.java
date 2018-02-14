@@ -41,8 +41,7 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 	static {
 		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
-		b.withUriageId("KK01-00001")
-				.withMeisaiNumber(1)
+		b.withMeisaiNumber(1)
 				.withShohinDomain(shohin)
 				.withHanbaiNumber(5)
 				.withHanbaiTanka(BigDecimal.valueOf(1000))
