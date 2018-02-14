@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -15,7 +14,6 @@ import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.UriageRireki;
 import com.showka.domain.builder.UriageBuilder;
-import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.domain.builder.UriageRirekiBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
@@ -112,13 +110,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		repo.saveAndFlush(e);
 
 		// 明細
-		List<UriageMeisai> meisaiList = domain.getUriageMeisai().stream().map(meisai -> {
-			UriageMeisaiBuilder b = new UriageMeisaiBuilder();
-			// TODO OK??
-			// b.withUriageId(recordId);
-			return b.apply(meisai);
-		}).collect(Collectors.toList());
-		uriageRirekiMeisaiCrudService.overrideList(recordId, meisaiList);
+		uriageRirekiMeisaiCrudService.overrideList(recordId, domain.getUriageMeisai());
 	}
 
 	@Override

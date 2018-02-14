@@ -164,18 +164,9 @@ public class UriageRireki extends DomainBase {
 	 * @return
 	 */
 	private Uriage convert(Uriage uriage) {
-		// set uriage id
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
-		// set uriage id to list
-		List<UriageMeisai> meisai = uriage.getUriageMeisai().stream().map(m -> {
-			UriageMeisaiBuilder bm = new UriageMeisaiBuilder();
-			// TODO OK??
-			// bm.withUriageId(uriageId);
-			return bm.apply(m);
-		}).collect(Collectors.toList());
-		b.withUriageMeisai(meisai);
-		// build & return
+		// b.withUriageMeisai(uriage.getUriageMeisai());
 		return b.apply(uriage);
 	}
 }

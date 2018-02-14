@@ -62,8 +62,6 @@ public class UriageMeisaiCrudServiceImpl implements UriageMeisaiCrudService {
 		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
 		e.setRecordId(recordId);
 		domain.setRecordId(e.getRecordId());
-		// occ
-		e.setVersion(domain.getVersion());
 		// save
 		repo.save(e);
 	}

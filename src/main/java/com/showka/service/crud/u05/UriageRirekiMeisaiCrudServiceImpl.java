@@ -43,11 +43,9 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 		e.setHanbaiNumber(domain.getHanbaiNumber());
 		e.setHanbaiTanka(domain.getHanbaiTanka().intValue());
 		e.setShohinId(domain.getShohinDomain().getRecordId());
-		// set base column
+		// set record id
 		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
 		e.setRecordId(recordId);
-		// occ
-		e.setVersion(domain.getVersion());
 		// save
 		repo.save(e);
 	}
@@ -89,14 +87,7 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 
 	@Override
 	public List<UriageMeisai> getDomainList(String uriageId) {
-		// search
-		RUriageMeisaiPK pk = new RUriageMeisaiPK();
-		pk.setUriageId(uriageId);
-		RUriageMeisai ex = new RUriageMeisai();
-		ex.setPk(pk);
-		Example<RUriageMeisai> example = Example.of(ex);
-		// build domain list
-		List<RUriageMeisai> entities = repo.findAll(example);
+		List<RUriageMeisai> entities = getUriageMeisaiList(uriageId);
 		List<UriageMeisai> list = new ArrayList<UriageMeisai>();
 		entities.forEach(e -> list.add(buildDomainByEntity(e)));
 		Collections.sort(list);
