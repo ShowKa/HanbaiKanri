@@ -2,11 +2,11 @@ package com.showka.service.crud.u05.i;
 
 import java.util.List;
 
-import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.service.crud.CrudService;
 
-public interface UriageMeisaiCrudService extends CrudService<UriageMeisaiDomain, TUriageMeisaiPK> {
+public interface UriageMeisaiCrudService extends CrudService<UriageMeisai, TUriageMeisaiPK> {
 
 	/**
 	 * ドメインをリストで取得.
@@ -15,7 +15,7 @@ public interface UriageMeisaiCrudService extends CrudService<UriageMeisaiDomain,
 	 *            売上ID
 	 * @return
 	 */
-	public List<UriageMeisaiDomain> getDomainList(String uriageId);
+	public List<UriageMeisai> getDomainList(String uriageId);
 
 	/**
 	 * 明細番号の最大値を取得する。
@@ -48,6 +48,6 @@ public interface UriageMeisaiCrudService extends CrudService<UriageMeisaiDomain,
 	 * @param uriageMeisai
 	 *            売上明細
 	 */
-	public void overrideList(List<UriageMeisaiDomain> meisaiList);
+	public void overrideList(List<UriageMeisai> meisaiList);
 
 }

@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.domain.builder.KokyakuDomainBuilder;
-import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.kubun.NyukinHohoKubun;
@@ -90,14 +90,14 @@ public class U01G002Controller {
 		kokyakuValidateService.validateForRefer(code);
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(code);
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(code);
 		model.addForm(setForm(form, kokyaku));
 
 		// 選択肢を取得して画面に送る
 		setListToModelAttribute(model);
 
 		// 入金サイトを取得して画面に送る
-		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 		if (nyukinKakeInfo != null) {
 			model.addObject("nyukinSight", nyukinKakeInfo.getNyukinSight());
 		}
@@ -120,7 +120,7 @@ public class U01G002Controller {
 	public ModelAndViewExtended updateForm(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getCode());
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getCode());
 		model.addForm(setForm(form, kokyaku));
 
 		// 選択肢を取得して画面に送る
@@ -151,7 +151,7 @@ public class U01G002Controller {
 		form.setNyukinKakeInfoRecordId(UUID.randomUUID().toString());
 
 		// make KokyakuDomain
-		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
+		Kokyaku kokyakuDomain = createKokyakuDomain(form);
 
 		// validate
 		kokyakuValidateService.validateForRegister(kokyakuDomain);
@@ -185,7 +185,7 @@ public class U01G002Controller {
 		}
 
 		// make KokyakuDomain
-		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
+		Kokyaku kokyakuDomain = createKokyakuDomain(form);
 
 		// validate
 		kokyakuValidateService.validate(kokyakuDomain);
@@ -211,7 +211,7 @@ public class U01G002Controller {
 	public ResponseEntity<?> delete(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
 		// make KokyakuDomain
-		KokyakuDomain kokyakuDomain = createKokyakuDomain(form);
+		Kokyaku kokyakuDomain = createKokyakuDomain(form);
 
 		// delete
 		kokyakuCrudService.delete(kokyakuDomain);
@@ -247,9 +247,9 @@ public class U01G002Controller {
 	 * @param form
 	 *
 	 */
-	private NyukinKakeInfoDomain createNyukinKakeInfoDomain(U01G002Form form) {
+	private NyukinKakeInfo createNyukinKakeInfoDomain(U01G002Form form) {
 
-		NyukinKakeInfoDomainBuilder nyukinKakeInfoBuilder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder nyukinKakeInfoBuilder = new NyukinKakeInfoBuilder();
 		nyukinKakeInfoBuilder.withKokyakuId(form.getKokyakuRecordId());
 		nyukinKakeInfoBuilder.withNyukinDate(form.getNyukinDate());
 		nyukinKakeInfoBuilder.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, form.getNyukinHohoKubun()));
@@ -266,12 +266,12 @@ public class U01G002Controller {
 	 * @param form
 	 *
 	 */
-	private KokyakuDomain createKokyakuDomain(U01G002Form form) {
+	private Kokyaku createKokyakuDomain(U01G002Form form) {
 
 		final String kokyakuCode = form.getCode();
 		HanbaiKubun hanbaiKubun = Kubun.get(HanbaiKubun.class, form.getHanbaiKubun());
 
-		KokyakuDomainBuilder kokyakuDomainBuilder = new KokyakuDomainBuilder();
+		KokyakuBuilder kokyakuDomainBuilder = new KokyakuBuilder();
 		kokyakuDomainBuilder.withCode(kokyakuCode);
 		kokyakuDomainBuilder.withName(form.getName());
 		kokyakuDomainBuilder.withAddress(form.getAddress());
@@ -295,10 +295,10 @@ public class U01G002Controller {
 	 * @param kokyaku
 	 *
 	 */
-	private U01G002Form setForm(U01G002Form form, KokyakuDomain kokyaku) {
+	private U01G002Form setForm(U01G002Form form, Kokyaku kokyaku) {
 
-		BushoDomain busho = kokyaku.getShukanBusho();
-		NyukinKakeInfoDomain nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		Busho busho = kokyaku.getShukanBusho();
+		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 
 		// kokyaku
 		form.setCode(kokyaku.getCode());

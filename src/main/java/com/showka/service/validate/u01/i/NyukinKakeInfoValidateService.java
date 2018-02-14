@@ -1,6 +1,6 @@
 package com.showka.service.validate.u01.i;
 
-import com.showka.domain.NyukinKakeInfoDomain;
+import com.showka.domain.NyukinKakeInfo;
 import com.showka.system.exception.ValidateException;
 
 public interface NyukinKakeInfoValidateService {
@@ -15,5 +15,5 @@ public interface NyukinKakeInfoValidateService {
 	 * @param domain
 	 * @throws ValidateException
 	 */
-	public void validate(NyukinKakeInfoDomain domain) throws ValidateException;
+	public void validate(NyukinKakeInfo domain) throws ValidateException;
 }

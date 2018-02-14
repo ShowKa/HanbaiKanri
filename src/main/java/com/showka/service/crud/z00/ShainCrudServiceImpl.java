@@ -3,9 +3,9 @@ package com.showka.service.crud.z00;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShainDomain;
-import com.showka.domain.builder.ShainDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Shain;
+import com.showka.domain.builder.ShainBuilder;
 import com.showka.entity.MShain;
 import com.showka.repository.i.MShainRepository;
 import com.showka.service.crud.z00.i.BushoCrudService;
@@ -27,15 +27,15 @@ public class ShainCrudServiceImpl implements ShainCrudService {
 	private BushoCrudService bushoCrudService;
 
 	@Override
-	public ShainDomain getDomain(String code) {
+	public Shain getDomain(String code) {
 
 		MShain shain = repo.getOne(code);
 
 		// 所属部署
-		BushoDomain busho = bushoCrudService.getDomain(shain.getBusho().getCode());
+		Busho busho = bushoCrudService.getDomain(shain.getBusho().getCode());
 
 		// builder
-		ShainDomainBuilder b = new ShainDomainBuilder();
+		ShainBuilder b = new ShainBuilder();
 		b.withCode(shain.getCode());
 		b.withName(shain.getName());
 		b.withRecordId(shain.getRecordId());

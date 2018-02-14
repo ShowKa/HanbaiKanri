@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiDomain;
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.UriageRireki;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
@@ -31,7 +31,7 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
@@ -62,7 +62,7 @@ public class U05G002Controller extends ControllerBase {
 	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
 
 	@Autowired
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	@Autowired
 	private UriageMeisaiCrudService uriageMeisaiCrudService;
@@ -125,13 +125,13 @@ public class U05G002Controller extends ControllerBase {
 	public ModelAndViewExtended refer(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// 顧客取得
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 
 		// 売上取得
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		pk.setKokyakuId(kokyaku.getRecordId());
-		UriageDomain u = uriageCrudService.getDomain(pk);
+		Uriage u = uriageCrudService.getDomain(pk);
 
 		// set form
 		form.setHanbaiKubun(u.getHanbaiKubun().getCode());
@@ -141,7 +141,7 @@ public class U05G002Controller extends ControllerBase {
 
 		// set 明細
 		List<U05G002MeisaiForm> meisaiList = new ArrayList<U05G002MeisaiForm>();
-		for (UriageMeisaiDomain meisai : u.getUriageMeisai()) {
+		for (UriageMeisai meisai : u.getUriageMeisai()) {
 			U05G002MeisaiForm e = new U05G002MeisaiForm();
 			e.setMeisaiNumber(meisai.getMeisaiNumber());
 			e.setHanbaiNumber(meisai.getHanbaiNumber());
@@ -183,7 +183,7 @@ public class U05G002Controller extends ControllerBase {
 		meisai.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
-		UriageDomain uriage = buildDomainFromForm(form);
+		Uriage uriage = buildDomainFromForm(form);
 
 		// validate
 		uriageValidateService.validateForRegister(uriage);
@@ -215,7 +215,7 @@ public class U05G002Controller extends ControllerBase {
 				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
-		UriageDomain uriage = buildDomainFromForm(form);
+		Uriage uriage = buildDomainFromForm(form);
 
 		// validate
 		uriageValidateService.validateForUpdate(uriage);
@@ -243,9 +243,9 @@ public class U05G002Controller extends ControllerBase {
 		// domain
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 		pk.setKokyakuId(kokyaku.getRecordId());
-		UriageDomain uriage = uriageCrudService.getDomain(pk);
+		Uriage uriage = uriageCrudService.getDomain(pk);
 
 		// 排他制御
 		uriage.setVersion(form.getVersion());
@@ -270,13 +270,13 @@ public class U05G002Controller extends ControllerBase {
 	 * @param form
 	 * @return
 	 */
-	private UriageDomain buildDomainFromForm(U05G002Form form) {
+	private Uriage buildDomainFromForm(U05G002Form form) {
 
 		// record_id 採番
 		form.setRecordId(form.getRecordId() == null ? UUID.randomUUID().toString() : form.getRecordId());
 
 		// 売上明細
-		List<UriageMeisaiDomain> uriageMeisaiList = new ArrayList<UriageMeisaiDomain>();
+		List<UriageMeisai> uriageMeisaiList = new ArrayList<UriageMeisai>();
 		for (U05G002MeisaiForm mf : form.getMeisai()) {
 
 			// record_id 採番
@@ -284,7 +284,7 @@ public class U05G002Controller extends ControllerBase {
 			mf.setRecordId(StringUtils.isEmpty(rec) ? UUID.randomUUID().toString() : rec);
 
 			// build
-			UriageMeisaiDomainBuilder mb = new UriageMeisaiDomainBuilder();
+			UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
 			mb.withHanbaiNumber(mf.getHanbaiNumber());
 			mb.withHanbaiTanka(BigDecimal.valueOf(mf.getHanbaiTanka()));
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
@@ -292,20 +292,20 @@ public class U05G002Controller extends ControllerBase {
 			mb.withShohinDomain(shohinCrudService.getDomain(mf.getShohinCode()));
 			mb.withUriageId(form.getRecordId());
 			mb.withVersion(mf.getVersion());
-			UriageMeisaiDomain md = mb.build();
+			UriageMeisai md = mb.build();
 
 			// add list
 			uriageMeisaiList.add(md);
 		}
 
 		// 顧客
-		KokyakuDomain kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 
 		// 営業日取得
 		TheDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
 
 		// 売上
-		UriageDomainBuilder ub = new UriageDomainBuilder();
+		UriageBuilder ub = new UriageBuilder();
 		ub.withUriageMeisai(uriageMeisaiList);
 		ub.withDenpyoNumber(form.getDenpyoNumber());
 		ub.withHanbaiKubun(Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()));
@@ -315,7 +315,7 @@ public class U05G002Controller extends ControllerBase {
 		ub.withKeijoDate(eigyoDate);
 		ub.withVersion(form.getVersion());
 		ub.withKokyaku(kokyaku);
-		UriageDomain uriage = ub.build();
+		Uriage uriage = ub.build();
 
 		return uriage;
 	}
@@ -327,7 +327,7 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/validateHeader", method = RequestMethod.POST)
 	public ResponseEntity<?> validateHeader(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		kokyakuValidateService.validateForRefer(form.getKokyakuCode());
-		UriageDomain d = buildDomainFromForm(form);
+		Uriage d = buildDomainFromForm(form);
 		uriageValidateService.validateForRegister(d);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
@@ -351,7 +351,7 @@ public class U05G002Controller extends ControllerBase {
 			}
 		});
 
-		UriageDomain d = buildDomainFromForm(form);
+		Uriage d = buildDomainFromForm(form);
 		uriageValidateService.validate(d);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
@@ -364,16 +364,16 @@ public class U05G002Controller extends ControllerBase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
-		UriageDomain oldDomain = uriageCrudService.getDomain(pk);
+		Uriage oldDomain = uriageCrudService.getDomain(pk);
 
 		// 営業日取得
 		TheDate eigyoDate = oldDomain.getKokyaku().getShukanBusho().getEigyoDate();
 
 		// override domain
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withKeijoDate(eigyoDate);
 		b.withVersion(form.getVersion());
-		UriageDomain domain = b.apply(oldDomain);
+		Uriage domain = b.apply(oldDomain);
 
 		// cancel
 		uriageValidateService.validateForUpdate(domain);
@@ -390,7 +390,7 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/getRireki", method = RequestMethod.POST)
 	public ResponseEntity<?> getRireki(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// 履歴取得
-		UriageRirekiDomain rireki = uriageRirekiCrudService.getUriageRirekiList(form.getRecordId());
+		UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(form.getRecordId());
 
 		// 画面に必要な履歴情報をmapに入れる。
 		List<Map<String, Object>> rirekiList = new ArrayList<Map<String, Object>>();

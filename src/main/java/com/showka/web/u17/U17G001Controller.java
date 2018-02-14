@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.validate.u17.i.BushoDateValidateService;
@@ -58,7 +58,7 @@ public class U17G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u17g001/getBushoList", method = RequestMethod.POST)
 	public ResponseEntity<?> getBushoList(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// get 部署リスト
-		List<BushoDomain> _bushoList = bushoCrudService.getDomains();
+		List<Busho> _bushoList = bushoCrudService.getDomains();
 		// to map
 		List<Map<String, Object>> bushoList = _bushoList.stream().map(b -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -84,7 +84,7 @@ public class U17G001Controller extends ControllerBase {
 	public ResponseEntity<?> close(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// input
 		String bushoCode = form.getBushoCode();
-		BushoDomain busho = bushoCrudService.getDomain(bushoCode);
+		Busho busho = bushoCrudService.getDomain(bushoCode);
 		EigyoDate eigyoDate = new EigyoDate(form.getEigyoDate());
 		// validate
 		bushoDateValidateService.validateForClosing(busho, eigyoDate);

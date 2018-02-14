@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.system.EmptyProxy;
@@ -28,7 +28,7 @@ public class BushoDateCrudServiceImplTest extends CrudServiceTestCase {
 		// insert DB
 		super.deleteAndInsert(M_BUSHO_DATE, M_BUSHO_DATE_COLUMN, M_BUSHO_DATE_01);
 		// data
-		BushoDomain busho = EmptyProxy.domain(BushoDomain.class);
+		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// do
 		bushoDateCrudServiceImpl.toNextEigyoDate(busho);

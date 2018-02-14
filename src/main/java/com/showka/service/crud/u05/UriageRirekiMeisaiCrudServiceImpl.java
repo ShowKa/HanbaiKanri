@@ -10,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageMeisaiDomain.UriageMeisaiComparatorByMeisaiNumber;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Shohin;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.UriageMeisai.UriageMeisaiComparatorByMeisaiNumber;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.RUriageMeisai;
 import com.showka.entity.RUriageMeisaiPK;
 import com.showka.repository.i.RUriageMeisaiRepository;
 import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 
 @Service
 public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrudService {
@@ -27,10 +27,10 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 	private RUriageMeisaiRepository repo;
 
 	@Autowired
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	@Override
-	public void save(UriageMeisaiDomain domain) {
+	public void save(UriageMeisai domain) {
 		// set pk
 		RUriageMeisaiPK pk = new RUriageMeisaiPK();
 		pk.setUriageId(domain.getUriageId());
@@ -57,13 +57,13 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 	}
 
 	@Override
-	public void overrideList(List<UriageMeisaiDomain> meisaiList) {
+	public void overrideList(List<UriageMeisai> meisaiList) {
 		if (meisaiList.isEmpty()) {
 			// TODO 全削除したいが...
 			return;
 		}
 		// delete removed
-		List<UriageMeisaiDomain> oldList = getDomainList(meisaiList.get(0).getUriageId());
+		List<UriageMeisai> oldList = getDomainList(meisaiList.get(0).getUriageId());
 		oldList.stream().filter(o -> {
 			return !meisaiList.contains(o);
 		}).forEach(o -> {
@@ -74,7 +74,7 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 	}
 
 	@Override
-	public void delete(UriageMeisaiDomain domain) {
+	public void delete(UriageMeisai domain) {
 		RUriageMeisaiPK pk = new RUriageMeisaiPK();
 		pk.setUriageId(domain.getUriageId());
 		pk.setMeisaiNumber(domain.getMeisaiNumber());
@@ -90,13 +90,13 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 	}
 
 	@Override
-	public UriageMeisaiDomain getDomain(RUriageMeisaiPK pk) {
+	public UriageMeisai getDomain(RUriageMeisaiPK pk) {
 		RUriageMeisai e = repo.getOne(pk);
 		return buildDomainByEntity(e);
 	}
 
 	@Override
-	public List<UriageMeisaiDomain> getDomainList(String uriageId) {
+	public List<UriageMeisai> getDomainList(String uriageId) {
 		// search
 		RUriageMeisaiPK pk = new RUriageMeisaiPK();
 		pk.setUriageId(uriageId);
@@ -106,7 +106,7 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 
 		// build domain list
 		List<RUriageMeisai> entities = repo.findAll(example);
-		List<UriageMeisaiDomain> list = new ArrayList<UriageMeisaiDomain>();
+		List<UriageMeisai> list = new ArrayList<UriageMeisai>();
 		entities.forEach(e -> list.add(buildDomainByEntity(e)));
 		list.sort(new UriageMeisaiComparatorByMeisaiNumber());
 		return list;
@@ -125,12 +125,12 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 	 * @return ドメイン
 	 * 
 	 */
-	private UriageMeisaiDomain buildDomainByEntity(RUriageMeisai e) {
+	private UriageMeisai buildDomainByEntity(RUriageMeisai e) {
 		// get 商品
-		ShohinDomain shohinDomain = shohinCrudService.getDomain(e.getShohin().getCode());
+		Shohin shohinDomain = shohinCrudService.getDomain(e.getShohin().getCode());
 
 		// build domain
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withHanbaiNumber(e.getHanbaiNumber());
 		b.withHanbaiTanka(BigDecimal.valueOf(e.getHanbaiTanka()));
 		b.withMeisaiNumber(e.getPk().getMeisaiNumber());
@@ -143,7 +143,7 @@ public class UriageRirekiMeisaiCrudServiceImpl implements UriageRirekiMeisaiCrud
 
 	@Override
 	public void deleteAll(String uriageId) {
-		List<UriageMeisaiDomain> domains = getDomainList(uriageId);
+		List<UriageMeisai> domains = getDomainList(uriageId);
 		domains.forEach(d -> delete(d));
 	}
 }

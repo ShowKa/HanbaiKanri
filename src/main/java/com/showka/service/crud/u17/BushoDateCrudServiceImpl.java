@@ -3,7 +3,7 @@ package com.showka.service.crud.u17;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
@@ -16,7 +16,7 @@ public class BushoDateCrudServiceImpl implements BushoDateCrudService {
 	private MBushoDateRepository repo;
 
 	@Override
-	public void toNextEigyoDate(BushoDomain busho) {
+	public void toNextEigyoDate(Busho busho) {
 		MBushoDate dateEntity = repo.getOne(busho.getRecordId());
 		TheDate today = new TheDate(dateEntity.getEigyoDate());
 		TheDate next = today.plusDays(1);

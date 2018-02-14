@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShainDomain;
+import com.showka.domain.Busho;
+import com.showka.domain.Shain;
 import com.showka.repository.i.MShainRepository;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.system.EmptyProxy;
@@ -40,7 +40,7 @@ public class ShainCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
 		// data
 		String code = "user01";
-		BushoDomain bushoMock = EmptyProxy.domain(BushoDomain.class);
+		Busho bushoMock = EmptyProxy.domain(Busho.class);
 		// expectation
 		new Expectations() {
 			{
@@ -49,7 +49,7 @@ public class ShainCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// do
-		ShainDomain actual = service.getDomain(code);
+		Shain actual = service.getDomain(code);
 		// verification
 		new Verifications() {
 			{

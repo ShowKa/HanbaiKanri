@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
@@ -44,7 +44,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		String record_id = "this is inserted record";
 
 		// set up builder
-		NyukinKakeInfoDomainBuilder builder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
 		builder.withKokyakuId(id);
 		builder.withNyukinDate(11);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
@@ -53,7 +53,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		NyukinKakeInfoDomain domain = builder.build();
+		NyukinKakeInfo domain = builder.build();
 
 		// save = insert
 		service.save(domain);
@@ -78,7 +78,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		String record_id = "this is updated record";
 
 		// set up builder
-		NyukinKakeInfoDomainBuilder builder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
 		builder.withKokyakuId(id);
 		builder.withNyukinDate(11);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
@@ -88,7 +88,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		NyukinKakeInfoDomain domain = builder.build();
+		NyukinKakeInfo domain = builder.build();
 
 		// save = update
 		service.save(domain);
@@ -117,7 +117,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		String record_id = "this is updated record";
 
 		// set up builder
-		NyukinKakeInfoDomainBuilder builder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
 		builder.withKokyakuId(id);
 		builder.withNyukinDate(11);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
@@ -127,7 +127,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		NyukinKakeInfoDomain domain = builder.build();
+		NyukinKakeInfo domain = builder.build();
 
 		// save = update
 		service.save(domain);
@@ -162,7 +162,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		String id = "KK03";
 
 		// do
-		NyukinKakeInfoDomain actual = service.getDomain(id);
+		NyukinKakeInfo actual = service.getDomain(id);
 
 		// check
 		assertEquals("KK03", actual.getKokyakuId());

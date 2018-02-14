@@ -1,6 +1,6 @@
 package com.showka.service.validate.u05.i;
 
-import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageMeisai;
 import com.showka.system.exception.ValidateException;
 
 public interface UriageMeisaiValidateService {
@@ -13,5 +13,5 @@ public interface UriageMeisaiValidateService {
 	 * @throws ValidateException
 	 *             整合性例外
 	 */
-	public void validate(UriageMeisaiDomain domain) throws ValidateException;
+	public void validate(UriageMeisai domain) throws ValidateException;
 }

@@ -1,7 +1,7 @@
 package com.showka.service.crud.u05.i;
 
-import com.showka.domain.UriageCancelDomain;
-import com.showka.domain.UriageDomain;
+import com.showka.domain.UriageCancel;
+import com.showka.domain.Uriage;
 
 public interface UriageCancelCrudService {
 
@@ -11,7 +11,7 @@ public interface UriageCancelCrudService {
 	 * @param domain
 	 *            売上ドメイン
 	 */
-	public void save(UriageDomain domain);
+	public void save(Uriage domain);
 
 	/**
 	 * ドメイン取得
@@ -20,6 +20,6 @@ public interface UriageCancelCrudService {
 	 *            主キー
 	 * @return 売上キャンセルドメイン
 	 */
-	public UriageCancelDomain getDomain(String uriageId);
+	public UriageCancel getDomain(String uriageId);
 
 }

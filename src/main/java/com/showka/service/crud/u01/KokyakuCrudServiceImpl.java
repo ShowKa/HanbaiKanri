@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.domain.builder.KokyakuDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.entity.MKokyaku;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
@@ -38,7 +38,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	private BushoCrudService bushoService;
 
 	@Override
-	public void save(KokyakuDomain domain) {
+	public void save(Kokyaku domain) {
 
 		// entity
 		Optional<MKokyaku> entity = repo.findById(domain.getCode());
@@ -60,7 +60,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 		repo.save(e);
 
 		// 入金掛情報save
-		NyukinKakeInfoDomain nyukinKakeInfo = domain.getNyukinKakeInfo();
+		NyukinKakeInfo nyukinKakeInfo = domain.getNyukinKakeInfo();
 		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
 			nyukinCrudService.save(nyukinKakeInfo);
 		} else {
@@ -83,7 +83,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 
 	@Override
 	@Transactional
-	public void delete(KokyakuDomain domain) {
+	public void delete(Kokyaku domain) {
 
 		// 入金掛情報delete
 		nyukinCrudService.deleteForciblyIfExists(domain.getRecordId());
@@ -93,23 +93,23 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	}
 
 	@Override
-	public KokyakuDomain getDomain(String pk) {
+	public Kokyaku getDomain(String pk) {
 		MKokyaku kokyakuEntity = repo.getOne(pk);
 		HanbaiKubun hanbaiKubun = Kubun.get(HanbaiKubun.class, kokyakuEntity.getHanbaiKubun());
 		String kokyakuRecordId = kokyakuEntity.getRecordId();
 
-		KokyakuDomainBuilder builder = new KokyakuDomainBuilder();
+		KokyakuBuilder builder = new KokyakuBuilder();
 		builder.withCode(kokyakuEntity.getCode());
 		builder.withAddress(kokyakuEntity.getAddress());
 		builder.withName(kokyakuEntity.getName());
 		builder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, kokyakuEntity.getKokyakuKubun()));
 		builder.withHanbaiKubun(hanbaiKubun);
 
-		BushoDomain buhoDomain = bushoService.getDomain(kokyakuEntity.getShukanBusho().getCode());
+		Busho buhoDomain = bushoService.getDomain(kokyakuEntity.getShukanBusho().getCode());
 		builder.withShukanBusho(buhoDomain);
 
 		if (hanbaiKubun == HanbaiKubun.掛売) {
-			NyukinKakeInfoDomain nyukinKakeInfoDomain = nyukinCrudService.getDomain(kokyakuRecordId);
+			NyukinKakeInfo nyukinKakeInfoDomain = nyukinCrudService.getDomain(kokyakuRecordId);
 			builder.withNyukinKakeInfo(nyukinKakeInfoDomain);
 		}
 		builder.withRecordId(kokyakuRecordId);

@@ -1,6 +1,6 @@
 package com.showka.service.validate.u17.i;
 
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 import com.showka.value.EigyoDate;
 
 public interface BushoDateValidateService {
@@ -13,5 +13,5 @@ public interface BushoDateValidateService {
 	 * @param today
 	 *            締め処理対象の営業日
 	 */
-	public void validateForClosing(BushoDomain busho, EigyoDate today);
+	public void validateForClosing(Busho busho, EigyoDate today);
 }

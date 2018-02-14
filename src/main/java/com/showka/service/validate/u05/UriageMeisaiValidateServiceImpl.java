@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.UriageMeisaiDomain;
+import com.showka.domain.UriageMeisai;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.system.exception.NotAllowedNumberException;
 import com.showka.system.exception.ValidateException;
@@ -20,7 +20,7 @@ public class UriageMeisaiValidateServiceImpl implements UriageMeisaiValidateServ
 	 * </pre>
 	 */
 	@Override
-	public void validate(UriageMeisaiDomain domain) throws ValidateException {
+	public void validate(UriageMeisai domain) throws ValidateException {
 		// 商品販売単価マイナスの場合エラー
 		BigDecimal tanka = domain.getHanbaiTanka();
 		int compTankaAnd0 = tanka.compareTo(BigDecimal.ZERO);

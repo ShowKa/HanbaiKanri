@@ -1,6 +1,6 @@
 package com.showka.service.crud.z00.i;
 
-import com.showka.domain.ShainDomain;
+import com.showka.domain.Shain;
 
 /**
  * 社員CrudService
@@ -17,6 +17,6 @@ public interface ShainCrudService {
 	 *            社員コード
 	 * @return 社員ドメイン
 	 */
-	ShainDomain getDomain(String code);
+	Shain getDomain(String code);
 
 }

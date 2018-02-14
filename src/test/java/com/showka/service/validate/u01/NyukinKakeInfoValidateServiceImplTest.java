@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.system.exception.ValidateException;
@@ -39,7 +39,7 @@ public class NyukinKakeInfoValidateServiceImplTest extends CrudServiceTestCase {
 		String record_id = "this is inserted record";
 
 		// set up builder
-		NyukinKakeInfoDomainBuilder builder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
 		builder.withKokyakuId(id);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.翌々月);
@@ -50,7 +50,7 @@ public class NyukinKakeInfoValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		NyukinKakeInfoDomain domain = builder.build();
+		NyukinKakeInfo domain = builder.build();
 
 		service.validate(domain);
 	}
@@ -73,7 +73,7 @@ public class NyukinKakeInfoValidateServiceImplTest extends CrudServiceTestCase {
 		String record_id = "this is inserted record";
 
 		// set up builder
-		NyukinKakeInfoDomainBuilder builder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
 		builder.withKokyakuId(id);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
@@ -84,7 +84,7 @@ public class NyukinKakeInfoValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		NyukinKakeInfoDomain domain = builder.build();
+		NyukinKakeInfo domain = builder.build();
 
 		service.validate(domain);
 	}
@@ -107,7 +107,7 @@ public class NyukinKakeInfoValidateServiceImplTest extends CrudServiceTestCase {
 		String record_id = "this is inserted record";
 
 		// set up builder
-		NyukinKakeInfoDomainBuilder builder = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
 		builder.withKokyakuId(id);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
@@ -118,7 +118,7 @@ public class NyukinKakeInfoValidateServiceImplTest extends CrudServiceTestCase {
 		builder.withRecordId(record_id);
 
 		// build domain
-		NyukinKakeInfoDomain domain = builder.build();
+		NyukinKakeInfo domain = builder.build();
 
 		service.validate(domain);
 	}

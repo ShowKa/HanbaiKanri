@@ -2,9 +2,9 @@ package com.showka.service.crud.u11.i;
 
 import java.util.List;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinZaikoDomain;
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinZaiko;
 import com.showka.value.TheDate;
 
 public interface ShohinZaikoCrudService {
@@ -20,7 +20,7 @@ public interface ShohinZaikoCrudService {
 	 *            商品
 	 * @return 商品在庫
 	 */
-	public ShohinZaikoDomain getShohinZaiko(BushoDomain busho, TheDate date, ShohinDomain shohin);
+	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin);
 
 	/**
 	 * 
@@ -32,6 +32,6 @@ public interface ShohinZaikoCrudService {
 	 *            商品移動日付
 	 * @return 商品在庫
 	 */
-	public List<ShohinZaikoDomain> getShohinZaiko(BushoDomain busho, TheDate date);
+	public List<ShohinZaiko> getShohinZaiko(Busho busho, TheDate date);
 
 }

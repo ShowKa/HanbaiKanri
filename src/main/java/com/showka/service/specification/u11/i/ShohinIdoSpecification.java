@@ -2,8 +2,8 @@ package com.showka.service.specification.u11.i;
 
 import java.util.List;
 
-import com.showka.domain.ShohinIdoDomain;
-import com.showka.domain.UriageDomain;
+import com.showka.domain.ShohinIdo;
+import com.showka.domain.Uriage;
 
 /**
  * 商品移動の仕様.
@@ -22,5 +22,5 @@ public interface ShohinIdoSpecification {
 	 *            売上
 	 * @return 商品移動ドメイン
 	 */
-	public List<ShohinIdoDomain> buildShohinIdo(UriageDomain uriage);
+	public List<ShohinIdo> buildShohinIdo(Uriage uriage);
 }

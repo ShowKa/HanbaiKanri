@@ -9,14 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoMeisaiDomain;
-import com.showka.domain.builder.ShohinIdoMeisaiDomainBuilder;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.entity.TShohinIdoMeisai;
 import com.showka.entity.TShohinIdoMeisaiPK;
 import com.showka.repository.i.TShohinIdoMeisaiRepository;
 import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 
 @Service
 public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudService {
@@ -25,10 +25,10 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 	private TShohinIdoMeisaiRepository repo;
 
 	@Autowired
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	@Override
-	public void save(String id, ShohinIdoMeisaiDomain shohinIdoMeisai) {
+	public void save(String id, ShohinIdoMeisai shohinIdoMeisai) {
 		// domain -> entity
 		TShohinIdoMeisaiPK pk = new TShohinIdoMeisaiPK();
 		pk.setMeisaiNumber(shohinIdoMeisai.getMeisaiNumber());
@@ -66,13 +66,13 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 	}
 
 	@Override
-	public void overrideList(String id, List<ShohinIdoMeisaiDomain> meisaiList) {
+	public void overrideList(String id, List<ShohinIdoMeisai> meisaiList) {
 		if (meisaiList.isEmpty()) {
 			deleteAll(id);
 			return;
 		}
 		// delete removed
-		List<ShohinIdoMeisaiDomain> oldList = getDomainList(id);
+		List<ShohinIdoMeisai> oldList = getDomainList(id);
 		oldList.stream().filter(o -> {
 			return !meisaiList.contains(o);
 		}).forEach(o -> {
@@ -86,13 +86,13 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 	}
 
 	@Override
-	public ShohinIdoMeisaiDomain getDomain(TShohinIdoMeisaiPK pk) {
+	public ShohinIdoMeisai getDomain(TShohinIdoMeisaiPK pk) {
 		TShohinIdoMeisai entity = repo.getOne(pk);
 		return buildDomain(entity);
 	}
 
 	@Override
-	public List<ShohinIdoMeisaiDomain> getDomainList(String id) {
+	public List<ShohinIdoMeisai> getDomainList(String id) {
 		List<TShohinIdoMeisai> entities = getMeisaiList(id);
 		return entities.stream().map(e -> {
 			return buildDomain(e);
@@ -122,9 +122,9 @@ public class ShohinIdoMeisaiCrudServiceImpl implements ShohinIdoMeisaiCrudServic
 	 *            商品移動明細Entity
 	 * @return domain
 	 */
-	private ShohinIdoMeisaiDomain buildDomain(TShohinIdoMeisai entity) {
-		ShohinDomain shohinDomain = shohinCrudService.getDomain(entity.getShohin().getCode());
-		ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+	private ShohinIdoMeisai buildDomain(TShohinIdoMeisai entity) {
+		Shohin shohinDomain = shohinCrudService.getDomain(entity.getShohin().getCode());
+		ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 		b.withMeisaiNumber(entity.getPk().getMeisaiNumber());
 		b.withNumber(entity.getNumber());
 		b.withRecordId(entity.getRecordId());

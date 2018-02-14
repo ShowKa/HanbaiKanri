@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.BushoDomain;
+import com.showka.domain.Busho;
 import com.showka.entity.MBusho;
 import com.showka.value.EigyoDate;
 
@@ -52,7 +52,7 @@ public class BushoCrudServiceImplTest extends CrudServiceTestCase {
 		String id = "BS02";
 
 		// getDomain
-		BushoDomain result = service.getDomain(id);
+		Busho result = service.getDomain(id);
 
 		// assert
 		assertEquals("BS02", result.getCode());
@@ -101,7 +101,7 @@ public class BushoCrudServiceImplTest extends CrudServiceTestCase {
 	public void test_getDomains() throws Exception {
 		super.insert(M_BUSHO, M_BUSHO_COLUMN, VALUE01, VALUE02);
 		super.insert(M_BUSHO_DATE, M_BUSHO_DATE_COLUMN, M_BUSHO_DATE_VALUE_01, M_BUSHO_DATE_VALUE_02);
-		List<BushoDomain> actual = service.getDomains();
+		List<Busho> actual = service.getDomains();
 		assertEquals(2, actual.size());
 	}
 

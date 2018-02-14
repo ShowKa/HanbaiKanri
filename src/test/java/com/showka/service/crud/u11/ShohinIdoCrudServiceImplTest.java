@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoDomain;
-import com.showka.domain.ShohinIdoMeisaiDomain;
-import com.showka.domain.builder.ShohinIdoDomainBuilder;
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdo;
+import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.entity.MBusho;
 import com.showka.entity.TShohinIdo;
 import com.showka.kubun.ShohinIdoKubun;
@@ -87,15 +87,15 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 	private static final Object[] T_SHOHIN_IDO_MEISAI_V03 = { "r-003", 1, "r-SH01", 12, "r-003-1" };
 
 	/** 移動01. 2017/1/1 0時 売上による消費 */
-	private static final ShohinIdoDomainBuilder ido01;
+	private static final ShohinIdoBuilder ido01;
 	static {
-		List<ShohinIdoMeisaiDomain> meisai = new ArrayList<ShohinIdoMeisaiDomain>();
-		ShohinIdoDomainBuilder b = new ShohinIdoDomainBuilder();
+		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withTimestamp(new TheTimestamp(2017, 1, 1, 0, 0, 0, 0));
 		b.withKubun(ShohinIdoKubun.売上);
 		b.withMeisai(meisai);
 		b.withRecordId("r-001");
-		b.withBusho(EmptyProxy.domain(BushoDomain.class));
+		b.withBusho(EmptyProxy.domain(Busho.class));
 		b.withDate(new TheDate(2017, 1, 1));
 		ido01 = b;
 	}
@@ -111,7 +111,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		// table
 		super.deleteAll(T_SHOHIN_IDO);
 		// data
-		ShohinIdoDomain shohinIdo = ido01.build();
+		ShohinIdo shohinIdo = ido01.build();
 		new Expectations() {
 			{
 				shohinIdoMeisaiCrudService.overrideList(anyString, shohinIdo.getMeisai());
@@ -139,7 +139,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		// table
 		super.deleteAndInsert(T_SHOHIN_IDO, T_SHOHIN_IDO_COLUMN, T_SHOHIN_IDO_V1);
 		// data
-		ShohinIdoDomain shohinIdo = ido01.build();
+		ShohinIdo shohinIdo = ido01.build();
 		shohinIdo.setVersion(0);
 		new Expectations() {
 			{
@@ -178,7 +178,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		new Expectations() {
 			{
 				bushoCrudService.getDomain(anyString);
-				result = EmptyProxy.domain(BushoDomain.class);
+				result = EmptyProxy.domain(Busho.class);
 			}
 		};
 		// mock
@@ -191,7 +191,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// do
-		ShohinIdoDomain actual = service.getDomain("r-001");
+		ShohinIdo actual = service.getDomain("r-001");
 		// verify
 		new Verifications() {
 			{
@@ -219,15 +219,15 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 				T_SHOHIN_IDO_MEISAI_V02, T_SHOHIN_IDO_MEISAI_V03);
 		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, VALUE01);
 		// data
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
-		BushoDomain busho = EmptyProxy.domain(BushoDomain.class);
+		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// expect
 		new Expectations() {
 			{
 				bushoCrudService.getDomain(anyString);
-				result = EmptyProxy.domain(BushoDomain.class);
+				result = EmptyProxy.domain(Busho.class);
 			}
 		};
 		// mock
@@ -240,7 +240,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// do
-		List<ShohinIdoDomain> actual = service.getShohinIdoListInDate(busho, new TheDate(2017, 8, 20), shohin);
+		List<ShohinIdo> actual = service.getShohinIdoListInDate(busho, new TheDate(2017, 8, 20), shohin);
 		// verify
 		new Verifications() {
 			{

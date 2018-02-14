@@ -1,10 +1,10 @@
 package com.showka.service.crud.u05.i;
 
-import com.showka.domain.UriageDomain;
+import com.showka.domain.Uriage;
 import com.showka.entity.TUriagePK;
 import com.showka.service.crud.CrudService;
 
-public interface UriageCrudService extends CrudService<UriageDomain, TUriagePK> {
+public interface UriageCrudService extends CrudService<Uriage, TUriagePK> {
 
 	/**
 	 * 売上キャンセル.
@@ -12,6 +12,6 @@ public interface UriageCrudService extends CrudService<UriageDomain, TUriagePK> 
 	 * @param domain
 	 *            売上ドメイン
 	 */
-	public void cancel(UriageDomain domain);
+	public void cancel(Uriage domain);
 
 }

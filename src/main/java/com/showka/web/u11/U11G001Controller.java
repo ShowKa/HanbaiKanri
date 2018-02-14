@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinZaikoDomain;
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinZaiko;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -35,7 +35,7 @@ public class U11G001Controller extends ControllerBase {
 	private BushoCrudService bushoCrudService;
 
 	@Autowired
-	private MShohinCrudService mShohinCrudService;
+	private ShohinCrudService mShohinCrudService;
 
 	/**
 	 * 参照.
@@ -61,8 +61,8 @@ public class U11G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u11g001/getAll", method = RequestMethod.POST)
 	public ResponseEntity<?> getAll(@ModelAttribute U11G001Form form, ModelAndViewExtended model) {
 		// get 商品在庫
-		BushoDomain busho = bushoCrudService.getDomain(form.getBushoCode());
-		List<ShohinZaikoDomain> _zaikoList = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()));
+		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
+		List<ShohinZaiko> _zaikoList = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()));
 		// to map
 		List<Map<String, Object>> zaikoList = _zaikoList.stream().map(z -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -86,9 +86,9 @@ public class U11G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u11g001/get", method = RequestMethod.POST)
 	public ResponseEntity<?> get(@ModelAttribute U11G001FormForShohinIdoMeisai form, ModelAndViewExtended model) {
 		// get 商品在庫
-		BushoDomain busho = bushoCrudService.getDomain(form.getBushoCode());
-		ShohinDomain shohin = mShohinCrudService.getDomain(form.getShohinCode());
-		ShohinZaikoDomain _zaiko = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()), shohin);
+		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
+		Shohin shohin = mShohinCrudService.getDomain(form.getShohinCode());
+		ShohinZaiko _zaiko = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()), shohin);
 		// to map
 		List<Map<String, Object>> shohinIdoList = _zaiko.getShohinIdoList().stream().map(z -> {
 			Map<String, Object> ret = new HashMap<String, Object>();

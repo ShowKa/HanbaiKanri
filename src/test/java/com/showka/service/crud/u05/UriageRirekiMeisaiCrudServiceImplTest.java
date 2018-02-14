@@ -9,13 +9,13 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Shohin;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.RUriageMeisai;
 import com.showka.entity.RUriageMeisaiPK;
 import com.showka.repository.i.RUriageMeisaiRepository;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.system.EmptyProxy;
 
 import mockit.Injectable;
@@ -31,7 +31,7 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 	private RUriageMeisaiRepository repo;
 
 	@Injectable
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	/** 売上履歴明細01. */
 	private static final Object[] R_URIAGE_MEISAI_01 = {
@@ -52,10 +52,10 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 			"r-KK01-00001-20170820-2" };
 
 	/** 売上履歴明細01. */
-	private static final UriageMeisaiDomain meisai01;
+	private static final UriageMeisai meisai01;
 	static {
 		// 商品ドメインダミー
-		ShohinDomain shohinDomain = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohinDomain = EmptyProxy.domain(Shohin.class);
 
 		// 売上明細主キー
 		String uriageId = "r-KK01-00001-20170820";
@@ -63,7 +63,7 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		String recordID = uriageId + "-" + meisaiNumber;
 
 		// 売上明細ドメイン
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withHanbaiNumber(10);
 		b.withHanbaiTanka(BigDecimal.valueOf(200));
 		b.withMeisaiNumber(meisaiNumber);
@@ -149,7 +149,7 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		id.setUriageId(meisai01.getUriageId());
 		id.setMeisaiNumber(meisai01.getMeisaiNumber());
 		// check
-		UriageMeisaiDomain actual = service.getDomain(id);
+		UriageMeisai actual = service.getDomain(id);
 		assertEquals(meisai01, actual);
 	}
 
@@ -158,7 +158,7 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		// data
 		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01, R_URIAGE_MEISAI_02);
 		// do
-		List<UriageMeisaiDomain> actual = service.getDomainList("r-KK01-00001-20170820");
+		List<UriageMeisai> actual = service.getDomainList("r-KK01-00001-20170820");
 		// check
 		assertEquals(2, actual.size());
 	}
@@ -182,14 +182,14 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		// data
 		deleteAndInsert(R_URIAGE_MEISAI, R_URIAGE_MEISAI_COLUMN, R_URIAGE_MEISAI_01, R_URIAGE_MEISAI_02);
 		// do
-		List<UriageMeisaiDomain> meisaiList = new ArrayList<UriageMeisaiDomain>();
-		UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		List<UriageMeisai> meisaiList = new ArrayList<UriageMeisai>();
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		b.withHanbaiNumber(999);
-		UriageMeisaiDomain updated = b.apply(meisai01);
+		UriageMeisai updated = b.apply(meisai01);
 		meisaiList.add(updated);
 		service.overrideList(meisaiList);
 		// check
-		List<UriageMeisaiDomain> actual = service.getDomainList("r-KK01-00001-20170820");
+		List<UriageMeisai> actual = service.getDomainList("r-KK01-00001-20170820");
 		assertEquals(1, actual.size());
 		assertEquals(new Integer(999), actual.get(0).getHanbaiNumber());
 	}
@@ -202,7 +202,7 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		String uriageId = "r-KK01-00001-20170820";
 		service.deleteAll(uriageId);
 		// check
-		List<UriageMeisaiDomain> actual = service.getDomainList(uriageId);
+		List<UriageMeisai> actual = service.getDomainList(uriageId);
 		assertTrue(actual.isEmpty());
 	}
 }

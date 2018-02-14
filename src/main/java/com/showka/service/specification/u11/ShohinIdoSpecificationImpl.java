@@ -8,12 +8,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.ShohinIdoDomain;
-import com.showka.domain.ShohinIdoMeisaiDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.builder.ShohinIdoDomainBuilder;
-import com.showka.domain.builder.ShohinIdoMeisaiDomainBuilder;
+import com.showka.domain.ShohinIdo;
+import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.ShohinIdoBuilder;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
@@ -27,15 +27,15 @@ public class ShohinIdoSpecificationImpl implements ShohinIdoSpecification {
 	private UriageCrudService uriageCrudService;
 
 	@Override
-	public List<ShohinIdoDomain> buildShohinIdo(UriageDomain uriage) {
+	public List<ShohinIdo> buildShohinIdo(Uriage uriage) {
 		// 売上による商品移動
-		List<ShohinIdoDomain> shohinIdo = new ArrayList<ShohinIdoDomain>();
+		List<ShohinIdo> shohinIdo = new ArrayList<ShohinIdo>();
 		shohinIdo.add(buildShohinIdoFromUriageDomain(uriage, false));
 		// 売上訂正による商品移動
 		TUriagePK pk = new TUriagePK(uriage.getKokyaku().getRecordId(), uriage.getDenpyoNumber());
 		boolean alredyExists = uriageCrudService.exsists(pk);
 		if (alredyExists) {
-			UriageDomain past = uriageCrudService.getDomain(pk);
+			Uriage past = uriageCrudService.getDomain(pk);
 			shohinIdo.add(buildShohinIdoFromUriageDomain(past, true));
 		}
 		return shohinIdo;
@@ -50,20 +50,20 @@ public class ShohinIdoSpecificationImpl implements ShohinIdoSpecification {
 	 *            売上訂正による商品移動にしたい場合はtrue
 	 * @return 商品移動
 	 */
-	private ShohinIdoDomain buildShohinIdoFromUriageDomain(UriageDomain uriage, boolean teisei) {
+	private ShohinIdo buildShohinIdoFromUriageDomain(Uriage uriage, boolean teisei) {
 		// 売上明細
-		List<UriageMeisaiDomain> meisaiList = uriage.getUriageMeisai();
+		List<UriageMeisai> meisaiList = uriage.getUriageMeisai();
 		// 商品移動明細
 		AtomicInteger i = new AtomicInteger(1);
-		List<ShohinIdoMeisaiDomain> shohinIdoMeisaiList = meisaiList.stream().map(meisai -> {
-			ShohinIdoMeisaiDomainBuilder b = new ShohinIdoMeisaiDomainBuilder();
+		List<ShohinIdoMeisai> shohinIdoMeisaiList = meisaiList.stream().map(meisai -> {
+			ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
 			b.withMeisaiNumber(i.getAndIncrement());
 			b.withNumber(meisai.getHanbaiNumber());
 			b.withShohinDomain(meisai.getShohinDomain());
 			return b.build();
 		}).collect(Collectors.toList());
 		// 商品移動
-		ShohinIdoDomainBuilder b = new ShohinIdoDomainBuilder();
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withBusho(uriage.getKokyaku().getShukanBusho());
 		b.withDate(uriage.getKokyaku().getShukanBusho().getEigyoDate());
 		ShohinIdoKubun _kubun = teisei ? ShohinIdoKubun.売上訂正 : ShohinIdoKubun.売上;

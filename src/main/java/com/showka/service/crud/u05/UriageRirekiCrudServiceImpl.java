@@ -10,13 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.UriageRirekiDomain;
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
-import com.showka.domain.builder.UriageRirekiDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.UriageRireki;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
+import com.showka.domain.builder.UriageRirekiBuilder;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
@@ -41,7 +41,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	private UriageRirekiMeisaiCrudService uriageRirekiMeisaiCrudService;
 
 	@Override
-	public UriageRirekiDomain getUriageRirekiList(String uriageId) {
+	public UriageRireki getUriageRirekiList(String uriageId) {
 
 		// 売上IDで履歴リスト検索
 		RUriage entity = new RUriage();
@@ -52,15 +52,15 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		List<RUriage> entityList = repo.findAll(example);
 
 		// 各履歴を売上ドメインとしてbuild
-		List<UriageDomain> domainList = new ArrayList<UriageDomain>();
+		List<Uriage> domainList = new ArrayList<Uriage>();
 		entityList.forEach(e -> {
 
 			// 顧客ドメイン
 			String kokyakuCode = e.getUriage().getKokyaku().getCode();
-			KokyakuDomain kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
+			Kokyaku kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
 
 			// entity -> domain
-			UriageDomainBuilder b = new UriageDomainBuilder();
+			UriageBuilder b = new UriageBuilder();
 			b.withDenpyoNumber(e.getUriage().getPk().getDenpyoNumber());
 			b.withKokyaku(kokyaku);
 			b.withHanbaiKubun(Kubun.get(HanbaiKubun.class, e.getHanbaiKubun()));
@@ -71,7 +71,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 			b.withVersion(e.getVersion());
 
 			// meisai
-			List<UriageMeisaiDomain> uriageMeisai = uriageRirekiMeisaiCrudService.getDomainList(e.getRecordId());
+			List<UriageMeisai> uriageMeisai = uriageRirekiMeisaiCrudService.getDomainList(e.getRecordId());
 			b.withUriageMeisai(uriageMeisai);
 
 			// add
@@ -79,14 +79,14 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		});
 
 		// build
-		UriageRirekiDomainBuilder b = new UriageRirekiDomainBuilder();
+		UriageRirekiBuilder b = new UriageRirekiBuilder();
 		b.withUriageId(uriageId);
 		b.withList(domainList);
 		return b.build();
 	}
 
 	@Override
-	public void save(UriageDomain domain) {
+	public void save(Uriage domain) {
 
 		// pk
 		RUriagePK pk = new RUriagePK();
@@ -112,8 +112,8 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 		repo.saveAndFlush(e);
 
 		// 明細
-		List<UriageMeisaiDomain> meisaiList = domain.getUriageMeisai().stream().map(meisai -> {
-			UriageMeisaiDomainBuilder b = new UriageMeisaiDomainBuilder();
+		List<UriageMeisai> meisaiList = domain.getUriageMeisai().stream().map(meisai -> {
+			UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 			b.withUriageId(recordId);
 			return b.apply(meisai);
 		}).collect(Collectors.toList());
@@ -121,7 +121,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	}
 
 	@Override
-	public void cancel(UriageDomain domain) {
+	public void cancel(Uriage domain) {
 		// pk
 		RUriagePK pk = new RUriagePK();
 		pk.setUriageId(domain.getRecordId());
@@ -145,7 +145,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	}
 
 	@Override
-	public void delete(UriageDomain domain) {
+	public void delete(Uriage domain) {
 		// 既存取得
 		String uriageId = domain.getRecordId();
 		RUriagePK pk = new RUriagePK();

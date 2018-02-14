@@ -8,12 +8,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.KokyakuDomain;
-import com.showka.domain.UriageDomain;
-import com.showka.domain.UriageMeisaiDomain;
-import com.showka.domain.builder.KokyakuDomainBuilder;
-import com.showka.domain.builder.UriageDomainBuilder;
-import com.showka.domain.builder.UriageMeisaiDomainBuilder;
+import com.showka.domain.Kokyaku;
+import com.showka.domain.Uriage;
+import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.entity.TUriagePK;
@@ -80,24 +80,24 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAll(T_URIAGE);
 		assertEquals(0, repo.findAll().size());
 		// 売上明細01
-		UriageMeisaiDomainBuilder bm1 = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder bm1 = new UriageMeisaiBuilder();
 		bm1.withUriageId("r-KK99-99999");
 		bm1.withMeisaiNumber(1);
-		UriageMeisaiDomain uriageMeisai01 = bm1.build();
+		UriageMeisai uriageMeisai01 = bm1.build();
 		// 売上明細02
-		UriageMeisaiDomainBuilder bm2 = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder bm2 = new UriageMeisaiBuilder();
 		bm2.withUriageId("r-KK99-99999");
 		bm2.withMeisaiNumber(2);
-		UriageMeisaiDomain uriageMeisai02 = bm2.build();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
+		UriageMeisai uriageMeisai02 = bm2.build();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		meisai.add(uriageMeisai01);
 		meisai.add(uriageMeisai02);
 		// 顧客
-		KokyakuDomainBuilder bk = new KokyakuDomainBuilder();
+		KokyakuBuilder bk = new KokyakuBuilder();
 		bk.withRecordId("r-KK99");
-		KokyakuDomain kokyaku01 = bk.build();
+		Kokyaku kokyaku01 = bk.build();
 		// 売上
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("99999")
 				.withUriageDate(new TheDate(2017, 8, 20))
@@ -106,7 +106,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
 				.withRecordId("r-KK99-99999");
-		UriageDomain uriage = b.build();
+		Uriage uriage = b.build();
 		// expectation
 		new Expectations() {
 			{
@@ -148,24 +148,24 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		// repo 呼ばないとエラーになる....
 		assertEquals(1, repo.findAll().size());
 		// 売上明細01
-		UriageMeisaiDomainBuilder bm1 = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder bm1 = new UriageMeisaiBuilder();
 		bm1.withUriageId("r-KK01-00001");
 		bm1.withMeisaiNumber(1);
-		UriageMeisaiDomain uriageMeisai01 = bm1.build();
+		UriageMeisai uriageMeisai01 = bm1.build();
 		// 売上明細02
-		UriageMeisaiDomainBuilder bm2 = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder bm2 = new UriageMeisaiBuilder();
 		bm2.withUriageId("r-KK01-00001");
 		bm2.withMeisaiNumber(2);
-		UriageMeisaiDomain uriageMeisai02 = bm2.build();
-		ArrayList<UriageMeisaiDomain> meisai = new ArrayList<UriageMeisaiDomain>();
+		UriageMeisai uriageMeisai02 = bm2.build();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		meisai.add(uriageMeisai01);
 		meisai.add(uriageMeisai02);
 		// 顧客
-		KokyakuDomainBuilder bk = new KokyakuDomainBuilder();
+		KokyakuBuilder bk = new KokyakuBuilder();
 		bk.withRecordId("r-KK01");
-		KokyakuDomain kokyaku01 = bk.build();
+		Kokyaku kokyaku01 = bk.build();
 		// 売上
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
@@ -175,7 +175,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 				.withUriageMeisai(meisai)
 				.withVersion(0)
 				.withRecordId("KK01-00001");
-		UriageDomain uriage01 = b.build();
+		Uriage uriage01 = b.build();
 		// expectation
 		new Expectations() {
 			{
@@ -233,15 +233,15 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
 		assertEquals(1, repo.findAll().size());
 		// 顧客
-		KokyakuDomainBuilder bk = new KokyakuDomainBuilder();
+		KokyakuBuilder bk = new KokyakuBuilder();
 		bk.withRecordId("r-KK01");
-		KokyakuDomain kokyaku01 = bk.build();
+		Kokyaku kokyaku01 = bk.build();
 		// 売上
-		UriageDomainBuilder b = new UriageDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
 		b.withKokyaku(kokyaku01).withDenpyoNumber("00001").withVersion(0);
-		List<UriageMeisaiDomain> list = new ArrayList<UriageMeisaiDomain>();
+		List<UriageMeisai> list = new ArrayList<UriageMeisai>();
 		b.withUriageMeisai(list);
-		UriageDomain uriage01 = b.build();
+		Uriage uriage01 = b.build();
 		// do
 		service.delete(uriage01);
 		// check
@@ -294,13 +294,13 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, URIAGE_MEISAI_01);
 		assertEquals(1, repo.findAll().size());
 		// 顧客
-		KokyakuDomainBuilder bk = new KokyakuDomainBuilder();
+		KokyakuBuilder bk = new KokyakuBuilder();
 		bk.withRecordId("r-KK01");
-		KokyakuDomain kokyaku01 = bk.build();
+		Kokyaku kokyaku01 = bk.build();
 		// 売上明細01
-		UriageMeisaiDomainBuilder bm1 = new UriageMeisaiDomainBuilder();
+		UriageMeisaiBuilder bm1 = new UriageMeisaiBuilder();
 		bm1.withRecordId("r-KK01-00001-1");
-		UriageMeisaiDomain uriageMeisai01 = bm1.build();
+		UriageMeisai uriageMeisai01 = bm1.build();
 		// expect
 		new Expectations() {
 			{
@@ -312,7 +312,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		};
 		// do
 		TUriagePK pk = new TUriagePK("r-KK01", "00001");
-		UriageDomain d = service.getDomain(pk);
+		Uriage d = service.getDomain(pk);
 		// verification
 		new Verifications() {
 			{
@@ -334,10 +334,10 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		// data
 		super.deleteAll(T_URIAGE);
 		// build domain
-		UriageDomainBuilder b = new UriageDomainBuilder();
-		KokyakuDomainBuilder bk = new KokyakuDomainBuilder();
+		UriageBuilder b = new UriageBuilder();
+		KokyakuBuilder bk = new KokyakuBuilder();
 		bk.withRecordId("r-KK99");
-		KokyakuDomain kokyaku01 = bk.build();
+		Kokyaku kokyaku01 = bk.build();
 		b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("99999")
 				.withUriageDate(new TheDate(2017, 8, 20))
@@ -345,7 +345,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withRecordId("r-KK99-99999");
-		UriageDomain uriage = b.build();
+		Uriage uriage = b.build();
 		// expect
 		new Expectations() {
 			{

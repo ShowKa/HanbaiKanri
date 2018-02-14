@@ -1,6 +1,6 @@
 package com.showka.service.validate.u05.i;
 
-import com.showka.domain.UriageDomain;
+import com.showka.domain.Uriage;
 import com.showka.system.exception.ValidateException;
 
 public interface UriageValidateService {
@@ -13,7 +13,7 @@ public interface UriageValidateService {
 	 * @throws ValidateException
 	 *             整合性例外
 	 */
-	public void validate(UriageDomain domain) throws ValidateException;
+	public void validate(Uriage domain) throws ValidateException;
 
 	/**
 	 * 初回登録時整合性検証.
@@ -23,7 +23,7 @@ public interface UriageValidateService {
 	 * @throws ValidateException
 	 *             整合性例外
 	 */
-	public void validateForRegister(UriageDomain domain) throws ValidateException;
+	public void validateForRegister(Uriage domain) throws ValidateException;
 
 	/**
 	 * 更新時整合性検証.
@@ -33,7 +33,7 @@ public interface UriageValidateService {
 	 * @throws ValidateException
 	 *             整合性例外
 	 */
-	public void validateForUpdate(UriageDomain domain) throws ValidateException;
+	public void validateForUpdate(Uriage domain) throws ValidateException;
 
 	/**
 	 * 削除時整合性検証.
@@ -43,6 +43,6 @@ public interface UriageValidateService {
 	 * @throws ValidateException
 	 *             整合性例外
 	 */
-	public void validateForDelete(UriageDomain domain) throws ValidateException;
+	public void validateForDelete(Uriage domain) throws ValidateException;
 
 }

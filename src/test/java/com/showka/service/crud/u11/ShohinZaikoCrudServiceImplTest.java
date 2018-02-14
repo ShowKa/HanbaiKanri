@@ -7,16 +7,16 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.BushoDomain;
-import com.showka.domain.ShohinDomain;
-import com.showka.domain.ShohinIdoDomain;
-import com.showka.domain.ShohinZaikoDomain;
-import com.showka.domain.ShohinZaikoDomain.ShohinIdoOnDate;
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
+import com.showka.domain.ShohinIdo;
+import com.showka.domain.ShohinZaiko;
+import com.showka.domain.ShohinZaiko.ShohinIdoOnDate;
 import com.showka.entity.MShohin;
 import com.showka.entity.TShohinZaiko;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
-import com.showka.service.crud.z00.i.MShohinCrudService;
+import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.TheDate;
 
@@ -40,7 +40,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 	private ShohinIdoCrudService shohinIdoCrudService;
 
 	@Injectable
-	private MShohinCrudService shohinCrudService;
+	private ShohinCrudService shohinCrudService;
 
 	/** 商品. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "r-SH01" };
@@ -61,15 +61,15 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// table
 		super.deleteAll(T_SHOHIN_ZAIKO);
 		// 部署
-		BushoDomain busho = EmptyProxy.domain(BushoDomain.class);
+		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// 日付
 		TheDate date = new TheDate(2017, 1, 1);
 		// 商品
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
 		// do
-		ShohinZaikoDomain actual = service.getShohinZaiko(busho, date, shohin);
+		ShohinZaiko actual = service.getShohinZaiko(busho, date, shohin);
 		// check
 		assertEquals("r-BS01", actual.getBusho().getRecordId());
 		assertEquals("r-SH01", actual.getShohin().getRecordId());
@@ -85,24 +85,24 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// table
 		super.deleteAndInsert(T_SHOHIN_ZAIKO, T_SHOHIN_ZAIKO_COLUMN, T_SHOHIN_ZAIKO_V01);
 		// 部署
-		BushoDomain busho = EmptyProxy.domain(BushoDomain.class);
+		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// 日付
 		TheDate date = new TheDate(2017, 1, 1);
 		// 商品
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
 		// mock
 		new MockUp<ShohinIdoOnDate>() {
 			@Mock
-			public void $init(ShohinIdoDomain ido, ShohinDomain target) {
+			public void $init(ShohinIdo ido, Shohin target) {
 				assertEquals("r-001", ido.getRecordId());
 				assertEquals("r-SH01", target.getRecordId());
 			}
 		};
 		// expect
-		List<ShohinIdoDomain> _idoList = new ArrayList<ShohinIdoDomain>();
-		ShohinIdoDomain ido = EmptyProxy.domain(ShohinIdoDomain.class);
+		List<ShohinIdo> _idoList = new ArrayList<ShohinIdo>();
+		ShohinIdo ido = EmptyProxy.domain(ShohinIdo.class);
 		ido.setRecordId("r-001");
 		_idoList.add(ido);
 		new Expectations() {
@@ -112,7 +112,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// do
-		ShohinZaikoDomain actual = service.getShohinZaiko(busho, date, shohin);
+		ShohinZaiko actual = service.getShohinZaiko(busho, date, shohin);
 		// verify
 		new Verifications() {
 			{
@@ -133,17 +133,17 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(T_SHOHIN_ZAIKO, T_SHOHIN_ZAIKO_COLUMN, T_SHOHIN_ZAIKO_V01);
 		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01);
 		// 部署
-		BushoDomain busho = EmptyProxy.domain(BushoDomain.class);
+		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// 日付
 		TheDate date = new TheDate(2017, 1, 1);
 		// 商品
-		ShohinDomain shohin = EmptyProxy.domain(ShohinDomain.class);
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
 		// mock
 		new MockUp<ShohinIdoOnDate>() {
 			@Mock
-			public void $init(ShohinIdoDomain ido, ShohinDomain target) {
+			public void $init(ShohinIdo ido, Shohin target) {
 				assertEquals("r-001", ido.getRecordId());
 				assertEquals("r-SH01", target.getRecordId());
 			}
@@ -157,8 +157,8 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// expect
-		List<ShohinIdoDomain> _idoList = new ArrayList<ShohinIdoDomain>();
-		ShohinIdoDomain ido = EmptyProxy.domain(ShohinIdoDomain.class);
+		List<ShohinIdo> _idoList = new ArrayList<ShohinIdo>();
+		ShohinIdo ido = EmptyProxy.domain(ShohinIdo.class);
 		ido.setRecordId("r-001");
 		_idoList.add(ido);
 		new Expectations() {
@@ -170,7 +170,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// do
-		List<ShohinZaikoDomain> actual = service.getShohinZaiko(busho, date);
+		List<ShohinZaiko> actual = service.getShohinZaiko(busho, date);
 		// verify
 		new Verifications() {
 			{

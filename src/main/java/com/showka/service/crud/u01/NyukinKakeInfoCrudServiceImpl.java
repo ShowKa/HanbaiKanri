@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.domain.NyukinKakeInfoDomain;
-import com.showka.domain.builder.NyukinKakeInfoDomainBuilder;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
@@ -28,7 +28,7 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 	private MNyukinKakeInfoRepository repo;
 
 	@Override
-	public void save(NyukinKakeInfoDomain domain) {
+	public void save(NyukinKakeInfo domain) {
 
 		// entity
 		Optional<MNyukinKakeInfo> entity = repo.findById(domain.getKokyakuId());
@@ -59,12 +59,12 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 
 	@Override
 	@Transactional
-	public NyukinKakeInfoDomain getDomain(String kokyakuId) {
+	public NyukinKakeInfo getDomain(String kokyakuId) {
 		// get entity
 		MNyukinKakeInfo e = repo.getOne(kokyakuId);
 
 		// set domain builder
-		NyukinKakeInfoDomainBuilder b = new NyukinKakeInfoDomainBuilder();
+		NyukinKakeInfoBuilder b = new NyukinKakeInfoBuilder();
 		b.withKokyakuId(e.getKokyakuId());
 		b.withNyukinDate(e.getNyukinDate());
 		b.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, e.getNyukinHohoKubun()));
@@ -83,7 +83,7 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 	}
 
 	@Override
-	public void delete(NyukinKakeInfoDomain domain) {
+	public void delete(NyukinKakeInfo domain) {
 		delete(domain.getKokyakuId(), domain.getVersion());
 
 	}
