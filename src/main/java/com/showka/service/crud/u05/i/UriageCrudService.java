@@ -14,4 +14,15 @@ public interface UriageCrudService extends CrudService<Uriage, TUriagePK> {
 	 */
 	public void cancel(Uriage domain);
 
+	/**
+	 * 売上を取得.
+	 * 
+	 * @param kokyakuCode
+	 *            顧客コード
+	 * @param denpyoNumber
+	 *            伝票ナンバー
+	 * @return 売上
+	 */
+	public Uriage getDomain(String kokyakuCode, String denpyoNumber);
+
 }

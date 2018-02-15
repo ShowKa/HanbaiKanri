@@ -3,6 +3,8 @@ package com.showka.service.crud.u05;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -161,6 +163,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
+	// FIXME interface Uriage -> uriagePK
 	public void cancel(Uriage domain) {
 		// delete meisai if exists
 		uriageMeisaiCrudService.deleteAll(domain.getRecordId());
@@ -174,6 +177,15 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 		// cancel
 		uriageCancelCrudService.save(domain);
+	}
+
+	@Override
+	public Uriage getDomain(String kokyakuCode, String denpyoNumber) {
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId(kokyaku.getRecordId());
+		pk.setDenpyoNumber(denpyoNumber);
+		return this.getDomain(pk);
 	}
 
 	/**
@@ -190,15 +202,19 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		pk.setKokyakuId(domain.getKokyaku().getRecordId());
 
 		// 売上Entity
-		TUriage e = repo.findById(pk).orElse(new TUriage());
+		Optional<TUriage> _e = repo.findById(pk);
+		TUriage e = _e.isPresent() ? _e.get() : new TUriage();
 		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
 		e.setPk(pk);
 		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
 		e.setUriageDate(domain.getUriageDate().toDate());
 		e.setKeijoDate(domain.getKeijoDate().toDate());
-		e.setRecordId(domain.getRecordId());
+		// record id
+		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
+		e.setRecordId(recordId);
+		domain.setRecordId(recordId);
+		// occ
 		e.setVersion(domain.getVersion());
 		return e;
 	}
-
 }

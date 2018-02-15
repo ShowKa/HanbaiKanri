@@ -373,4 +373,42 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 	}
+
+	@Test
+	public void test09_GetDomain() throws Exception {
+		// data
+		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
+		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, URIAGE_MEISAI_01);
+		// 顧客
+		KokyakuBuilder bk = new KokyakuBuilder();
+		bk.withRecordId("r-KK01");
+		Kokyaku kokyaku01 = bk.build();
+		// 売上明細01
+		UriageMeisaiBuilder bm1 = new UriageMeisaiBuilder();
+		bm1.withRecordId("r-KK01-00001-1");
+		UriageMeisai uriageMeisai01 = bm1.build();
+		// expect
+		new Expectations() {
+			{
+				kokyakuCrudService.getDomain("KK01");
+				result = kokyaku01;
+				uriageMeisaiCrudService.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
+				result = uriageMeisai01;
+			}
+		};
+		// do
+		Uriage actual = service.getDomain("KK01", "00001");
+		// verification
+		new Verifications() {
+			{
+				kokyakuCrudService.getDomain("KK01");
+				times = 2;
+				uriageMeisaiCrudService.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
+				times = 1;
+			}
+		};
+		// check
+		assertEquals("r-KK01-00001", actual.getRecordId());
+	}
 }
