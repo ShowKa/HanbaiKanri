@@ -201,8 +201,10 @@ public class U05G002Controller extends ControllerBase {
 		String uriageId = getUriageId(form.getKokyakuCode(), form.getDenpyoNumber());
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(uriageId);
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
-				m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai()
+				.stream()
+				.filter(m -> m.getMeisaiNumber() == null)
+				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -344,22 +346,10 @@ public class U05G002Controller extends ControllerBase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
-		// FIXME should not build domain here
-		Uriage oldDomain = uriageCrudService.getDomain(pk);
-
-		// 営業日取得
-		TheDate eigyoDate = oldDomain.getKokyaku().getShukanBusho().getEigyoDate();
-
-		// override domain
-		UriageBuilder b = new UriageBuilder();
-		b.withKeijoDate(eigyoDate);
-		b.withVersion(form.getVersion());
-		Uriage domain = b.apply(oldDomain);
-
+		// validate
+		uriageValidateService.validateForCancel(pk);
 		// cancel
-		uriageValidateService.validateForUpdate(domain);
 		uriageCrudService.cancel(pk, form.getVersion());
-
 		// message
 		form.setSuccessMessage("売上伝票をキャンセルしました.");
 
