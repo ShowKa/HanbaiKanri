@@ -14,7 +14,6 @@ import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.UriageRireki;
 import com.showka.domain.builder.UriageBuilder;
-import com.showka.entity.MKokyaku;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
@@ -70,17 +69,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 		// 明細更新
 		uriageMeisaiCrudService.overrideList(domain.getRecordId(), domain.getUriageMeisai());
-
-		// set 顧客
-		MKokyaku kokyaku = kokyakuRepo.findByRecordId(domain.getKokyaku().getRecordId());
-		e.setKokyaku(kokyaku);
-
-		// set 明細
-		List<TUriageMeisai> m = new ArrayList<TUriageMeisai>();
-		for (UriageMeisai meisai : domain.getUriageMeisai()) {
-			m.add(meisaiRepository.findByRecordId(meisai.getRecordId()));
-		}
-		e.setMeisai(m);
 	}
 
 	@Override

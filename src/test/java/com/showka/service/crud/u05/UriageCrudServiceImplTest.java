@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -69,6 +71,9 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	/** 顧客01 */
 	private static final Object[] KOKYAKU_01 = { "KK01", "顧客01", "左京区", "01", "00", "r-BS01", "r-KK01" };
 
+	/** 部署01. */
+	private static final Object[] M_BUSHO_V01 = { "BS01", "01", "01", "部署01", "r-BS01" };
+
 	/**
 	 * save for register
 	 * 
@@ -102,8 +107,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 				.withKeijoDate(new TheDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
-				.withUriageMeisai(meisai)
-				.withRecordId("r-KK99-99999");
+				.withUriageMeisai(meisai);
 		Uriage uriage = b.build();
 		// expectation
 		new Expectations() {
@@ -111,7 +115,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 				// 売上履歴の保存
 				uriageRirekiCrudService.save(uriage);
 				// 明細上書き
-				uriageMeisaiCrudService.overrideList("r-KK99-99999", uriage.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList(anyString, uriage.getUriageMeisai());
 			}
 		};
 		// save
@@ -121,7 +125,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 			{
 				uriageRirekiCrudService.save(uriage);
 				times = 1;
-				uriageMeisaiCrudService.overrideList("r-KK99-99999", uriage.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList(anyString, uriage.getUriageMeisai());
 				times = 1;
 			}
 		};
@@ -169,14 +173,13 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.99))
 				.withUriageMeisai(meisai)
-				.withVersion(0)
-				.withRecordId("KK01-00001");
+				.withVersion(0);
 		Uriage uriage01 = b.build();
 		// expectation
 		new Expectations() {
 			{
 				uriageRirekiCrudService.save(uriage01);
-				uriageMeisaiCrudService.overrideList("KK01-00001", uriage01.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList("r-KK01-00001", uriage01.getUriageMeisai());
 			}
 		};
 		// save
@@ -186,7 +189,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 			{
 				uriageRirekiCrudService.save(uriage01);
 				times = 1;
-				uriageMeisaiCrudService.overrideList("KK01-00001", uriage01.getUriageMeisai());
+				uriageMeisaiCrudService.overrideList("r-KK01-00001", uriage01.getUriageMeisai());
 				times = 1;
 			}
 		};
@@ -326,49 +329,53 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	@Test
+	@Transactional
 	public void test08_cancel() throws Exception {
 		// data
-		super.deleteAll(T_URIAGE);
-		// build domain
-		UriageBuilder b = new UriageBuilder();
+		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, URIAGE_MEISAI_01);
+		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
+		// 顧客
 		KokyakuBuilder bk = new KokyakuBuilder();
-		bk.withRecordId("r-KK99");
+		bk.withRecordId("r-KK01");
 		Kokyaku kokyaku01 = bk.build();
-		b.withKokyaku(kokyaku01)
-				.withDenpyoNumber("99999")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
-				.withHanbaiKubun(HanbaiKubun.現金)
-				.withShohizeiritsu(new TaxRate(0.08))
-				.withRecordId("r-KK99-99999");
-		Uriage uriage = b.build();
 		// expect
 		new Expectations() {
 			{
+				// 顧客ドメイン取得
+				kokyakuCrudService.getDomain("KK01");
+				result = kokyaku01;
 				// 明細削除
-				uriageMeisaiCrudService.deleteAll("r-KK99-99999");
+				uriageMeisaiCrudService.overrideList("r-KK01-00001", (List<UriageMeisai>) any);
 				// cancel 履歴
-				uriageRirekiCrudService.cancel(uriage);
+				uriageRirekiCrudService.save((Uriage) any);
 				// cancel
-				uriageCancelCrudService.save(uriage);
+				uriageCancelCrudService.save((Uriage) any);
 			}
 		};
 		// do
-		service.cancel(uriage);
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId("r-KK01");
+		pk.setDenpyoNumber("00001");
+		service.cancel(pk, 0);
 		// check
-		TUriage actual = repo.findByRecordId("r-KK99-99999");
+		TUriage actual = repo.findByRecordId("r-KK01-00001");
 		assertNotNull(actual);
 		// verify
 		new Verifications() {
 			{
+				// 顧客ドメイン取得
+				kokyakuCrudService.getDomain("KK01");
+				times = 1;
 				// 明細削除
-				uriageMeisaiCrudService.deleteAll("r-KK99-99999");
+				uriageMeisaiCrudService.overrideList("r-KK01-00001", (List<UriageMeisai>) any);
 				times = 1;
 				// cancel 履歴
-				uriageRirekiCrudService.cancel(uriage);
+				uriageRirekiCrudService.save((Uriage) any);
 				times = 1;
 				// cancel
-				uriageCancelCrudService.save(uriage);
+				uriageCancelCrudService.save((Uriage) any);
 				times = 1;
 			}
 		};
