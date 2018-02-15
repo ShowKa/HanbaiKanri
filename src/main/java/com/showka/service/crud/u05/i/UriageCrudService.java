@@ -12,7 +12,8 @@ public interface UriageCrudService extends CrudService<Uriage, TUriagePK> {
 	 * @param domain
 	 *            売上ドメイン
 	 */
-	public void cancel(Uriage domain);
+	// FIXME should move to CancelCrudService
+	public void cancel(TUriagePK pk, int version);
 
 	/**
 	 * 売上を取得.

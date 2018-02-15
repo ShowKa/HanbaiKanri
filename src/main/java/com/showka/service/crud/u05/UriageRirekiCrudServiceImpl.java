@@ -114,6 +114,7 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	}
 
 	@Override
+	@Deprecated
 	public void cancel(Uriage domain) {
 		// pk
 		RUriagePK pk = new RUriagePK();

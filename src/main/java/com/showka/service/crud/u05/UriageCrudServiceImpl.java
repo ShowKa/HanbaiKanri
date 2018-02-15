@@ -95,33 +95,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	public Uriage getDomain(TUriagePK pk) {
 		// get
 		TUriage e = repo.findById(pk).get();
-
-		// 顧客ドメイン
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(e.getKokyaku().getCode());
-
-		// 売上明細ドメイン
-		List<UriageMeisai> uriageMeisai = new ArrayList<UriageMeisai>();
-		List<TUriageMeisai> meisaiEntityList = e.getMeisai();
-		for (TUriageMeisai m : meisaiEntityList) {
-			uriageMeisai.add(uriageMeisaiCrudService.getDomain(m.getPk()));
-		}
-
-		// sort
-		Collections.sort(uriageMeisai);
-
-		// set builder
-		UriageBuilder b = new UriageBuilder();
-		b.withDenpyoNumber(e.getPk().getDenpyoNumber());
-		b.withHanbaiKubun(Kubun.get(HanbaiKubun.class, e.getHanbaiKubun()));
-		b.withKokyaku(kokyaku);
-		b.withRecordId(e.getRecordId());
-		b.withShohizeiritsu(new TaxRate(e.getShohizeiritsu()));
-		b.withUriageDate(new TheDate(e.getUriageDate()));
-		b.withKeijoDate(new TheDate(e.getKeijoDate()));
-		b.withUriageMeisai(uriageMeisai);
-		b.withVersion(e.getVersion());
-
-		return b.build();
+		return getDomainFromEntity(e);
 	}
 
 	@Override
@@ -163,18 +137,20 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	// FIXME interface Uriage -> uriagePK
-	public void cancel(Uriage domain) {
-		// delete meisai if exists
-		uriageMeisaiCrudService.deleteAll(domain.getRecordId());
-
-		// save entity
-		TUriage e = getEntityFromDomain(domain);
-		repo.saveAndFlush(e);
-
-		// cancel 履歴
-		uriageRirekiCrudService.cancel(domain);
-
+	public void cancel(TUriagePK pk, int version) {
+		// occ
+		TUriage e = repo.getOne(pk);
+		e.setVersion(version);
+		// update 計上日
+		Uriage _d = this.getDomainFromEntity(e);
+		UriageBuilder b = new UriageBuilder();
+		TheDate eigyoDate = _d.getKokyaku().getShukanBusho().getEigyoDate();
+		b.withKeijoDate(eigyoDate);
+		// empty 売上明細
+		b.withUriageMeisai(new ArrayList<>());
+		// save 売上
+		Uriage domain = b.apply(_d);
+		this.save(domain);
 		// cancel
 		uriageCancelCrudService.save(domain);
 	}
@@ -216,5 +192,37 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		// occ
 		e.setVersion(domain.getVersion());
 		return e;
+	}
+
+	/**
+	 * Entityからドメインを生成します.
+	 * 
+	 * @param e
+	 *            Entity
+	 * @return 売上ドメイン
+	 */
+	private Uriage getDomainFromEntity(TUriage e) {
+		// 顧客
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(e.getKokyaku().getCode());
+		// 売上明細ドメイン
+		List<UriageMeisai> uriageMeisai = new ArrayList<UriageMeisai>();
+		List<TUriageMeisai> meisaiEntityList = e.getMeisai();
+		for (TUriageMeisai m : meisaiEntityList) {
+			uriageMeisai.add(uriageMeisaiCrudService.getDomain(m.getPk()));
+		}
+		// sort
+		Collections.sort(uriageMeisai);
+		// set builder
+		UriageBuilder b = new UriageBuilder();
+		b.withDenpyoNumber(e.getPk().getDenpyoNumber());
+		b.withHanbaiKubun(Kubun.get(HanbaiKubun.class, e.getHanbaiKubun()));
+		b.withKokyaku(kokyaku);
+		b.withRecordId(e.getRecordId());
+		b.withShohizeiritsu(new TaxRate(e.getShohizeiritsu()));
+		b.withUriageDate(new TheDate(e.getUriageDate()));
+		b.withKeijoDate(new TheDate(e.getKeijoDate()));
+		b.withUriageMeisai(uriageMeisai);
+		b.withVersion(e.getVersion());
+		return b.build();
 	}
 }

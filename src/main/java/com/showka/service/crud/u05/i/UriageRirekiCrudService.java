@@ -54,6 +54,8 @@ public interface UriageRirekiCrudService {
 	 * @param domain
 	 *            売上ドメイン
 	 */
+	@Deprecated
+	// FIXME delete!
 	public void cancel(Uriage domain);
 
 }

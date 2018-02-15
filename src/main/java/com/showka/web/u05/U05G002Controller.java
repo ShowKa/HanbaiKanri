@@ -344,6 +344,7 @@ public class U05G002Controller extends ControllerBase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
+		// FIXME should not build domain here
 		Uriage oldDomain = uriageCrudService.getDomain(pk);
 
 		// 営業日取得
@@ -357,7 +358,7 @@ public class U05G002Controller extends ControllerBase {
 
 		// cancel
 		uriageValidateService.validateForUpdate(domain);
-		uriageCrudService.cancel(domain);
+		uriageCrudService.cancel(pk, form.getVersion());
 
 		// message
 		form.setSuccessMessage("売上伝票をキャンセルしました.");
