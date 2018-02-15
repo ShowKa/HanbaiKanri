@@ -1,7 +1,6 @@
 package com.showka.domain;
 
 import java.math.BigDecimal;
-import java.util.Comparator;
 
 import com.showka.system.exception.SystemException;
 
@@ -16,12 +15,9 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class UriageMeisai extends DomainBase {
+public class UriageMeisai extends DomainBase implements Comparable<UriageMeisai> {
 
 	// private member
-	/** ID. */
-	private String uriageId;
-
 	/** 明細番号. */
 	private Integer meisaiNumber;
 
@@ -52,22 +48,16 @@ public class UriageMeisai extends DomainBase {
 	@Override
 	protected boolean equals(DomainBase other) {
 		UriageMeisai o = (UriageMeisai) other;
-		return (uriageId.equals(o.uriageId) && meisaiNumber.equals(o.meisaiNumber));
+		return meisaiNumber.equals(o.meisaiNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		return generateHashCode(uriageId, meisaiNumber);
+		return meisaiNumber.hashCode();
 	}
 
-	/**
-	 * 明細番号による売上明細比較クラス.
-	 * 
-	 */
-	public static class UriageMeisaiComparatorByMeisaiNumber implements Comparator<UriageMeisai> {
-		@Override
-		public int compare(UriageMeisai o1, UriageMeisai o2) {
-			return o1.meisaiNumber.compareTo(o2.meisaiNumber);
-		}
+	@Override
+	public int compareTo(UriageMeisai o) {
+		return this.meisaiNumber.compareTo(o.meisaiNumber);
 	}
 }

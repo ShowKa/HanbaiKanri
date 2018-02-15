@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.showka.domain.Uriage.UriageComparatorByKejoDate;
-import com.showka.domain.UriageMeisai.UriageMeisaiComparatorByMeisaiNumber;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.system.exception.SystemException;
@@ -55,7 +54,7 @@ public class UriageRireki extends DomainBase {
 				return mb.apply(meisai);
 			}).collect(Collectors.toList());
 			// sort
-			_meisai.sort(new UriageMeisaiComparatorByMeisaiNumber());
+			Collections.sort(_meisai);
 			b.withUriageMeisai(_meisai);
 			return Optional.of(b.apply(_u));
 		}
@@ -165,17 +164,9 @@ public class UriageRireki extends DomainBase {
 	 * @return
 	 */
 	private Uriage convert(Uriage uriage) {
-		// set uriage id
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
-		// set uriage id to list
-		List<UriageMeisai> meisai = uriage.getUriageMeisai().stream().map(m -> {
-			UriageMeisaiBuilder bm = new UriageMeisaiBuilder();
-			bm.withUriageId(uriageId);
-			return bm.apply(m);
-		}).collect(Collectors.toList());
-		b.withUriageMeisai(meisai);
-		// build & return
+		// b.withUriageMeisai(uriage.getUriageMeisai());
 		return b.apply(uriage);
 	}
 }

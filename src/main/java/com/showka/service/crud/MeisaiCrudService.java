@@ -21,9 +21,12 @@ public interface MeisaiCrudService<T extends DomainBase, P> {
 	 * 
 	 * @param pk
 	 *            primary key
+	 * @param version
+	 *            version
 	 * @param domain
 	 *            ドメイン
 	 */
+	// TODO need version?
 	public void delete(P pk, int version);
 
 	/**

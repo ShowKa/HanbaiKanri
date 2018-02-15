@@ -24,8 +24,7 @@ public class UriageRirekiTest extends SimpleTestCase {
 	static {
 		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
 		Shohin shohin01 = EmptyProxy.domain(Shohin.class);
-		b.withUriageId("KK01-00001")
-				.withMeisaiNumber(1)
+		b.withMeisaiNumber(1)
 				.withShohinDomain(shohin01)
 				.withHanbaiNumber(5)
 				.withHanbaiTanka(BigDecimal.valueOf(1000))

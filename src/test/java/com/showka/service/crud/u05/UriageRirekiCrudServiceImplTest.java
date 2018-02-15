@@ -113,7 +113,7 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 
 		new Expectations() {
 			{
-				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisai>) any);
+				uriageRirekiMeisaiCrudService.overrideList(anyString, (List<UriageMeisai>) any);
 			}
 		};
 
@@ -129,7 +129,7 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiMeisaiCrudService.overrideList((List<UriageMeisai>) any);
+				uriageRirekiMeisaiCrudService.overrideList(anyString, (List<UriageMeisai>) any);
 				times = 1;
 			}
 		};

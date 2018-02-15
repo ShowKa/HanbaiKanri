@@ -117,12 +117,13 @@ public abstract class EntityBase {
 	 */
 	public void setVersion(Integer version) {
 		if (this.version == null && version != null) {
-			throw new OptimisticLockException(
-					"OptimisticLockException!! version should be null but was <" + version + ">");
+			throw new OptimisticLockException(this.getClass().getSimpleName()
+					+ " : OptimisticLockException!! version should be null but was <" + version + ">");
 		}
 		if (this.version != null && !this.version.equals(version)) {
 			throw new OptimisticLockException(
-					"OptimisticLockException!! expected version is <" + this.version + "> but was <" + version + ">");
+					this.getClass().getSimpleName() + " : OptimisticLockException!! expected version is <"
+							+ this.version + "> but was <" + version + ">");
 		}
 		this.version = version;
 	}

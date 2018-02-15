@@ -1,6 +1,7 @@
 package com.showka.service.crud.u05;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,12 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
-import com.showka.domain.UriageMeisai.UriageMeisaiComparatorByMeisaiNumber;
 import com.showka.domain.UriageRireki;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisai;
+import com.showka.entity.TUriageMeisaiPK;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
@@ -66,7 +67,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		uriageRirekiCrudService.save(domain);
 
 		// 明細更新
-		uriageMeisaiCrudService.overrideList(domain.getUriageMeisai());
+		uriageMeisaiCrudService.overrideList(domain.getRecordId(), domain.getUriageMeisai());
 
 		// set 顧客
 		MKokyaku kokyaku = kokyakuRepo.findByRecordId(domain.getKokyaku().getRecordId());
@@ -104,7 +105,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		}
 
 		// sort
-		uriageMeisai.sort(new UriageMeisaiComparatorByMeisaiNumber());
+		Collections.sort(uriageMeisai);
 
 		// set builder
 		UriageBuilder b = new UriageBuilder();
@@ -146,7 +147,10 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		} else {
 			// 明細削除
 			domain.getUriageMeisai().forEach(meisai -> {
-				uriageMeisaiCrudService.delete(meisai);
+				TUriageMeisaiPK pk = new TUriageMeisaiPK();
+				pk.setUriageId(uriageId);
+				pk.setMeisaiNumber(meisai.getMeisaiNumber());
+				uriageMeisaiCrudService.delete(pk, meisai.getVersion());
 			});
 			// 売上削除
 			TUriagePK pk = new TUriagePK();

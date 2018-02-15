@@ -290,7 +290,6 @@ public class U05G002Controller extends ControllerBase {
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
 			mb.withRecordId(mf.getRecordId());
 			mb.withShohinDomain(shohinCrudService.getDomain(mf.getShohinCode()));
-			mb.withUriageId(form.getRecordId());
 			mb.withVersion(mf.getVersion());
 			UriageMeisai md = mb.build();
 
