@@ -28,6 +28,9 @@ public class U05G002MeisaiForm extends MeisaiFormBase {
 	/** 商品販売単価. */
 	private Integer hanbaiTanka;
 
+	/** record_id */
+	private String recordId;
+
 	/** version. */
 	private Integer version;
 }

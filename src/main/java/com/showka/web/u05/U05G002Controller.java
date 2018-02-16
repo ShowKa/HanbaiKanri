@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -135,6 +137,7 @@ public class U05G002Controller extends ControllerBase {
 		form.setHanbaiKubun(u.getHanbaiKubun().getCode());
 		form.setUriageDate(u.getUriageDate().toDate());
 		form.setVersion(u.getVersion());
+		form.setRecordId(u.getRecordId());
 
 		// set 明細
 		List<U05G002MeisaiForm> meisaiList = new ArrayList<U05G002MeisaiForm>();
@@ -145,6 +148,7 @@ public class U05G002Controller extends ControllerBase {
 			e.setHanbaiTanka(meisai.getHanbaiTanka().intValue());
 			e.setShohinCode(meisai.getShohinDomain().getCode());
 			e.setVersion(meisai.getVersion());
+			e.setRecordId(meisai.getRecordId());
 			meisaiList.add(e);
 		}
 		form.setMeisai(meisaiList);
@@ -168,9 +172,14 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
+		// set id
+		String uriageRecordId = UUID.randomUUID().toString();
+		form.setRecordId(uriageRecordId);
+		List<U05G002MeisaiForm> meisai = form.getMeisai();
+		meisai.forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
+
 		// meisai number
 		AtomicInteger i = new AtomicInteger(1);
-		List<U05G002MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
@@ -198,8 +207,7 @@ public class U05G002Controller extends ControllerBase {
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// 新しい売上明細に明細番号付番
-		String uriageId = getUriageId(form.getKokyakuCode(), form.getDenpyoNumber());
-		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(uriageId);
+		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
 		form.getMeisai()
 				.stream()
@@ -264,15 +272,23 @@ public class U05G002Controller extends ControllerBase {
 	 */
 	private Uriage buildDomainFromForm(U05G002Form form) {
 
+		// record_id 採番
+		form.setRecordId(form.getRecordId() == null ? UUID.randomUUID().toString() : form.getRecordId());
+
 		// 売上明細
 		List<UriageMeisai> uriageMeisaiList = new ArrayList<UriageMeisai>();
 		for (U05G002MeisaiForm mf : form.getMeisai()) {
+
+			// record_id 採番
+			String rec = mf.getRecordId();
+			mf.setRecordId(StringUtils.isEmpty(rec) ? UUID.randomUUID().toString() : rec);
 
 			// build
 			UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
 			mb.withHanbaiNumber(mf.getHanbaiNumber());
 			mb.withHanbaiTanka(BigDecimal.valueOf(mf.getHanbaiTanka()));
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
+			mb.withRecordId(mf.getRecordId());
 			mb.withShohinDomain(shohinCrudService.getDomain(mf.getShohinCode()));
 			mb.withVersion(mf.getVersion());
 			UriageMeisai md = mb.build();
@@ -292,6 +308,7 @@ public class U05G002Controller extends ControllerBase {
 		ub.withUriageMeisai(uriageMeisaiList);
 		ub.withDenpyoNumber(form.getDenpyoNumber());
 		ub.withHanbaiKubun(Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()));
+		ub.withRecordId(form.getRecordId());
 		ub.withShohizeiritsu(ZEIRITSU);
 		ub.withUriageDate(new TheDate(form.getUriageDate()));
 		ub.withKeijoDate(eigyoDate);
@@ -346,13 +363,11 @@ public class U05G002Controller extends ControllerBase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
-		// validate
-		uriageValidateService.validateForCancel(pk);
 		// cancel
+		uriageValidateService.validateForCancel(pk);
 		uriageCrudService.cancel(pk, form.getVersion());
 		// message
 		form.setSuccessMessage("売上伝票をキャンセルしました.");
-
 		// set model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
@@ -361,8 +376,7 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/getRireki", method = RequestMethod.POST)
 	public ResponseEntity<?> getRireki(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// 履歴取得
-		String uriageId = getUriageId(form.getKokyakuCode(), form.getDenpyoNumber());
-		UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(uriageId);
+		UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(form.getRecordId());
 
 		// 画面に必要な履歴情報をmapに入れる。
 		List<Map<String, Object>> rirekiList = new ArrayList<Map<String, Object>>();
@@ -381,18 +395,5 @@ public class U05G002Controller extends ControllerBase {
 		model.addObject("rirekiList", rirekiList);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
-	}
-
-	/**
-	 * 売上IDを取得.
-	 * 
-	 * @param kokyakuCode
-	 *            顧客コード
-	 * @param denpyoNumber
-	 *            伝票番号
-	 * @return 売上ID
-	 */
-	private String getUriageId(String kokyakuCode, String denpyoNumber) {
-		return uriageCrudService.getDomain(kokyakuCode, denpyoNumber).getRecordId();
 	}
 }
