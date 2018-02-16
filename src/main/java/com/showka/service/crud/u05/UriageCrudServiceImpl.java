@@ -20,8 +20,6 @@ import com.showka.entity.TUriageMeisaiPK;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.repository.i.MKokyakuRepository;
-import com.showka.repository.i.TUriageMeisaiRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCancelCrudService;
@@ -36,12 +34,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Autowired
 	private TUriageRepository repo;
-
-	@Autowired
-	private MKokyakuRepository kokyakuRepo;
-
-	@Autowired
-	private TUriageMeisaiRepository meisaiRepository;
 
 	@Autowired
 	private UriageMeisaiCrudService uriageMeisaiCrudService;

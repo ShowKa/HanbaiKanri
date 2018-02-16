@@ -172,14 +172,9 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
-		// set id
-		String uriageRecordId = UUID.randomUUID().toString();
-		form.setRecordId(uriageRecordId);
-		List<U05G002MeisaiForm> meisai = form.getMeisai();
-		meisai.forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
-
-		// meisai number
+		// 明細番号
 		AtomicInteger i = new AtomicInteger(1);
+		List<U05G002MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain

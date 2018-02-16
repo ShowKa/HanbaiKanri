@@ -20,8 +20,6 @@ import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
-import com.showka.repository.i.MKokyakuRepository;
-import com.showka.repository.i.TUriageMeisaiRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCancelCrudService;
@@ -43,12 +41,6 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	@Injectable
 	@Autowired
 	private TUriageRepository repo;
-
-	@Injectable
-	private MKokyakuRepository kokyakuRepo;
-
-	@Injectable
-	private TUriageMeisaiRepository meisaiRepository;
 
 	@Injectable
 	private UriageMeisaiCrudService uriageMeisaiCrudService;
