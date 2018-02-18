@@ -31,19 +31,4 @@ public interface UriageRirekiCrudService {
 	 *            売上履歴テーブル主キー
 	 */
 	public void delete(RUriagePK pk);
-
-	/**
-	 * 売上キャンセルを履歴保存.
-	 * 
-	 * <pre>
-	 * 排他制御対象外
-	 * </pre>
-	 * 
-	 * @param domain
-	 *            売上ドメイン
-	 */
-	@Deprecated
-	// FIXME delete!
-	public void cancel(Uriage domain);
-
 }

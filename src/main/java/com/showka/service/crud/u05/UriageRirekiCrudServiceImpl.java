@@ -114,31 +114,6 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	}
 
 	@Override
-	@Deprecated
-	public void cancel(Uriage domain) {
-		// pk
-		RUriagePK pk = new RUriagePK();
-		pk.setUriageId(domain.getRecordId());
-		pk.setKeijoDate(domain.getKeijoDate().toDate());
-
-		// 売上履歴Entity
-		Optional<RUriage> _e = repo.findById(pk);
-		String recordId = _e.isPresent() ? _e.get().getRecordId() : UUID.randomUUID().toString();
-		RUriage e = _e.orElse(new RUriage());
-		e.setPk(pk);
-		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
-		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
-		e.setUriageDate(domain.getUriageDate().toDate());
-		e.setRecordId(recordId);
-		repo.saveAndFlush(e);
-
-		// Delete 明細
-		if (_e.isPresent()) {
-			uriageRirekiMeisaiCrudService.deleteAll(recordId);
-		}
-	}
-
-	@Override
 	public void delete(RUriagePK pk) {
 		// entity
 		RUriage rireki = repo.getOne(pk);
