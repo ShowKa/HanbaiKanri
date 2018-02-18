@@ -44,7 +44,7 @@ public interface UriageValidateService {
 	 * @throws ValidateException
 	 *             整合性例外
 	 */
-	public void validateForDelete(Uriage domain) throws ValidateException;
+	public void validateForDelete(TUriagePK pk) throws ValidateException;
 
 	/**
 	 * キャンセル時整合性検証.

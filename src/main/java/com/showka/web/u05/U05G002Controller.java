@@ -235,21 +235,17 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
-		// domain
+		// 売上PK
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 		pk.setKokyakuId(kokyaku.getRecordId());
-		Uriage uriage = uriageCrudService.getDomain(pk);
-
-		// 排他制御
-		uriage.setVersion(form.getVersion());
 
 		// validate
-		uriageValidateService.validateForDelete(uriage);
+		uriageValidateService.validateForDelete(pk);
 
 		// delete
-		uriageCrudService.delete(uriage);
+		uriageCrudService.delete(pk, form.getVersion());
 
 		// message
 		form.setSuccessMessage("削除成功");

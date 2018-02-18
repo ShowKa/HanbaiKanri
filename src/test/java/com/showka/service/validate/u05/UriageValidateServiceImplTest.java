@@ -234,15 +234,19 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
 		Uriage domain = b.build();
+		// pk
+		TUriagePK pk = new TUriagePK("KK01", "00001");
 		// expect
 		new Expectations() {
 			{
+				uriageCrudService.getDomain(pk);
+				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = true;
 			}
 		};
 		// do
-		service.validateForDelete(domain);
+		service.validateForDelete(pk);
 	}
 
 	/**
@@ -257,9 +261,13 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
 		Uriage domain = b.build();
+		// pk
+		TUriagePK pk = new TUriagePK("KK01", "00001");
 		// expect
 		new Expectations() {
 			{
+				uriageCrudService.getDomain(pk);
+				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
 				uriageKeijoSpecificationService.isKeijoZumi(domain);
@@ -267,7 +275,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		service.validateForDelete(domain);
+		service.validateForDelete(pk);
 	}
 
 	/**
@@ -282,9 +290,13 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
 		Uriage domain = b.build();
+		// pk
+		TUriagePK pk = new TUriagePK("KK01", "00001");
 		// expect
 		new Expectations() {
 			{
+				uriageCrudService.getDomain(pk);
+				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
 				uriageKeijoSpecificationService.isKeijoZumi(domain);
@@ -292,10 +304,12 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		service.validateForDelete(domain);
+		service.validateForDelete(pk);
 		// verify
 		new Verifications() {
 			{
+				uriageCrudService.getDomain(pk);
+				times = 1;
 				cUriageRepository.existsById(uriageId);
 				times = 1;
 				uriageKeijoSpecificationService.isKeijoZumi(domain);

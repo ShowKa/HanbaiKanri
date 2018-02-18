@@ -71,7 +71,8 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	}
 
 	@Override
-	public void validateForDelete(Uriage domain) throws ValidateException {
+	public void validateForDelete(TUriagePK pk) throws ValidateException {
+		Uriage domain = uriageCrudService.getDomain(pk);
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
 			throw new CanNotUpdateException("キャンセル済の売上のため");
