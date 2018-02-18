@@ -13,9 +13,11 @@ import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
+import com.showka.domain.UriageRireki;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
+import com.showka.domain.builder.UriageRirekiBuilder;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.entity.TUriagePK;
@@ -30,12 +32,15 @@ import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mock;
+import mockit.MockUp;
 import mockit.Tested;
 import mockit.Verifications;
 
 public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
+	@Injectable
 	private UriageCrudServiceImpl service;
 
 	@Injectable
@@ -195,14 +200,16 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	/**
-	 * delete
+	 * delete 単純に削除.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void test03_deleteByPK() throws Exception {
+	public void test03_01_deleteByPK() throws Exception {
 		// data
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
+		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
 		assertEquals(1, repo.findAll().size());
 		// do
 		TUriagePK pk = new TUriagePK();
@@ -214,29 +221,66 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	/**
-	 * delete domain
+	 * delete 計上済み売上を更新したデータの削除.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void test04_deleteDomain() throws Exception {
+	public void test03_02_deleteByPK() throws Exception {
 		// data
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
+		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
 		assertEquals(1, repo.findAll().size());
-		// 顧客
-		KokyakuBuilder bk = new KokyakuBuilder();
-		bk.withRecordId("r-KK01");
-		Kokyaku kokyaku01 = bk.build();
-		// 売上
-		UriageBuilder b = new UriageBuilder();
-		b.withKokyaku(kokyaku01).withDenpyoNumber("00001").withVersion(0);
-		List<UriageMeisai> list = new ArrayList<UriageMeisai>();
-		b.withUriageMeisai(list);
-		Uriage uriage01 = b.build();
+		// expect
+		List<Uriage> u = new ArrayList<Uriage>();
+		UriageRireki rireki = new UriageRirekiBuilder().withList(u).build();
+		new Expectations() {
+			{
+				uriageRirekiCrudService.getUriageRirekiList("r-KK01-00001");
+				result = rireki;
+				service.save((Uriage) any);
+			}
+		};
+		// mock
+		new MockUp<UriageRireki>() {
+			@Mock
+			public List<Uriage> getList() {
+				List<Uriage> list = new ArrayList<Uriage>();
+				list.add(new UriageBuilder().build());
+				return list;
+			}
+
+			@Mock
+			public Uriage getNewest() {
+				return new UriageBuilder().build();
+			}
+		};
 		// do
-		service.delete(uriage01);
-		// check
-		assertEquals(0, repo.findAll().size());
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId("r-KK01");
+		pk.setDenpyoNumber("00001");
+		service.delete(pk, 0);
+		// verify
+		new Verifications() {
+			{
+				uriageRirekiCrudService.getUriageRirekiList("r-KK01-00001");
+				times = 1;
+				service.save((Uriage) any);
+				times = 1;
+			}
+		};
+	}
+
+	/**
+	 * delete domain
+	 * 
+	 * @throws Exception
+	 */
+	@Test(expected = RuntimeException.class)
+	public void test04_deleteDomain() throws Exception {
+		service.delete(new UriageBuilder().build());
+		fail();
 	}
 
 	/**

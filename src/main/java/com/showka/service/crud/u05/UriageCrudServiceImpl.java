@@ -64,14 +64,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	public void delete(TUriagePK pk, Integer version) {
-		TUriage entity = repo.getOne(pk);
-		entity.setPk(pk);
-		entity.setVersion(version);
-		repo.delete(entity);
-	}
-
-	@Override
 	public Uriage getDomain(TUriagePK pk) {
 		// get
 		TUriage e = repo.findById(pk).get();
@@ -84,36 +76,43 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	public void delete(Uriage domain) {
+	public void delete(TUriagePK pk, Integer version) {
+		TUriage entity = repo.getOne(pk);
+		entity.setPk(pk);
+		// occ
+		entity.setVersion(version);
+		// domain
+		Uriage domain = getDomainFromEntity(entity);
 		// 売上履歴削除
 		uriageRirekiCrudService.delete(domain);
-
 		// 残った履歴取得
 		String uriageId = domain.getRecordId();
 		UriageRireki rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
-
 		// 計上済みの履歴があれば、それで売上を上書きし直す。
 		// ない場合は、売上データ自体をすべて削除して終了。
 		if (rirekiList.getList().size() > 0) {
 			Uriage domainForOverride = rirekiList.getNewest();
 			UriageBuilder b = new UriageBuilder();
-			// ここで排他制御
+			// 排他制御用バージョン設定
 			b.withVersion(domain.getVersion());
 			this.save(b.apply(domainForOverride));
 		} else {
 			// 明細削除
 			domain.getUriageMeisai().forEach(meisai -> {
-				TUriageMeisaiPK pk = new TUriageMeisaiPK();
-				pk.setUriageId(uriageId);
-				pk.setMeisaiNumber(meisai.getMeisaiNumber());
-				uriageMeisaiCrudService.delete(pk, meisai.getVersion());
+				TUriageMeisaiPK mpk = new TUriageMeisaiPK();
+				mpk.setUriageId(uriageId);
+				mpk.setMeisaiNumber(meisai.getMeisaiNumber());
+				uriageMeisaiCrudService.delete(mpk, meisai.getVersion());
 			});
 			// 売上削除
-			TUriagePK pk = new TUriagePK();
-			pk.setDenpyoNumber(domain.getDenpyoNumber());
-			pk.setKokyakuId(domain.getKokyaku().getRecordId());
-			this.delete(pk, domain.getVersion());
+			repo.deleteById(pk);
 		}
+	}
+
+	@Override
+	@Deprecated
+	public void delete(Uriage domain) {
+		throw new RuntimeException("forbidden!");
 	}
 
 	@Override
