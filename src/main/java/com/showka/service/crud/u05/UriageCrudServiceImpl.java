@@ -14,6 +14,7 @@ import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.UriageRireki;
 import com.showka.domain.builder.UriageBuilder;
+import com.showka.entity.RUriagePK;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
@@ -84,7 +85,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		// domain
 		Uriage domain = getDomainFromEntity(entity);
 		// 売上履歴削除
-		uriageRirekiCrudService.delete(domain);
+		uriageRirekiCrudService.delete(new RUriagePK(entity.getRecordId(), entity.getKeijoDate()));
 		// 残った履歴取得
 		String uriageId = domain.getRecordId();
 		UriageRireki rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);

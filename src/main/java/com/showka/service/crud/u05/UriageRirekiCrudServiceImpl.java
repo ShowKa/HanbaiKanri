@@ -139,24 +139,12 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	}
 
 	@Override
-	public void delete(Uriage domain) {
-		// 既存取得
-		String uriageId = domain.getRecordId();
-		RUriagePK pk = new RUriagePK();
-		pk.setUriageId(uriageId);
-		pk.setKeijoDate(domain.getKeijoDate().toDate());
+	public void delete(RUriagePK pk) {
+		// entity
 		RUriage rireki = repo.getOne(pk);
 		// 明細削除
 		uriageRirekiMeisaiCrudService.deleteAll(rireki.getRecordId());
-		// 排他制御対象外
-		this.delete(pk, rireki.getVersion());
-	}
-
-	@Override
-	public void delete(RUriagePK pk, Integer version) {
-		RUriage e = repo.getOne(pk);
-		e.setPk(pk);
-		e.setVersion(version);
-		repo.delete(e);
+		// 削除
+		repo.delete(rireki);
 	}
 }
