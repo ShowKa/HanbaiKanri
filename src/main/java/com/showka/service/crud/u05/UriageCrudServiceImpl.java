@@ -110,12 +110,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	@Deprecated
-	public void delete(Uriage domain) {
-		throw new RuntimeException("forbidden!");
-	}
-
-	@Override
 	public void cancel(TUriagePK pk, int version) {
 		// occ
 		TUriage e = repo.getOne(pk);

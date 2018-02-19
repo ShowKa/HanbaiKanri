@@ -273,17 +273,6 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	/**
-	 * delete domain
-	 * 
-	 * @throws Exception
-	 */
-	@Test(expected = RuntimeException.class)
-	public void test04_deleteDomain() throws Exception {
-		service.delete(new UriageBuilder().build());
-		fail();
-	}
-
-	/**
 	 * exists
 	 * 
 	 * @throws Exception

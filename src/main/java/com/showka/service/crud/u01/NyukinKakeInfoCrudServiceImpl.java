@@ -83,12 +83,6 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 	}
 
 	@Override
-	public void delete(NyukinKakeInfo domain) {
-		delete(domain.getKokyakuId(), domain.getVersion());
-
-	}
-
-	@Override
 	public void deleteForciblyIfExists(String kokyakuId) {
 		if (exsists(kokyakuId)) {
 			repo.deleteById(kokyakuId);

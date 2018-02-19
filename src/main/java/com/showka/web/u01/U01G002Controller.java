@@ -209,13 +209,8 @@ public class U01G002Controller {
 	@RequestMapping(value = "/u01g002/delete", method = RequestMethod.POST)
 	@Transactional
 	public ResponseEntity<?> delete(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
-
-		// make KokyakuDomain
-		Kokyaku kokyakuDomain = createKokyakuDomain(form);
-
 		// delete
-		kokyakuCrudService.delete(kokyakuDomain);
-
+		kokyakuCrudService.delete(form.getCode(), form.getKokyakuVersion());
 		// jump search
 		form.setSuccessMessage("削除成功");
 		model.addForm(form);

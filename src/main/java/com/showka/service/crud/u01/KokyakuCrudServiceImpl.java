@@ -73,23 +73,12 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	public void delete(String code, Integer version) {
 		// entity
 		MKokyaku targetKokyaku = repo.getOne(code);
-
+		// 入金掛情報delete
+		nyukinCrudService.deleteForciblyIfExists(targetKokyaku.getRecordId());
+		// 顧客を削除
 		targetKokyaku.setCode(code);
 		targetKokyaku.setVersion(version);
-
-		// 顧客を削除
 		repo.delete(targetKokyaku);
-	}
-
-	@Override
-	@Transactional
-	public void delete(Kokyaku domain) {
-
-		// 入金掛情報delete
-		nyukinCrudService.deleteForciblyIfExists(domain.getRecordId());
-
-		// 顧客を削除
-		this.delete(domain.getCode(), domain.getVersion());
 	}
 
 	@Override
