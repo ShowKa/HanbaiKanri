@@ -1,5 +1,8 @@
 package com.showka.service.validate.u01;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +12,22 @@ import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.Uriage;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.NyukinKakeInfoBuilder;
+import com.showka.domain.builder.UriageBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
+import com.showka.repository.i.MKokyakuRepository;
+import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.system.exception.CanNotUpdateException;
 import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
+
+import mockit.Expectations;
+import mockit.Injectable;
+import mockit.Tested;
 
 /**
  * 顧客 Validate Service Test
@@ -25,8 +37,19 @@ import com.showka.system.exception.ValidateException;
  */
 public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 
-	@Autowired
+	@Tested
 	private KokyakuValidateServiceImpl service;
+
+	@Autowired
+	@Injectable
+	private MKokyakuRepository repo;
+
+	@Autowired
+	@Injectable
+	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
+
+	@Injectable
+	private UriageCrudService uriageCrudService;
 
 	@Autowired
 	private BushoCrudService bushoCRUDService;
@@ -283,5 +306,37 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		Kokyaku domain = builder.build();
 
 		service.validate(domain);
+	}
+
+	@Test(expected = CanNotUpdateException.class)
+	public void test_validateForDelete1() throws Exception {
+		// expect
+		List<Uriage> uriageList = new ArrayList<Uriage>();
+		uriageList.add(new UriageBuilder().build());
+		new Expectations() {
+			{
+				uriageCrudService.getUriageOfKokyaku("KK01");
+				result = uriageList;
+			}
+		};
+		// do
+		service.validateForDelete("KK01");
+		fail();
+	}
+
+	@Test
+	public void test_validateForDelete2() throws Exception {
+		// expect
+		List<Uriage> uriageList = new ArrayList<Uriage>();
+		new Expectations() {
+			{
+				uriageCrudService.getUriageOfKokyaku("KK01");
+				result = uriageList;
+			}
+		};
+		// do
+		service.validateForDelete("KK01");
+		// check
+		assertTrue(true);
 	}
 }

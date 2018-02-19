@@ -1,14 +1,19 @@
 package com.showka.service.validate.u01;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Kokyaku;
+import com.showka.domain.Uriage;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
+import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.system.exception.AlreadyExistsException;
+import com.showka.system.exception.CanNotUpdateException;
 import com.showka.system.exception.IncorrectKubunException;
 import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
@@ -27,6 +32,9 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 	@Autowired
 	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
+
+	@Autowired
+	private UriageCrudService uriageCrudService;
 
 	@Override
 	public void validateForRefer(String kokyakuCode) throws ValidateException {
@@ -51,6 +59,14 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
 			nyukinKakeInfoValidateService.validate(domain.getNyukinKakeInfo());
+		}
+	}
+
+	@Override
+	public void validateForDelete(String kokyakuCode) throws ValidateException {
+		List<Uriage> uriageList = uriageCrudService.getUriageOfKokyaku(kokyakuCode);
+		if (!uriageList.isEmpty()) {
+			throw new CanNotUpdateException("売上が登録済み");
 		}
 	}
 }
