@@ -79,7 +79,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	@Override
 	public void delete(TUriagePK pk, Integer version) {
 		TUriage entity = repo.getOne(pk);
-		entity.setPk(pk);
 		// occ
 		entity.setVersion(version);
 		// domain
