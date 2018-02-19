@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,10 +203,8 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai()
-				.stream()
-				.filter(m -> m.getMeisaiNumber() == null)
-				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+				m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -264,7 +261,7 @@ public class U05G002Controller extends ControllerBase {
 	private Uriage buildDomainFromForm(U05G002Form form) {
 
 		// record_id 採番
-		form.setRecordId(form.getRecordId() == null ? UUID.randomUUID().toString() : form.getRecordId());
+		form.setRecordId(form.getRecordId() == null ? "" : form.getRecordId());
 
 		// 売上明細
 		List<UriageMeisai> uriageMeisaiList = new ArrayList<UriageMeisai>();
@@ -272,7 +269,7 @@ public class U05G002Controller extends ControllerBase {
 
 			// record_id 採番
 			String rec = mf.getRecordId();
-			mf.setRecordId(StringUtils.isEmpty(rec) ? UUID.randomUUID().toString() : rec);
+			mf.setRecordId(StringUtils.isEmpty(rec) ? "" : rec);
 
 			// build
 			UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
