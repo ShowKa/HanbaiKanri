@@ -77,12 +77,6 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	}
 
 	@Override
-	@Deprecated
-	public void delete(ShohinIdo domain) {
-		throw new RuntimeException("forbidden");
-	}
-
-	@Override
 	public ShohinIdo getDomain(String pk) {
 		// get entity
 		TShohinIdo entity = repo.getOne(pk);

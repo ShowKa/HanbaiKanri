@@ -228,31 +228,9 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, M_NYUKIN_KAKE_V01);
 
 		final String id = "KK03";
-		final String bushoId = "BS01";
 		Integer version = 0;
-		Integer nyukinVersion = 0;
 		final String record_id = "KK03";
-
-		// build nyukinKakeInfo domain
-		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
-		nyukinBuilder.withVersion(nyukinVersion);
-		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
-
-		// get busho domain
-		Busho bushoDomain = bushoService.getDomain(bushoId);
-
-		// build kokyaku domain
-		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(id);
-		builder.withShukanBusho(bushoDomain);
-		builder.withNyukinKakeInfo(nyukinDomain);
-		builder.withVersion(version);
-		builder.withRecordId(record_id);
-		Kokyaku domain = builder.build();
-		// delete
-
-		service.delete(domain);
+		service.delete(id, version);
 
 		// assert
 		Optional<MKokyaku> result = repo.findById(id);

@@ -23,15 +23,6 @@ public interface CrudService<T extends DomainBase, P> {
 	void delete(P pk, Integer version);
 
 	/**
-	 * 削除.
-	 *
-	 * @param domain
-	 *            ドメイン
-	 */
-	@Deprecated
-	void delete(T domain);
-
-	/**
 	 * ドメイン取得
 	 *
 	 * @param pk
