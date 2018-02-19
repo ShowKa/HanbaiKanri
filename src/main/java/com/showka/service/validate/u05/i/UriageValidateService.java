@@ -1,6 +1,7 @@
 package com.showka.service.validate.u05.i;
 
 import com.showka.domain.Uriage;
+import com.showka.entity.TUriagePK;
 import com.showka.system.exception.ValidateException;
 
 public interface UriageValidateService {
@@ -43,6 +44,16 @@ public interface UriageValidateService {
 	 * @throws ValidateException
 	 *             整合性例外
 	 */
-	public void validateForDelete(Uriage domain) throws ValidateException;
+	public void validateForDelete(TUriagePK pk) throws ValidateException;
+
+	/**
+	 * キャンセル時整合性検証.
+	 * 
+	 * @param pk
+	 *            売上の主キー
+	 * @throws ValidateException
+	 *             整合性例外
+	 */
+	public void validateForCancel(TUriagePK pk) throws ValidateException;
 
 }

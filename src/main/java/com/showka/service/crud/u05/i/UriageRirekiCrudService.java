@@ -24,36 +24,11 @@ public interface UriageRirekiCrudService {
 	public void save(Uriage domain);
 
 	/**
-	 * 売上履歴削除.
-	 * 
-	 * <pre>
-	 * 排他制御対象外
-	 * </pre>
-	 * 
-	 * @param domain
-	 *            売上
-	 */
-	public void delete(Uriage domain);
-
-	/**
 	 * 
 	 * 売上履歴削除
 	 * 
 	 * @param pk
 	 *            売上履歴テーブル主キー
 	 */
-	public void delete(RUriagePK pk, Integer version);
-
-	/**
-	 * 売上キャンセルを履歴保存.
-	 * 
-	 * <pre>
-	 * 排他制御対象外
-	 * </pre>
-	 * 
-	 * @param domain
-	 *            売上ドメイン
-	 */
-	public void cancel(Uriage domain);
-
+	public void delete(RUriagePK pk);
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -172,14 +171,9 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
-		// set id
-		String uriageRecordId = UUID.randomUUID().toString();
-		form.setRecordId(uriageRecordId);
-		List<U05G002MeisaiForm> meisai = form.getMeisai();
-		meisai.forEach(m -> m.setRecordId(UUID.randomUUID().toString()));
-
-		// meisai number
+		// 明細番号
 		AtomicInteger i = new AtomicInteger(1);
+		List<U05G002MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
@@ -209,10 +203,8 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai()
-				.stream()
-				.filter(m -> m.getMeisaiNumber() == null)
-				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+				m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -240,21 +232,17 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
-		// domain
+		// 売上PK
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 		pk.setKokyakuId(kokyaku.getRecordId());
-		Uriage uriage = uriageCrudService.getDomain(pk);
-
-		// 排他制御
-		uriage.setVersion(form.getVersion());
 
 		// validate
-		uriageValidateService.validateForDelete(uriage);
+		uriageValidateService.validateForDelete(pk);
 
 		// delete
-		uriageCrudService.delete(uriage);
+		uriageCrudService.delete(pk, form.getVersion());
 
 		// message
 		form.setSuccessMessage("削除成功");
@@ -273,7 +261,7 @@ public class U05G002Controller extends ControllerBase {
 	private Uriage buildDomainFromForm(U05G002Form form) {
 
 		// record_id 採番
-		form.setRecordId(form.getRecordId() == null ? UUID.randomUUID().toString() : form.getRecordId());
+		form.setRecordId(form.getRecordId() == null ? "" : form.getRecordId());
 
 		// 売上明細
 		List<UriageMeisai> uriageMeisaiList = new ArrayList<UriageMeisai>();
@@ -281,7 +269,7 @@ public class U05G002Controller extends ControllerBase {
 
 			// record_id 採番
 			String rec = mf.getRecordId();
-			mf.setRecordId(StringUtils.isEmpty(rec) ? UUID.randomUUID().toString() : rec);
+			mf.setRecordId(StringUtils.isEmpty(rec) ? "" : rec);
 
 			// build
 			UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
@@ -363,24 +351,11 @@ public class U05G002Controller extends ControllerBase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
-		Uriage oldDomain = uriageCrudService.getDomain(pk);
-
-		// 営業日取得
-		TheDate eigyoDate = oldDomain.getKokyaku().getShukanBusho().getEigyoDate();
-
-		// override domain
-		UriageBuilder b = new UriageBuilder();
-		b.withKeijoDate(eigyoDate);
-		b.withVersion(form.getVersion());
-		Uriage domain = b.apply(oldDomain);
-
 		// cancel
-		uriageValidateService.validateForUpdate(domain);
-		uriageCrudService.cancel(domain);
-
+		uriageValidateService.validateForCancel(pk);
+		uriageCrudService.cancel(pk, form.getVersion());
 		// message
 		form.setSuccessMessage("売上伝票をキャンセルしました.");
-
 		// set model
 		model.addForm(form);
 		return ResponseEntity.ok(model);

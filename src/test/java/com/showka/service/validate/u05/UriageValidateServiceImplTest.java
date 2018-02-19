@@ -17,11 +17,13 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
+import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.CanNotUpdateException;
 import com.showka.system.exception.EmptyException;
+import com.showka.system.exception.ValidateException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -35,6 +37,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	// tested
 	@Tested
 	private UriageValidateServiceImpl service;
+
+	@Injectable
+	private UriageCrudService uriageCrudService;
 
 	@Injectable
 	private UriageMeisaiValidateService meisaiService;
@@ -229,15 +234,19 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
 		Uriage domain = b.build();
+		// pk
+		TUriagePK pk = new TUriagePK("KK01", "00001");
 		// expect
 		new Expectations() {
 			{
+				uriageCrudService.getDomain(pk);
+				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = true;
 			}
 		};
 		// do
-		service.validateForDelete(domain);
+		service.validateForDelete(pk);
 	}
 
 	/**
@@ -252,9 +261,13 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
 		Uriage domain = b.build();
+		// pk
+		TUriagePK pk = new TUriagePK("KK01", "00001");
 		// expect
 		new Expectations() {
 			{
+				uriageCrudService.getDomain(pk);
+				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
 				uriageKeijoSpecificationService.isKeijoZumi(domain);
@@ -262,7 +275,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		service.validateForDelete(domain);
+		service.validateForDelete(pk);
 	}
 
 	/**
@@ -277,9 +290,13 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
 		Uriage domain = b.build();
+		// pk
+		TUriagePK pk = new TUriagePK("KK01", "00001");
 		// expect
 		new Expectations() {
 			{
+				uriageCrudService.getDomain(pk);
+				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
 				uriageKeijoSpecificationService.isKeijoZumi(domain);
@@ -287,16 +304,57 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		service.validateForDelete(domain);
+		service.validateForDelete(pk);
 		// verify
 		new Verifications() {
 			{
+				uriageCrudService.getDomain(pk);
+				times = 1;
 				cUriageRepository.existsById(uriageId);
 				times = 1;
 				uriageKeijoSpecificationService.isKeijoZumi(domain);
 				times = 1;
 			}
 		};
+	}
+
+	@Test(expected = ValidateException.class)
+	public void test_ValidateForCancel01() throws Exception {
+		// input
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId("KK01");
+		pk.setDenpyoNumber("00001");
+		// expect
+		new Expectations() {
+			{
+				uriageCrudService.getDomain(pk);
+				result = uriage01;
+				service.validateForUpdate(uriage01);
+				result = new ValidateException("");
+			}
+		};
+		// do
+		service.validateForCancel(pk);
+		fail();
+	}
+
+	@Test
+	public void test_ValidateForCancel02() throws Exception {
+		// input
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId("KK01");
+		pk.setDenpyoNumber("00001");
+		// expect
+		new Expectations() {
+			{
+				uriageCrudService.getDomain(pk);
+				result = uriage01;
+				service.validateForUpdate(uriage01);
+			}
+		};
+		// do
+		service.validateForCancel(pk);
+		assertTrue(true);
 	}
 
 }

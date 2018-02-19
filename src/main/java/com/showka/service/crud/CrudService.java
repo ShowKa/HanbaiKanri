@@ -28,6 +28,7 @@ public interface CrudService<T extends DomainBase, P> {
 	 * @param domain
 	 *            ドメイン
 	 */
+	@Deprecated
 	void delete(T domain);
 
 	/**

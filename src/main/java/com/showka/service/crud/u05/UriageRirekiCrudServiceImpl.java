@@ -114,48 +114,12 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 	}
 
 	@Override
-	public void cancel(Uriage domain) {
-		// pk
-		RUriagePK pk = new RUriagePK();
-		pk.setUriageId(domain.getRecordId());
-		pk.setKeijoDate(domain.getKeijoDate().toDate());
-
-		// 売上履歴Entity
-		Optional<RUriage> _e = repo.findById(pk);
-		String recordId = _e.isPresent() ? _e.get().getRecordId() : UUID.randomUUID().toString();
-		RUriage e = _e.orElse(new RUriage());
-		e.setPk(pk);
-		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
-		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
-		e.setUriageDate(domain.getUriageDate().toDate());
-		e.setRecordId(recordId);
-		repo.saveAndFlush(e);
-
-		// Delete 明細
-		if (_e.isPresent()) {
-			uriageRirekiMeisaiCrudService.deleteAll(recordId);
-		}
-	}
-
-	@Override
-	public void delete(Uriage domain) {
-		// 既存取得
-		String uriageId = domain.getRecordId();
-		RUriagePK pk = new RUriagePK();
-		pk.setUriageId(uriageId);
-		pk.setKeijoDate(domain.getKeijoDate().toDate());
+	public void delete(RUriagePK pk) {
+		// entity
 		RUriage rireki = repo.getOne(pk);
 		// 明細削除
 		uriageRirekiMeisaiCrudService.deleteAll(rireki.getRecordId());
-		// 排他制御対象外
-		this.delete(pk, rireki.getVersion());
-	}
-
-	@Override
-	public void delete(RUriagePK pk, Integer version) {
-		RUriage e = repo.getOne(pk);
-		e.setPk(pk);
-		e.setVersion(version);
-		repo.delete(e);
+		// 削除
+		repo.delete(rireki);
 	}
 }

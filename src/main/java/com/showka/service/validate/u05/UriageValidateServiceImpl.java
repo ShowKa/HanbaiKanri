@@ -11,6 +11,7 @@ import com.showka.domain.UriageMeisai;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
+import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
@@ -24,6 +25,9 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 
 	@Autowired
 	private TUriageRepository uriageRepo;
+
+	@Autowired
+	private UriageCrudService uriageCrudService;
 
 	@Autowired
 	private UriageMeisaiValidateService uriageMeisaiValidate;
@@ -67,7 +71,8 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	}
 
 	@Override
-	public void validateForDelete(Uriage domain) throws ValidateException {
+	public void validateForDelete(TUriagePK pk) throws ValidateException {
+		Uriage domain = uriageCrudService.getDomain(pk);
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
 			throw new CanNotUpdateException("キャンセル済の売上のため");
@@ -77,5 +82,11 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 			throw new CanNotUpdateException("計上済の売上のため");
 		}
 
+	}
+
+	@Override
+	public void validateForCancel(TUriagePK pk) throws ValidateException {
+		Uriage domain = uriageCrudService.getDomain(pk);
+		validateForUpdate(domain);
 	}
 }
