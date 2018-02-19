@@ -6,24 +6,39 @@ import com.showka.system.exception.ValidateException;
 public interface KokyakuValidateService {
 
 	/**
-	 * 参照時の整合性検証
+	 * 参照時の整合性検証.
 	 *
 	 * @param kokyakuCode
+	 *            顧客コード
 	 * @throws ValidateException
 	 */
 	public void validateForRefer(String kokyakuCode) throws ValidateException;
 
 	/**
-	 * 新規登録時の整合性検証
+	 * 新規登録時の整合性検証.
 	 *
 	 * <pre>
 	 * 採番した顧客コードが未登録であることを確認する。
 	 * </pre>
 	 *
 	 * @param domain
+	 *            顧客ドメイン
 	 * @throws ValidateException
 	 */
 	public void validateForRegister(Kokyaku domain) throws ValidateException;
+
+	/**
+	 * 削除時の整合性検証
+	 *
+	 * <pre>
+	 * 売上等のデータがある場合はエラー.
+	 * </pre>
+	 *
+	 * @param kokyakuCode
+	 *            顧客コード
+	 * @throws ValidateException
+	 */
+	public void validateForDelete(String kokyakuCode) throws ValidateException;
 
 	/**
 	 *
@@ -35,6 +50,7 @@ public interface KokyakuValidateService {
 	 * </pre>
 	 *
 	 * @param domain
+	 *            顧客ドメイン
 	 * @throws ValidateException
 	 */
 	public void validate(Kokyaku domain) throws ValidateException;

@@ -61,6 +61,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 
 	/** 売上01 */
 	private static final Object[] URIAGE_01 = { "r-KK01", "00001", new Date(), new Date(), "00", 0.08, "r-KK01-00001" };
+	private static final Object[] URIAGE_02 = { "r-KK01", "00002", new Date(), new Date(), "00", 0.08, "r-KK01-00002" };
 
 	/** 売上明細01 */
 	private static final Object[] URIAGE_MEISAI_01 = { "r-KK01-00001", 1, "r-SH01", 5, 1000, "r-KK01-00001-1" };
@@ -442,5 +443,16 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		};
 		// check
 		assertEquals("r-KK01-00001", actual.getRecordId());
+	}
+
+	@Test
+	public void test10_getUriageOfKokyaku() throws Exception {
+		// data
+		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01, URIAGE_02);
+		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
+		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, URIAGE_MEISAI_01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
+		List<Uriage> actual = service.getUriageOfKokyaku("KK01");
+		assertEquals(2, actual.size());
 	}
 }
