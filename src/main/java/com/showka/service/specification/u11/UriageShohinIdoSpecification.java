@@ -17,6 +17,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
+import com.showka.system.exception.UnsatisfiedSpecificationException;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.TheTimestamp;
 
@@ -35,7 +36,7 @@ public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 	private List<ShohinIdo> shohinIdo;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param uriage
 	 *            売上
@@ -54,13 +55,29 @@ public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 		this.shohinIdo = shohinIdo;
 	}
 
+	/**
+	 * 売上による商品移動を取得.
+	 * 
+	 * <pre>
+	 * 伝票訂正の場合、マイナス移動も含まれる。
+	 * </pre>
+	 * 
+	 * @param uriage
+	 *            売上
+	 * @return 商品移動ドメイン
+	 */
 	@Override
 	public List<ShohinIdo> getShohinIdo() {
 		return shohinIdo;
 	}
 
+	/**
+	 * マイナス在庫になる場合エラー.
+	 * 
+	 * @throws ValidateException
+	 */
 	@Override
-	public void validate() throws ValidateException {
+	public void ascertainSatisfaction() throws UnsatisfiedSpecificationException {
 	}
 
 	/**

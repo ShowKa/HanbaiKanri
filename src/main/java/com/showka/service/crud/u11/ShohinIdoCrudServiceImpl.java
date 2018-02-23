@@ -25,6 +25,7 @@ import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
+import com.showka.system.exception.UnsatisfiedSpecificationException;
 import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;
 
@@ -124,8 +125,14 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	}
 
 	@Override
-	public void shohinIdo(ShohinIdoSpecification specification) {
-		specification.validate();
+	public void shohinIdo(ShohinIdoSpecification specification) throws UnsatisfiedSpecificationException {
+		specification.ascertainSatisfaction();
+		List<ShohinIdo> idoList = specification.getShohinIdo();
+		idoList.forEach(i -> save(i));
+	}
+
+	@Override
+	public void shohinIdoForcibly(ShohinIdoSpecification specification) {
 		List<ShohinIdo> idoList = specification.getShohinIdo();
 		idoList.forEach(i -> save(i));
 	}
