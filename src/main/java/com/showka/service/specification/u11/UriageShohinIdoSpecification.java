@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.showka.domain.ShohinIdo;
 import com.showka.domain.ShohinIdoMeisai;
@@ -18,16 +17,30 @@ import com.showka.entity.TUriagePK;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
+import com.showka.system.exception.ValidateException;
 import com.showka.value.TheTimestamp;
 
-@Service
-public class ShohinIdoSpecificationImpl implements ShohinIdoSpecification {
+/**
+ * 売上商品移動.
+ * 
+ */
+public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 
 	@Autowired
 	private UriageCrudService uriageCrudService;
 
-	@Override
-	public List<ShohinIdo> buildShohinIdo(Uriage uriage) {
+	/**
+	 * 商品移動.
+	 */
+	private List<ShohinIdo> shohinIdo;
+
+	/**
+	 * Constructor
+	 * 
+	 * @param uriage
+	 *            売上
+	 */
+	protected UriageShohinIdoSpecification(Uriage uriage) {
 		// 売上による商品移動
 		List<ShohinIdo> shohinIdo = new ArrayList<ShohinIdo>();
 		shohinIdo.add(buildShohinIdoFromUriageDomain(uriage, false));
@@ -38,7 +51,16 @@ public class ShohinIdoSpecificationImpl implements ShohinIdoSpecification {
 			Uriage past = uriageCrudService.getDomain(pk);
 			shohinIdo.add(buildShohinIdoFromUriageDomain(past, true));
 		}
+		this.shohinIdo = shohinIdo;
+	}
+
+	@Override
+	public List<ShohinIdo> getShohinIdo() {
 		return shohinIdo;
+	}
+
+	@Override
+	public void validate() throws ValidateException {
 	}
 
 	/**
@@ -72,5 +94,4 @@ public class ShohinIdoSpecificationImpl implements ShohinIdoSpecification {
 		b.withTimestamp(new TheTimestamp());
 		return b.build();
 	}
-
 }

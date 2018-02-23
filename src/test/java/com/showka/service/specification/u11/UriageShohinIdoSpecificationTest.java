@@ -28,10 +28,10 @@ import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
+public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
 
 	@Tested
-	private ShohinIdoSpecificationImpl shohinIdoSpecificationImpl;
+	private UriageShohinIdoSpecification shohinIdoSpecificationImpl;
 
 	@Injectable
 	private UriageCrudService uriageCrudService;
@@ -90,7 +90,7 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<ShohinIdo> actual = shohinIdoSpecificationImpl.buildShohinIdo(uriage01);
+		List<ShohinIdo> actual = shohinIdoSpecificationImpl.getShohinIdo();
 		// verify
 		new Verifications() {
 			{
@@ -124,7 +124,7 @@ public class ShohinIdoSpecificationImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<ShohinIdo> actual = shohinIdoSpecificationImpl.buildShohinIdo(uriage01);
+		List<ShohinIdo> actual = shohinIdoSpecificationImpl.getShohinIdo();
 		// verify
 		new Verifications() {
 			{
