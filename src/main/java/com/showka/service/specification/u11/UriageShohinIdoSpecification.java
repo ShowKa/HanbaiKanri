@@ -21,10 +21,13 @@ import com.showka.system.exception.UnsatisfiedSpecificationException;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.TheTimestamp;
 
+import lombok.NoArgsConstructor;
+
 /**
  * 売上商品移動.
  * 
  */
+@NoArgsConstructor
 public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 
 	@Autowired
@@ -35,13 +38,7 @@ public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 	 */
 	private List<ShohinIdo> shohinIdo;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param uriage
-	 *            売上
-	 */
-	protected UriageShohinIdoSpecification(Uriage uriage) {
+	protected void setUriage(Uriage uriage) {
 		// 売上による商品移動
 		List<ShohinIdo> shohinIdo = new ArrayList<ShohinIdo>();
 		shohinIdo.add(buildShohinIdoFromUriageDomain(uriage, false));

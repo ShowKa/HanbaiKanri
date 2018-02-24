@@ -19,8 +19,9 @@ public class UriageShohinIdoSpecificationFactory {
 	 * @return
 	 */
 	UriageShohinIdoSpecification create(Uriage uriage) {
-		UriageShohinIdoSpecification object = new UriageShohinIdoSpecification(uriage);
+		UriageShohinIdoSpecification object = new UriageShohinIdoSpecification();
 		beanFactory.autowireBean(object);
+		object.setUriage(uriage);
 		return object;
 	}
 }
