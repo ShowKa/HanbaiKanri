@@ -30,10 +30,14 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
+import com.showka.service.specification.u11.UriageShohinIdoSpecificationFactory;
+import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
+import com.showka.system.exception.MinusZaikoException;
 import com.showka.system.exception.NotExistException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -68,6 +72,12 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private UriageRirekiCrudService uriageRirekiCrudService;
+
+	@Autowired
+	private ShohinIdoCrudService shohinIdoCrudService;
+
+	@Autowired
+	private UriageShohinIdoSpecificationFactory uriageShohinIdoSpecificationFactory;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -183,6 +193,15 @@ public class U05G002Controller extends ControllerBase {
 		uriageValidateService.validateForRegister(uriage);
 		uriageValidateService.validate(uriage);
 
+		// 商品移動
+		ShohinIdoSpecification specification = uriageShohinIdoSpecificationFactory.create(uriage);
+		try {
+			shohinIdoCrudService.shohinIdo(specification);
+		} catch (MinusZaikoException e) {
+			form.setWarningMessage(e.getMessageAsHtml());
+			shohinIdoCrudService.shohinIdoForcibly(specification);
+		}
+
 		// save
 		uriageCrudService.save(uriage);
 
@@ -203,8 +222,10 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
-				m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai()
+				.stream()
+				.filter(m -> m.getMeisaiNumber() == null)
+				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);

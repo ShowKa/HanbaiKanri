@@ -19,6 +19,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -35,6 +36,9 @@ public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
 
 	@Injectable
 	private UriageCrudService uriageCrudService;
+
+	@Injectable
+	private ShohinZaikoCrudService shohinZaikoCrudService;
 
 	/** 売上明細01. */
 	public static final UriageMeisai uriageMeisai01;

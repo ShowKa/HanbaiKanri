@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.showka.domain.Busho;
+import com.showka.domain.Shohin;
 import com.showka.domain.ShohinIdo;
 import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.ShohinZaiko;
 import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.builder.ShohinIdoBuilder;
@@ -16,9 +19,13 @@ import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
+import com.showka.system.exception.MinusZaikoException;
+import com.showka.system.exception.MinusZaikoException.MinusZaiko;
 import com.showka.system.exception.UnsatisfiedSpecificationException;
 import com.showka.system.exception.ValidateException;
+import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;
 
 import lombok.NoArgsConstructor;
@@ -32,6 +39,9 @@ public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 
 	@Autowired
 	private UriageCrudService uriageCrudService;
+
+	@Autowired
+	private ShohinZaikoCrudService shohinZaikoCrudService;
 
 	/**
 	 * 商品移動.
@@ -75,6 +85,23 @@ public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 	 */
 	@Override
 	public void ascertainSatisfaction() throws UnsatisfiedSpecificationException {
+		List<MinusZaiko> minusZaikoList = new ArrayList<MinusZaiko>();
+		shohinIdo.forEach(ido -> {
+			Busho busho = ido.getBusho();
+			TheDate date = ido.getDate();
+			ido.getMeisai().forEach(m -> {
+				Shohin shohin = m.getShohinDomain();
+				ShohinZaiko zaiko = shohinZaikoCrudService.getShohinZaiko(busho, date, shohin);
+				int rest = zaiko.getNumber() - m.getNumber();
+				if (rest < 0) {
+					MinusZaiko mz = new MinusZaiko(shohin, zaiko.getNumber(), rest);
+					minusZaikoList.add(mz);
+				}
+			});
+		});
+		if (!minusZaikoList.isEmpty()) {
+			throw new MinusZaikoException(minusZaikoList);
+		}
 	}
 
 	/**
