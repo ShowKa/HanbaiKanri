@@ -54,6 +54,9 @@ public abstract class DomainBuilderBase<T extends DomainBase, S extends DomainBu
 		}
 
 		T domain = createDomainObject();
+		if (domain.getRecordId() == null) {
+			domain.setRecordId("");
+		}
 		domain.validate();
 		return domain;
 	}
