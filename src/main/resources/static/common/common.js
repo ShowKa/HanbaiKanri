@@ -115,7 +115,6 @@ _.crud = function(param) {
 		},
 		error : function(data, status, xhr) {
 			if (data.status === 400) {
-				console.log(data);
 				_.showErroeMessage(data.responseJSON.message);
 				return;
 			} else if (data.status === 409) {
@@ -148,9 +147,9 @@ _.submitForm = function(url, formId) {
 _.showErroeMessage = function(message) {
 	var $message = $("#errorMessage");
 	if ($message.length > 0) {
-		$message.text(message).show();
+		$message.html(message).show();
 	} else {
-		var $new = $("<div>").attr("id", "errorMessage").addClass('alert alert-danger').text(message);
+		var $new = $("<div>").attr("id", "errorMessage").addClass('alert alert-danger').html(message);
 		$("#message-container").append($new);
 	}
 }
@@ -164,9 +163,9 @@ _.showErroeMessage = function(message) {
 _.showSuccessMessage = function(message) {
 	var $message = $("#successMessage");
 	if ($message.length > 0) {
-		$message.text(message).show();
+		$message.html(message).show();
 	} else {
-		var $new = $("<div>").attr("id", "successMessage").addClass('alert alert-success').text(message);
+		var $new = $("<div>").attr("id", "successMessage").addClass('alert alert-success').html(message);
 		$("#message-container").append($new);
 	}
 }

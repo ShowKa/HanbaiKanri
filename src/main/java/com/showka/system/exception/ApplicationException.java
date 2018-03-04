@@ -17,7 +17,7 @@ public abstract class ApplicationException extends RuntimeException {
 	/**
 	 * メッセージ.
 	 */
-	private String message;
+	protected String message;
 
 	/**
 	 * コンストラクタ.
@@ -37,5 +37,14 @@ public abstract class ApplicationException extends RuntimeException {
 	@Override
 	public String getMessage() {
 		return this.message;
+	}
+
+	/**
+	 * メッセージ取得.
+	 * 
+	 * @return メッセージ
+	 */
+	public String getMessageAsHtml() {
+		return this.message.replaceAll("\r\n|\n|\r", "<br>");
 	}
 }
