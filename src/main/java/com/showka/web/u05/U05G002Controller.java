@@ -33,8 +33,8 @@ import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
+import com.showka.service.specification.u11.UriageShohinIdoSpecification;
 import com.showka.service.specification.u11.UriageShohinIdoSpecificationFactory;
-import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.MinusZaikoException;
@@ -194,7 +194,7 @@ public class U05G002Controller extends ControllerBase {
 		uriageValidateService.validate(uriage);
 
 		// 商品移動
-		ShohinIdoSpecification specification = uriageShohinIdoSpecificationFactory.create(uriage);
+		UriageShohinIdoSpecification specification = uriageShohinIdoSpecificationFactory.create(uriage);
 		try {
 			shohinIdoCrudService.shohinIdo(specification);
 		} catch (MinusZaikoException e) {
@@ -222,10 +222,8 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai()
-				.stream()
-				.filter(m -> m.getMeisaiNumber() == null)
-				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+				m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);

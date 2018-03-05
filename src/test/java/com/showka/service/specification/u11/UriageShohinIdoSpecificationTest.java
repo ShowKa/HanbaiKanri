@@ -11,6 +11,7 @@ import com.showka.domain.Kokyaku;
 import com.showka.domain.Shohin;
 import com.showka.domain.ShohinIdo;
 import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.ShohinZaiko;
 import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.builder.UriageBuilder;
@@ -21,11 +22,13 @@ import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.system.EmptyProxy;
+import com.showka.system.exception.MinusZaikoException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 
@@ -65,7 +68,33 @@ public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
 				.withRecordId("KK01-00001-2");
 		uriageMeisai02 = b.build();
 	}
-
+	/** 売上明細03. */
+	public static final UriageMeisai uriageMeisai03;
+	static {
+		Shohin shohin = EmptyProxy.domain(Shohin.class);
+		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
+		b.withMeisaiNumber(3)
+				.withShohinDomain(shohin)
+				.withHanbaiNumber(6)
+				.withHanbaiTanka(BigDecimal.valueOf(1001))
+				.withRecordId("KK01-00001-2");
+		uriageMeisai03 = b.build();
+	}
+	/** 売上00. */
+	public static final Uriage uriage00;
+	static {
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
+		uriage00 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
+				.withDenpyoNumber("00001")
+				.withUriageDate(new TheDate(2017, 8, 20))
+				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withHanbaiKubun(HanbaiKubun.現金)
+				.withShohizeiritsu(new TaxRate(0.08))
+				.withUriageMeisai(meisai)
+				.withRecordId("KK01-00001")
+				.build();
+	}
 	/** 売上01. */
 	public static final Uriage uriage01;
 	static {
@@ -74,6 +103,22 @@ public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
 		meisai.add(uriageMeisai01);
 		meisai.add(uriageMeisai02);
 		uriage01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
+				.withDenpyoNumber("00001")
+				.withUriageDate(new TheDate(2017, 8, 20))
+				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withHanbaiKubun(HanbaiKubun.現金)
+				.withShohizeiritsu(new TaxRate(0.08))
+				.withUriageMeisai(meisai)
+				.withRecordId("KK01-00001")
+				.build();
+	}
+	/** 売上02. */
+	public static final Uriage uriage02;
+	static {
+		UriageBuilder b = new UriageBuilder();
+		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
+		meisai.add(uriageMeisai03);
+		uriage02 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
 				.withUriageDate(new TheDate(2017, 8, 20))
 				.withKeijoDate(new TheDate(2017, 8, 20))
@@ -146,4 +191,65 @@ public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
 		assertEquals(ShohinIdoKubun.売上訂正, ido.getKubun());
 	}
 
+	@Test
+	public void test03_ascertainSatisfaction() throws Exception {
+		// expect
+		new Expectations() {
+			{
+				uriageCrudService.exsists((TUriagePK) any);
+				result = false;
+			}
+		};
+		// do
+		shohinIdoSpecificationImpl.setUriage(uriage00);
+		shohinIdoSpecificationImpl.ascertainSatisfaction();
+		// check
+		assertTrue(true);
+		// verify
+		new Verifications() {
+			{
+				uriageCrudService.exsists((TUriagePK) any);
+				times = 1;
+			}
+		};
+	}
+
+	@Test
+	public void test04_ascertainSatisfaction(@Mocked ShohinZaiko zaiko) throws Exception {
+		// expect
+		new Expectations() {
+			{
+				uriageCrudService.exsists((TUriagePK) any);
+				result = false;
+				zaiko.getNumber();
+				result = 6;
+			}
+		};
+		// do
+		shohinIdoSpecificationImpl.setUriage(uriage02);
+		shohinIdoSpecificationImpl.ascertainSatisfaction();
+		// verify
+		new Verifications() {
+			{
+				uriageCrudService.exsists((TUriagePK) any);
+				times = 1;
+			}
+		};
+	}
+
+	@Test(expected = MinusZaikoException.class)
+	public void test05_ascertainSatisfaction(@Mocked ShohinZaiko zaiko) throws Exception {
+		// expect
+		new Expectations() {
+			{
+				uriageCrudService.exsists((TUriagePK) any);
+				result = false;
+				zaiko.getNumber();
+				result = 5;
+			}
+		};
+		// do
+		shohinIdoSpecificationImpl.setUriage(uriage02);
+		shohinIdoSpecificationImpl.ascertainSatisfaction();
+	}
 }
