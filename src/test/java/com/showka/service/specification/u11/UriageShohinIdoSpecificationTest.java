@@ -94,6 +94,7 @@ public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
 			}
 		};
 		// do
+		shohinIdoSpecificationImpl.setUriage(uriage01);
 		List<ShohinIdo> actual = shohinIdoSpecificationImpl.getShohinIdo();
 		// verify
 		new Verifications() {
@@ -128,6 +129,7 @@ public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
 			}
 		};
 		// do
+		shohinIdoSpecificationImpl.setUriage(uriage01);
 		List<ShohinIdo> actual = shohinIdoSpecificationImpl.getShohinIdo();
 		// verify
 		new Verifications() {

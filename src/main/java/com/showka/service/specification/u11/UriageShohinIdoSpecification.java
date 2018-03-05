@@ -18,6 +18,7 @@ import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.ShohinIdoKubun;
+import com.showka.service.crud.u05.UriageCrudServiceImpl;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
@@ -28,17 +29,18 @@ import com.showka.system.exception.ValidateException;
 import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
  * 売上商品移動.
  * 
  */
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
 
 	@Autowired
-	private UriageCrudService uriageCrudService;
+	private UriageCrudService uriageCrudService = new UriageCrudServiceImpl();
 
 	@Autowired
 	private ShohinZaikoCrudService shohinZaikoCrudService;
