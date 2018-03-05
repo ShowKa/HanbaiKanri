@@ -261,32 +261,90 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		});
 	}
 
+	/**
+	 * 商品移動仕様による商品移動.
+	 *
+	 * <pre>
+	 * 入力：商品移動仕様 <br>
+	 * 条件：エラーなし <br>
+	 * 結果：登録成功
+	 * 
+	 * <pre>
+	 */
 	@Test
 	public void test07_ShohinIdo(@Mocked ShohinIdoSpecification specification) throws Exception {
+		// table
 		super.deleteAll(T_SHOHIN_IDO);
+		// data
 		ShohinIdo shohinIdo = ido01.build();
+		// expect
 		new Expectations() {
 			{
 				specification.getShohinIdo();
 				result = shohinIdo;
 			}
 		};
+		// do
 		service.shohinIdo(specification);
-		assertTrue(true);
+		// check
+		TShohinIdo actual = repo.getOne(shohinIdo.getRecordId());
+		assertNotNull(actual);
 	}
 
-	@Test
+	/**
+	 * 商品移動仕様による商品移動.
+	 *
+	 * <pre>
+	 * 入力：商品移動仕様 <br>
+	 * 条件：エラーあり <br>
+	 * 結果：登録失敗
+	 * 
+	 * <pre>
+	 */
+	@Test(expected = MinusZaikoException.class)
 	public void test08_ShohinIdo(@Mocked ShohinIdoSpecification specification) throws Exception {
+		// table
 		super.deleteAll(T_SHOHIN_IDO);
+		// data
+		List<MinusZaiko> mze = new ArrayList<MinusZaiko>();
+		// expect
 		new Expectations() {
 			{
 				specification.ascertainSatisfaction();
-				List<MinusZaiko> mze;
 				result = new MinusZaikoException(mze);
 			}
 		};
+		// do
 		service.shohinIdo(specification);
-		assertTrue(true);
 	}
 
+	/**
+	 * 商品移動仕様による商品移動（強制登録）.
+	 *
+	 * <pre>
+	 * 入力：商品移動仕様 <br>
+	 * 条件：エラーなし <br>
+	 * 結果：登録成功
+	 * 
+	 * <pre>
+	 */
+	@Test
+	public void test09_ShohinIdo(@Mocked ShohinIdoSpecification specification) throws Exception {
+		// table
+		super.deleteAll(T_SHOHIN_IDO);
+		// data
+		ShohinIdo shohinIdo = ido01.build();
+		// expect
+		new Expectations() {
+			{
+				specification.getShohinIdo();
+				result = shohinIdo;
+			}
+		};
+		// do
+		service.shohinIdoForcibly(specification);
+		// check
+		TShohinIdo actual = repo.getOne(shohinIdo.getRecordId());
+		assertNotNull(actual);
+	}
 }
