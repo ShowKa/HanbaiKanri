@@ -33,8 +33,8 @@ import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
-import com.showka.service.specification.u11.UriageShohinIdoSpecification;
-import com.showka.service.specification.u11.UriageShohinIdoSpecificationFactory;
+import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
+import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.MinusZaikoException;
@@ -77,7 +77,7 @@ public class U05G002Controller extends ControllerBase {
 	private ShohinIdoCrudService shohinIdoCrudService;
 
 	@Autowired
-	private UriageShohinIdoSpecificationFactory uriageShohinIdoSpecificationFactory;
+	private ShohinIdoSpecificationFactory shohinIdoSpecificationFactory;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -194,7 +194,7 @@ public class U05G002Controller extends ControllerBase {
 		uriageValidateService.validate(uriage);
 
 		// 商品移動
-		UriageShohinIdoSpecification specification = uriageShohinIdoSpecificationFactory.create(uriage);
+		ShohinIdoSpecificationAssociatedWithUriage specification = shohinIdoSpecificationFactory.create(uriage);
 		try {
 			shohinIdoCrudService.shohinIdo(specification);
 		} catch (MinusZaikoException e) {

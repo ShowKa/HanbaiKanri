@@ -32,10 +32,10 @@ import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class UriageShohinIdoSpecificationTest extends SimpleTestCase {
+public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCase {
 
 	@Tested
-	private UriageShohinIdoSpecification shohinIdoSpecificationImpl;
+	private ShohinIdoSpecificationAssociatedWithUriage shohinIdoSpecificationImpl;
 
 	@Injectable
 	private UriageCrudService uriageCrudService;

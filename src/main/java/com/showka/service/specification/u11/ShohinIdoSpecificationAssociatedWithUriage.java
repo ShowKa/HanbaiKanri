@@ -37,7 +37,7 @@ import lombok.NoArgsConstructor;
  * 
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UriageShohinIdoSpecification implements ShohinIdoSpecification {
+public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpecification {
 
 	@Autowired
 	private UriageCrudService uriageCrudService = new UriageCrudServiceImpl();

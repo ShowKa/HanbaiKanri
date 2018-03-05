@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.showka.domain.Uriage;
 
 @Component
-public class UriageShohinIdoSpecificationFactory {
+public class ShohinIdoSpecificationFactory {
 
 	@Autowired
 	private AutowireCapableBeanFactory beanFactory;
@@ -18,8 +18,8 @@ public class UriageShohinIdoSpecificationFactory {
 	 * @param uriage
 	 * @return
 	 */
-	public UriageShohinIdoSpecification create(Uriage uriage) {
-		UriageShohinIdoSpecification object = new UriageShohinIdoSpecification();
+	public ShohinIdoSpecificationAssociatedWithUriage create(Uriage uriage) {
+		ShohinIdoSpecificationAssociatedWithUriage object = new ShohinIdoSpecificationAssociatedWithUriage();
 		beanFactory.autowireBean(object);
 		object.setUriage(uriage);
 		return object;
