@@ -1,14 +1,14 @@
 package com.showka.service.crud.u11.i;
 
-import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
+import com.showka.domain.Uriage;
 
 public interface ShohinIdoUriageCrudService {
 
 	/**
 	 * 保存.
 	 * 
-	 * @param specification
-	 *            売上に伴う商品移動の仕様.
+	 * @param uriage
+	 *            売上
 	 */
-	public void save(ShohinIdoSpecificationAssociatedWithUriage specification);
+	public void save(Uriage uriage);
 }
