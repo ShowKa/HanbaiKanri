@@ -19,10 +19,10 @@ import lombok.Setter;
  * 商品移動売上.
  */
 @Entity
-@Table(name = "t_shohin_ido_uriage")
+@Table(name = "j_shohin_ido_uriage")
 @Getter
 @Setter
-public class TShohinIdoUriage extends EntityBase implements Serializable {
+public class JShohinIdoUriage extends EntityBase implements Serializable {
 
 	/**
 	 * SID.
