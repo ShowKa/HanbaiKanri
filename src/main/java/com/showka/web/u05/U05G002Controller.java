@@ -30,14 +30,12 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
-import com.showka.service.crud.u11.i.ShohinIdoCrudService;
+import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
-import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
 import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
-import com.showka.system.exception.MinusZaikoException;
 import com.showka.system.exception.NotExistException;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -74,7 +72,7 @@ public class U05G002Controller extends ControllerBase {
 	private UriageRirekiCrudService uriageRirekiCrudService;
 
 	@Autowired
-	private ShohinIdoCrudService shohinIdoCrudService;
+	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
 
 	@Autowired
 	private ShohinIdoSpecificationFactory shohinIdoSpecificationFactory;
@@ -193,17 +191,11 @@ public class U05G002Controller extends ControllerBase {
 		uriageValidateService.validateForRegister(uriage);
 		uriageValidateService.validate(uriage);
 
-		// 商品移動
-		ShohinIdoSpecificationAssociatedWithUriage specification = shohinIdoSpecificationFactory.create(uriage);
-		try {
-			shohinIdoCrudService.shohinIdo(specification);
-		} catch (MinusZaikoException e) {
-			form.setWarningMessage(e.getMessageAsHtml());
-			shohinIdoCrudService.shohinIdoForcibly(specification);
-		}
-
 		// save
 		uriageCrudService.save(uriage);
+
+		// 商品移動
+		shohinIdoUriageCrudService.save(uriage);
 
 		// jump refer
 		form.setSuccessMessage("登録成功");
@@ -234,6 +226,9 @@ public class U05G002Controller extends ControllerBase {
 
 		// save
 		uriageCrudService.save(uriage);
+
+		// 商品移動
+		shohinIdoUriageCrudService.save(uriage);
 
 		// message
 		form.setSuccessMessage("更新成功");

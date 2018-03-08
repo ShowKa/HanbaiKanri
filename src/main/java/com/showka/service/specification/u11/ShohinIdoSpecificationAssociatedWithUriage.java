@@ -2,6 +2,7 @@ package com.showka.service.specification.u11;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -16,10 +17,8 @@ import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
-import com.showka.entity.TUriagePK;
 import com.showka.kubun.ShohinIdoKubun;
-import com.showka.service.crud.u05.UriageCrudServiceImpl;
-import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.MinusZaikoException;
@@ -40,7 +39,7 @@ import lombok.NoArgsConstructor;
 public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpecification {
 
 	@Autowired
-	private UriageCrudService uriageCrudService = new UriageCrudServiceImpl();
+	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
 
 	@Autowired
 	private ShohinZaikoCrudService shohinZaikoCrudService;
@@ -50,16 +49,38 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	 */
 	private List<ShohinIdo> shohinIdo;
 
+	/**
+	 * 売上設定.
+	 * 
+	 * @param uriage
+	 *            売上
+	 */
 	protected void setUriage(Uriage uriage) {
 		// 売上による商品移動
 		List<ShohinIdo> shohinIdo = new ArrayList<ShohinIdo>();
-		shohinIdo.add(buildShohinIdoFromUriageDomain(uriage, false));
+		shohinIdo.add(buildShohinIdoFromUriageDomain(uriage));
 		// 売上訂正による商品移動
-		TUriagePK pk = new TUriagePK(uriage.getKokyaku().getRecordId(), uriage.getDenpyoNumber());
-		boolean alredyExists = uriageCrudService.exsists(pk);
-		if (alredyExists) {
-			Uriage past = uriageCrudService.getDomain(pk);
-			shohinIdo.add(buildShohinIdoFromUriageDomain(past, true));
+		Optional<ShohinIdo> pastIdo = shohinIdoUriageCrudService.getNewestShohinIdo(uriage.getRecordId());
+		if (pastIdo.isPresent()) {
+			// get past
+			ShohinIdo p = pastIdo.get();
+			// build 商品移動（売上訂正）
+			ShohinIdoBuilder b = new ShohinIdoBuilder();
+			b.withDate(uriage.getKokyaku().getShukanBusho().getEigyoDate());
+			b.withKubun(ShohinIdoKubun.売上訂正);
+			b.withBusho(p.getBusho());
+			List<ShohinIdoMeisai> meisai = p.getMeisai().stream().map(m -> {
+				ShohinIdoMeisaiBuilder mb = new ShohinIdoMeisaiBuilder();
+				mb.withMeisaiNumber(m.getMeisaiNumber());
+				mb.withNumber(m.getNumber());
+				mb.withShohinDomain(m.getShohinDomain());
+				return mb.build();
+			}).collect(Collectors.toList());
+			b.withMeisai(meisai);
+			b.withTimestamp(new TheTimestamp());
+			ShohinIdo si = b.build();
+			// add
+			shohinIdo.add(si);
 		}
 		this.shohinIdo = shohinIdo;
 	}
@@ -115,7 +136,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	 *            売上訂正による商品移動にしたい場合はtrue
 	 * @return 商品移動
 	 */
-	private ShohinIdo buildShohinIdoFromUriageDomain(Uriage uriage, boolean teisei) {
+	private ShohinIdo buildShohinIdoFromUriageDomain(Uriage uriage) {
 		// 売上明細
 		List<UriageMeisai> meisaiList = uriage.getUriageMeisai();
 		// 商品移動明細
@@ -131,8 +152,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withBusho(uriage.getKokyaku().getShukanBusho());
 		b.withDate(uriage.getKokyaku().getShukanBusho().getEigyoDate());
-		ShohinIdoKubun _kubun = teisei ? ShohinIdoKubun.売上訂正 : ShohinIdoKubun.売上;
-		b.withKubun(_kubun);
+		b.withKubun(ShohinIdoKubun.売上);
 		b.withMeisai(shohinIdoMeisaiList);
 		b.withTimestamp(new TheTimestamp());
 		return b.build();
