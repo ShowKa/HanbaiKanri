@@ -1,8 +1,11 @@
 package com.showka.service.specification.u11;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -26,7 +29,6 @@ import com.showka.system.exception.MinusZaikoException.MinusZaiko;
 import com.showka.system.exception.UnsatisfiedSpecificationException;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;
 
 import lombok.AccessLevel;
@@ -56,12 +58,18 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	private List<ShohinIdo> shohinIdoForDelete = new ArrayList<ShohinIdo>();
 
 	/**
+	 * 部署.
+	 */
+	private Busho busho;
+
+	/**
 	 * 売上設定.
 	 * 
 	 * @param uriage
 	 *            売上
 	 */
 	protected void setUriage(Uriage uriage) {
+		this.busho = uriage.getKokyaku().getShukanBusho();
 		// 売上による商品移動
 		this.shohinIdo.add(buildShohinIdoFromUriageDomain(uriage));
 		// 売上訂正による商品移動
@@ -116,25 +124,27 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	}
 
 	/**
-	 * マイナス在庫になる場合エラー.
+	 * 仕様を満たすか検証.
+	 * 
+	 * <pre>
+	 * マイナス在庫になる場合エラー
+	 * </pre>
 	 * 
 	 * @throws ValidateException
 	 */
 	@Override
 	public void ascertainSatisfaction() throws UnsatisfiedSpecificationException {
 		List<MinusZaiko> minusZaikoList = new ArrayList<MinusZaiko>();
-		shohinIdo.forEach(ido -> {
-			Busho busho = ido.getBusho();
-			TheDate date = ido.getDate();
-			ido.getMeisai().forEach(m -> {
-				Shohin shohin = m.getShohinDomain();
-				ShohinZaiko zaiko = shohinZaikoCrudService.getShohinZaiko(busho, date, shohin);
-				int rest = zaiko.getNumber() - m.getNumber();
-				if (rest < 0) {
-					MinusZaiko mz = new MinusZaiko(shohin, zaiko.getNumber(), rest);
-					minusZaikoList.add(mz);
-				}
-			});
+		Map<Shohin, Integer> shohinIdoNumberMap = new HashMap<Shohin, Integer>();
+		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdo, false);
+		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdoForDelete, true);
+		shohinIdoNumberMap.forEach((s, n) -> {
+			ShohinZaiko zaiko = shohinZaikoCrudService.getShohinZaiko(this.busho, this.busho.getEigyoDate(), s);
+			Integer present = zaiko.getNumber();
+			Integer after = present - n;
+			if (after < 0) {
+				minusZaikoList.add(new MinusZaiko(s, present, after));
+			}
 		});
 		if (!minusZaikoList.isEmpty()) {
 			throw new MinusZaikoException(minusZaikoList);
@@ -170,5 +180,35 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		b.withMeisai(shohinIdoMeisaiList);
 		b.withTimestamp(new TheTimestamp());
 		return b.build();
+	}
+
+	/**
+	 * 商品移動数をマップにまとめます.
+	 * 
+	 * @param shohinIdoNumberMap
+	 *            商品移動数のマップ（更新されます）
+	 * @param _shohinIdo
+	 *            商品移動
+	 * @param forDelete
+	 *            商品移動が削除対象の場合true
+	 */
+	private void putShohiIdoNumber(Map<Shohin, Integer> shohinIdoNumberMap, List<ShohinIdo> _shohinIdo,
+			boolean forDelete) {
+		// 削除対象の場合、移動数の正負符号を反転させる。
+		int sign = forDelete ? -1 : 1;
+		_shohinIdo.forEach(ido -> {
+			Set<Shohin> shohinSet = ido.getShohinSet();
+			shohinSet.forEach(s -> {
+				int absoluteIdoNumber = ido.getAbusoluteIdoNumberForBushoZaiko(s) * sign;
+				int number;
+				if (shohinIdoNumberMap.containsKey(s)) {
+					Integer present = shohinIdoNumberMap.get(s);
+					number = present + absoluteIdoNumber;
+				} else {
+					number = absoluteIdoNumber;
+				}
+				shohinIdoNumberMap.put(s, number);
+			});
+		});
 	}
 }
