@@ -14,9 +14,16 @@ public interface ShohinIdoSpecification {
 	/**
 	 * 商品移動取得.
 	 * 
-	 * @return
+	 * @return 商品移動のリスト
 	 */
 	public List<ShohinIdo> getShohinIdo();
+
+	/**
+	 * 削除対象商品移動取得.
+	 * 
+	 * @return 削除対象の商品移動のリスト
+	 */
+	public List<ShohinIdo> getShohinIdoForDelete();
 
 	/**
 	 * 業務ルールに則っているか否かを検証する.

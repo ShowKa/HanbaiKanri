@@ -22,7 +22,7 @@ import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
 public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudService {
 
 	@Autowired
-	private JShohinIdoUriageRepository jShohinIdoUriageRepository;
+	private JShohinIdoUriageRepository repo;
 
 	@Autowired
 	private ShohinIdoSpecificationFactory shohinIdoSpecificationFactory;
@@ -32,8 +32,14 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 
 	@Override
 	public void save(Uriage uriage) {
-		// 商品移動
+		// 商品移動仕様
 		ShohinIdoSpecificationAssociatedWithUriage specification = shohinIdoSpecificationFactory.create(uriage);
+		// 削除対象のレコードを削除
+		List<ShohinIdo> shohinIdoForDelete = specification.getShohinIdoForDelete();
+		shohinIdoForDelete.forEach(d -> {
+			repo.deleteById(d.getRecordId());
+		});
+		// 商品移動
 		shohinIdoCrudService.shohinIdo(specification);
 		// 商品移動売上
 		List<ShohinIdo> shohinIdo = specification.getShohinIdo();
@@ -43,7 +49,7 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 			e.setShohinIdoId(si.getRecordId());
 			e.setUriageId(uriage.getRecordId());
 			e.setRecordId(UUID.randomUUID().toString());
-			jShohinIdoUriageRepository.save(e);
+			repo.save(e);
 		});
 	}
 
@@ -52,7 +58,7 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 		JShohinIdoUriage e = new JShohinIdoUriage();
 		e.setUriageId(uriageId);
 		Example<JShohinIdoUriage> example = Example.of(e);
-		List<JShohinIdoUriage> results = jShohinIdoUriageRepository.findAll(example);
+		List<JShohinIdoUriage> results = repo.findAll(example);
 		if (results.isEmpty()) {
 			return Optional.empty();
 		}
