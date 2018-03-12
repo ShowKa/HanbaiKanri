@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.ShohinIdo;
 import com.showka.domain.Uriage;
 import com.showka.entity.JShohinIdoUriage;
+import com.showka.entity.TUriagePK;
 import com.showka.repository.i.JShohinIdoUriageRepository;
+import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
@@ -29,6 +31,9 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 
 	@Autowired
 	private ShohinIdoCrudService shohinIdoCrudService;
+
+	@Autowired
+	private UriageCrudService uriageCrudService;
 
 	@Override
 	public void save(Uriage uriage) {
@@ -69,5 +74,20 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 		});
 		ShohinIdo shohinIdo = shohinIdoCrudService.getDomain(newest.get().getShohinIdoId());
 		return Optional.of(shohinIdo);
+	}
+
+	@Override
+	public void delete(TUriagePK pk) {
+		// find records
+		String id = uriageCrudService.getDomain(pk).getRecordId();
+		JShohinIdoUriage e = new JShohinIdoUriage();
+		e.setRecordId(id);
+		Example<JShohinIdoUriage> example = Example.of(e);
+		List<JShohinIdoUriage> results = repo.findAll(example);
+		// delete records
+		repo.deleteAll(results);
+		results.forEach(r -> {
+			shohinIdoCrudService.deleteForcibly(r.getRecordId());
+		});
 	}
 }

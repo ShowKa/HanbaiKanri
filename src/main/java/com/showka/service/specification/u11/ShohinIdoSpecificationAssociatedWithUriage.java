@@ -141,6 +141,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		shohinIdoNumberMap.forEach((s, n) -> {
 			ShohinZaiko zaiko = shohinZaikoCrudService.getShohinZaiko(this.busho, this.busho.getEigyoDate(), s);
 			Integer present = zaiko.getNumber();
+			// FIXME
 			Integer after = present - n;
 			if (after < 0) {
 				minusZaikoList.add(new MinusZaiko(s, present, after));

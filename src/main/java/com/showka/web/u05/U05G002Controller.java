@@ -33,7 +33,6 @@ import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
-import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.NotExistException;
@@ -73,9 +72,6 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
-
-	@Autowired
-	private ShohinIdoSpecificationFactory shohinIdoSpecificationFactory;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -214,8 +210,10 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
-				m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai()
+				.stream()
+				.filter(m -> m.getMeisaiNumber() == null)
+				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -254,6 +252,9 @@ public class U05G002Controller extends ControllerBase {
 
 		// validate
 		uriageValidateService.validateForDelete(pk);
+
+		// delete 商品移動
+		shohinIdoUriageCrudService.delete(pk);
 
 		// delete
 		uriageCrudService.delete(pk, form.getVersion());

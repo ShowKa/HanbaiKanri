@@ -145,4 +145,10 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		List<ShohinIdo> idoList = specification.getShohinIdo();
 		idoList.forEach(this::save);
 	}
+
+	@Override
+	public void deleteForcibly(String recordId) {
+		TShohinIdo record = repo.getOne(recordId);
+		this.delete(recordId, record.getVersion());
+	}
 }
