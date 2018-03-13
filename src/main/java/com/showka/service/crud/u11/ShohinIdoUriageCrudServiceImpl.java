@@ -19,6 +19,7 @@ import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
 import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
+import com.showka.value.TheDate;
 
 @Service
 public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudService {
@@ -79,15 +80,20 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 	@Override
 	public void delete(TUriagePK pk) {
 		// find records
-		String id = uriageCrudService.getDomain(pk).getRecordId();
+		Uriage uriage = uriageCrudService.getDomain(pk);
+		String uriageId = uriage.getRecordId();
 		JShohinIdoUriage e = new JShohinIdoUriage();
-		e.setRecordId(id);
+		e.setUriageId(uriageId);
 		Example<JShohinIdoUriage> example = Example.of(e);
-		List<JShohinIdoUriage> results = repo.findAll(example);
-		// delete records
-		repo.deleteAll(results);
-		results.forEach(r -> {
-			shohinIdoCrudService.deleteForcibly(r.getRecordId());
+		List<JShohinIdoUriage> shohinIdoList = repo.findAll(example);
+		shohinIdoList.stream().filter(ido -> {
+			// 営業日の移動のみ抽出
+			TheDate shohinIdoDate = new TheDate(ido.getShohinIdo().getDate());
+			return shohinIdoDate.equals(uriage.getKokyaku().getShukanBusho().getEigyoDate());
+		}).forEach(ido -> {
+			// delete records
+			repo.delete(ido);
+			shohinIdoCrudService.deleteForcibly(ido.getRecordId());
 		});
 	}
 }
