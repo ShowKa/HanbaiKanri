@@ -93,7 +93,7 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 		}).forEach(ido -> {
 			// delete records
 			repo.delete(ido);
-			shohinIdoCrudService.deleteForcibly(ido.getRecordId());
+			shohinIdoCrudService.deleteForcibly(ido.getShohinIdoId());
 		});
 	}
 }
