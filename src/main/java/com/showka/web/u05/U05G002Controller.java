@@ -210,10 +210,8 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai()
-				.stream()
-				.filter(m -> m.getMeisaiNumber() == null)
-				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+				m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -366,6 +364,8 @@ public class U05G002Controller extends ControllerBase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
+		// delete 商品移動
+		shohinIdoUriageCrudService.delete(pk);
 		// cancel
 		uriageValidateService.validateForCancel(pk);
 		uriageCrudService.cancel(pk, form.getVersion());
