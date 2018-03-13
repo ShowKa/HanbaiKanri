@@ -3,6 +3,7 @@ package com.showka.service.specification.u11;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.MinusZaikoException;
@@ -42,6 +44,9 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 
 	@Injectable
 	private ShohinZaikoCrudService shohinZaikoCrudService;
+
+	@Injectable
+	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
 
 	/** 売上明細01. */
 	public static final UriageMeisai uriageMeisai01;
@@ -130,12 +135,12 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 	}
 
 	@Test
-	public void test01_BuildShohinIdo() throws Exception {
+	public void test01_setUriage() throws Exception {
 		// expect
 		new Expectations() {
 			{
-				uriageCrudService.exsists((TUriagePK) any);
-				result = false;
+				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
+				result = Optional.empty();
 			}
 		};
 		// do
@@ -144,7 +149,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		// verify
 		new Verifications() {
 			{
-				uriageCrudService.exsists((TUriagePK) any);
+				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
 				times = 1;
 			}
 		};
