@@ -141,8 +141,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		shohinIdoNumberMap.forEach((s, n) -> {
 			ShohinZaiko zaiko = shohinZaikoCrudService.getShohinZaiko(this.busho, this.busho.getEigyoDate(), s);
 			Integer present = zaiko.getNumber();
-			// FIXME
-			Integer after = present - n;
+			Integer after = present + n;
 			if (after < 0) {
 				minusZaikoList.add(new MinusZaiko(s, present, after));
 			}
@@ -187,7 +186,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	 * 商品移動数をマップにまとめます.
 	 * 
 	 * @param shohinIdoNumberMap
-	 *            商品移動数のマップ（更新されます）
+	 *            商品移動数のマップ（更新されます）。部署在庫が増える場合は正の数が加算されます。
 	 * @param _shohinIdo
 	 *            商品移動
 	 * @param forDelete
