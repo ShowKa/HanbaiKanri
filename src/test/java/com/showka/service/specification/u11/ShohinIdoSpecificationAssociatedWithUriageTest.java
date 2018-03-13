@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
+import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Shohin;
 import com.showka.domain.ShohinIdo;
@@ -15,6 +16,7 @@ import com.showka.domain.ShohinIdoMeisai;
 import com.showka.domain.ShohinZaiko;
 import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
+import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.TUriagePK;
@@ -25,6 +27,7 @@ import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.MinusZaikoException;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -134,13 +137,22 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 				.build();
 	}
 
+	/**
+	 * 売上設定.
+	 *
+	 * <pre>
+	 * 入力：売上<br>
+	 * 条件：売上訂正ではない <br>
+	 * 結果：売上による商品移動が生成される
+	 * 
+	 * <pre>
+	 */
 	@Test
 	public void test01_setUriage() throws Exception {
 		// expect
 		new Expectations() {
 			{
 				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
-				result = Optional.empty();
 			}
 		};
 		// do
@@ -167,26 +179,42 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		});
 	}
 
+	/**
+	 * 売上設定.
+	 *
+	 * <pre>
+	 * 入力：売上<br>
+	 * 条件：前日の売上の訂正を伴う <br>
+	 * 結果：売上による商品移動、および訂正伝票が生成される
+	 * 
+	 * <pre>
+	 */
 	@Test
-	public void test02_BuildShohinIdo() throws Exception {
+	public void test02_setUriage(@Injectable Kokyaku kokyaku, @Injectable Busho busho) throws Exception {
+		// data 売上
+		Uriage _uriage01 = new UriageBuilder().withKokyaku(kokyaku).apply(uriage01);
+		// data 過去商品移動
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
+		b.withDate(new TheDate(2017, 9, 20));
+		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
+		b.withMeisai(meisai);
+		ShohinIdo shohinIdo01 = b.build();
 		// expect
 		new Expectations() {
 			{
-				uriageCrudService.exsists((TUriagePK) any);
-				result = true;
-				uriageCrudService.getDomain((TUriagePK) any);
-				result = uriage01;
+				busho.getEigyoDate();
+				result = new EigyoDate(2017, 8, 20);
+				shohinIdoUriageCrudService.getNewestShohinIdo(_uriage01.getRecordId());
+				result = Optional.of(shohinIdo01);
 			}
 		};
 		// do
-		shohinIdoSpecificationImpl.setUriage(uriage01);
+		shohinIdoSpecificationImpl.setUriage(_uriage01);
 		List<ShohinIdo> actual = shohinIdoSpecificationImpl.getShohinIdo();
 		// verify
 		new Verifications() {
 			{
-				uriageCrudService.exsists((TUriagePK) any);
-				times = 1;
-				uriageCrudService.getDomain((TUriagePK) any);
+				shohinIdoUriageCrudService.getNewestShohinIdo(_uriage01.getRecordId());
 				times = 1;
 			}
 		};
