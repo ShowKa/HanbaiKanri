@@ -1,6 +1,5 @@
 package com.showka.service.specification.u11;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,9 +20,9 @@ import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.ShohinBuilder;
 import com.showka.domain.builder.ShohinIdoBuilder;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
-import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
@@ -31,7 +30,6 @@ import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.value.EigyoDate;
-import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
 import mockit.Expectations;
@@ -53,92 +51,6 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 	@Injectable
 	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
 
-	/** 売上明細01. */
-	public static final UriageMeisai uriageMeisai01;
-	static {
-		Shohin shohin = EmptyProxy.domain(Shohin.class);
-		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
-		b.withMeisaiNumber(1)
-				.withShohinDomain(shohin)
-				.withHanbaiNumber(5)
-				.withHanbaiTanka(BigDecimal.valueOf(1000))
-				.withRecordId("KK01-00001-1");
-		uriageMeisai01 = b.build();
-	}
-
-	/** 売上明細02. */
-	public static final UriageMeisai uriageMeisai02;
-	static {
-		Shohin shohin = EmptyProxy.domain(Shohin.class);
-		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
-		b.withMeisaiNumber(2)
-				.withShohinDomain(shohin)
-				.withHanbaiNumber(6)
-				.withHanbaiTanka(BigDecimal.valueOf(1001))
-				.withRecordId("KK01-00001-2");
-		uriageMeisai02 = b.build();
-	}
-	/** 売上明細03. */
-	public static final UriageMeisai uriageMeisai03;
-	static {
-		Shohin shohin = EmptyProxy.domain(Shohin.class);
-		UriageMeisaiBuilder b = new UriageMeisaiBuilder();
-		b.withMeisaiNumber(3)
-				.withShohinDomain(shohin)
-				.withHanbaiNumber(6)
-				.withHanbaiTanka(BigDecimal.valueOf(1001))
-				.withRecordId("KK01-00001-2");
-		uriageMeisai03 = b.build();
-	}
-	/** 売上00. */
-	public static final Uriage uriage00;
-	static {
-		UriageBuilder b = new UriageBuilder();
-		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
-		uriage00 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
-				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
-				.withHanbaiKubun(HanbaiKubun.現金)
-				.withShohizeiritsu(new TaxRate(0.08))
-				.withUriageMeisai(meisai)
-				.withRecordId("KK01-00001")
-				.build();
-	}
-	/** 売上01. */
-	public static final Uriage uriage01;
-	static {
-		UriageBuilder b = new UriageBuilder();
-		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
-		meisai.add(uriageMeisai01);
-		meisai.add(uriageMeisai02);
-		uriage01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
-				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
-				.withHanbaiKubun(HanbaiKubun.現金)
-				.withShohizeiritsu(new TaxRate(0.08))
-				.withUriageMeisai(meisai)
-				.withRecordId("KK01-00001")
-				.build();
-	}
-	/** 売上02. */
-	public static final Uriage uriage02;
-	static {
-		UriageBuilder b = new UriageBuilder();
-		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
-		meisai.add(uriageMeisai03);
-		uriage02 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
-				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
-				.withHanbaiKubun(HanbaiKubun.現金)
-				.withShohizeiritsu(new TaxRate(0.08))
-				.withUriageMeisai(meisai)
-				.withRecordId("KK01-00001")
-				.build();
-	}
-
 	/**
 	 * 売上設定.
 	 *
@@ -151,6 +63,30 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 	 */
 	@Test
 	public void test01_setUriage() throws Exception {
+		// input
+		// 商品
+		ShohinBuilder sb = new ShohinBuilder();
+		Shohin shohin = sb.build();
+		// 明細
+		ArrayList<UriageMeisai> _meisai = new ArrayList<UriageMeisai>();
+		// 明細01
+		UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
+		mb.withMeisaiNumber(1);
+		mb.withShohinDomain(shohin);
+		mb.withHanbaiNumber(5);
+		mb.withRecordId("KK01-00001-1");
+		UriageMeisai uriageMeisai01 = mb.build();
+		_meisai.add(uriageMeisai01);
+		// 明細02
+		_meisai.add(new UriageMeisaiBuilder().build());
+		// 売上
+		UriageBuilder b = new UriageBuilder();
+		b.withKokyaku(EmptyProxy.domain(Kokyaku.class));
+		b.withDenpyoNumber("00001");
+		b.withKeijoDate(new TheDate(2017, 8, 20));
+		b.withUriageMeisai(_meisai);
+		b.withRecordId("KK01-00001");
+		Uriage uriage01 = b.build();
 		// expect
 		new Expectations() {
 			{
@@ -193,30 +129,54 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 	 */
 	@Test
 	public void test02_setUriage(@Injectable Kokyaku kokyaku, @Injectable Busho busho) throws Exception {
-		// data 売上
-		Uriage _uriage01 = new UriageBuilder().withKokyaku(kokyaku).apply(uriage01);
-		// data 過去商品移動
-		ShohinIdoBuilder b = new ShohinIdoBuilder();
-		b.withDate(new TheDate(2017, 9, 20));
+		// input
+		// 商品
+		ShohinBuilder sb = new ShohinBuilder();
+		Shohin shohin = sb.build();
+		// 明細
+		ArrayList<UriageMeisai> _meisai = new ArrayList<UriageMeisai>();
+		// 明細01
+		UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
+		mb.withMeisaiNumber(1);
+		mb.withShohinDomain(shohin);
+		mb.withHanbaiNumber(5);
+		mb.withRecordId("KK01-00001-1");
+		UriageMeisai uriageMeisai01 = mb.build();
+		_meisai.add(uriageMeisai01);
+		// 売上
+		UriageBuilder b = new UriageBuilder();
+		b.withKokyaku(kokyaku);
+		b.withDenpyoNumber("00001");
+		b.withKeijoDate(new TheDate(2017, 8, 20));
+		b.withUriageMeisai(_meisai);
+		b.withRecordId("KK01-00001");
+		Uriage uriage01 = b.build();
+		// 過去商品移動明細
 		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
-		b.withMeisai(meisai);
-		ShohinIdo shohinIdo01 = b.build();
+		ShohinIdoMeisaiBuilder simb = new ShohinIdoMeisaiBuilder();
+		simb.withMeisaiNumber(1);
+		meisai.add(simb.build());
+		// 過去商品移動
+		ShohinIdoBuilder sib = new ShohinIdoBuilder();
+		sib.withDate(new TheDate(2017, 8, 19));
+		sib.withMeisai(meisai);
+		ShohinIdo shohinIdo01 = sib.build();
 		// expect
 		new Expectations() {
 			{
 				busho.getEigyoDate();
 				result = new EigyoDate(2017, 8, 20);
-				shohinIdoUriageCrudService.getNewestShohinIdo(_uriage01.getRecordId());
+				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
 				result = Optional.of(shohinIdo01);
 			}
 		};
 		// do
-		shohinIdoSpecificationImpl.setUriage(_uriage01);
+		shohinIdoSpecificationImpl.setUriage(uriage01);
 		List<ShohinIdo> actual = shohinIdoSpecificationImpl.getShohinIdo();
 		// verify
 		new Verifications() {
 			{
-				shohinIdoUriageCrudService.getNewestShohinIdo(_uriage01.getRecordId());
+				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
 				times = 1;
 			}
 		};
@@ -412,5 +372,8 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 				times = 1;
 			}
 		};
+		// check
+		List<ShohinIdo> actual = shohinIdoSpecificationImpl.getShohinIdoForDelete();
+		assertEquals(shohinSet, actual.get(0).getShohinSet());
 	}
 }
