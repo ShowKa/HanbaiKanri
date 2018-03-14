@@ -9,6 +9,10 @@ public class EigyoDate extends TheDate {
 		super();
 	}
 
+	public EigyoDate(TheDate date) {
+		super(date.getDate());
+	}
+
 	public EigyoDate(Calendar calendar) {
 		super(calendar);
 	}
