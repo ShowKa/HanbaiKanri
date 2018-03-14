@@ -22,7 +22,13 @@ public class ShohinIdoMeisai extends DomainBase implements Comparable<ShohinIdoM
 	/** 商品. */
 	private Shohin shohinDomain;
 
-	/** 移動数. */
+	/**
+	 * 移動数.
+	 * 
+	 * <pre>
+	 * 在庫数の増減にかかわらず常に正の数。増減の正負は商品移動ドメインで管理
+	 * </pre>
+	 */
 	private Integer number;
 
 	// public method

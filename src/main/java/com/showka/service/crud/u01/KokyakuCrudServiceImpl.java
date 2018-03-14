@@ -37,6 +37,14 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	@Autowired
 	private BushoCrudService bushoService;
 
+	/**
+	 * 顧客情報を登録する。
+	 * 
+	 * <pre>
+	 * 入金金区分が掛売りの場合は、掛売り情報も合わせて登録する。 現金の場合は、掛売り情報は登録しない。
+	 * 
+	 * <pre>
+	 */
 	@Override
 	public void save(Kokyaku domain) {
 

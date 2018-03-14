@@ -1,6 +1,8 @@
 package com.showka.domain;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.system.exception.SystemException;
@@ -29,6 +31,33 @@ public class ShohinIdo extends DomainBase implements Comparable<ShohinIdo> {
 
 	/** 商品移動明細. */
 	private List<ShohinIdoMeisai> meisai;
+
+	/**
+	 * 移動対象商品セット取得.
+	 * 
+	 * @return 移動対象商品セット
+	 */
+	public Set<Shohin> getShohinSet() {
+		return meisai.stream().map(m -> {
+			return m.getShohinDomain();
+		}).collect(Collectors.toSet());
+	}
+
+	/**
+	 * 対象商品の部署在庫における増加数を取得する。
+	 * 
+	 * @param target
+	 *            対象商品
+	 * @return 増加数（在庫が減る場合はマイナスになる）
+	 */
+	public int getAbusoluteIdoNumberForBushoZaiko(Shohin target) {
+		int sign = this.kubun.increase() ? 1 : -1;
+		return this.meisai.stream().filter(m -> {
+			return m.getShohinDomain().equals(target);
+		}).mapToInt(m -> {
+			return m.getNumber() * sign;
+		}).sum();
+	}
 
 	// public method
 	@Override

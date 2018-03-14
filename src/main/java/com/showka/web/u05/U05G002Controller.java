@@ -30,6 +30,7 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
@@ -68,6 +69,9 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private UriageRirekiCrudService uriageRirekiCrudService;
+
+	@Autowired
+	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -186,6 +190,9 @@ public class U05G002Controller extends ControllerBase {
 		// save
 		uriageCrudService.save(uriage);
 
+		// 商品移動
+		shohinIdoUriageCrudService.save(uriage);
+
 		// jump refer
 		form.setSuccessMessage("登録成功");
 		model.addForm(form);
@@ -216,6 +223,9 @@ public class U05G002Controller extends ControllerBase {
 		// save
 		uriageCrudService.save(uriage);
 
+		// 商品移動
+		shohinIdoUriageCrudService.save(uriage);
+
 		// message
 		form.setSuccessMessage("更新成功");
 
@@ -240,6 +250,9 @@ public class U05G002Controller extends ControllerBase {
 
 		// validate
 		uriageValidateService.validateForDelete(pk);
+
+		// delete 商品移動
+		shohinIdoUriageCrudService.delete(pk);
 
 		// delete
 		uriageCrudService.delete(pk, form.getVersion());
@@ -351,6 +364,8 @@ public class U05G002Controller extends ControllerBase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
+		// delete 商品移動
+		shohinIdoUriageCrudService.delete(pk);
 		// cancel
 		uriageValidateService.validateForCancel(pk);
 		uriageCrudService.cancel(pk, form.getVersion());

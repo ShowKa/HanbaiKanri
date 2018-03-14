@@ -20,7 +20,10 @@ import com.showka.repository.i.TShohinIdoMeisaiRepository;
 import com.showka.repository.i.TShohinIdoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.EmptyProxy;
+import com.showka.system.exception.MinusZaikoException;
+import com.showka.system.exception.MinusZaikoException.MinusZaiko;
 import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;
 
@@ -28,6 +31,7 @@ import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Mock;
 import mockit.MockUp;
+import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 
@@ -257,4 +261,90 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		});
 	}
 
+	/**
+	 * 商品移動仕様による商品移動.
+	 *
+	 * <pre>
+	 * 入力：商品移動仕様 <br>
+	 * 条件：エラーなし <br>
+	 * 結果：登録成功
+	 * 
+	 * <pre>
+	 */
+	@Test
+	public void test07_ShohinIdo(@Mocked ShohinIdoSpecification specification) throws Exception {
+		// table
+		super.deleteAll(T_SHOHIN_IDO);
+		// data
+		ShohinIdo shohinIdo = ido01.build();
+		// expect
+		new Expectations() {
+			{
+				specification.getShohinIdo();
+				result = shohinIdo;
+			}
+		};
+		// do
+		service.shohinIdo(specification);
+		// check
+		TShohinIdo actual = repo.getOne(shohinIdo.getRecordId());
+		assertNotNull(actual);
+	}
+
+	/**
+	 * 商品移動仕様による商品移動.
+	 *
+	 * <pre>
+	 * 入力：商品移動仕様 <br>
+	 * 条件：エラーあり <br>
+	 * 結果：登録失敗
+	 * 
+	 * <pre>
+	 */
+	@Test(expected = MinusZaikoException.class)
+	public void test08_ShohinIdo(@Mocked ShohinIdoSpecification specification) throws Exception {
+		// table
+		super.deleteAll(T_SHOHIN_IDO);
+		// data
+		List<MinusZaiko> mze = new ArrayList<MinusZaiko>();
+		// expect
+		new Expectations() {
+			{
+				specification.ascertainSatisfaction();
+				result = new MinusZaikoException(mze);
+			}
+		};
+		// do
+		service.shohinIdo(specification);
+	}
+
+	/**
+	 * 商品移動仕様による商品移動（強制登録）.
+	 *
+	 * <pre>
+	 * 入力：商品移動仕様 <br>
+	 * 条件：エラーなし <br>
+	 * 結果：登録成功
+	 * 
+	 * <pre>
+	 */
+	@Test
+	public void test09_ShohinIdo(@Mocked ShohinIdoSpecification specification) throws Exception {
+		// table
+		super.deleteAll(T_SHOHIN_IDO);
+		// data
+		ShohinIdo shohinIdo = ido01.build();
+		// expect
+		new Expectations() {
+			{
+				specification.getShohinIdo();
+				result = shohinIdo;
+			}
+		};
+		// do
+		service.shohinIdoForcibly(specification);
+		// check
+		TShohinIdo actual = repo.getOne(shohinIdo.getRecordId());
+		assertNotNull(actual);
+	}
 }

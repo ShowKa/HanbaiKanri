@@ -3,7 +3,7 @@ package com.showka.service.specification.u11.i;
 import java.util.List;
 
 import com.showka.domain.ShohinIdo;
-import com.showka.domain.Uriage;
+import com.showka.system.exception.UnsatisfiedSpecificationException;
 
 /**
  * 商品移動の仕様.
@@ -12,15 +12,23 @@ import com.showka.domain.Uriage;
 public interface ShohinIdoSpecification {
 
 	/**
-	 * 売上による商品移動をビルド.
+	 * 商品移動取得.
 	 * 
-	 * <pre>
-	 * 伝票訂正の場合、マイナス移動も含めて返却する。
-	 * </pre>
-	 * 
-	 * @param uriage
-	 *            売上
-	 * @return 商品移動ドメイン
+	 * @return 商品移動のリスト
 	 */
-	public List<ShohinIdo> buildShohinIdo(Uriage uriage);
+	public List<ShohinIdo> getShohinIdo();
+
+	/**
+	 * 削除対象商品移動取得.
+	 * 
+	 * @return 削除対象の商品移動のリスト
+	 */
+	public List<ShohinIdo> getShohinIdoForDelete();
+
+	/**
+	 * 業務ルールに則っているか否かを検証する.
+	 * 
+	 * @throws UnsatisfiedSpecificationException
+	 */
+	public void ascertainSatisfaction() throws UnsatisfiedSpecificationException;
 }

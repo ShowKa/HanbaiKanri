@@ -24,6 +24,8 @@ import com.showka.repository.i.TShohinIdoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.service.specification.u11.i.ShohinIdoSpecification;
+import com.showka.system.exception.UnsatisfiedSpecificationException;
 import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;
 
@@ -120,5 +122,33 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		return idoList.map(i -> {
 			return getDomain(i.getRecordId());
 		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public void shohinIdo(ShohinIdoSpecification specification) throws UnsatisfiedSpecificationException {
+		// 業務的仕様を満たすか判定
+		specification.ascertainSatisfaction();
+		// 削除対象の商品移動を削除
+		List<ShohinIdo> idoListForDelete = specification.getShohinIdoForDelete();
+		idoListForDelete.forEach(d -> this.delete(d.getRecordId(), d.getVersion()));
+		// 新たに商品移動を登録
+		List<ShohinIdo> idoList = specification.getShohinIdo();
+		idoList.forEach(this::save);
+	}
+
+	@Override
+	public void shohinIdoForcibly(ShohinIdoSpecification specification) {
+		// 削除対象の商品移動を削除
+		List<ShohinIdo> idoListForDelete = specification.getShohinIdoForDelete();
+		idoListForDelete.forEach(d -> this.delete(d.getRecordId(), d.getVersion()));
+		// 新たに商品移動を登録
+		List<ShohinIdo> idoList = specification.getShohinIdo();
+		idoList.forEach(this::save);
+	}
+
+	@Override
+	public void deleteForcibly(String recordId) {
+		TShohinIdo record = repo.getOne(recordId);
+		this.delete(recordId, record.getVersion());
 	}
 }

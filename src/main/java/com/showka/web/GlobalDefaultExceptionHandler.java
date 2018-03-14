@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.ApplicationException;
 
 /**
  * ExceptionHandler
@@ -25,12 +25,12 @@ public class GlobalDefaultExceptionHandler {
 	 * @param req
 	 *            リクエスト
 	 * @param e
-	 *            整合性検証例外
+	 *            アプリケーション例外（整合性検証例外、仕様未満例外）
 	 * @return HTTPレスポンス
 	 */
-	@ExceptionHandler(value = ValidateException.class)
-	public ResponseEntity<?> defaultErrorHandler(HttpServletRequest req, ValidateException e) {
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(convertMessageToJson(e.getMessage()));
+	@ExceptionHandler(value = ApplicationException.class)
+	public ResponseEntity<?> defaultErrorHandler(HttpServletRequest req, ApplicationException e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(convertMessageToJson(e.getMessageAsHtml()));
 	}
 
 	/**
@@ -57,6 +57,7 @@ public class GlobalDefaultExceptionHandler {
 	 * @return {"message : " + "引数のメッセージ"}
 	 */
 	private String convertMessageToJson(String message) {
+		// 改行コードはhtmlタグに置き換える。
 		return "{\"message\" : \"" + message + "\"}";
 	}
 }
