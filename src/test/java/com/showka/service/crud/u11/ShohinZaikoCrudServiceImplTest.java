@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 
 import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.Busho;
@@ -12,12 +13,17 @@ import com.showka.domain.Shohin;
 import com.showka.domain.ShohinIdo;
 import com.showka.domain.ShohinZaiko;
 import com.showka.domain.ShohinZaiko.ShohinIdoOnDate;
+import com.showka.domain.builder.BushoBuilder;
+import com.showka.domain.builder.ShohinBuilder;
 import com.showka.entity.MShohin;
 import com.showka.entity.TShohinZaiko;
+import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
+import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.system.EmptyProxy;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
 import mockit.Expectations;
@@ -42,6 +48,9 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 	@Injectable
 	private ShohinCrudService shohinCrudService;
 
+	@Injectable
+	private BushoDateCrudService bushoDateCrudService;
+
 	/** 商品. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "r-SH01" };
 
@@ -51,6 +60,14 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 			new TheDate(2017, 1, 1).toDate(),
 			"r-SH01",
 			100,
+			"r-BS01-20170101-SH01" };
+
+	/** 商品在庫02(ゼロ在庫). */
+	private static final Object[] T_SHOHIN_ZAIKO_V02 = {
+			"r-BS01",
+			new TheDate(2017, 1, 1).toDate(),
+			"r-SH01",
+			0,
 			"r-BS01-20170101-SH01" };
 
 	/**
@@ -186,7 +203,122 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		assertEquals("r-SH01", actual.get(0).getShohin().getRecordId());
 		assertEquals(new TheDate(2017, 1, 1), actual.get(0).getDate());
 		assertEquals(100, actual.get(0).getKurikoshiNumber().intValue());
-
 	}
 
+	/**
+	 * 繰越.
+	 * 
+	 * <pre>
+	 * 入力：商品在庫<br>
+	 * 条件：在庫あり<br>
+	 * 結果：次営業日の在庫データができる。
+	 * 
+	 * <pre>
+	 */
+	@Test
+	public void test04_kurikoshi() throws Exception {
+		// table
+		super.deleteAndInsert(T_SHOHIN_ZAIKO, T_SHOHIN_ZAIKO_COLUMN, T_SHOHIN_ZAIKO_V01);
+		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01);
+		// input
+		// 部署
+		BushoBuilder bb = new BushoBuilder();
+		bb.withRecordId("r-BS01");
+		Busho busho = bb.build();
+		// 営業日
+		EigyoDate eigyoDate = new EigyoDate(2017, 1, 1);
+		EigyoDate nextEigyoDate = new EigyoDate(2017, 1, 2);
+		// 商品
+		ShohinBuilder sb = new ShohinBuilder();
+		sb.withCode("SH01");
+		sb.withRecordId("r-SH01");
+		Shohin shohin = sb.build();
+		new Expectations() {
+			{
+				bushoDateCrudService.getNext(busho, eigyoDate);
+				result = nextEigyoDate;
+				shohinCrudService.getDomain("SH01");
+				result = shohin;
+			}
+		};
+		// do
+		service.kurikoshi(busho, eigyoDate);
+		// verify
+		new Verifications() {
+			{
+				bushoDateCrudService.getNext(busho, eigyoDate);
+				times = 1;
+				shohinCrudService.getDomain("SH01");
+				times = 1;
+			}
+		};
+		// check
+		TShohinZaiko e = new TShohinZaiko();
+		TShohinZaikoPK pk = new TShohinZaikoPK();
+		pk.setBushoId("r-BS01");
+		pk.setEigyoDate(nextEigyoDate.toDate());
+		e.setPk(pk);
+		Example<TShohinZaiko> example = Example.of(e);
+		List<TShohinZaiko> actual = repo.findAll(example);
+		assertEquals(1, actual.size());
+		assertEquals(100, actual.get(0).getNumber().intValue());
+	}
+
+	/**
+	 * 繰越.
+	 * 
+	 * <pre>
+	 * 入力：商品在庫<br>
+	 * 条件：在庫なし<br>
+	 * 結果：次営業日の在庫データができない。
+	 * 
+	 * <pre>
+	 */
+	@Test
+	public void test05_kurikoshi() throws Exception {
+		// table
+		super.deleteAndInsert(T_SHOHIN_ZAIKO, T_SHOHIN_ZAIKO_COLUMN, T_SHOHIN_ZAIKO_V02);
+		super.deleteAndInsert(M_SHOHIN, M_SHOHIN_COLUMN, M_SHOHIN_V01);
+		// input
+		// 部署
+		BushoBuilder bb = new BushoBuilder();
+		bb.withRecordId("r-BS01");
+		Busho busho = bb.build();
+		// 営業日
+		EigyoDate eigyoDate = new EigyoDate(2017, 1, 1);
+		EigyoDate nextEigyoDate = new EigyoDate(2017, 1, 2);
+		// 商品
+		ShohinBuilder sb = new ShohinBuilder();
+		sb.withCode("SH01");
+		sb.withRecordId("r-SH01");
+		Shohin shohin = sb.build();
+		new Expectations() {
+			{
+				bushoDateCrudService.getNext(busho, eigyoDate);
+				result = nextEigyoDate;
+				shohinCrudService.getDomain("SH01");
+				result = shohin;
+			}
+		};
+		// do
+		service.kurikoshi(busho, eigyoDate);
+		// verify
+		new Verifications() {
+			{
+				bushoDateCrudService.getNext(busho, eigyoDate);
+				times = 1;
+				shohinCrudService.getDomain("SH01");
+				times = 1;
+			}
+		};
+		// check
+		TShohinZaiko e = new TShohinZaiko();
+		TShohinZaikoPK pk = new TShohinZaikoPK();
+		pk.setBushoId("r-BS01");
+		pk.setEigyoDate(nextEigyoDate.toDate());
+		e.setPk(pk);
+		Example<TShohinZaiko> example = Example.of(e);
+		List<TShohinZaiko> actual = repo.findAll(example);
+		assertTrue(actual.isEmpty());
+	}
 }

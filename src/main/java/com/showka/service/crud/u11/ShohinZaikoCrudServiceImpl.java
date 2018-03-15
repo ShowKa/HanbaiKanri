@@ -3,6 +3,7 @@ package com.showka.service.crud.u11;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +98,8 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 		List<ShohinZaiko> zaikoList = this.getShohinZaiko(busho, eigyoDate);
 		EigyoDate nextEigyoDate = bushoDateCrudService.getNext(busho, eigyoDate);
 		zaikoList.stream().filter(zaiko -> {
-			return !zaiko.getNumber().equals(0);
+			// 在庫数0以外のみ抽出
+			return zaiko.getNumber().longValue() != 0;
 		}).forEach(zaiko -> {
 			// pk
 			TShohinZaikoPK pk = new TShohinZaikoPK();
@@ -109,6 +111,9 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 			TShohinZaiko e = new TShohinZaiko();
 			e.setPk(pk);
 			e.setNumber(zaiko.getNumber());
+			// record id
+			String recordId = UUID.randomUUID().toString();
+			e.setRecordId(recordId);
 			// save
 			repo.save(e);
 		});
