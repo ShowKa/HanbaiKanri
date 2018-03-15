@@ -3,6 +3,7 @@ package com.showka.service.crud.u11;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,9 @@ import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
+import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
 @Service
@@ -34,6 +37,9 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 
 	@Autowired
 	private ShohinCrudService shohinCrudService;
+
+	@Autowired
+	private BushoDateCrudService bushoDateCrudService;
 
 	@Override
 	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin) {
@@ -87,4 +93,29 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 		}).collect(Collectors.toList());
 	}
 
+	@Override
+	public void kurikoshi(Busho busho, EigyoDate eigyoDate) {
+		List<ShohinZaiko> zaikoList = this.getShohinZaiko(busho, eigyoDate);
+		EigyoDate nextEigyoDate = bushoDateCrudService.getNext(busho, eigyoDate);
+		zaikoList.stream().filter(zaiko -> {
+			// 在庫数0以外のみ抽出
+			return zaiko.getNumber().longValue() != 0;
+		}).forEach(zaiko -> {
+			// pk
+			TShohinZaikoPK pk = new TShohinZaikoPK();
+			pk.setBushoId(busho.getRecordId());
+			pk.setShohinId(zaiko.getShohin().getRecordId());
+			// 繰越
+			pk.setEigyoDate(nextEigyoDate.toDate());
+			// entity
+			TShohinZaiko e = new TShohinZaiko();
+			e.setPk(pk);
+			e.setNumber(zaiko.getNumber());
+			// record id
+			String recordId = UUID.randomUUID().toString();
+			e.setRecordId(recordId);
+			// save
+			repo.save(e);
+		});
+	}
 }
