@@ -2,7 +2,6 @@ package com.showka.service.crud.u05;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import com.showka.value.TheDate;
 public class UriageKeijoCrudServiceImpl implements UriageKeijoCrudService {
 
 	@Autowired
-	private RUriageKeijoRepository rUriageKeijoRepository;
+	private RUriageKeijoRepository repo;
 
 	@Autowired
 	private UriageRirekiSearchService uriageRirekiSearchService;
@@ -28,8 +27,8 @@ public class UriageKeijoCrudServiceImpl implements UriageKeijoCrudService {
 	public void keijo(Busho busho, TheDate date) {
 		// search 未計上売上
 		List<RUriage> uriageRirekiList = uriageRirekiSearchService.search(busho, date);
-		// collect 売上計上
-		List<RUriageKeijo> entities = uriageRirekiList.stream().map(uriageRireki -> {
+		// 売上計上
+		uriageRirekiList.forEach(uriageRireki -> {
 			// entity
 			RUriageKeijo e = new RUriageKeijo();
 			e.setBushoId(busho.getRecordId());
@@ -37,9 +36,9 @@ public class UriageKeijoCrudServiceImpl implements UriageKeijoCrudService {
 			// record id
 			String recordId = UUID.randomUUID().toString();
 			e.setRecordId(recordId);
-			return e;
-		}).collect(Collectors.toList());
-		// save
-		rUriageKeijoRepository.saveAll(entities);
+			// save
+			repo.save(e);
+		});
+		// 売上訂正
 	}
 }
