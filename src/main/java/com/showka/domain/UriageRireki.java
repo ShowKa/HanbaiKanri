@@ -29,6 +29,23 @@ public class UriageRireki extends DomainBase {
 	private Optional<TheDate> cancelKeijoDate;
 
 	/**
+	 * 引数に指定した計上日の売上を取得します。
+	 * 
+	 * @param keijoDate
+	 *            計上日
+	 * @return 売上
+	 */
+	public Optional<Uriage> getUriageOf(TheDate keijoDate) {
+		Optional<Uriage> uriage = list.stream().filter(l -> {
+			return l.getKeijoDate().equals(keijoDate);
+		}).findFirst();
+		if (uriage.isPresent()) {
+			return Optional.of(convert(uriage.get()));
+		}
+		return Optional.empty();
+	}
+
+	/**
 	 * (赤)訂正売上伝票取得.
 	 * 
 	 * @param keijoDate
@@ -163,6 +180,7 @@ public class UriageRireki extends DomainBase {
 	 *            売上履歴リストの一部
 	 * @return
 	 */
+	// FIXME 普通にバグりそう
 	private Uriage convert(Uriage uriage) {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
