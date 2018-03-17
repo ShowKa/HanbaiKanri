@@ -67,6 +67,15 @@ public class ShohinZaiko extends DomainBase {
 	}
 
 	/**
+	 * ゼロ在庫判定.
+	 * 
+	 * @return ゼロ在庫状態ならtrue
+	 */
+	public boolean isZero() {
+		return getNumber() == 0;
+	}
+
+	/**
 	 * マイナス在庫判定.
 	 * 
 	 * @return マイナス在庫状態ならtrue

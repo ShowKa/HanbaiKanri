@@ -29,6 +29,7 @@ import com.showka.value.TheDate;
 @Service
 public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 
+	// private members
 	@Autowired
 	private TShohinZaikoRepository repo;
 
@@ -41,6 +42,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	@Autowired
 	private BushoDateCrudService bushoDateCrudService;
 
+	// public methods
 	@Override
 	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin) {
 		// 在庫データ取得
@@ -101,21 +103,60 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 			// 在庫数0以外のみ抽出
 			return zaiko.getNumber().longValue() != 0;
 		}).forEach(zaiko -> {
-			// pk
-			TShohinZaikoPK pk = new TShohinZaikoPK();
-			pk.setBushoId(busho.getRecordId());
-			pk.setShohinId(zaiko.getShohin().getRecordId());
-			// 繰越
-			pk.setEigyoDate(nextEigyoDate.toDate());
-			// entity
-			TShohinZaiko e = new TShohinZaiko();
-			e.setPk(pk);
-			e.setNumber(zaiko.getNumber());
-			// record id
-			String recordId = UUID.randomUUID().toString();
-			e.setRecordId(recordId);
-			// save
-			repo.save(e);
+			// 営業日を更新して登録
+			ShohinZaikoBuilder b = new ShohinZaikoBuilder();
+			b.withDate(nextEigyoDate);
+			ShohinZaiko kurikosiZaiko = b.apply(zaiko);
+			this.save(kurikosiZaiko);
 		});
+	}
+
+	@Override
+	public void saveZeroIfEmpty(Busho busho, TheDate date, Shohin shohin) {
+		// pk
+		TShohinZaikoPK id = new TShohinZaikoPK();
+		id.setBushoId(busho.getRecordId());
+		id.setEigyoDate(date.toDate());
+		id.setShohinId(shohin.getRecordId());
+		// check exists
+		boolean exists = repo.existsById(id);
+		if (!exists) {
+			// 下記メソッドをよべば空のドメインが作られるので利用。
+			ShohinZaiko zaiko = this.getShohinZaiko(busho, date, shohin);
+			this.save(zaiko);
+		}
+	}
+
+	// private methods
+	/**
+	 * 商品在庫登録.
+	 * 
+	 * <pre>
+	 * 現時点の在庫数でレコードの在庫数の値を登録します。
+	 * なおinsertのみを想定しています。
+	 * </pre>
+	 * 
+	 * @param zaiko
+	 *            商品在庫
+	 */
+	private void save(ShohinZaiko zaiko) {
+		// entity
+		TShohinZaiko e = new TShohinZaiko();
+		// pk
+		TShohinZaikoPK pk = new TShohinZaikoPK();
+		e.setPk(pk);
+		// 部署
+		pk.setBushoId(zaiko.getBusho().getRecordId());
+		// 商品
+		pk.setShohinId(zaiko.getShohin().getRecordId());
+		// 営業日
+		pk.setEigyoDate(zaiko.getDate().toDate());
+		// 在庫数
+		e.setNumber(zaiko.getNumber());
+		// record id
+		String recordId = UUID.randomUUID().toString();
+		e.setRecordId(recordId);
+		// save
+		repo.save(e);
 	}
 }
