@@ -219,4 +219,8 @@ public class UriageKeijoCrudServiceImplTest extends CrudServiceTestCase {
 		RUriageKeijoTeisei actual = repoTeisei.getOne(keijo.getRecordId());
 		assertEquals(teiseiUriageId, actual.getUriageRirekiId());
 	}
+
+	@Test
+	public void test04_getBushoUriage(@Injectable Busho busho, @Injectable TheDate date) throws Exception {
+	}
 }
