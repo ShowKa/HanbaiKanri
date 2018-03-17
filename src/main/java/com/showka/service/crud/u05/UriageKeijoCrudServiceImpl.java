@@ -89,7 +89,7 @@ public class UriageKeijoCrudServiceImpl implements UriageKeijoCrudService {
 		List<RUriageKeijo> keijoEntities = uriageKeijoSearchService.search(busho, date);
 		// 売上計上金額集計（訂正除く）
 		int keijoKingaku = keijoEntities.stream().mapToInt(ke -> {
-			String uriageId = ke.getUriageRireki().getPk().getUriageId();
+			String uriageId = ke.getUriageId();
 			UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(uriageId);
 			Optional<Uriage> uriage = rireki.getUriageOf(date);
 			if (uriage.isPresent()) {

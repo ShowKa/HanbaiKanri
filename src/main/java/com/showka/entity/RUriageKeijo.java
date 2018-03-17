@@ -46,4 +46,18 @@ public class RUriageKeijo extends EntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MBusho Busho;
+
+	// public methods
+	/**
+	 * 売上ID取得
+	 * 
+	 * <pre>
+	 * 売上履歴IDではない。
+	 * </pre>
+	 * 
+	 * @return
+	 */
+	public String getUriageId() {
+		return getUriageRireki().getPk().getUriageId();
+	}
 }
