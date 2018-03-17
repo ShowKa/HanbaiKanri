@@ -321,4 +321,70 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		List<TShohinZaiko> actual = repo.findAll(example);
 		assertTrue(actual.isEmpty());
 	}
+
+	/**
+	 * ゼロ在庫レコード登録.
+	 * 
+	 * <pre>
+	 * 入力：部署、日付、商品
+	 * 条件：在庫レコード未登録
+	 * 結果：ゼロの在庫レコードが登録される
+	 * </pre>
+	 */
+	@Test
+	public void test06_saveZeroIfEmpty() throws Exception {
+		// database
+		super.deleteAll(T_SHOHIN_ZAIKO);
+		// input
+		// 部署
+		Busho busho = new BushoBuilder().build();
+		busho.setRecordId("r-BS01");
+		// 日付
+		TheDate date = new TheDate(2017, 1, 1);
+		// 商品
+		Shohin shohin = new ShohinBuilder().build();
+		shohin.setRecordId("r-SH01");
+		// do
+		service.saveZeroIfEmpty(busho, date, shohin);
+		// check
+		TShohinZaikoPK zaikoId = new TShohinZaikoPK();
+		zaikoId.setBushoId("r-BS01");
+		zaikoId.setEigyoDate(date.toDate());
+		zaikoId.setShohinId("r-SH01");
+		TShohinZaiko actual = repo.getOne(zaikoId);
+		assertEquals(0, actual.getNumber().intValue());
+	}
+
+	/**
+	 * ゼロ在庫レコード登録.
+	 * 
+	 * <pre>
+	 * 入力：部署、日付、商品
+	 * 条件：在庫レコード登録済
+	 * 結果：ゼロの在庫レコードが登録されない（既存のまま）
+	 * </pre>
+	 */
+	@Test
+	public void test07_saveZeroIfEmpty() throws Exception {
+		// database
+		super.deleteAndInsert(T_SHOHIN_ZAIKO, T_SHOHIN_ZAIKO_COLUMN, T_SHOHIN_ZAIKO_V01);
+		// input
+		// 部署
+		Busho busho = new BushoBuilder().build();
+		busho.setRecordId("r-BS01");
+		// 日付
+		TheDate date = new TheDate(2017, 1, 1);
+		// 商品
+		Shohin shohin = new ShohinBuilder().build();
+		shohin.setRecordId("r-SH01");
+		// do
+		service.saveZeroIfEmpty(busho, date, shohin);
+		// check
+		TShohinZaikoPK zaikoId = new TShohinZaikoPK();
+		zaikoId.setBushoId("r-BS01");
+		zaikoId.setEigyoDate(date.toDate());
+		zaikoId.setShohinId("r-SH01");
+		TShohinZaiko actual = repo.getOne(zaikoId);
+		assertEquals(100, actual.getNumber().intValue());
+	}
 }
