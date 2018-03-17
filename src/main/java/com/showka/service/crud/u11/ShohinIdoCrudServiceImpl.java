@@ -23,6 +23,7 @@ import com.showka.repository.i.TShohinIdoMeisaiRepository;
 import com.showka.repository.i.TShohinIdoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
+import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.UnsatisfiedSpecificationException;
@@ -44,8 +45,17 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	@Autowired
 	private BushoCrudService bushoCrudService;
 
+	@Autowired
+	private ShohinZaikoCrudService shohinZaikoCrudService;
+
 	@Override
 	public void save(ShohinIdo domain) {
+		// 部署
+		Busho busho = domain.getBusho();
+		// 移動の営業日
+		TheDate date = domain.getDate();
+		// 移動明細
+		List<ShohinIdoMeisai> meisai = domain.getMeisai();
 		// domain -> entity
 		Optional<TShohinIdo> _e = repo.findById(domain.getRecordId());
 		TShohinIdo entity = _e.isPresent() ? _e.get() : new TShohinIdo();
@@ -53,8 +63,8 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 			String recordId = UUID.randomUUID().toString();
 			entity.setRecordId(recordId);
 		}
-		entity.setBushoId(domain.getBusho().getRecordId());
-		entity.setDate(domain.getDate().toDate());
+		entity.setBushoId(busho.getRecordId());
+		entity.setDate(date.toDate());
 		entity.setKubun(domain.getKubun().getCode());
 		entity.setTimestamp(domain.getTimestamp().toDate());
 		// occ
@@ -64,9 +74,12 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		// save
 		repo.save(entity);
 		// meisai
-		shohinIdoMeisaiCrudService.overrideList(entity.getRecordId(), domain.getMeisai());
+		shohinIdoMeisaiCrudService.overrideList(entity.getRecordId(), meisai);
 		// 在庫データばしの場合は0在庫レコードを作る
-		// shohinZaikoCrudService.saveZeroIfEmpty(busho, date, shohin);
+		meisai.forEach(m -> {
+			Shohin shohin = m.getShohinDomain();
+			shohinZaikoCrudService.saveZeroIfEmpty(busho, date, shohin);
+		});
 	}
 
 	@Override

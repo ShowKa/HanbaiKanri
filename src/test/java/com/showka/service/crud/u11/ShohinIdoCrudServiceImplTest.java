@@ -19,6 +19,7 @@ import com.showka.kubun.ShohinIdoKubun;
 import com.showka.repository.i.TShohinIdoMeisaiRepository;
 import com.showka.repository.i.TShohinIdoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoMeisaiCrudService;
+import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.EmptyProxy;
@@ -53,6 +54,9 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 
 	@Injectable
 	private BushoCrudService bushoCrudService;
+
+	@Injectable
+	private ShohinZaikoCrudService shohinZaikoCrudService;
 
 	/** 商品移動01 */
 	private static final Object[] T_SHOHIN_IDO_V1 = {
@@ -346,5 +350,42 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		// check
 		TShohinIdo actual = repo.getOne(shohinIdo.getRecordId());
 		assertNotNull(actual);
+	}
+
+	/**
+	 * ゼロ在庫登録呼び出し.
+	 * 
+	 * <pre>
+	 * 入力：商品移動
+	 * 条件：明細1つ含む
+	 * 結果：ゼロ在庫呼び出しが1度呼び出される。
+	 * </pre>
+	 */
+	@Test
+	public void test10_Save_ZeroZaiko(@Injectable ShohinIdoMeisai meisai, @Injectable Shohin shohin) throws Exception {
+		// table
+		super.deleteAll(T_SHOHIN_IDO);
+		// data
+		ShohinIdo shohinIdo = ido01.build();
+		// 明細だけ上書き
+		List<ShohinIdoMeisai> list = new ArrayList<ShohinIdoMeisai>();
+		list.add(meisai);
+		shohinIdo = new ShohinIdoBuilder().withMeisai(list).apply(shohinIdo);
+		new Expectations() {
+			{
+				meisai.getShohinDomain();
+				result = shohin;
+				shohinZaikoCrudService.saveZeroIfEmpty((Busho) any, (TheDate) any, shohin);
+			}
+		};
+		// do
+		service.save(shohinIdo);
+		// verify
+		new Verifications() {
+			{
+				shohinZaikoCrudService.saveZeroIfEmpty((Busho) any, (TheDate) any, shohin);
+				times = 1;
+			}
+		};
 	}
 }
