@@ -29,6 +29,7 @@ import com.showka.value.TheDate;
 @Service
 public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 
+	// private members
 	@Autowired
 	private TShohinZaikoRepository repo;
 
@@ -41,6 +42,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	@Autowired
 	private BushoDateCrudService bushoDateCrudService;
 
+	// public methods
 	@Override
 	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin) {
 		// 在庫データ取得
@@ -101,6 +103,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 			// 在庫数0以外のみ抽出
 			return zaiko.getNumber().longValue() != 0;
 		}).forEach(zaiko -> {
+			// purge to save method ??
 			// pk
 			TShohinZaikoPK pk = new TShohinZaikoPK();
 			pk.setBushoId(busho.getRecordId());
@@ -117,5 +120,14 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 			// save
 			repo.save(e);
 		});
+	}
+
+	@Override
+	public void saveZeroIfEmpty(Busho busho, TheDate date, Shohin shohin) {
+		// TODO Auto-generated method stub
+	}
+
+	// private methods
+	private void save(ShohinZaiko zaiko) {
 	}
 }

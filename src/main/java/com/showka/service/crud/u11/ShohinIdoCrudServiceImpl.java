@@ -65,6 +65,8 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		repo.save(entity);
 		// meisai
 		shohinIdoMeisaiCrudService.overrideList(entity.getRecordId(), domain.getMeisai());
+		// 在庫データばしの場合は0在庫レコードを作る
+		// shohinZaikoCrudService.saveZeroIfEmpty(busho, date, shohin);
 	}
 
 	@Override

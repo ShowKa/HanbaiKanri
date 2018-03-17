@@ -49,4 +49,20 @@ public interface ShohinZaikoCrudService {
 	 *            営業日（更新前）
 	 */
 	public void kurikoshi(Busho busho, EigyoDate eigyoDate);
+
+	/**
+	 * 指定した在庫データが存在しなかった場合、ゼロ在庫データを登録します.
+	 * 
+	 * <pre>
+	 * すでにデータがある場合は無視されます。
+	 * </pre>
+	 * 
+	 * @param busho
+	 *            部所
+	 * @param date
+	 *            日付
+	 * @param shohin
+	 *            商品
+	 */
+	public void saveZeroIfEmpty(Busho busho, TheDate date, Shohin shohin);
 }
