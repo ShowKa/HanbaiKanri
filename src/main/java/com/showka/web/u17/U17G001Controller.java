@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.Busho;
+import com.showka.domain.BushoUriage;
 import com.showka.service.crud.u05.i.UriageKeijoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
@@ -72,7 +73,12 @@ public class U17G001Controller extends ControllerBase {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			ret.put("code", b.getCode());
 			ret.put("name", b.getName());
-			ret.put("eigyoDate", b.getEigyoDate().toString());
+			EigyoDate eigyoDate = b.getEigyoDate();
+			ret.put("eigyoDate", eigyoDate.toString());
+			// FIXME 前日の売上計上を取得
+			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, eigyoDate.plusDays(-1));
+			ret.put("uriageKeijo", bushoKeijo.getKeijoKingaku());
+			ret.put("uriageKeijoTeisei", bushoKeijo.getTeiseiKingaku());
 			return ret;
 		}).collect(Collectors.toList());
 		// set model
