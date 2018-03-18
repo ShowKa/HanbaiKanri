@@ -282,4 +282,28 @@ public class UriageKeijoCrudServiceImplTest extends CrudServiceTestCase {
 		// check
 		assertEquals(300, actual.getKeijoKingaku().intValue());
 	}
+
+	/**
+	 * 売上計上金額集計（訂正除く）
+	 */
+	@Test
+	public void test05_getBushoUriage(@Injectable Busho busho, @Injectable TheDate date) throws Exception {
+		// input
+		List<RUriageKeijo> keijoEntities = new ArrayList<RUriageKeijo>();
+		RUriageKeijo e1 = new RUriageKeijo();
+		RUriageKeijo e2 = new RUriageKeijo();
+		keijoEntities.add(e1);
+		keijoEntities.add(e2);
+		// expect
+		new Expectations() {
+			{
+				// 売上計上取得
+				uriageKeijoSearchService.search(busho, date);
+				result = keijoEntities;
+			}
+		};
+		// do
+		BushoUriage actual = uriageKeijoCrudServiceImpl.getBushoUriage(busho, date);
+		// check
+	}
 }
