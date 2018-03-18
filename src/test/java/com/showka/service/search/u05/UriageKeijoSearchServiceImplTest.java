@@ -2,6 +2,7 @@ package com.showka.service.search.u05;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -211,6 +212,8 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 		teiseiEntities.add(teisei);
 		// 売上ID
 		String uriageId = "r-KK02-00002";
+		// 過去計上日
+		Date pastKeijoDate = new Date();
 		// 価格
 		Kakaku uriageGokeiKingaku1 = new Kakaku(100, 0);
 		// expect
@@ -231,8 +234,11 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				// get 売上履歴
 				uriageRirekiCrudService.getUriageRirekiList(uriageId);
 				result = rireki;
+				// get 過去計上日
+				teisei.getTeiseiUriageRirekiKeijoDate();
+				result = pastKeijoDate;
 				// get 売上
-				rireki.getUriageOf(date);
+				rireki.getUriageOf(new TheDate(pastKeijoDate));
 				result = Optional.of(uriage);
 				// get 価格
 				uriage.getUriageGokeiKakaku();
@@ -259,8 +265,11 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				// get 売上履歴
 				uriageRirekiCrudService.getUriageRirekiList(uriageId);
 				times = 1;
+				// get 過去計上日
+				teisei.getTeiseiUriageRirekiKeijoDate();
+				times = 1;
 				// get 売上
-				rireki.getUriageOf(date);
+				rireki.getUriageOf(new TheDate(pastKeijoDate));
 				times = 1;
 				// get 価格
 				uriage.getUriageGokeiKakaku();

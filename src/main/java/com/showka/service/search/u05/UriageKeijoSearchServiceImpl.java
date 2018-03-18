@@ -1,5 +1,6 @@
 package com.showka.service.search.u05;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -74,7 +75,8 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 		int teiseiKingaku = teiseiEntities.stream().mapToInt(teisei -> {
 			String uriageId = teisei.getUriageId();
 			UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(uriageId);
-			Optional<Uriage> uriage = rireki.getUriageOf(date);
+			Date pastKeijoDate = teisei.getTeiseiUriageRirekiKeijoDate();
+			Optional<Uriage> uriage = rireki.getUriageOf(new TheDate(pastKeijoDate));
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い
 			Kakaku uriageGokeiKingaku = uriage.get().getUriageGokeiKakaku();
 			// 訂正分は負数として集計

@@ -1,6 +1,7 @@
 package com.showka.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,5 +61,14 @@ public class RUriageKeijoTeisei extends EntityBase implements Serializable {
 	 */
 	public String getUriageId() {
 		return getTeiseiUriageRireki().getPk().getUriageId();
+	}
+
+	/**
+	 * 訂正対象の売上履歴の計上日を取得.
+	 * 
+	 * @return 計上日
+	 */
+	public Date getTeiseiUriageRirekiKeijoDate() {
+		return getTeiseiUriageRireki().getPk().getKeijoDate();
 	}
 }
