@@ -36,6 +36,10 @@ public interface UriageKeijoSearchService {
 	/**
 	 * 指定した計上日における部署の売上の訂正分の計上金額を集計.
 	 * 
+	 * <pre>
+	 * 基本的にマイナス円として集計.
+	 * </pre>
+	 * 
 	 * @param busho
 	 *            部署
 	 * @param date

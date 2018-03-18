@@ -21,7 +21,6 @@ import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.search.u05.i.UriageKeijoSearchService;
 import com.showka.service.search.u05.i.UriageRirekiSearchService;
-import com.showka.value.Kakaku;
 import com.showka.value.TheDate;
 
 import mockit.Expectations;
@@ -227,83 +226,34 @@ public class UriageKeijoCrudServiceImplTest extends CrudServiceTestCase {
 	}
 
 	/**
-	 * 売上計上金額集計（訂正除く）
+	 * 売上計上金額集計
 	 */
 	@Test
-	public void test04_getBushoUriage(@Injectable Busho busho, @Injectable TheDate date, @Injectable RUriageKeijo ke,
-			@Injectable RUriageKeijo ke2, @Injectable UriageRireki rireki, @Injectable UriageRireki rireki2,
-			@Injectable Uriage uriage, @Injectable Uriage uriage2) throws Exception {
-		// input
-		// 売上計上 entity
-		List<RUriageKeijo> keijoEntities = new ArrayList<RUriageKeijo>();
-		keijoEntities.add(ke);
-		keijoEntities.add(ke2);
-		// 売上ID
-		String uriageId = "r-KK01-00001";
-		String uriageId2 = "r-KK01-00002";
-		String uriageKeijoId = "r-KK01-00001-20170101";
-		String uriageKeijoId2 = "r-KK01-00002-20170101";
-		// 売上の価格
-		Kakaku uriageGokeiKingaku = new Kakaku(100, 0);
-		Kakaku uriageGokeiKingaku2 = new Kakaku(200, 0);
+	public void test04_getBushoUriage(@Injectable Busho busho, @Injectable TheDate date) throws Exception {
 		// expect
 		new Expectations() {
 			{
-				// 売上計上取得
-				uriageKeijoSearchService.search(busho, date);
-				result = keijoEntities;
-				// 1件目
-				ke.getUriageId();
-				result = uriageId;
-				uriageRirekiCrudService.getUriageRirekiList(uriageId);
-				result = rireki;
-				rireki.getUriageOf(date);
-				result = Optional.of(uriage);
-				uriage.getUriageGokeiKakaku();
-				result = uriageGokeiKingaku;
-				// 2件目
-				ke2.getUriageId();
-				result = uriageId2;
-				uriageRirekiCrudService.getUriageRirekiList(uriageId2);
-				result = rireki2;
-				rireki2.getUriageOf(date);
-				result = Optional.of(uriage2);
-				uriage2.getUriageGokeiKakaku();
-				result = uriageGokeiKingaku2;
-				// エラー防止
-				ke.getRecordId();
-				result = uriageKeijoId;
-				ke2.getRecordId();
-				result = uriageKeijoId2;
+				uriageKeijoSearchService.getKeijoKingaku(busho, date);
+				result = 300;
+				uriageKeijoSearchService.getTeiseiKingaku(busho, date);
+				result = -100;
 			}
 		};
 		// do
 		BushoUriage actual = uriageKeijoCrudServiceImpl.getBushoUriage(busho, date);
+		// verify
+		new Verifications() {
+			{
+				uriageKeijoSearchService.getKeijoKingaku(busho, date);
+				times = 1;
+				uriageKeijoSearchService.getTeiseiKingaku(busho, date);
+				times = 1;
+			}
+		};
 		// check
 		assertEquals(300, actual.getKeijoKingaku().intValue());
+		assertEquals(-100, actual.getTeiseiKingaku().intValue());
+		assertEquals(200, actual.getKeijoKingakuGokei().intValue());
 	}
 
-	/**
-	 * 売上計上金額集計（訂正除く）
-	 */
-	@Test
-	public void test05_getBushoUriage(@Injectable Busho busho, @Injectable TheDate date) throws Exception {
-		// input
-		List<RUriageKeijo> keijoEntities = new ArrayList<RUriageKeijo>();
-		RUriageKeijo e1 = new RUriageKeijo();
-		RUriageKeijo e2 = new RUriageKeijo();
-		keijoEntities.add(e1);
-		keijoEntities.add(e2);
-		// expect
-		new Expectations() {
-			{
-				// 売上計上取得
-				uriageKeijoSearchService.search(busho, date);
-				result = keijoEntities;
-			}
-		};
-		// do
-		BushoUriage actual = uriageKeijoCrudServiceImpl.getBushoUriage(busho, date);
-		// check
-	}
 }
