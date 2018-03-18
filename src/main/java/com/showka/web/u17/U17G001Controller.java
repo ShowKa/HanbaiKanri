@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.Busho;
+import com.showka.domain.BushoUriage;
+import com.showka.service.crud.u05.i.UriageKeijoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
@@ -40,6 +42,9 @@ public class U17G001Controller extends ControllerBase {
 
 	@Autowired
 	private ShohinZaikoCrudService shohinZaikoCrudService;
+
+	@Autowired
+	private UriageKeijoCrudService uriageKeijoCrudService;
 
 	/**
 	 * 参照.
@@ -68,7 +73,12 @@ public class U17G001Controller extends ControllerBase {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			ret.put("code", b.getCode());
 			ret.put("name", b.getName());
-			ret.put("eigyoDate", b.getEigyoDate().toString());
+			EigyoDate eigyoDate = b.getEigyoDate();
+			ret.put("eigyoDate", eigyoDate.toString());
+			// FIXME 前日の売上計上を取得
+			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, eigyoDate.plusDays(-1));
+			ret.put("uriageKeijo", bushoKeijo.getKeijoKingaku());
+			ret.put("uriageKeijoTeisei", bushoKeijo.getTeiseiKingaku());
 			return ret;
 		}).collect(Collectors.toList());
 		// set model
@@ -92,6 +102,8 @@ public class U17G001Controller extends ControllerBase {
 		EigyoDate eigyoDate = new EigyoDate(form.getEigyoDate());
 		// validate
 		bushoDateValidateService.validateForClosing(busho, eigyoDate);
+		// 売上計上
+		uriageKeijoCrudService.keijo(busho, eigyoDate);
 		// 在庫繰越
 		shohinZaikoCrudService.kurikoshi(busho, eigyoDate);
 		// close

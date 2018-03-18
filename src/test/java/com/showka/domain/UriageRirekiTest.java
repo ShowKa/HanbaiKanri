@@ -126,4 +126,49 @@ public class UriageRirekiTest extends SimpleTestCase {
 		assertEquals(5000, actual.get(2).getUriageGokeiKakaku().getZeinukiKakaku().intValue());
 	}
 
+	/**
+	 * 特定計上日の売上履歴を取得.
+	 * 
+	 * <pre>
+	 * 入力：計上日
+	 * 条件：その日に計上された売上がある
+	 * 結果：売上取得成功
+	 * </pre>
+	 */
+	@Test
+	public void test05_getUriageOf() throws Exception {
+		// build
+		UriageRirekiBuilder b = new UriageRirekiBuilder();
+		List<Uriage> uriageRireki = new ArrayList<Uriage>();
+		uriageRireki.add(uriageRireki01);
+		uriageRireki.add(uriageRireki02);
+		b.withList(uriageRireki);
+		UriageRireki uriageRirekiList = b.build();
+		// test
+		Optional<Uriage> actual = uriageRirekiList.getUriageOf(new TheDate(2017, 8, 21));
+		assertEquals(new TheDate(2017, 8, 21), actual.get().getKeijoDate());
+	}
+
+	/**
+	 * 特定計上日の売上履歴を取得.
+	 * 
+	 * <pre>
+	 * 入力：計上日
+	 * 条件：その日に計上された売上がない
+	 * 結果：売上取得できない
+	 * </pre>
+	 */
+	@Test
+	public void test06_getUriageOf() throws Exception {
+		// build
+		UriageRirekiBuilder b = new UriageRirekiBuilder();
+		List<Uriage> uriageRireki = new ArrayList<Uriage>();
+		uriageRireki.add(uriageRireki01);
+		uriageRireki.add(uriageRireki02);
+		b.withList(uriageRireki);
+		UriageRireki uriageRirekiList = b.build();
+		// test
+		Optional<Uriage> actual = uriageRirekiList.getUriageOf(new TheDate(2099, 8, 21));
+		assertFalse(actual.isPresent());
+	}
 }

@@ -85,7 +85,7 @@ public abstract class TestCaseBase extends TestCase {
 			"hanbai_tanka",
 			"record_id" };
 
-	// 売上履歴
+	// 売上キャンセル
 	protected static final String C_URIAGE = "c_uriage";
 	protected static final String[] C_URIAGE_COLUMN = { "uriage_id", "record_id" };
 
@@ -107,6 +107,17 @@ public abstract class TestCaseBase extends TestCase {
 			"shohin_id",
 			"hanbai_number",
 			"hanbai_tanka",
+			"record_id" };
+
+	// 売上計上
+	protected static final String R_URIAGE_KEIJO = "r_uriage_keijo";
+	protected static final String[] R_URIAGE_KEIJO_COLUMN = { "uriage_rireki_id", "busho_id", "record_id" };
+
+	// 売上計上訂正
+	protected static final String R_URIAGE_KEIJO_TEISEI = "r_uriage_keijo_teisei";
+	protected static final String[] R_URIAGE_KEIJO_TEISEI_COLUMN = {
+			"uriage_keijo_id",
+			"uriage_rireki_id",
 			"record_id" };
 
 	// 商品
