@@ -1,6 +1,7 @@
 package com.showka.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,14 +14,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 売掛の残高.
+ * 売掛.
  * 
  */
 @Entity
-@Table(name = "t_urikake_zandaka")
+@Table(name = "t_urikake")
 @Getter
 @Setter
-public class TUrikakeZandaka extends EntityBase implements Serializable {
+public class TUrikake extends EntityBase implements Serializable {
 
 	/** SID. */
 	private static final long serialVersionUID = 4543917306406404757L;
@@ -32,6 +33,10 @@ public class TUrikakeZandaka extends EntityBase implements Serializable {
 	/** 残高. */
 	@Column(name = "zandaka", nullable = false)
 	private Integer zandaka;
+
+	/** 入金予定日. */
+	@Column(name = "nyukin_yotei_date", nullable = false)
+	private Date nyukinYoteiDate;
 
 	/** 売上. */
 	@OneToOne(fetch = FetchType.LAZY)
