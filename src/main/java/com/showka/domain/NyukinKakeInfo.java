@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.system.exception.SystemException;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
 import lombok.AllArgsConstructor;
@@ -74,10 +75,10 @@ public class NyukinKakeInfo extends DomainBase {
 	 *            基準日
 	 * @return 入金予定日
 	 */
-	public TheDate getNyukinYoteiDate(TheDate date) {
+	public EigyoDate getNyukinYoteiDate(TheDate date) {
 		TheDate nextShimeDate = getNextSeikyuSimeDate(date);
 		LocalDate nyukinMonth = nextShimeDate.getDate().plusMonths(nyukinTsukiKubun.getMonthSpan());
-		return new TheDate(nyukinMonth.withDayOfMonth(nyukinDate));
+		return new EigyoDate(nyukinMonth.withDayOfMonth(nyukinDate));
 	}
 
 	/**

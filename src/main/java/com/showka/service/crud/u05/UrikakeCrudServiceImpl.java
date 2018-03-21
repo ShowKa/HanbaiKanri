@@ -5,11 +5,14 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.showka.domain.Kokyaku;
+import com.showka.domain.NyukinKakeInfo;
 import com.showka.domain.Uriage;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.entity.TUrikake;
+import com.showka.kubun.HanbaiKubun;
 import com.showka.repository.i.TUrikakeRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
@@ -39,6 +42,8 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 			String recordId = UUID.randomUUID().toString();
 			e.setRecordId(recordId);
 		}
+		domain.setRecordId(e.getRecordId());
+		// save
 		repo.save(e);
 	}
 
@@ -72,5 +77,25 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	@Override
 	public boolean exsists(String uriageId) {
 		return repo.existsById(uriageId);
+	}
+
+	@Override
+	public void save(Uriage uriage) {
+		// 販売区分が掛売じゃない場合return
+		if (uriage.getHanbaiKubun() != HanbaiKubun.掛売) {
+			return;
+		}
+		// 入金予定日
+		Kokyaku kokyaku = uriage.getKokyaku();
+		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		EigyoDate nyukinYoteiDate = nyukinKakeInfo.getNyukinYoteiDate(uriage.getKeijoDate());
+		// build
+		UrikakeBuilder b = new UrikakeBuilder();
+		b.withUriage(uriage);
+		b.withNyukinYoteiDate(nyukinYoteiDate);
+		b.withZandaka(uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue());
+		// save
+		Urikake urikake = b.build();
+		this.save(urikake);
 	}
 }
