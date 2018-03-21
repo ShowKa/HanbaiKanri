@@ -36,6 +36,15 @@ public class Urikake extends DomainBase {
 		return uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue() - zandaka;
 	}
 
+	/**
+	 * 売上ID取得.
+	 * 
+	 * @return 売上ID
+	 */
+	public String getUriageId() {
+		return uriage.getRecordId();
+	}
+
 	// override methods
 	@Override
 	public void validate() throws SystemException {
