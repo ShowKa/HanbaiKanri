@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.showka.kubun.HanbaiKubun;
 import com.showka.system.exception.SystemException;
+import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
@@ -49,6 +50,25 @@ public class Uriage extends DomainBase {
 			gokei = gokei.add(m.getMeisaiGokeiKakaku());
 		}
 		return new Kakaku(gokei, shohizeiritsu);
+	}
+
+	/**
+	 * 入金予定日取得.
+	 * 
+	 * <pre>
+	 * 計上日を基準にして入金予定日を取得する。
+	 * ただし販売区分=現金の場合、計上日をそのまま返却する。
+	 * </pre>
+	 * 
+	 * @return 入金予定日
+	 */
+	public EigyoDate getNyukinYoteiDate() {
+		if (hanbaiKubun == HanbaiKubun.現金) {
+			// FIXME
+			return new EigyoDate(keijoDate);
+		}
+		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		return nyukinKakeInfo.getNyukinYoteiDate(keijoDate);
 	}
 
 	@Override

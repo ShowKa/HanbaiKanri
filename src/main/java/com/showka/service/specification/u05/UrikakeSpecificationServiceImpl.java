@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.NyukinKakeInfo;
 import com.showka.domain.Uriage;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.UrikakeBuilder;
@@ -23,14 +21,14 @@ public class UrikakeSpecificationServiceImpl implements UrikakeSpecificationServ
 			return Optional.empty();
 		}
 		// 入金予定日
-		Kokyaku kokyaku = uriage.getKokyaku();
-		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
-		EigyoDate nyukinYoteiDate = nyukinKakeInfo.getNyukinYoteiDate(uriage.getKeijoDate());
+		EigyoDate nyukinYoteiDate = uriage.getNyukinYoteiDate();
+		// 残高=売上合計金額税込
+		Integer zandaka = uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue();
 		// build
 		UrikakeBuilder b = new UrikakeBuilder();
 		b.withUriage(uriage);
 		b.withNyukinYoteiDate(nyukinYoteiDate);
-		b.withZandaka(uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue());
+		b.withZandaka(zandaka);
 		return Optional.of(b.build());
 	}
 }
