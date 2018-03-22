@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.showka.domain.Kokyaku;
 import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.UriageRireki;
+import com.showka.domain.Urikake;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.entity.TUriagePK;
@@ -30,9 +32,11 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
+import com.showka.service.specification.u05.i.UrikakeSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.NotExistException;
@@ -72,6 +76,12 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
+
+	@Autowired
+	private UrikakeSpecificationService urikakeSpecificationService;
+
+	@Autowired
+	private UrikakeCrudService urikakeCrudService;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -136,11 +146,14 @@ public class U05G002Controller extends ControllerBase {
 		pk.setKokyakuId(kokyaku.getRecordId());
 		Uriage u = uriageCrudService.getDomain(pk);
 
+		// 売上ID
+		String uriageId = u.getRecordId();
+
 		// set form
 		form.setHanbaiKubun(u.getHanbaiKubun().getCode());
 		form.setUriageDate(u.getUriageDate().toDate());
 		form.setVersion(u.getVersion());
-		form.setRecordId(u.getRecordId());
+		form.setRecordId(uriageId);
 
 		// set 明細
 		List<U05G002MeisaiForm> meisaiList = new ArrayList<U05G002MeisaiForm>();
@@ -155,6 +168,13 @@ public class U05G002Controller extends ControllerBase {
 			meisaiList.add(e);
 		}
 		form.setMeisai(meisaiList);
+
+		// set 売掛
+		boolean exists = urikakeCrudService.exsists(uriageId);
+		if (exists) {
+			Urikake urikake = urikakeCrudService.getDomain(uriageId);
+			form.setUrikakeVersion(urikake.getVersion());
+		}
 
 		// set model
 		model.addForm(form);
@@ -190,6 +210,12 @@ public class U05G002Controller extends ControllerBase {
 		// save
 		uriageCrudService.save(uriage);
 
+		// 掛売
+		Optional<Urikake> urikake = urikakeSpecificationService.buildUrikakeBy(uriage);
+		urikake.ifPresent(u -> {
+			urikakeCrudService.save(u);
+		});
+
 		// 商品移動
 		shohinIdoUriageCrudService.save(uriage);
 
@@ -222,6 +248,14 @@ public class U05G002Controller extends ControllerBase {
 
 		// save
 		uriageCrudService.save(uriage);
+
+		// 掛売
+		Optional<Urikake> urikake = urikakeSpecificationService.buildUrikakeBy(uriage);
+		urikake.ifPresent(u -> {
+			// occ
+			u.setVersion(form.getUrikakeVersion());
+			urikakeCrudService.save(u);
+		});
 
 		// 商品移動
 		shohinIdoUriageCrudService.save(uriage);

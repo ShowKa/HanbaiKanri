@@ -64,8 +64,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		uriageRirekiCrudService.save(domain);
 		// 明細更新
 		uriageMeisaiCrudService.overrideList(domain.getRecordId(), domain.getUriageMeisai());
-		// 売掛金登録
-		urikakeCrudService.save(domain);
 	}
 
 	@Override

@@ -6,8 +6,9 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -27,6 +28,7 @@ public class TUrikake extends EntityBase implements Serializable {
 	private static final long serialVersionUID = 4543917306406404757L;
 
 	/** 売上ID */
+	@Id
 	@Column(name = "uriage_id", nullable = false, length = 255)
 	private String uriageId;
 
@@ -39,7 +41,7 @@ public class TUrikake extends EntityBase implements Serializable {
 	private Date nyukinYoteiDate;
 
 	/** 売上. */
-	@OneToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "uriage_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TUriage uriage;
 }
