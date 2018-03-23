@@ -19,4 +19,16 @@ public interface UrikakeCrudService extends CrudService<Urikake, String> {
 	 */
 	void deleteIfExists(String uriageId, Integer version);
 
+	/**
+	 * 売掛を前回の計上状態の値に差し戻す。
+	 * 
+	 * <pre>
+	 * ただし未計上の場合はそのままレコード削除。
+	 * 売上をrevertする前に呼び出す必要がある。
+	 * </pre>
+	 * 
+	 * @param recordId
+	 * @param urikakeVersion
+	 */
+	void revert(String uriageId, Integer version);
 }

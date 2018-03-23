@@ -1,5 +1,6 @@
 package com.showka.service.crud.u05;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -7,13 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Uriage;
+import com.showka.domain.Uriage.UriageComparatorByKejoDate;
+import com.showka.domain.UriageRireki;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.entity.TUriagePK;
 import com.showka.entity.TUrikake;
 import com.showka.repository.i.TUrikakeRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
+import com.showka.service.specification.u05.i.UrikakeSpecificationService;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -24,6 +29,12 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 
 	@Autowired
 	private UriageCrudService uriageCrudService;
+
+	@Autowired
+	private UriageRirekiCrudService uriageRirekiCrudService;
+
+	@Autowired
+	private UrikakeSpecificationService urikakeSpecificationService;
 
 	@Override
 	public void save(Urikake domain) {
@@ -82,6 +93,30 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	public void deleteIfExists(String uriageId, Integer version) {
 		if (this.exsists(uriageId)) {
 			this.delete(uriageId, version);
+		}
+	}
+
+	@Override
+	public void revert(String uriageId, Integer version) {
+		// 売上履歴取得
+		UriageRireki rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
+		List<Uriage> _list = rirekiList.getList();
+		int size = _list.size();
+		if (size == 1) {
+			// 履歴が1件 => 未計上と判断し売掛削除
+			this.deleteIfExists(uriageId, version);
+		} else if (size > 1) {
+			// 前計上日の売上を取得
+			_list.sort(new UriageComparatorByKejoDate());
+			Uriage reverTarget = _list.get(size - 2);
+			Optional<Urikake> _urikake = urikakeSpecificationService.buildUrikakeBy(reverTarget);
+			if (_urikake.isPresent()) {
+				Urikake urikake = _urikake.get();
+				urikake.setVersion(version);
+				this.save(urikake);
+			}
+		} else {
+			// do nothing
 		}
 	}
 }
