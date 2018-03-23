@@ -77,4 +77,11 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	public boolean exsists(String uriageId) {
 		return repo.existsById(uriageId);
 	}
+
+	@Override
+	public void deleteIfExists(String uriageId, Integer version) {
+		if (this.exsists(uriageId)) {
+			this.delete(uriageId, version);
+		}
+	}
 }
