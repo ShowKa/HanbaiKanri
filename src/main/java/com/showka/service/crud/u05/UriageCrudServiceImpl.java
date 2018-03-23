@@ -29,7 +29,6 @@ import com.showka.service.crud.u05.i.UriageCancelCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
-import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -50,9 +49,6 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Autowired
 	private UriageCancelCrudService uriageCancelCrudService;
-
-	@Autowired
-	private UrikakeCrudService urikakeCrudService;
 
 	@Override
 	public void save(Uriage domain) {
