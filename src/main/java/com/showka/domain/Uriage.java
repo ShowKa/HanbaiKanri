@@ -54,28 +54,26 @@ public class Uriage extends DomainBase {
 	}
 
 	/**
-	 * 入金予定日取得.
+	 * 入金予定日初期値取得.
 	 * 
 	 * <pre>
-	 * 計上日を基準にして入金予定日を取得する。
-	 * ただし、顧客に入金掛け情報がない場合は、翌月20日予定とする。
-	 * ただし販売区分=現金の場合、計上日をそのまま返却する。
+	 * 顧客の掛売情報から計上日を基準にして入金予定日を取得する。
+	 * ただし販売区分=現金の場合、売上の計上日をそのまま返却する。
+	 * 顧客に入金掛け情報がない場合は、empty
 	 * </pre>
 	 * 
 	 * @return 入金予定日
 	 */
-	public EigyoDate getNyukinYoteiDate() {
+	public Optional<EigyoDate> getDefaultNyukinYoteiDate() {
 		if (hanbaiKubun == HanbaiKubun.現金) {
-			// FIXME
-			return new EigyoDate(keijoDate);
+			return Optional.of(new EigyoDate(keijoDate));
 		}
 		Optional<NyukinKakeInfo> _nki = kokyaku.getNyukinKakeInfo();
 		if (_nki.isPresent()) {
 			NyukinKakeInfo nyukinKakeInfo = _nki.get();
-			return nyukinKakeInfo.getNyukinYoteiDate(keijoDate);
+			return Optional.of(nyukinKakeInfo.getNyukinYoteiDate(keijoDate));
 		} else {
-			// TODO
-			return new EigyoDate();
+			return Optional.empty();
 		}
 	}
 
