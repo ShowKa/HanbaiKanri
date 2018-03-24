@@ -136,6 +136,25 @@ public class UriageRireki extends DomainBase {
 	}
 
 	/**
+	 * 最新伝票よりひとつ前の伝票を取得.
+	 * 
+	 * <pre>
+	 * 前回伝票が存在しない場合はemptyを返却
+	 * </pre>
+	 * 
+	 * @return 前回の伝票
+	 */
+	public Optional<Uriage> getPrevious() {
+		int size = list.size();
+		if (size == 1) {
+			return Optional.empty();
+		}
+		list.sort(new UriageComparatorByKejoDate());
+		Uriage target = convert(list.get(size - 2));
+		return Optional.of(target);
+	}
+
+	/**
 	 * 全履歴売上のリスト取得.
 	 * 
 	 * @return 全履歴売上
@@ -162,15 +181,12 @@ public class UriageRireki extends DomainBase {
 	@Override
 	protected boolean equals(DomainBase other) {
 		UriageRireki o = (UriageRireki) other;
-		Uriage newest = getNewest();
-		Uriage otherNewest = o.getNewest();
-		return newest.equals(otherNewest);
+		return uriageId.equals(o.uriageId);
 	}
 
 	@Override
 	public int hashCode() {
-		Uriage newest = getNewest();
-		return newest.hashCode();
+		return uriageId.hashCode();
 	}
 
 	/**
@@ -180,7 +196,6 @@ public class UriageRireki extends DomainBase {
 	 *            売上履歴リストの一部
 	 * @return
 	 */
-	// FIXME 普通にバグりそう
 	private Uriage convert(Uriage uriage) {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);

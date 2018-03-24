@@ -1,5 +1,7 @@
 package com.showka.domain.builder;
 
+import java.util.Optional;
+
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.NyukinKakeInfo;
@@ -7,8 +9,7 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.system.EmptyProxy;
 
-public class KokyakuBuilder
-		extends com.showka.domain.builder.DomainBuilderBase<Kokyaku, KokyakuBuilder> {
+public class KokyakuBuilder extends com.showka.domain.builder.DomainBuilderBase<Kokyaku, KokyakuBuilder> {
 
 	// private member
 	/** code */
@@ -30,7 +31,7 @@ public class KokyakuBuilder
 	private Busho shukanBusho = EmptyProxy.domain(Busho.class);
 
 	/** nyukinKakeInfo */
-	private NyukinKakeInfo nyukinKakeInfo = EmptyProxy.domain(NyukinKakeInfo.class);
+	private Optional<NyukinKakeInfo> nyukinKakeInfo = Optional.empty();
 
 	/** recordId */
 	private String recordId;;
@@ -54,8 +55,7 @@ public class KokyakuBuilder
 
 	@Override
 	protected Kokyaku createDomainObject() {
-		Kokyaku domain = new Kokyaku(code, name, address, kokyakuKubun, hanbaiKubun, shukanBusho,
-				nyukinKakeInfo);
+		Kokyaku domain = new Kokyaku(code, name, address, kokyakuKubun, hanbaiKubun, shukanBusho, nyukinKakeInfo);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -181,11 +181,28 @@ public class KokyakuBuilder
 	 *            nyukinKakeInfo
 	 * @return {@link KokyakuBuilder}
 	 */
-	public KokyakuBuilder withNyukinKakeInfo(final NyukinKakeInfo nyukinKakeInfo) {
+	public KokyakuBuilder withNyukinKakeInfo(final Optional<NyukinKakeInfo> nyukinKakeInfo) {
 		addConfigurator(new BuilderConfigurator<KokyakuBuilder>() {
 			@Override
 			public void configure(KokyakuBuilder builder) {
 				builder.nyukinKakeInfo = nyukinKakeInfo;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link Kokyaku}に与えるnyukinKakeInfoをこのビルダに設定する。
+	 *
+	 * @param nyukinKakeInfo
+	 *            nyukinKakeInfo
+	 * @return {@link KokyakuBuilder}
+	 */
+	public KokyakuBuilder withNyukinKakeInfo(final NyukinKakeInfo nyukinKakeInfo) {
+		addConfigurator(new BuilderConfigurator<KokyakuBuilder>() {
+			@Override
+			public void configure(KokyakuBuilder builder) {
+				builder.nyukinKakeInfo = Optional.of(nyukinKakeInfo);
 			}
 		});
 		return getThis();

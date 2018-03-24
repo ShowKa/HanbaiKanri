@@ -44,4 +44,6 @@ public class U05G002Form extends FormBase {
 	/** version. */
 	private Integer version;
 
+	/** 売掛version. */
+	private Integer urikakeVersion;
 }

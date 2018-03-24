@@ -312,7 +312,7 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		assertEquals("BS02", result.getShukanBusho().getRecordId());
 		assertEquals("KK03", result.getRecordId());
 
-		NyukinKakeInfo resultNyukin = result.getNyukinKakeInfo();
+		NyukinKakeInfo resultNyukin = result.getNyukinKakeInfo().get();
 		assertEquals("00", resultNyukin.getNyukinHohoKubun().getCode());
 		assertEquals("10", resultNyukin.getNyukinTsukiKubun().getCode());
 		assertEquals(20, resultNyukin.getShimeDate().intValue());

@@ -57,6 +57,14 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return new TheDate(this.date.plusDays(daysToAdd));
 	}
 
+	public TheDate plusMonths(long monthsToAdd) {
+		return new TheDate(this.date.plusMonths(monthsToAdd));
+	}
+
+	public TheDate withDayOfMonth(int dayOfMonth) {
+		return new TheDate(this.date.withDayOfMonth(dayOfMonth));
+	}
+
 	/**
 	 * 文字列フォーマット.
 	 * 

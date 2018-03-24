@@ -206,7 +206,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	 * @throws Exception
 	 */
 	@Test
-	public void test03_01_deleteByPK() throws Exception {
+	public void test03_delete() throws Exception {
 		// data
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
@@ -219,58 +219,6 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		service.delete(pk, 0);
 		// check
 		assertEquals(0, repo.findAll().size());
-	}
-
-	/**
-	 * delete 計上済み売上を更新したデータの削除.
-	 * 
-	 * @throws Exception
-	 */
-	@Test
-	public void test03_02_deleteByPK() throws Exception {
-		// data
-		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
-		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
-		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
-		assertEquals(1, repo.findAll().size());
-		// expect
-		List<Uriage> u = new ArrayList<Uriage>();
-		UriageRireki rireki = new UriageRirekiBuilder().withList(u).build();
-		new Expectations() {
-			{
-				uriageRirekiCrudService.getUriageRirekiList("r-KK01-00001");
-				result = rireki;
-				service.save((Uriage) any);
-			}
-		};
-		// mock
-		new MockUp<UriageRireki>() {
-			@Mock
-			public List<Uriage> getList() {
-				List<Uriage> list = new ArrayList<Uriage>();
-				list.add(new UriageBuilder().build());
-				return list;
-			}
-
-			@Mock
-			public Uriage getNewest() {
-				return new UriageBuilder().build();
-			}
-		};
-		// do
-		TUriagePK pk = new TUriagePK();
-		pk.setKokyakuId("r-KK01");
-		pk.setDenpyoNumber("00001");
-		service.delete(pk, 0);
-		// verify
-		new Verifications() {
-			{
-				uriageRirekiCrudService.getUriageRirekiList("r-KK01-00001");
-				times = 1;
-				service.save((Uriage) any);
-				times = 1;
-			}
-		};
 	}
 
 	/**
@@ -454,5 +402,50 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
 		List<Uriage> actual = service.getUriageOfKokyaku("KK01");
 		assertEquals(2, actual.size());
+	}
+
+	/**
+	 * revert 計上済み売上に戻す.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void test11_revert() throws Exception {
+		// data
+		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
+		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
+		assertEquals(1, repo.findAll().size());
+		// expect
+		List<Uriage> u = new ArrayList<Uriage>();
+		UriageRireki rireki = new UriageRirekiBuilder().withList(u).build();
+		new Expectations() {
+			{
+				uriageRirekiCrudService.getUriageRirekiList("r-KK01-00001");
+				result = rireki;
+				service.save((Uriage) any);
+			}
+		};
+		// mock
+		new MockUp<UriageRireki>() {
+			@Mock
+			public Uriage getNewest() {
+				return new UriageBuilder().build();
+			}
+		};
+		// do
+		TUriagePK pk = new TUriagePK();
+		pk.setKokyakuId("r-KK01");
+		pk.setDenpyoNumber("00001");
+		service.revert(pk, 0);
+		// verify
+		new Verifications() {
+			{
+				uriageRirekiCrudService.getUriageRirekiList("r-KK01-00001");
+				times = 1;
+				service.save((Uriage) any);
+				times = 1;
+			}
+		};
 	}
 }
