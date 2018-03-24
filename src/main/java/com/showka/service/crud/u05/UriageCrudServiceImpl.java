@@ -76,35 +76,21 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 
 	@Override
 	public void delete(TUriagePK pk, Integer version) {
+		// OCC
 		TUriage entity = repo.getOne(pk);
-		// occ
 		entity.setVersion(version);
-		// domain
-		Uriage domain = getDomainFromEntity(entity);
 		// 売上履歴削除
 		uriageRirekiCrudService.delete(new RUriagePK(entity.getRecordId(), entity.getKeijoDate()));
-		// 残った履歴取得
+		Uriage domain = getDomainFromEntity(entity);
 		String uriageId = domain.getRecordId();
-		UriageRireki rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
-		// 計上済みの履歴があれば、それで売上を上書きし直す。
-		// ない場合は、売上データ自体をすべて削除して終了。
-		if (rirekiList.getList().size() > 0) {
-			Uriage domainForOverride = rirekiList.getNewest();
-			UriageBuilder b = new UriageBuilder();
-			// 排他制御用バージョン設定
-			b.withVersion(domain.getVersion());
-			this.save(b.apply(domainForOverride));
-		} else {
-			// 明細削除
-			domain.getUriageMeisai().forEach(meisai -> {
-				TUriageMeisaiPK mpk = new TUriageMeisaiPK();
-				mpk.setUriageId(uriageId);
-				mpk.setMeisaiNumber(meisai.getMeisaiNumber());
-				uriageMeisaiCrudService.delete(mpk, meisai.getVersion());
-			});
-			// 売上削除
-			repo.deleteById(pk);
-		}
+		domain.getUriageMeisai().forEach(meisai -> {
+			TUriageMeisaiPK mpk = new TUriageMeisaiPK();
+			mpk.setUriageId(uriageId);
+			mpk.setMeisaiNumber(meisai.getMeisaiNumber());
+			uriageMeisaiCrudService.delete(mpk, meisai.getVersion());
+		});
+		// 売上削除
+		repo.deleteById(pk);
 	}
 
 	@Override
@@ -124,6 +110,23 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		this.save(domain);
 		// cancel
 		uriageCancelCrudService.save(domain);
+	}
+
+	@Override
+	public void revert(TUriagePK pk, int version) {
+		// OCC
+		TUriage entity = repo.getOne(pk);
+		entity.setVersion(version);
+		// 売上履歴削除
+		RUriagePK rpk = new RUriagePK(entity.getRecordId(), entity.getKeijoDate());
+		uriageRirekiCrudService.delete(rpk);
+		// 残った履歴取得
+		String uriageId = entity.getRecordId();
+		UriageRireki rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
+		// 計上済みの履歴で売上を上書きし直す。
+		Uriage domainForOverride = rirekiList.getNewest();
+		domainForOverride.setVersion(version);
+		this.save(domainForOverride);
 	}
 
 	@Override
