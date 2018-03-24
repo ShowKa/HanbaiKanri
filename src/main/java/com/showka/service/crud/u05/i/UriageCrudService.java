@@ -34,6 +34,7 @@ public interface UriageCrudService extends CrudService<Uriage, TUriagePK> {
 	 *            顧客コード
 	 * @return 売上リスト
 	 */
+	// TODO move to SearchService
 	public List<Uriage> getUriageOfKokyaku(String kokyakuCode);
 
 }
