@@ -3,24 +3,16 @@ package com.showka.service.validate.u01;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
+import com.showka.common.SimpleTestCase;
 import com.showka.domain.Kokyaku;
-import com.showka.domain.NyukinKakeInfo;
 import com.showka.domain.Uriage;
-import com.showka.domain.builder.KokyakuBuilder;
-import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
-import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.system.exception.CanNotUpdateException;
 import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
@@ -28,6 +20,7 @@ import com.showka.system.exception.ValidateException;
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
+import mockit.Verifications;
 
 /**
  * 顧客 Validate Service Test
@@ -35,52 +28,49 @@ import mockit.Tested;
  * @author 25767
  *
  */
-public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
+public class KokyakuValidateServiceImplTest extends SimpleTestCase {
 
 	@Tested
 	private KokyakuValidateServiceImpl service;
 
-	@Autowired
 	@Injectable
 	private MKokyakuRepository repo;
 
-	@Autowired
 	@Injectable
 	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
 
 	@Injectable
 	private UriageCrudService uriageCrudService;
 
-	@Autowired
-	private BushoCrudService bushoCRUDService;
-
-	/**
-	 * test data
-	 */
-	private static final Object[] VALUE01 = { "KK01", "aaaa", "左京区", "01", "00", "BS01", "KK01" };
-	private static final Object[] VALUE02 = { "KK02", "aaaa", "右京区", "01", "00", "BS02", "KK02" };
-	private static final Object[] VALUE03 = { "KK03", "bbbb", "上京区", "01", "00", "BS02", "KK03" };
-
-	/**
-	 * Before
-	 */
-	@Before
-	public void before() {
-		super.deleteAll(M_KOKYAKU);
-		super.insert(M_KOKYAKU, M_KOKYAKU_COLUMN, VALUE01, VALUE02, VALUE03);
-	}
-
 	@Test(expected = NotExistException.class)
 	public void test_validateForRefer1() {
-		String id = "KK05";
+		// input
+		String id = "KK99_dummy";
+		// do
 		service.validateForRefer(id);
-		fail();
 	}
 
 	@Test
 	public void test_validateForRefer2() {
+		// input
 		String id = "KK01";
+		// expect
+		new Expectations() {
+			{
+				repo.existsById(id);
+				result = true;
+			}
+		};
+		// do
 		service.validateForRefer(id);
+		// verify
+		new Verifications() {
+			{
+				repo.existsById(id);
+				times = 1;
+			}
+		};
+		// check
 		assertTrue(true);
 	}
 
@@ -95,35 +85,29 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 	 * <pre>
 	 */
 	@Test
-	@Transactional
-	public void test_validateForRegister1() {
-
-		String id = "KK05";
-		Integer version = 0;
-		String record_id = "this is inserted record";
-		String bushoId = "BS01";
-
-		// build nyukinKakeInfo domain
-		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
-
-		// get busho domain
-		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
-
-		// build kokyaku domain
-		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(id);
-		builder.withShukanBusho(bushoDomain);
-		builder.withNyukinKakeInfo(nyukinDomain);
-
-		builder.withVersion(version);
-		builder.withRecordId(record_id);
-
-		// build domain
-		Kokyaku domain = builder.build();
-
+	public void test_validateForRegister1(@Injectable Kokyaku domain) {
+		// input
+		String kokyakuCode = "KK01";
+		// expect
+		new Expectations() {
+			{
+				domain.getCode();
+				result = kokyakuCode;
+				repo.existsById(kokyakuCode);
+				result = false;
+			}
+		};
+		// do
 		service.validateForRegister(domain);
+		// verify
+		new Verifications() {
+			{
+				domain.getCode();
+				times = 1;
+				repo.existsById(kokyakuCode);
+				times = 1;
+			}
+		};
 	}
 
 	/**
@@ -137,37 +121,29 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 	 * <pre>
 	 */
 	@Test(expected = ValidateException.class)
-	@Transactional
-	public void test_validateForRegister2() {
-
-		String id = "KK01";
-		Integer version = 0;
-		String record_id = "this is inserted record";
-		String bushoId = "BS01";
-
-		// build nyukinKakeInfo domain
-		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
-
-		// get busho domain
-		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
-
-		// build kokyaku domain
-		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(id);
-		builder.withShukanBusho(bushoDomain);
-		builder.withNyukinKakeInfo(nyukinDomain);
-
-		builder.withVersion(version);
-		builder.withRecordId(record_id);
-
-		// build domain
-		Kokyaku domain = builder.build();
-
+	public void test_validateForRegister2(@Injectable Kokyaku domain) {
+		// input
+		String kokyakuCode = "KK01";
+		// expect
+		new Expectations() {
+			{
+				domain.getCode();
+				result = kokyakuCode;
+				repo.existsById(kokyakuCode);
+				result = true;
+			}
+		};
+		// do
 		service.validateForRegister(domain);
-
-		fail();
+		// verify
+		new Verifications() {
+			{
+				domain.getCode();
+				times = 1;
+				repo.existsById(kokyakuCode);
+				times = 1;
+			}
+		};
 	}
 
 	/**
@@ -181,39 +157,27 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 	 * <pre>
 	 */
 	@Test
-	@Transactional
-	public void test_validate1() {
-
-		String id = "KK01";
-		Integer version = 0;
-		String bushoId = "BS01";
-		String record_id = "this is inserted record";
-		KokyakuKubun kokyakuKubun = KokyakuKubun.個人;
-		HanbaiKubun hanbaiKubun = HanbaiKubun.現金;
-
-		// build nyukinKakeInfo domain
-		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
-
-		// get busho domain
-		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
-
-		// build kokyaku domain
-		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(id);
-		builder.withKokyakuKubun(kokyakuKubun);
-		builder.withHanbaiKubun(hanbaiKubun);
-		builder.withShukanBusho(bushoDomain);
-		builder.withNyukinKakeInfo(nyukinDomain);
-
-		builder.withVersion(version);
-		builder.withRecordId(record_id);
-
-		// build domain
-		Kokyaku domain = builder.build();
-
+	public void test_validate1(@Injectable Kokyaku domain) {
+		// expect
+		new Expectations() {
+			{
+				domain.getKokyakuKubun();
+				result = KokyakuKubun.個人;
+				domain.getHanbaiKubun();
+				result = HanbaiKubun.現金;
+			}
+		};
+		// do
 		service.validate(domain);
+		// verify
+		new Verifications() {
+			{
+				domain.getKokyakuKubun();
+				times = 1;
+				domain.getHanbaiKubun();
+				times = 1;
+			}
+		};
 	}
 
 	/**
@@ -227,39 +191,27 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 	 * <pre>
 	 */
 	@Test
-	@Transactional
-	public void test_validate2() {
-
-		String id = "KK01";
-		Integer version = 0;
-		String record_id = "this is inserted record";
-		String bushoId = "BS01";
-		KokyakuKubun kokyakuKubun = KokyakuKubun.法人;
-		HanbaiKubun hanbaiKubun = HanbaiKubun.現金;
-
-		// build nyukinKakeInfo domain
-		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
-
-		// get busho domain
-		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
-
-		// build kokyaku domain
-		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(id);
-		builder.withKokyakuKubun(kokyakuKubun);
-		builder.withHanbaiKubun(hanbaiKubun);
-		builder.withShukanBusho(bushoDomain);
-		builder.withNyukinKakeInfo(nyukinDomain);
-
-		builder.withVersion(version);
-		builder.withRecordId(record_id);
-
-		// build domain
-		Kokyaku domain = builder.build();
-
+	public void test_validate2(@Injectable Kokyaku domain) {
+		// expect
+		new Expectations() {
+			{
+				domain.getKokyakuKubun();
+				result = KokyakuKubun.法人;
+				domain.getHanbaiKubun();
+				result = HanbaiKubun.現金;
+			}
+		};
+		// do
 		service.validate(domain);
+		// verify
+		new Verifications() {
+			{
+				domain.getKokyakuKubun();
+				times = 1;
+				domain.getHanbaiKubun();
+				times = 1;
+			}
+		};
 	}
 
 	/**
@@ -273,39 +225,27 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 	 * <pre>
 	 */
 	@Test(expected = ValidateException.class)
-	@Transactional
-	public void test_validate3() {
-
-		String id = "KK01";
-		Integer version = 0;
-		String record_id = "this is inserted record";
-		String bushoId = "BS01";
-		KokyakuKubun kokyakuKubun = KokyakuKubun.個人;
-		HanbaiKubun hanbaiKubun = HanbaiKubun.掛売;
-
-		// build nyukinKakeInfo domain
-		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
-
-		// get busho domain
-		Busho bushoDomain = bushoCRUDService.getDomain(bushoId);
-
-		// build kokyaku domain
-		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(id);
-		builder.withKokyakuKubun(kokyakuKubun);
-		builder.withHanbaiKubun(hanbaiKubun);
-		builder.withShukanBusho(bushoDomain);
-		builder.withNyukinKakeInfo(nyukinDomain);
-
-		builder.withVersion(version);
-		builder.withRecordId(record_id);
-
-		// build domain
-		Kokyaku domain = builder.build();
-
+	public void test_validate3(@Injectable Kokyaku domain) {
+		// expect
+		new Expectations() {
+			{
+				domain.getKokyakuKubun();
+				result = KokyakuKubun.個人;
+				domain.getHanbaiKubun();
+				result = HanbaiKubun.掛売;
+			}
+		};
+		// do
 		service.validate(domain);
+		// verify
+		new Verifications() {
+			{
+				domain.getKokyakuKubun();
+				times = 1;
+				domain.getHanbaiKubun();
+				times = 1;
+			}
+		};
 	}
 
 	@Test(expected = CanNotUpdateException.class)
@@ -321,7 +261,6 @@ public class KokyakuValidateServiceImplTest extends CrudServiceTestCase {
 		};
 		// do
 		service.validateForDelete("KK01");
-		fail();
 	}
 
 	@Test
