@@ -181,15 +181,12 @@ public class UriageRireki extends DomainBase {
 	@Override
 	protected boolean equals(DomainBase other) {
 		UriageRireki o = (UriageRireki) other;
-		Uriage newest = getNewest();
-		Uriage otherNewest = o.getNewest();
-		return newest.equals(otherNewest);
+		return uriageId.equals(o.uriageId);
 	}
 
 	@Override
 	public int hashCode() {
-		Uriage newest = getNewest();
-		return newest.hashCode();
+		return uriageId.hashCode();
 	}
 
 	/**
@@ -199,7 +196,6 @@ public class UriageRireki extends DomainBase {
 	 *            売上履歴リストの一部
 	 * @return
 	 */
-	// FIXME 普通にバグりそう
 	private Uriage convert(Uriage uriage) {
 		UriageBuilder b = new UriageBuilder();
 		b.withRecordId(uriageId);
