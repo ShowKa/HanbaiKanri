@@ -68,8 +68,8 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 		repo.save(e);
 
 		// 入金掛情報save
-		NyukinKakeInfo nyukinKakeInfo = domain.getNyukinKakeInfo();
 		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
+			NyukinKakeInfo nyukinKakeInfo = domain.getNyukinKakeInfo().get();
 			nyukinCrudService.save(nyukinKakeInfo);
 		} else {
 			nyukinCrudService.deleteForciblyIfExists(domain.getRecordId());
@@ -107,7 +107,7 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 
 		if (hanbaiKubun == HanbaiKubun.掛売) {
 			NyukinKakeInfo nyukinKakeInfoDomain = nyukinCrudService.getDomain(kokyakuRecordId);
-			builder.withNyukinKakeInfo(nyukinKakeInfoDomain);
+			builder.withNyukinKakeInfo(Optional.of(nyukinKakeInfoDomain));
 		}
 		builder.withRecordId(kokyakuRecordId);
 		builder.withVersion(kokyakuEntity.getVersion());

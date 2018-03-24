@@ -3,6 +3,7 @@ package com.showka.web.u01;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.validation.Valid;
@@ -97,9 +98,9 @@ public class U01G002Controller {
 		setListToModelAttribute(model);
 
 		// 入金サイトを取得して画面に送る
-		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
-		if (nyukinKakeInfo != null) {
-			model.addObject("nyukinSight", nyukinKakeInfo.getNyukinSight());
+		Optional<NyukinKakeInfo> nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		if (nyukinKakeInfo.isPresent()) {
+			model.addObject("nyukinSight", nyukinKakeInfo.get().getNyukinSight());
 		}
 
 		// モード情報を画面に送る。編集できないようにする
@@ -295,7 +296,7 @@ public class U01G002Controller {
 	private U01G002Form setForm(U01G002Form form, Kokyaku kokyaku) {
 
 		Busho busho = kokyaku.getShukanBusho();
-		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		Optional<NyukinKakeInfo> _nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 
 		// kokyaku
 		form.setCode(kokyaku.getCode());
@@ -310,7 +311,8 @@ public class U01G002Controller {
 		form.setShukanBushoCode(busho.getCode());
 
 		// kakeinfo
-		if (!nyukinKakeInfo.isEmpty()) {
+		if (_nyukinKakeInfo.isPresent()) {
+			NyukinKakeInfo nyukinKakeInfo = _nyukinKakeInfo.get();
 			form.setNyukinHohoKubun(nyukinKakeInfo.getNyukinHohoKubun().getCode());
 			form.setNyukinTsukiKubun(nyukinKakeInfo.getNyukinTsukiKubun().getCode());
 			form.setShimebi(nyukinKakeInfo.getShimeDate());

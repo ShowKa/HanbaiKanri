@@ -1,5 +1,7 @@
 package com.showka.domain;
 
+import java.util.Optional;
+
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.system.exception.SystemException;
@@ -36,7 +38,7 @@ public class Kokyaku extends DomainBase {
 	private Busho shukanBusho;
 
 	/** 入金掛情報 */
-	private NyukinKakeInfo nyukinKakeInfo;
+	private Optional<NyukinKakeInfo> nyukinKakeInfo;
 
 	@Override
 	public void validate() throws SystemException {

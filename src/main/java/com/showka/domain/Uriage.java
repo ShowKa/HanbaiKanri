@@ -3,6 +3,7 @@ package com.showka.domain;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import com.showka.kubun.HanbaiKubun;
 import com.showka.system.exception.SystemException;
@@ -57,6 +58,7 @@ public class Uriage extends DomainBase {
 	 * 
 	 * <pre>
 	 * 計上日を基準にして入金予定日を取得する。
+	 * ただし、顧客に入金掛け情報がない場合は、翌月20日予定とする。
 	 * ただし販売区分=現金の場合、計上日をそのまま返却する。
 	 * </pre>
 	 * 
@@ -67,8 +69,14 @@ public class Uriage extends DomainBase {
 			// FIXME
 			return new EigyoDate(keijoDate);
 		}
-		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
-		return nyukinKakeInfo.getNyukinYoteiDate(keijoDate);
+		Optional<NyukinKakeInfo> _nki = kokyaku.getNyukinKakeInfo();
+		if (_nki.isPresent()) {
+			NyukinKakeInfo nyukinKakeInfo = _nki.get();
+			return nyukinKakeInfo.getNyukinYoteiDate(keijoDate);
+		} else {
+			// TODO
+			return new EigyoDate();
+		}
 	}
 
 	@Override

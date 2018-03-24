@@ -58,7 +58,7 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 		}
 
 		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
-			nyukinKakeInfoValidateService.validate(domain.getNyukinKakeInfo());
+			nyukinKakeInfoValidateService.validate(domain.getNyukinKakeInfo().get());
 		}
 	}
 
