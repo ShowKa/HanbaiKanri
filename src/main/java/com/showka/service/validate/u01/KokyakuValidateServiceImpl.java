@@ -52,12 +52,12 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 
 	@Override
 	public void validate(Kokyaku domain) throws ValidateException {
-
-		if (domain.getKokyakuKubun() == KokyakuKubun.個人 && domain.getHanbaiKubun() == HanbaiKubun.掛売) {
+		// 販売区分
+		HanbaiKubun hanbaiKubun = domain.getHanbaiKubun();
+		if (domain.getKokyakuKubun() == KokyakuKubun.個人 && hanbaiKubun == HanbaiKubun.掛売) {
 			throw new IncorrectKubunException("販売区分", HanbaiKubun.掛売, "個人顧客は掛売できません");
 		}
-
-		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
+		if (hanbaiKubun == HanbaiKubun.掛売) {
 			nyukinKakeInfoValidateService.validate(domain.getNyukinKakeInfo().get());
 		}
 	}
