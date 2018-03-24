@@ -1,6 +1,5 @@
 package com.showka.service.crud.u05;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Uriage;
-import com.showka.domain.Uriage.UriageComparatorByKejoDate;
 import com.showka.domain.UriageRireki;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.UrikakeBuilder;
@@ -100,23 +98,20 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	public void revert(String uriageId, Integer version) {
 		// 売上履歴取得
 		UriageRireki rirekiList = uriageRirekiCrudService.getUriageRirekiList(uriageId);
-		List<Uriage> _list = rirekiList.getList();
-		int size = _list.size();
-		if (size == 1) {
-			// 履歴が1件 => 未計上と判断し売掛削除
-			this.deleteIfExists(uriageId, version);
-		} else if (size > 1) {
-			// 前計上日の売上を取得
-			_list.sort(new UriageComparatorByKejoDate());
-			Uriage reverTarget = _list.get(size - 2);
-			Optional<Urikake> _urikake = urikakeSpecificationService.buildUrikakeBy(reverTarget);
-			if (_urikake.isPresent()) {
-				Urikake urikake = _urikake.get();
-				urikake.setVersion(version);
-				this.save(urikake);
-			}
-		} else {
-			// do nothing
+		// 売上の前回計上分を取得
+		Optional<Uriage> _reverTarget = rirekiList.getPrevious();
+		// ない場合はなにもしない。
+		if (!_reverTarget.isPresent()) {
+			return;
+		}
+		// build 売掛
+		Uriage revertTarget = _reverTarget.get();
+		Optional<Urikake> _urikake = urikakeSpecificationService.buildUrikakeBy(revertTarget);
+		// 売掛がある場合はsave
+		if (_urikake.isPresent()) {
+			Urikake urikake = _urikake.get();
+			urikake.setVersion(version);
+			this.save(urikake);
 		}
 	}
 }

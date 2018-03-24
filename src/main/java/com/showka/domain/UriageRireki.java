@@ -136,6 +136,25 @@ public class UriageRireki extends DomainBase {
 	}
 
 	/**
+	 * 最新伝票よりひとつ前の伝票を取得.
+	 * 
+	 * <pre>
+	 * 前回伝票が存在しない場合はemptyを返却
+	 * </pre>
+	 * 
+	 * @return 前回の伝票
+	 */
+	public Optional<Uriage> getPrevious() {
+		int size = list.size();
+		if (size == 1) {
+			return Optional.empty();
+		}
+		list.sort(new UriageComparatorByKejoDate());
+		Uriage target = convert(list.get(size - 2));
+		return Optional.of(target);
+	}
+
+	/**
 	 * 全履歴売上のリスト取得.
 	 * 
 	 * @return 全履歴売上
