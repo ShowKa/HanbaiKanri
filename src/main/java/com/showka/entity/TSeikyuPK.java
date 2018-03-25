@@ -26,8 +26,8 @@ public class TSeikyuPK implements Serializable {
 	private String kokyakuId;
 
 	/** 請求日 */
-	@Column(name = "date", unique = false, nullable = false)
-	private Date date;
+	@Column(name = "seikyu_date", unique = false, nullable = false)
+	private Date seikyuDate;
 
 	@Override
 	public boolean equals(Object pk) {
@@ -38,6 +38,6 @@ public class TSeikyuPK implements Serializable {
 			return false;
 		}
 		TSeikyuPK p = (TSeikyuPK) pk;
-		return kokyakuId.equals(p.kokyakuId) && date.equals(p.date);
+		return kokyakuId.equals(p.kokyakuId) && seikyuDate.equals(p.seikyuDate);
 	}
 }
