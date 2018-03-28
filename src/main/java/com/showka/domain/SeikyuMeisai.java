@@ -21,6 +21,14 @@ public class SeikyuMeisai extends DomainBase {
 	private Integer kingaku;
 
 	// public method
+	/**
+	 * 売掛のIDを取得.
+	 * 
+	 * @return 売掛ID
+	 */
+	public String getUrikakeId() {
+		return urikake.getRecordId();
+	}
 
 	// override
 	@Override

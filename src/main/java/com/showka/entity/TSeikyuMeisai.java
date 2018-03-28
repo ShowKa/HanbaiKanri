@@ -35,6 +35,25 @@ public class TSeikyuMeisai extends EntityBase implements Serializable {
 	@Column(name = "kingaku", nullable = false)
 	private Integer kingaku;
 
+	// public methods
+	/**
+	 * 売掛ID取得.
+	 * 
+	 * @return 売掛ID
+	 */
+	public String getUrikakeId() {
+		return pk.getUrikakeId();
+	}
+
+	/**
+	 * 請求ID取得.
+	 * 
+	 * @return 請求ID
+	 */
+	public String getSeikyuId() {
+		return pk.getSeikyuId();
+	}
+
 	// join
 	/** 請求. */
 	@ManyToOne(fetch = FetchType.LAZY)
