@@ -45,6 +45,15 @@ public class Seikyu extends DomainBase {
 		}).sum();
 	}
 
+	/**
+	 * 顧客ID取得.
+	 * 
+	 * @return 顧客ID
+	 */
+	public String getKokyakuId() {
+		return kokyaku.getRecordId();
+	}
+
 	// override
 	@Override
 	public void validate() throws SystemException {

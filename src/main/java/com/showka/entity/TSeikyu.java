@@ -46,4 +46,23 @@ public class TSeikyu extends EntityBase implements Serializable {
 	/** 請求明細. */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "seikyu")
 	private List<TSeikyuMeisai> meisai;
+
+	// public methods
+	/**
+	 * 顧客ID取得.
+	 * 
+	 * @return 顧客ID
+	 */
+	public String getKokyakuId() {
+		return pk.getKokyakuId();
+	}
+
+	/**
+	 * 請求日取得.
+	 * 
+	 * @return 請求日
+	 */
+	public Date getSeikyuDate() {
+		return pk.getSeikyuDate();
+	}
 }
