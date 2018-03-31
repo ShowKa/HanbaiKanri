@@ -21,6 +21,7 @@ import com.showka.service.crud.u05.i.UriageKeijoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.service.validate.u17.i.BushoDateValidateService;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
@@ -45,6 +46,9 @@ public class U17G001Controller extends ControllerBase {
 
 	@Autowired
 	private UriageKeijoCrudService uriageKeijoCrudService;
+
+	@Autowired
+	private SeikyuSpecification seikyuSpecification;
 
 	/**
 	 * 参照.
@@ -106,6 +110,8 @@ public class U17G001Controller extends ControllerBase {
 		uriageKeijoCrudService.keijo(busho, eigyoDate);
 		// 在庫繰越
 		shohinZaikoCrudService.kurikoshi(busho, eigyoDate);
+		// 請求
+		seikyuSpecification.seikyu(busho, eigyoDate);
 		// close
 		bushoDateCrudService.toNextEigyoDate(busho);
 		// set model
