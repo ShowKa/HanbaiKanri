@@ -14,7 +14,7 @@ public interface NyukinKakeInfoSearchService {
 	 *            主管部署
 	 * @param shimeDate
 	 *            締日
-	 * @return 顧客 entity list
+	 * @return 顧客 list
 	 */
 	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, EigyoDate shimeDate);
 }

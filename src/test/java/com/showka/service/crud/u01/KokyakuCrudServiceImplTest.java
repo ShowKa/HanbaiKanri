@@ -140,8 +140,8 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		MNyukinKakeInfo actualNyukin = nyukinRepo.findById(id).get();
 		assertEquals(nyukinHohoKubun.getCode(), actualNyukin.getNyukinHohoKubun());
 		assertEquals(nyukinTukiKubun.getCode(), actualNyukin.getNyukinTsukiKubun());
-		assertEquals(shimeDate.intValue(), actualNyukin.getShimebi());
-		assertEquals(nyukinDate.intValue(), actualNyukin.getNyukinDate());
+		assertEquals(shimeDate, actualNyukin.getShimebi());
+		assertEquals(nyukinDate, actualNyukin.getNyukinDate());
 
 	}
 

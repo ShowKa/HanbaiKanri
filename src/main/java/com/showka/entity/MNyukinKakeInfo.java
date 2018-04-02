@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -30,8 +30,8 @@ public class MNyukinKakeInfo extends EntityBase implements Serializable {
 	private String kokyakuId;
 
 	/** 顧客 */
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "kokyaku_id", referencedColumnName = "record_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "kokyaku_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MKokyaku kokyaku;
 
 	/** 入金方法区分 */
@@ -44,10 +44,9 @@ public class MNyukinKakeInfo extends EntityBase implements Serializable {
 
 	/** 請求締日 */
 	@Column(name = "shimebi", nullable = false)
-	private int shimebi;
+	private Integer shimebi;
 
 	/** 入金日 */
 	@Column(name = "nyukin_date", nullable = false)
-	private int nyukinDate;
-
+	private Integer nyukinDate;
 }
