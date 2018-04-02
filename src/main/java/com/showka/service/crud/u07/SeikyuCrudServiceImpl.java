@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Seikyu;
@@ -18,6 +19,7 @@ import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.crud.u07.i.SeikyuMeisaiCrudService;
 import com.showka.value.EigyoDate;
 
+@Service
 public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 
 	@Autowired

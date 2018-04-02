@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import com.showka.domain.SeikyuMeisai;
 import com.showka.domain.Urikake;
@@ -17,6 +18,7 @@ import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuMeisaiCrudService;
 
+@Service
 public class SeikyuMeisaiCrudServiceImpl implements SeikyuMeisaiCrudService {
 
 	@Autowired
