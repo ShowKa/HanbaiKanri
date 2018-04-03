@@ -117,6 +117,9 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 
 	@Override
 	public void updateNyukinYoteiDate(Urikake urikake, EigyoDate updatedNyukinYoteiDate) {
-		// TODO Auto-generated method stub
+		UrikakeBuilder b = new UrikakeBuilder();
+		b.withNyukinYoteiDate(updatedNyukinYoteiDate);
+		Urikake updated = b.apply(urikake);
+		this.save(updated);
 	}
 }

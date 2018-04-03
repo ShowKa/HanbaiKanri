@@ -120,6 +120,10 @@ public abstract class TestCaseBase extends TestCase {
 			"uriage_rireki_id",
 			"record_id" };
 
+	// 売掛
+	protected static final String T_URIKAKE = "T_URIKAKE";
+	protected static final String[] T_URIKAKE_COLUMN = { "uriage_id", "zandaka", "nyukin_yotei_date", "record_id" };
+
 	// 商品
 	protected static final String M_SHOHIN = "M_SHOHIN";
 	protected static final String[] M_SHOHIN_COLUMN = { "code", "name", "hyojun_tanka", "record_id" };
