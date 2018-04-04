@@ -15,7 +15,7 @@ public interface UrikakeSearchService {
 	 * 
 	 * @param kokyakuCode
 	 *            顧客コード
-	 * @return 売掛 entity list
+	 * @return 売掛 list
 	 */
 	public List<Urikake> getUrikakeOfKokyaku(String kokyakuCode);
 }

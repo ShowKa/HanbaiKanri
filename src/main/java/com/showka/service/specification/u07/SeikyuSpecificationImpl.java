@@ -48,8 +48,8 @@ public class SeikyuSpecificationImpl implements SeikyuSpecification {
 	@Override
 	public void seikyu(Kokyaku kokyaku, EigyoDate shimeDate) {
 		// 売掛
-		String kokyakuCode = kokyaku.getCode();
-		List<Urikake> urikakeList = urikakeSearchService.getUrikakeOfKokyaku(kokyakuCode);
+		String kokyakuId = kokyaku.getRecordId();
+		List<Urikake> urikakeList = urikakeSearchService.getUrikakeOfKokyaku(kokyakuId);
 		// 請求明細
 		List<SeikyuMeisai> meisai = urikakeList.stream().map(urikake -> {
 			SeikyuMeisaiBuilder b = new SeikyuMeisaiBuilder();
