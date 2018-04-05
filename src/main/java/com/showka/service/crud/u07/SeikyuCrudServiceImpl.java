@@ -17,6 +17,7 @@ import com.showka.repository.i.TSeikyuRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.crud.u07.i.SeikyuMeisaiCrudService;
+import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -90,5 +91,16 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 	@Override
 	public boolean exsists(TSeikyuPK pk) {
 		return repo.existsById(pk);
+	}
+
+	@Override
+	public void save(SeikyuSpecification spec) {
+		SeikyuBuilder b = new SeikyuBuilder();
+		b.withKokyaku(spec.getKokyaku());
+		b.withSeikyuDate(spec.getSeikyuDate());
+		b.withShiharaiDate(spec.getShiharaiDate());
+		b.withSeikyuMeisai(spec.getSeikyuMeisai());
+		Seikyu seikyu = b.build();
+		this.save(seikyu);
 	}
 }

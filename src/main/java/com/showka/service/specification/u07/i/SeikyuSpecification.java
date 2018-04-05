@@ -1,40 +1,37 @@
 package com.showka.service.specification.u07.i;
 
-import com.showka.domain.Busho;
+import java.util.List;
+
 import com.showka.domain.Kokyaku;
+import com.showka.domain.SeikyuMeisai;
 import com.showka.value.EigyoDate;
 
 public interface SeikyuSpecification {
 	/**
-	 * 請求を行う.
+	 * 請求先の顧客取得.
 	 * 
-	 * <pre>
-	 * ・締日を迎えた顧客を取得
-	 * ・顧客の売掛を取得
-	 * ・請求データ作成
-	 * ・請求した売掛の入金予定日を更新
-	 * </pre>
-	 * 
-	 * @param busho
-	 *            対象部署
-	 * @param shimeDate
-	 *            締日
+	 * @return 顧客
 	 */
-	public void seikyu(Busho busho, EigyoDate shimeDate);
+	public Kokyaku getKokyaku();
 
 	/**
-	 * 請求を行う.
+	 * 請求日取得.
 	 * 
-	 * <pre>
-	 * ・顧客の売掛を取得
-	 * ・請求データ作成
-	 * ・請求した売掛の入金予定日を更新
-	 * </pre>
-	 * 
-	 * @param kokyaku
-	 *            対象顧客
-	 * @param shimeDate
-	 *            締日
+	 * @return 請求日
 	 */
-	public void seikyu(Kokyaku kokyaku, EigyoDate shimeDate);
+	public EigyoDate getSeikyuDate();
+
+	/**
+	 * 支払日取得.
+	 * 
+	 * @return 支払日
+	 */
+	public EigyoDate getShiharaiDate();
+
+	/**
+	 * 請求明細取得.
+	 * 
+	 * @return 請求明細
+	 */
+	public List<SeikyuMeisai> getSeikyuMeisai();
 }
