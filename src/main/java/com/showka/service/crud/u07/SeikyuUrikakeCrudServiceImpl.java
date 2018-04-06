@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
-import com.showka.domain.SeikyuMeisai;
 import com.showka.domain.Urikake;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
@@ -61,11 +60,8 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 		SeikyuSpecification spec = seikyuUrikakeSpecificationFactory.create(kokyaku, shimeDate, urikakeList);
 		// save
 		seikyuCrudService.save(spec);
-		// 請求明細
-		List<SeikyuMeisai> meisai = spec.getSeikyuMeisai();
 		// 売掛の入金予定日更新
-		meisai.forEach(m -> {
-			Urikake urikake = m.getUrikake();
+		urikakeList.forEach(urikake -> {
 			EigyoDate shiharaiDate = spec.getShiharaiDate();
 			// TODO OCC?
 			urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);

@@ -8,11 +8,9 @@ import org.junit.Test;
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
-import com.showka.domain.SeikyuMeisai;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
-import com.showka.domain.builder.SeikyuMeisaiBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
@@ -165,13 +163,8 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 		Kokyaku kokyaku = kb.build();
 		// 売掛リスト
 		List<Urikake> urikakeList = new ArrayList<Urikake>();
-		// 請求明細
-		List<SeikyuMeisai> meisai = new ArrayList<SeikyuMeisai>();
-		SeikyuMeisaiBuilder smb = new SeikyuMeisaiBuilder();
 		Urikake urikake = new UrikakeBuilder().build();
-		smb.withUrikake(urikake);
-		SeikyuMeisai m = smb.build();
-		meisai.add(m);
+		urikakeList.add(urikake);
 		// 支払日
 		EigyoDate shiharaiDate = new EigyoDate(2017, 2, 1);
 		// expect
@@ -181,9 +174,6 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 				seikyuUrikakeSpecificationFactory.create(kokyaku, shimeDate, urikakeList);
 				// save
 				seikyuCrudService.save(spec);
-				// 請求明細
-				spec.getSeikyuMeisai();
-				result = meisai;
 				// 支払日
 				spec.getShiharaiDate();
 				result = shiharaiDate;
@@ -201,9 +191,6 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 				times = 1;
 				// save
 				seikyuCrudService.save(spec);
-				times = 1;
-				// 請求明細
-				spec.getSeikyuMeisai();
 				times = 1;
 				// 支払日
 				spec.getShiharaiDate();
