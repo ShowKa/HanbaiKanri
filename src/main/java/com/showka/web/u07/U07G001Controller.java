@@ -49,8 +49,8 @@ public class U07G001Controller extends ControllerBase {
 	 * 顧客の請求全取得.
 	 *
 	 */
-	@RequestMapping(value = "/u07g001/get", method = RequestMethod.POST)
-	public ResponseEntity<?> getAll(@ModelAttribute U07G001Form form, ModelAndViewExtended model) {
+	@RequestMapping(value = "/u07g001/getList", method = RequestMethod.POST)
+	public ResponseEntity<?> getList(@ModelAttribute U07G001Form form, ModelAndViewExtended model) {
 		// get 顧客
 		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 		// get 請求リスト
@@ -64,6 +64,7 @@ public class U07G001Controller extends ControllerBase {
 			return ret;
 		}).collect(Collectors.toList());
 		// set model
+		model.addObject("kokyakuName", kokyaku.getName());
 		model.addObject("seikyuList", seikyuList);
 		model.addForm(form);
 		// return
