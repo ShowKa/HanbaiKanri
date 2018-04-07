@@ -59,6 +59,19 @@ public class Kakaku extends ValueBase {
 	}
 
 	/**
+	 * 税価格取得
+	 * 
+	 * <pre>
+	 * 税価格 = 税込価格 - 税抜価格
+	 * </pre>
+	 * 
+	 * @return 税込価格
+	 */
+	public BigDecimal getZeiKakaku() {
+		return this.getZeikomiKakaku().subtract(this.zeinukiKakaku);
+	}
+
+	/**
 	 * 価格加算
 	 * 
 	 * <pre>

@@ -12,9 +12,9 @@ function($scope, $filter, $httpw) {
 	};
 } ])
 // controllers
-.controller('MainController', [ '$scope', '$http', 'seikyu', 'common', 'meisai',
+.controller('MainController', [ '$scope', '$window', '$http', 'seikyu', 'common', 'meisai',
 // main
-function($scope, $http, seikyuService, common, meisaiService) {
+function($scope, $window, $http, seikyuService, common, meisaiService) {
 	// 請求リスト取得
 	$scope.getList = function(kokyakuCode) {
 		// callback
@@ -29,6 +29,8 @@ function($scope, $http, seikyuService, common, meisaiService) {
 		}, callback);
 	};
 	// 請求取得
-	$scope.get = function(kokyakuCode, seikyuDate) {
+	$scope.get = function(seikyuDate) {
+		var kokyakuCode = $scope.kokyakuCode;
+		$window.open("/u07g002/refer?kokyakuCode=" + kokyakuCode + "&seikyuDate=" + seikyuDate, "_blank");
 	};
 } ]);

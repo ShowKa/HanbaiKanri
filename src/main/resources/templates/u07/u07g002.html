@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<link th:replace="common/head :: common_link" />
+<script
+	th:inmeisai="javascript"
+	src="/u07/u07g002.js"></script>
+</head>
+<body ng-app="App">
+	<div th:replace="common/header :: common_header"></div>
+	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
+	<div class="bootstrap-iso">
+		<div
+			class="container"
+			ng-controller="MainController">
+			<div class="row">
+				<div class="col-md-12 col-sm-12 col-xs-12">
+					<h4>請求書</h4>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<form
+						id="searchForm"
+						class="form-horizontal">
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-3"
+								for="kokyakuName">氏名</label>
+							<div class="col-sm-9">
+								<div th:text="${kokyakuName}" />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-3"
+								for="nyukinSight">住所</label>
+							<div class="col-sm-9">
+								<div th:text="${kokyakuAddress}" />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-3"
+								for="seikyuDate">請求日</label>
+							<div class="col-sm-9">
+								<div th:text="${seikyuDate}" />
+							</div>
+						</div>
+
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-3"
+								for="shiharaiDate">支払期日</label>
+							<div class="col-sm-9">
+								<div th:text="${shiharaiDate}" />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-3"
+								for="gokeiKingaku">合計金額</label>
+							<div class="col-sm-9">
+								<div th:text="${gokeiKingaku}" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<table class="table table-striped">
+					<caption>ご請求内容</caption>
+					<thead>
+						<tr>
+							<th>売上日</th>
+							<th>金額</th>
+							<th>消費税</th>
+							<th>税率</th>
+						</tr>
+					</thead>
+					<tbody id="meisaiList">
+						<tr th:each="meisai:${meisaiList}">
+							<td
+								class="col-sm-1"
+								th:text="${{meisai.uriageDate}}" />
+							<td
+								class="col-sm-1"
+								th:text="${{meisai.zeikomiKakaku}}" />
+							<td
+								class="col-sm-1"
+								th:text="${{meisai.zeiKakaku}}" />
+							<td
+								class="col-sm-1"
+								th:text="${{meisai.rate}}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div th:replace="common/footer :: common_footer"></div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+package com.showka.web.u07;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.showka.domain.Kokyaku;
+import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.Seikyu;
+import com.showka.domain.SeikyuMeisai;
+import com.showka.domain.Uriage;
+import com.showka.domain.Urikake;
+import com.showka.entity.TSeikyuPK;
+import com.showka.kubun.NyukinHohoKubun;
+import com.showka.service.crud.u01.i.KokyakuCrudService;
+import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.web.ControllerBase;
+import com.showka.web.Mode;
+import com.showka.web.ModelAndViewExtended;
+
+@Controller
+@EnableAutoConfiguration
+public class U07G002Controller extends ControllerBase {
+
+	@Autowired
+	private KokyakuCrudService kokyakuCrudService;
+
+	@Autowired
+	private SeikyuCrudService seikyuCrudService;
+
+	/**
+	 * 参照.
+	 *
+	 */
+	@RequestMapping(value = "/u07g002/refer", method = RequestMethod.GET)
+	public ModelAndViewExtended refer(@ModelAttribute U07G002Form form, ModelAndViewExtended model) {
+		// set model
+		model.addForm(form);
+		model.setMode(Mode.READ);
+		model.setViewName("/u07/u07g002");
+		// get 請求
+		this.setSeikyu(form, model);
+		// return
+		return model;
+	}
+
+	/**
+	 * 顧客の請求全取得し設定.
+	 *
+	 */
+	private void setSeikyu(@ModelAttribute U07G002Form form, ModelAndViewExtended model) {
+		// get 顧客
+		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		// 請求PK
+		TSeikyuPK pk = new TSeikyuPK();
+		pk.setKokyakuId(kokyaku.getRecordId());
+		pk.setSeikyuDate(form.getSeikyuDate());
+		// get 請求
+		Seikyu seikyu = seikyuCrudService.getDomain(pk);
+		// set model
+		model.addObject("kokyakuName", kokyaku.getName());
+		model.addObject("kokyakuAddress", kokyaku.getAddress());
+		model.addObject("seikyuDate", seikyu.getSeikyuDate());
+		model.addObject("shiharaiDate", seikyu.getShiharaiDate());
+		model.addObject("gokeiKingaku", seikyu.getGokeiKingaku());
+		Optional<NyukinKakeInfo> _nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
+		NyukinHohoKubun nyukinHoho = NyukinHohoKubun.EMPTY;
+		if (_nyukinKakeInfo.isPresent()) {
+			nyukinHoho = _nyukinKakeInfo.get().getNyukinHohoKubun();
+		}
+		model.addObject("nyukinHoho", nyukinHoho.toString());
+		// set model 明細
+		List<SeikyuMeisai> seikyuMeisai = seikyu.getSeikyuMeisai();
+		List<Map<String, Object>> meisaiList = seikyuMeisai.stream().map(m -> {
+			Urikake urikake = m.getUrikake();
+			Uriage uriage = urikake.getUriage();
+			Map<String, Object> ret = new HashMap<String, Object>();
+			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("zeikomiKakaku", uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue());
+			ret.put("zeiKakaku", uriage.getUriageGokeiKakaku().getZeiKakaku().intValue());
+			ret.put("rate", uriage.getUriageGokeiKakaku().getZei().getRate().doubleValue());
+			return ret;
+		}).collect(Collectors.toList());
+		model.addObject("meisaiList", meisaiList);
+	}
+}
