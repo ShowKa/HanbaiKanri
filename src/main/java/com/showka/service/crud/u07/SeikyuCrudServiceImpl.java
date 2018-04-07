@@ -43,7 +43,7 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 		TSeikyu e = _e.orElse(new TSeikyu());
 		// set columns
 		e.setPk(pk);
-		e.setShiharaiDate(domain.getSeikyuDate().toDate());
+		e.setShiharaiDate(domain.getShiharaiDate().toDate());
 		// OCC
 		e.setVersion(domain.getVersion());
 		// record id
