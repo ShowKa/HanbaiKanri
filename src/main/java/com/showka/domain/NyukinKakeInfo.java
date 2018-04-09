@@ -53,6 +53,11 @@ public class NyukinKakeInfo extends DomainBase {
 	/**
 	 * 引数で渡した日付を基準にして、次の請求締日を取得
 	 * 
+	 * <pre>
+	 * 引数.日付 = 今月締日 -> そのまま今月締日を返却.
+	 * 
+	 * <pre>
+	 * 
 	 * @param date
 	 *            基準日
 	 * @return 次の請求締日
@@ -60,7 +65,7 @@ public class NyukinKakeInfo extends DomainBase {
 	public TheDate getNextSeikyuSimeDate(TheDate date) {
 		LocalDate _d = date.getDate();
 		LocalDate shimeDateOfThisMonth = _d.withDayOfMonth(shimeDate);
-		if (shimeDateOfThisMonth.getDayOfMonth() > shimeDate) {
+		if (shimeDateOfThisMonth.getDayOfMonth() >= shimeDate) {
 			return new TheDate(shimeDateOfThisMonth);
 		}
 		// 今月締日が過ぎているので来月の締日を返却する。

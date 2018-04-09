@@ -1,0 +1,73 @@
+package com.showka.domain;
+
+import java.util.List;
+
+import com.showka.system.exception.SystemException;
+import com.showka.value.EigyoDate;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+/**
+ * 請求.
+ *
+ */
+@AllArgsConstructor
+@Getter
+public class Seikyu extends DomainBase {
+
+	// private members
+	/** 顧客. */
+	private Kokyaku kokyaku;
+
+	/** 請求日. */
+	private EigyoDate seikyuDate;
+
+	/** 支払期日. */
+	private EigyoDate shiharaiDate;
+
+	/** 請求明細. */
+	private List<SeikyuMeisai> seikyuMeisai;
+
+	// public methods
+	/**
+	 * 請求の合計金額を取得する.
+	 * 
+	 * <pre>
+	 * 請求時の各売掛の残高の合計。
+	 * </pre>
+	 * 
+	 * @return 合計金額
+	 */
+	public Integer getGokeiKingaku() {
+		return seikyuMeisai.stream().mapToInt(meisai -> {
+			return meisai.getKingaku();
+		}).sum();
+	}
+
+	/**
+	 * 顧客ID取得.
+	 * 
+	 * @return 顧客ID
+	 */
+	public String getKokyakuId() {
+		return kokyaku.getRecordId();
+	}
+
+	// override
+	@Override
+	public void validate() throws SystemException {
+		// nothing to do
+	}
+
+	@Override
+	protected boolean equals(DomainBase other) {
+		Seikyu o = (Seikyu) other;
+		return kokyaku.equals(o.kokyaku) && seikyuDate.equals(o.seikyuDate);
+	}
+
+	@Override
+	public int hashCode() {
+		return generateHashCode(kokyaku, seikyuDate);
+	}
+}

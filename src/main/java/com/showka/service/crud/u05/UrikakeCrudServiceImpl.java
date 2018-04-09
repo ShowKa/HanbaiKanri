@@ -114,4 +114,12 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 			this.save(urikake);
 		}
 	}
+
+	@Override
+	public void updateNyukinYoteiDate(Urikake urikake, EigyoDate updatedNyukinYoteiDate) {
+		UrikakeBuilder b = new UrikakeBuilder();
+		b.withNyukinYoteiDate(updatedNyukinYoteiDate);
+		Urikake updated = b.apply(urikake);
+		this.save(updated);
+	}
 }

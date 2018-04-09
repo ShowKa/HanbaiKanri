@@ -2,6 +2,7 @@ package com.showka.service.crud.u05.i;
 
 import com.showka.domain.Urikake;
 import com.showka.service.crud.CrudService;
+import com.showka.value.EigyoDate;
 
 public interface UrikakeCrudService extends CrudService<Urikake, String> {
 
@@ -33,4 +34,14 @@ public interface UrikakeCrudService extends CrudService<Urikake, String> {
 	 *            バージョン for OCC
 	 */
 	void revert(String uriageId, Integer version);
+
+	/**
+	 * 入金予定日更新.
+	 * 
+	 * @param urikake
+	 *            売掛
+	 * @param updatedNyukinYoteiDate
+	 *            更新後入金予定日
+	 */
+	void updateNyukinYoteiDate(Urikake urikake, EigyoDate updatedNyukinYoteiDate);
 }

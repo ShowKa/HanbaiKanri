@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.Busho;
 import com.showka.domain.BushoUriage;
 import com.showka.service.crud.u05.i.UriageKeijoCrudService;
+import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
@@ -45,6 +46,9 @@ public class U17G001Controller extends ControllerBase {
 
 	@Autowired
 	private UriageKeijoCrudService uriageKeijoCrudService;
+
+	@Autowired
+	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
 
 	/**
 	 * 参照.
@@ -106,6 +110,8 @@ public class U17G001Controller extends ControllerBase {
 		uriageKeijoCrudService.keijo(busho, eigyoDate);
 		// 在庫繰越
 		shohinZaikoCrudService.kurikoshi(busho, eigyoDate);
+		// 請求
+		seikyuUrikakeCrudService.seikyu(busho, eigyoDate);
 		// close
 		bushoDateCrudService.toNextEigyoDate(busho);
 		// set model
