@@ -71,6 +71,7 @@
 					<caption>ご請求内容</caption>
 					<thead>
 						<tr>
+							<th />
 							<th>売上日</th>
 							<th>金額</th>
 							<th>消費税</th>
@@ -79,17 +80,21 @@
 					</thead>
 					<tbody id="meisaiList">
 						<tr th:each="meisai:${meisaiList}">
+							<td class="col-sm-1">
+								<a th:attr="href=@{/u05g002/refer(kokyakuCode=${kokyakuCode}, denpyoNumber=${meisai.denpyoNumber})}" target="_blank"> <span
+									class="glyphicon glyphicon-list-alt"
+									style="padding-right: 5px; cursor: pointer;"></span></a>
 							<td
-								class="col-sm-1"
+								class="col-sm-3"
 								th:text="${{meisai.uriageDate}}" />
 							<td
-								class="col-sm-1"
+								class="col-sm-3"
 								th:text="${{meisai.zeikomiKakaku}}" />
 							<td
-								class="col-sm-1"
+								class="col-sm-3"
 								th:text="${{meisai.zeiKakaku}}" />
 							<td
-								class="col-sm-1"
+								class="col-sm-2"
 								th:text="${{meisai.rate}}" />
 						</tr>
 					</tbody>

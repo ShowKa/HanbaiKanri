@@ -67,6 +67,7 @@ public class U07G002Controller extends ControllerBase {
 		// get 請求
 		Seikyu seikyu = seikyuCrudService.getDomain(pk);
 		// set model
+		model.addObject("kokyakuCode", kokyaku.getCode());
 		model.addObject("kokyakuName", kokyaku.getName());
 		model.addObject("kokyakuAddress", kokyaku.getAddress());
 		model.addObject("seikyuDate", seikyu.getSeikyuDate());
@@ -84,6 +85,7 @@ public class U07G002Controller extends ControllerBase {
 			Urikake urikake = m.getUrikake();
 			Uriage uriage = urikake.getUriage();
 			Map<String, Object> ret = new HashMap<String, Object>();
+			ret.put("denpyoNumber", uriage.getDenpyoNumber());
 			ret.put("uriageDate", uriage.getUriageDate().toString());
 			ret.put("zeikomiKakaku", uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue());
 			ret.put("zeiKakaku", uriage.getUriageGokeiKakaku().getZeiKakaku().intValue());
