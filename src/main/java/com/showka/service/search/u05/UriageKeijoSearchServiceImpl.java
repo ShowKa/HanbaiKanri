@@ -60,7 +60,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 			Optional<Uriage> uriage = rireki.getUriageOf(date);
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い
 			Kakaku uriageGokeiKingaku = uriage.get().getUriageGokeiKakaku();
-			return uriageGokeiKingaku.getZeinukiKakaku().intValue();
+			return uriageGokeiKingaku.getZeinuki().intValue();
 		}).sum();
 		return keijoKingaku;
 	}
@@ -80,7 +80,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い
 			Kakaku uriageGokeiKingaku = uriage.get().getUriageGokeiKakaku();
 			// 訂正分は負数として集計
-			return uriageGokeiKingaku.getZeinukiKakaku().intValue() * -1;
+			return uriageGokeiKingaku.getZeinuki().intValue() * -1;
 		}).sum();
 		return teiseiKingaku;
 	}

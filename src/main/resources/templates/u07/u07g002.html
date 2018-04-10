@@ -25,9 +25,11 @@
 						<div class="form-group form-group-sm">
 							<label
 								class="control-label col-sm-3"
-								for="kokyakuName">氏名</label>
+								for="kokyakuName">顧客</label>
 							<div class="col-sm-9">
-								<div th:text="${kokyakuName}" />
+								<a
+									th:attr="href=@{/u01g002/refer(code=${kokyakuCode})}"
+									target="_blank"><div th:text="${kokyakuName}" /></a>
 							</div>
 						</div>
 						<div class="form-group form-group-sm">
@@ -73,15 +75,17 @@
 						<tr>
 							<th />
 							<th>売上日</th>
-							<th>金額</th>
-							<th>消費税</th>
+							<th>売上合計</th>
+							<th>内消費税</th>
 							<th>税率</th>
 						</tr>
 					</thead>
 					<tbody id="meisaiList">
 						<tr th:each="meisai:${meisaiList}">
 							<td class="col-sm-1">
-								<a th:attr="href=@{/u05g002/refer(kokyakuCode=${kokyakuCode}, denpyoNumber=${meisai.denpyoNumber})}" target="_blank"> <span
+								<a
+									th:attr="href=@{/u05g002/refer(kokyakuCode=${kokyakuCode}, denpyoNumber=${meisai.denpyoNumber})}"
+									target="_blank"> <span
 									class="glyphicon glyphicon-list-alt"
 									style="padding-right: 5px; cursor: pointer;"></span></a>
 							<td

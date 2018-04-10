@@ -23,6 +23,7 @@ import com.showka.entity.TSeikyuPK;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.value.Kakaku;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
@@ -72,7 +73,7 @@ public class U07G002Controller extends ControllerBase {
 		model.addObject("kokyakuAddress", kokyaku.getAddress());
 		model.addObject("seikyuDate", seikyu.getSeikyuDate());
 		model.addObject("shiharaiDate", seikyu.getShiharaiDate());
-		model.addObject("gokeiKingaku", seikyu.getGokeiKingaku());
+		model.addObject("gokeiKingaku", seikyu.getGokeiKingaku().getFormatted());
 		Optional<NyukinKakeInfo> _nyukinKakeInfo = kokyaku.getNyukinKakeInfo();
 		NyukinHohoKubun nyukinHoho = NyukinHohoKubun.EMPTY;
 		if (_nyukinKakeInfo.isPresent()) {
@@ -84,12 +85,13 @@ public class U07G002Controller extends ControllerBase {
 		List<Map<String, Object>> meisaiList = seikyuMeisai.stream().map(m -> {
 			Urikake urikake = m.getUrikake();
 			Uriage uriage = urikake.getUriage();
+			Kakaku uriageGokei = uriage.getUriageGokeiKakaku();
 			Map<String, Object> ret = new HashMap<String, Object>();
 			ret.put("denpyoNumber", uriage.getDenpyoNumber());
 			ret.put("uriageDate", uriage.getUriageDate().toString());
-			ret.put("zeikomiKakaku", uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue());
-			ret.put("zeiKakaku", uriage.getUriageGokeiKakaku().getZeiKakaku().intValue());
-			ret.put("rate", uriage.getUriageGokeiKakaku().getZei().getRate().doubleValue());
+			ret.put("zeikomiKakaku", uriageGokei.getZeikomi().getFormatted());
+			ret.put("zeiKakaku", uriageGokei.getShohizei().getFormatted());
+			ret.put("rate", uriageGokei.getShohizeiRate().toPercentage());
 			return ret;
 		}).collect(Collectors.toList());
 		model.addObject("meisaiList", meisaiList);

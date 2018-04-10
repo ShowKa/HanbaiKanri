@@ -33,7 +33,7 @@ public class Urikake extends DomainBase {
 	 * @return 入金額
 	 */
 	public Integer getPresentNyukinKingaku() {
-		return uriage.getUriageGokeiKakaku().getZeikomiKakaku().intValue() - zandaka;
+		return uriage.getUriageGokeiKakaku().getZeikomi().intValue() - zandaka;
 	}
 
 	/**
