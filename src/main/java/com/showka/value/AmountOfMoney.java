@@ -3,20 +3,19 @@ package com.showka.value;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * 金額.
- * 
- *
  */
 @AllArgsConstructor
-@Getter
-public class Price extends ValueBase {
+public class AmountOfMoney extends ValueBase {
 
 	/** 金額. */
-	private BigDecimal price;
+	@Getter(value = AccessLevel.PROTECTED)
+	private BigDecimal amount;
 
 	/** 価格表示用フォーマッタ. */
 	private static DecimalFormat formatter = new DecimalFormat("\u00A5###,###.#####");
@@ -26,8 +25,8 @@ public class Price extends ValueBase {
 	 * 
 	 * @param kingaku
 	 */
-	public Price(Long kingaku) {
-		this.price = BigDecimal.valueOf(kingaku);
+	public AmountOfMoney(Long kingaku) {
+		this.amount = BigDecimal.valueOf(kingaku);
 	}
 
 	/**
@@ -35,8 +34,8 @@ public class Price extends ValueBase {
 	 * 
 	 * @param kingaku
 	 */
-	public Price(Integer kingaku) {
-		this.price = BigDecimal.valueOf(kingaku);
+	public AmountOfMoney(Integer kingaku) {
+		this.amount = BigDecimal.valueOf(kingaku);
 	}
 
 	/**
@@ -47,13 +46,13 @@ public class Price extends ValueBase {
 	 * </pre>
 	 */
 	public String getFormatted() {
-		return formatter.format(price);
+		return formatter.format(amount);
 	}
 
 	@Override
 	protected boolean equals(ValueBase other) {
-		Price o = (Price) other;
-		return price.equals(o.price);
+		AmountOfMoney o = (AmountOfMoney) other;
+		return amount.equals(o.amount);
 	}
 
 	/**
@@ -63,8 +62,8 @@ public class Price extends ValueBase {
 	 *            加算対象
 	 * @return 加算後(new instance)
 	 */
-	public Price add(Price augend) {
-		return new Price(this.price.add(augend.price));
+	public AmountOfMoney add(AmountOfMoney augend) {
+		return new AmountOfMoney(this.amount.add(augend.amount));
 	}
 
 	/**
@@ -74,8 +73,8 @@ public class Price extends ValueBase {
 	 *            乗算する数
 	 * @return 乗算後 (new instance)
 	 */
-	public Price multiply(BigDecimal multiplicand) {
-		return new Price(this.price.multiply(multiplicand));
+	public AmountOfMoney multiply(BigDecimal multiplicand) {
+		return new AmountOfMoney(this.amount.multiply(multiplicand));
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class Price extends ValueBase {
 	 *            減算対象
 	 * @return 減算後 (new instance)
 	 */
-	public Price subtract(Price subtrahend) {
-		return new Price(this.price.subtract(subtrahend.price));
+	public AmountOfMoney subtract(AmountOfMoney subtrahend) {
+		return new AmountOfMoney(this.amount.subtract(subtrahend.amount));
 	}
 }

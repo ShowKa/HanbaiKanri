@@ -13,7 +13,7 @@ public class Kakaku extends ValueBase {
 
 	// private members
 	/** 税抜価格 */
-	private Price zeinuki;
+	private AmountOfMoney zeinuki;
 
 	/** 税(小数) */
 	private TaxRate zei;
@@ -26,7 +26,7 @@ public class Kakaku extends ValueBase {
 	 * @param zei
 	 */
 	public Kakaku(long kakaku, double zei) {
-		this.zeinuki = new Price(kakaku);
+		this.zeinuki = new AmountOfMoney(kakaku);
 		this.zei = new TaxRate(zei);
 	}
 
@@ -37,7 +37,7 @@ public class Kakaku extends ValueBase {
 	 * @param zei
 	 */
 	public Kakaku(BigDecimal kakaku, double zei) {
-		this.zeinuki = new Price(kakaku);
+		this.zeinuki = new AmountOfMoney(kakaku);
 		this.zei = new TaxRate(zei);
 	}
 
@@ -48,14 +48,14 @@ public class Kakaku extends ValueBase {
 	 * @param zei
 	 */
 	public Kakaku(BigDecimal kakaku, TaxRate zei) {
-		this.zeinuki = new Price(kakaku);
+		this.zeinuki = new AmountOfMoney(kakaku);
 		this.zei = zei;
 	}
 
 	// public method
 	@Deprecated
 	public BigDecimal getZeinukiKakaku() {
-		return this.zeinuki.getPrice();
+		return BigDecimal.ZERO;
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class Kakaku extends ValueBase {
 	 * @return 税込価格
 	 */
 	public BigDecimal getZeikomiKakaku() {
-		BigDecimal multiplied = zeinuki.multiply(zei.getRate().add(BigDecimal.ONE)).getPrice();
+		BigDecimal multiplied = zeinuki.multiply(zei.getRate().add(BigDecimal.ONE)).getAmount();
 		return multiplied.setScale(0, BigDecimal.ROUND_DOWN);
 	}
 
@@ -98,7 +98,7 @@ public class Kakaku extends ValueBase {
 	 * @return 税込価格
 	 */
 	public BigDecimal getZeiKakaku() {
-		return this.getZeikomiKakaku().subtract(this.zeinuki.getPrice());
+		return this.getZeikomiKakaku().subtract(this.zeinuki.getAmount());
 	}
 
 	/**
@@ -200,7 +200,7 @@ public class Kakaku extends ValueBase {
 	 * </pre>
 	 */
 	public String getZeikomiKakakuFormatted() {
-		return new Price(this.getZeikomiKakaku()).getFormatted();
+		return new AmountOfMoney(this.getZeikomiKakaku()).getFormatted();
 	}
 
 	/**
@@ -222,6 +222,6 @@ public class Kakaku extends ValueBase {
 	 * </pre>
 	 */
 	public String getZeiFormatted() {
-		return new Price(this.getZeiKakaku()).getFormatted();
+		return new AmountOfMoney(this.getZeiKakaku()).getFormatted();
 	}
 }
