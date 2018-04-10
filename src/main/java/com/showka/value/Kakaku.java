@@ -55,6 +55,7 @@ public class Kakaku extends ValueBase {
 	// public method
 	@Deprecated
 	public BigDecimal getZeinukiKakaku() {
+		// FIXME return BigDecimal -> AmountOfMoney
 		return BigDecimal.ZERO;
 	}
 
