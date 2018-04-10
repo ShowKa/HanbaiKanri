@@ -55,4 +55,37 @@ public class Price extends ValueBase {
 		Price o = (Price) other;
 		return price.equals(o.price);
 	}
+
+	/**
+	 * 加算.
+	 * 
+	 * @param augend
+	 *            加算対象
+	 * @return 加算後(new instance)
+	 */
+	public Price add(Price augend) {
+		return new Price(this.price.add(augend.price));
+	}
+
+	/**
+	 * 乗算.
+	 * 
+	 * @param multiplicand
+	 *            乗算する数
+	 * @return 乗算後 (new instance)
+	 */
+	public Price multiply(BigDecimal multiplicand) {
+		return new Price(this.price.multiply(multiplicand));
+	}
+
+	/**
+	 * 減算.
+	 * 
+	 * @param subtrahend
+	 *            減算対象
+	 * @return 減算後 (new instance)
+	 */
+	public Price subtract(Price subtrahend) {
+		return new Price(this.price.subtract(subtrahend.price));
+	}
 }
