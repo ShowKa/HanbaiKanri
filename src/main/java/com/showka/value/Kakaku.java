@@ -16,64 +16,43 @@ public class Kakaku extends ValueBase {
 	private AmountOfMoney zeinuki;
 
 	/** 税(小数) */
-	private TaxRate zei;
+	private TaxRate shohizeiRate;
 
 	// constructor
 	/**
-	 * constructor.
+	 * long and double constructor.
 	 * 
 	 * @param kakaku
 	 * @param zei
 	 */
 	public Kakaku(long kakaku, double zei) {
 		this.zeinuki = new AmountOfMoney(kakaku);
-		this.zei = new TaxRate(zei);
+		this.shohizeiRate = new TaxRate(zei);
 	}
 
 	/**
-	 * constructor.
+	 * BigDecimal and double constructor.
 	 * 
 	 * @param kakaku
 	 * @param zei
 	 */
 	public Kakaku(BigDecimal kakaku, double zei) {
 		this.zeinuki = new AmountOfMoney(kakaku);
-		this.zei = new TaxRate(zei);
+		this.shohizeiRate = new TaxRate(zei);
 	}
 
 	/**
-	 * constructor.
+	 * BigDecimal and TaxRate constructor.
 	 * 
 	 * @param kakaku
 	 * @param zei
 	 */
 	public Kakaku(BigDecimal kakaku, TaxRate zei) {
 		this.zeinuki = new AmountOfMoney(kakaku);
-		this.zei = zei;
+		this.shohizeiRate = zei;
 	}
 
 	// public method
-	@Deprecated
-	public BigDecimal getZeinukiKakaku() {
-		// FIXME return BigDecimal -> AmountOfMoney
-		return BigDecimal.ZERO;
-	}
-
-	/**
-	 * 価格と税が同じなら一致とみなす.
-	 */
-	@Override
-	protected boolean equals(ValueBase other) {
-		Kakaku o = (Kakaku) other;
-		if (!zeinuki.equals(o.zeinuki)) {
-			return false;
-		}
-		if (!zei.equals(o.zei)) {
-			return false;
-		}
-		return true;
-	}
-
 	/**
 	 * 税込価格取得
 	 * 
@@ -84,9 +63,9 @@ public class Kakaku extends ValueBase {
 	 * 
 	 * @return 税込価格
 	 */
-	public BigDecimal getZeikomiKakaku() {
-		BigDecimal multiplied = zeinuki.multiply(zei.getRate().add(BigDecimal.ONE)).getAmount();
-		return multiplied.setScale(0, BigDecimal.ROUND_DOWN);
+	public AmountOfMoney getZeikomi() {
+		BigDecimal multiplied = zeinuki.multiply(shohizeiRate.getRate().add(BigDecimal.ONE)).getAmount();
+		return new AmountOfMoney(multiplied.setScale(0, BigDecimal.ROUND_DOWN));
 	}
 
 	/**
@@ -98,10 +77,11 @@ public class Kakaku extends ValueBase {
 	 * 
 	 * @return 税込価格
 	 */
-	public BigDecimal getZeiKakaku() {
-		return this.getZeikomiKakaku().subtract(this.zeinuki.getAmount());
+	public AmountOfMoney getShohizei() {
+		return this.getZeikomi().subtract(this.zeinuki);
 	}
 
+	// math
 	/**
 	 * 価格加算
 	 * 
@@ -115,10 +95,10 @@ public class Kakaku extends ValueBase {
 	 * @return 加算後の価格
 	 */
 	public Kakaku add(Kakaku other) {
-		if (!zei.equals(other.zei)) {
+		if (!shohizeiRate.equals(other.shohizeiRate)) {
 			throw new SystemException("加算対象の金額の税率が一致しません。");
 		}
-		return new Kakaku(zeinuki.add(other.zeinuki), zei);
+		return new Kakaku(zeinuki.add(other.zeinuki), shohizeiRate);
 	}
 
 	/**
@@ -134,9 +114,9 @@ public class Kakaku extends ValueBase {
 	 * @return 加算後の価格
 	 */
 	public Kakaku add(Kakaku... others) {
-		Kakaku base = new Kakaku(this.zeinuki, this.zei);
+		Kakaku base = new Kakaku(this.zeinuki, this.shohizeiRate);
 		for (Kakaku o : others) {
-			if (!zei.equals(o.zei)) {
+			if (!shohizeiRate.equals(o.shohizeiRate)) {
 				throw new SystemException("加算対象の金額の税率が一致しません。");
 			}
 			base = base.add(o);
@@ -157,10 +137,10 @@ public class Kakaku extends ValueBase {
 	 * @return 減算後の価格
 	 */
 	public Kakaku subtract(Kakaku other) {
-		if (!zei.equals(other.zei)) {
+		if (!shohizeiRate.equals(other.shohizeiRate)) {
 			throw new SystemException("減産対象の金額の税率が一致しません。");
 		}
-		return new Kakaku(zeinuki.subtract(other.zeinuki), zei);
+		return new Kakaku(zeinuki.subtract(other.zeinuki), shohizeiRate);
 	}
 
 	/**
@@ -190,9 +170,10 @@ public class Kakaku extends ValueBase {
 	 * @return 乗算後の価格
 	 */
 	public Kakaku multiply(BigDecimal multiplicand) {
-		return new Kakaku(zeinuki.multiply(multiplicand), zei);
+		return new Kakaku(zeinuki.multiply(multiplicand), shohizeiRate);
 	}
 
+	// get formatted
 	/**
 	 * 税込価格をフォーマットした状態で取得
 	 * 
@@ -200,19 +181,19 @@ public class Kakaku extends ValueBase {
 	 * 例 : ¥1,080
 	 * </pre>
 	 */
-	public String getZeikomiKakakuFormatted() {
-		return new AmountOfMoney(this.getZeikomiKakaku()).getFormatted();
+	public String getZeikomiFormatted() {
+		return this.getZeikomi().getFormatted();
 	}
 
 	/**
-	 * 税抜価格をフォーマットした状態で取得
+	 * 税抜金額をフォーマットした状態で取得
 	 * 
 	 * <pre>
 	 * 例 : ¥1,000
 	 * </pre>
 	 */
-	public String getZeinukiKakakuFormatted() {
-		return this.zeinuki.getFormatted();
+	public String getZeinukiFormatted() {
+		return zeinuki.getFormatted();
 	}
 
 	/**
@@ -222,7 +203,23 @@ public class Kakaku extends ValueBase {
 	 * 例 : ¥80
 	 * </pre>
 	 */
-	public String getZeiFormatted() {
-		return new AmountOfMoney(this.getZeiKakaku()).getFormatted();
+	public String getShohizeiFormatted() {
+		return this.getShohizei().getFormatted();
+	}
+
+	// override
+	/**
+	 * 価格と税が同じなら一致とみなす.
+	 */
+	@Override
+	protected boolean equals(ValueBase other) {
+		Kakaku o = (Kakaku) other;
+		if (!zeinuki.equals(o.zeinuki)) {
+			return false;
+		}
+		if (!shohizeiRate.equals(o.shohizeiRate)) {
+			return false;
+		}
+		return true;
 	}
 }

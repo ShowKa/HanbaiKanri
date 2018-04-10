@@ -20,6 +20,7 @@ public class AmountOfMoney extends ValueBase {
 	/** 価格表示用フォーマッタ. */
 	private static DecimalFormat formatter = new DecimalFormat("\u00A5###,###.#####");
 
+	// constructor
 	/**
 	 * Integer コンストラクタ.
 	 * 
@@ -38,23 +39,7 @@ public class AmountOfMoney extends ValueBase {
 		this.amount = BigDecimal.valueOf(kingaku);
 	}
 
-	/**
-	 * 税抜価格をフォーマットした状態で取得
-	 * 
-	 * <pre>
-	 * 例 : ¥1,000
-	 * </pre>
-	 */
-	public String getFormatted() {
-		return formatter.format(amount);
-	}
-
-	@Override
-	protected boolean equals(ValueBase other) {
-		AmountOfMoney o = (AmountOfMoney) other;
-		return amount.equals(o.amount);
-	}
-
+	// math
 	/**
 	 * 加算.
 	 * 
@@ -86,5 +71,38 @@ public class AmountOfMoney extends ValueBase {
 	 */
 	public AmountOfMoney subtract(AmountOfMoney subtrahend) {
 		return new AmountOfMoney(this.amount.subtract(subtrahend.amount));
+	}
+
+	// get formatted
+	/**
+	 * 税抜価格をフォーマットした状態で取得
+	 * 
+	 * <pre>
+	 * 例 : ¥1,000
+	 * </pre>
+	 */
+	public String getFormatted() {
+		return formatter.format(amount);
+	}
+
+	// cast
+	/**
+	 * 整数取得.
+	 * 
+	 * <pre>
+	 * 小数は無視。
+	 * </pre>
+	 * 
+	 * @return 整数
+	 */
+	public int intValue() {
+		return amount.intValue();
+	}
+
+	// override
+	@Override
+	protected boolean equals(ValueBase other) {
+		AmountOfMoney o = (AmountOfMoney) other;
+		return amount.equals(o.amount);
 	}
 }

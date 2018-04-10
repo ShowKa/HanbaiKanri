@@ -14,6 +14,7 @@ import com.showka.domain.builder.UriageRirekiBuilder;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.SystemException;
+import com.showka.value.Kakaku;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -119,11 +120,11 @@ public class UriageRirekiTest extends SimpleTestCase {
 		List<Uriage> actual = uriageRirekiList.getAllWithTeiseiDenpyo();
 
 		assertEquals(new TheDate(2017, 8, 21), actual.get(0).getKeijoDate());
-		assertEquals(0, actual.get(0).getUriageGokeiKakaku().getZeinukiKakaku().intValue());
+		assertEquals(new Kakaku(0, 0.08), actual.get(0).getUriageGokeiKakaku());
 		assertEquals(new TheDate(2017, 8, 21), actual.get(1).getKeijoDate());
-		assertEquals(-5000, actual.get(1).getUriageGokeiKakaku().getZeinukiKakaku().intValue());
+		assertEquals(new Kakaku(-5000, 0.08), actual.get(1).getUriageGokeiKakaku());
 		assertEquals(new TheDate(2017, 8, 20), actual.get(2).getKeijoDate());
-		assertEquals(5000, actual.get(2).getUriageGokeiKakaku().getZeinukiKakaku().intValue());
+		assertEquals(new Kakaku(5000, 0.08), actual.get(2).getUriageGokeiKakaku());
 	}
 
 	/**

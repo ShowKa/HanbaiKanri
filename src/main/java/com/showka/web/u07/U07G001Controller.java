@@ -59,7 +59,7 @@ public class U07G001Controller extends ControllerBase {
 		List<Map<String, Object>> seikyuList = _seikyuList.stream().map(seikyu -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			ret.put("seikyuDate", seikyu.getSeikyuDate().toString());
-			ret.put("gokeiKingaku", seikyu.getGokeiKingaku());
+			ret.put("gokeiKingaku", seikyu.getGokeiKingaku().getFormatted());
 			ret.put("shiharaiDate", seikyu.getShiharaiDate().toString());
 			return ret;
 		}).collect(Collectors.toList());

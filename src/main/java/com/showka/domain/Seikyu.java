@@ -3,6 +3,7 @@ package com.showka.domain;
 import java.util.List;
 
 import com.showka.system.exception.SystemException;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 import lombok.AllArgsConstructor;
@@ -39,10 +40,11 @@ public class Seikyu extends DomainBase {
 	 * 
 	 * @return 合計金額
 	 */
-	public Integer getGokeiKingaku() {
-		return seikyuMeisai.stream().mapToInt(meisai -> {
+	public AmountOfMoney getGokeiKingaku() {
+		int gokei = seikyuMeisai.stream().mapToInt(meisai -> {
 			return meisai.getKingaku();
 		}).sum();
+		return new AmountOfMoney(gokei);
 	}
 
 	/**
