@@ -30,9 +30,9 @@ public class TKeshikomi extends EntityUsingRecordIdAsId implements Serializable 
 	@Column(name = "date", unique = false, nullable = false)
 	private Date date;
 
-	/** 消込額. */
-	@Column(name = "amount", unique = false, nullable = false)
-	private Integer amount;
+	/** 金額. */
+	@Column(name = "kingaku", unique = false, nullable = false)
+	private Integer kingaku;
 
 	/** 入金ID. */
 	@Column(name = "nyukin_id", nullable = false, length = 255)

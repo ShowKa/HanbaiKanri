@@ -39,12 +39,12 @@ public class TNyukin extends EntityUsingRecordIdAsId implements Serializable {
 	private Date date;
 
 	/** 入金区分. */
-	@Column(name = "kubun", unique = false, nullable = false, length = 2)
-	private String kubun;
+	@Column(name = "nyukin_hoho_kubun", unique = false, nullable = false, length = 2)
+	private String nyukinHohoKubun;
 
-	/** 入金額. */
-	@Column(name = "amount", unique = false, nullable = false)
-	private Integer amount;
+	/** 金額. */
+	@Column(name = "kingaku", unique = false, nullable = false)
+	private Integer kingaku;
 
 	// fetch
 	/** 顧客. */
