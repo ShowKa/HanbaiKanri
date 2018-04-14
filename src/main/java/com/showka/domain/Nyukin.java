@@ -43,4 +43,22 @@ public class Nyukin extends DomainBase {
 	public int hashCode() {
 		return generateHashCode(this.getRecordId());
 	}
+
+	/**
+	 * 部署ID取得.
+	 * 
+	 * @return 部署ID
+	 */
+	public String getBushoId() {
+		return busho.getRecordId();
+	}
+
+	/**
+	 * 顧客ID取得.
+	 * 
+	 * @return 顧客ID
+	 */
+	public String getKokyakuId() {
+		return kokyaku.getRecordId();
+	}
 }

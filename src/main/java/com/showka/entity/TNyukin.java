@@ -56,4 +56,23 @@ public class TNyukin extends EntityUsingRecordIdAsId implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MBusho busho;
+
+	// public method
+	/**
+	 * 部署コード取得.
+	 * 
+	 * @return 部署コード
+	 */
+	public String getBushoCode() {
+		return busho.getCode();
+	}
+
+	/**
+	 * 顧客コード取得.
+	 * 
+	 * @return 顧客コード
+	 */
+	public String getKokyakuCode() {
+		return kokyaku.getCode();
+	}
 }

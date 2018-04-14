@@ -38,7 +38,7 @@ public class NyukinBuilder extends com.showka.domain.builder.DomainBuilderBase<N
 		builder.withBusho(domain.getBusho());
 		builder.withDate(domain.getDate());
 		builder.withNyukinHohoKubun(domain.getNyukinHohoKubun());
-		builder.withAmount(domain.getKingaku());
+		builder.withKingaku(domain.getKingaku());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
@@ -133,11 +133,11 @@ public class NyukinBuilder extends com.showka.domain.builder.DomainBuilderBase<N
 	/**
 	 * {@link Nyukin}に与えるamountをこのビルダに設定する。
 	 *
-	 * @param amount
-	 *            amount
+	 * @param kingaku
+	 *            kingaku
 	 * @return {@link NyukinBuilder}
 	 */
-	public NyukinBuilder withAmount(final AmountOfMoney amount) {
+	public NyukinBuilder withKingaku(final AmountOfMoney kingaku) {
 		addConfigurator(new BuilderConfigurator<NyukinBuilder>() {
 			@Override
 			public void configure(NyukinBuilder builder) {
