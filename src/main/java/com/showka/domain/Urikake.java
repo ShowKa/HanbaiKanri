@@ -1,6 +1,7 @@
 package com.showka.domain;
 
 import com.showka.system.exception.SystemException;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 import lombok.AllArgsConstructor;
@@ -11,19 +12,17 @@ import lombok.Getter;
  *
  */
 @AllArgsConstructor
+@Getter
 public class Urikake extends DomainBase {
 
 	// private members
 	/** 売上. */
-	@Getter
 	private Uriage uriage;
 
 	/** 残高. */
-	@Getter
-	private Integer zandaka;
+	private AmountOfMoney zandaka;
 
 	/** 入金予定日. */
-	@Getter
 	private EigyoDate nyukinYoteiDate;
 
 	// public methods
@@ -32,8 +31,8 @@ public class Urikake extends DomainBase {
 	 * 
 	 * @return 入金額
 	 */
-	public Integer getPresentNyukinKingaku() {
-		return uriage.getUriageGokeiKakaku().getZeikomi().intValue() - zandaka;
+	public AmountOfMoney getPresentNyukinKingaku() {
+		return uriage.getUriageGokeiKakaku().getZeikomi().subtract(zandaka);
 	}
 
 	/**

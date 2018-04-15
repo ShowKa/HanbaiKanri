@@ -42,7 +42,7 @@ public class Seikyu extends DomainBase {
 	 */
 	public AmountOfMoney getGokeiKingaku() {
 		int gokei = seikyuMeisai.stream().mapToInt(meisai -> {
-			return meisai.getKingaku();
+			return meisai.getKingaku().intValue();
 		}).sum();
 		return new AmountOfMoney(gokei);
 	}

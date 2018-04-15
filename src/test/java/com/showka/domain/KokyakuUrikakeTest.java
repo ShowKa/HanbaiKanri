@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.KokyakuUrikakeBuilder;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -45,7 +46,7 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Integer actual = kokyakuUrikake.getGokeiKingaku();
+		AmountOfMoney actual = kokyakuUrikake.getGokeiKingaku();
 		// verify
 		new Verifications() {
 			{
@@ -181,7 +182,7 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Integer actual = kokyakuUrikake.getGokeiKingakuNyukinRequiredBy(new EigyoDate(2017, 1, 1));
+		AmountOfMoney actual = kokyakuUrikake.getGokeiKingakuNyukinRequiredBy(new EigyoDate(2017, 1, 1));
 		// verify
 		new Verifications() {
 			{

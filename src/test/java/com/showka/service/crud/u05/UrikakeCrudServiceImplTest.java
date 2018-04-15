@@ -12,6 +12,7 @@ import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.entity.TUrikake;
 import com.showka.repository.i.TUrikakeRepository;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 public class UrikakeCrudServiceImplTest extends CrudServiceTestCase {
@@ -34,7 +35,7 @@ public class UrikakeCrudServiceImplTest extends CrudServiceTestCase {
 		Uriage uriage = new UriageBuilder().withRecordId("r-KK01-00001").build();
 		// 売掛
 		UrikakeBuilder b = new UrikakeBuilder();
-		b.withZandaka(108);
+		b.withZandaka(new AmountOfMoney(108));
 		b.withNyukinYoteiDate(new EigyoDate(2017, 1, 1));
 		b.withUriage(uriage);
 		b.withRecordId("r-KK01-00001");

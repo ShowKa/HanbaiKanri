@@ -22,7 +22,7 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 		nyukinKeshikomi.getKeshikomiMap().forEach((keshikomi, urikake) -> {
 			// TODO
 			AmountOfMoney keshikomiKingaku = keshikomi.getKingaku();
-			Integer zandaka = urikake.getZandaka();
+			AmountOfMoney zandaka = urikake.getZandaka();
 		});
 	}
 }

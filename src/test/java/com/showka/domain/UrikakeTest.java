@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.Kakaku;
 
 import mockit.Expectations;
@@ -29,7 +30,7 @@ public class UrikakeTest extends SimpleTestCase {
 		// 売掛
 		UrikakeBuilder b = new UrikakeBuilder();
 		b.withUriage(uriage);
-		b.withZandaka(5);
+		b.withZandaka(new AmountOfMoney(5));
 		Urikake urikake = b.build();
 		// expect
 		new Expectations() {
@@ -39,7 +40,7 @@ public class UrikakeTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Integer actual = urikake.getPresentNyukinKingaku();
+		AmountOfMoney actual = urikake.getPresentNyukinKingaku();
 		// verify
 		new Verifications() {
 			{
