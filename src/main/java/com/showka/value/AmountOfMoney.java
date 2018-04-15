@@ -73,6 +73,51 @@ public class AmountOfMoney extends ValueBase {
 		return new AmountOfMoney(this.amount.subtract(subtrahend.amount));
 	}
 
+	// 比較
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this > another なら true
+	 */
+	public boolean greaterThan(AmountOfMoney another) {
+		return this.intValue() > another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this >= another なら true
+	 */
+	public boolean greaterThanEquals(AmountOfMoney another) {
+		return this.intValue() >= another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this < another なら true
+	 */
+	public boolean lesserThan(AmountOfMoney another) {
+		return this.intValue() < another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this <= another なら true
+	 */
+	public boolean lesserThanEquals(AmountOfMoney another) {
+		return this.intValue() <= another.intValue();
+	}
+
 	// get formatted
 	/**
 	 * 税抜価格をフォーマットした状態で取得

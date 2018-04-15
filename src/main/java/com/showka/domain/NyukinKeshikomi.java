@@ -20,11 +20,11 @@ public class NyukinKeshikomi extends DomainBase {
 
 	// public method
 	/**
-	 * 消込金額取得.
+	 * 消込金額の合計取得.
 	 * 
 	 * @return 消込.金額の合計
 	 */
-	public AmountOfMoney getKeshikomiKingaku() {
+	public AmountOfMoney getKeshikomiKingakuGokei() {
 		int amount = keshikomiMap.entrySet().stream().mapToInt(entry -> {
 			Keshikomi k = entry.getKey();
 			return k.getKingaku().intValue();
@@ -38,7 +38,7 @@ public class NyukinKeshikomi extends DomainBase {
 	 * @return 入金.金額 - 消込.金額の合計
 	 */
 	public AmountOfMoney getMikeshikomi() {
-		return nyukin.getKingaku().subtract(this.getKeshikomiKingaku());
+		return nyukin.getKingaku().subtract(this.getKeshikomiKingakuGokei());
 	}
 
 	/**
