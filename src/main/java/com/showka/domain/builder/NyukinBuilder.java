@@ -148,6 +148,23 @@ public class NyukinBuilder extends com.showka.domain.builder.DomainBuilderBase<N
 	}
 
 	/**
+	 * {@link Nyukin}に与えるamountをこのビルダに設定する。
+	 *
+	 * @param kingaku
+	 *            kingaku
+	 * @return {@link NyukinBuilder}
+	 */
+	public NyukinBuilder withKingaku(final Integer kingaku) {
+		addConfigurator(new BuilderConfigurator<NyukinBuilder>() {
+			@Override
+			public void configure(NyukinBuilder builder) {
+				builder.kingaku = new AmountOfMoney(kingaku);
+			}
+		});
+		return getThis();
+	}
+
+	/**
 	 * {@link Nyukin}に与えるrecordIdをこのビルダに設定する。
 	 *
 	 * @param recordId

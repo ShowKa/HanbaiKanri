@@ -82,6 +82,23 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 	}
 
 	/**
+	 * {@link Keshikomi}に与えるkingakuをこのビルダに設定する。
+	 *
+	 * @param kingaku
+	 *            kingaku
+	 * @return {@link KeshikomiBuilder}
+	 */
+	public KeshikomiBuilder withKingaku(final Integer kingaku) {
+		addConfigurator(new BuilderConfigurator<KeshikomiBuilder>() {
+			@Override
+			public void configure(KeshikomiBuilder builder) {
+				builder.kingaku = new AmountOfMoney(kingaku);
+			}
+		});
+		return getThis();
+	}
+
+	/**
 	 * {@link Keshikomi}に与えるrecordIdをこのビルダに設定する。
 	 *
 	 * @param recordId

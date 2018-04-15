@@ -87,6 +87,23 @@ public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<
 	}
 
 	/**
+	 * {@link Urikake}に与えるzandakaをこのビルダに設定する。
+	 *
+	 * @param zandaka
+	 *            zandaka
+	 * @return {@link UrikakeBuilder}
+	 */
+	public UrikakeBuilder withZandaka(final Integer zandaka) {
+		addConfigurator(new BuilderConfigurator<UrikakeBuilder>() {
+			@Override
+			public void configure(UrikakeBuilder builder) {
+				builder.zandaka = new AmountOfMoney(zandaka);
+			}
+		});
+		return getThis();
+	}
+
+	/**
 	 * {@link Urikake}に与えるnyukinYoteiDateをこのビルダに設定する。
 	 *
 	 * @param nyukinYoteiDate
