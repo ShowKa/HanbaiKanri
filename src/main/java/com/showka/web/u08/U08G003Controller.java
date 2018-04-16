@@ -24,7 +24,6 @@ import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
 import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
-import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
@@ -63,7 +62,8 @@ public class U08G003Controller extends ControllerBase {
 		Map<Keshikomi, Urikake> keshikomiMap = form.getMeisai().stream().collect(Collectors.toMap(m -> {
 			KeshikomiBuilder b = new KeshikomiBuilder();
 			b.withDate(eigyoDate);
-			b.withKingaku(new AmountOfMoney(m.getKingaku()));
+			b.withKingaku(m.getKingaku());
+			b.withVersion(m.getVersion());
 			return b.build();
 		}, m -> {
 			String urikakeId = m.getUrikakeId();
@@ -78,7 +78,8 @@ public class U08G003Controller extends ControllerBase {
 		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
 		// save
 		nyukinKeshikomiCrudService.save(nyukinKeshikomi);
-		// return
+		// return model
+		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 }
