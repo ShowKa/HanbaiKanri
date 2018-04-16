@@ -40,9 +40,9 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				u1.getZandaka();
-				result = Integer.valueOf(100);
+				result = new AmountOfMoney(100);
 				u2.getZandaka();
-				result = Integer.valueOf(200);
+				result = new AmountOfMoney(200);
 			}
 		};
 		// do
@@ -178,7 +178,7 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 				u2.getNyukinYoteiDate();
 				result = new EigyoDate(2017, 1, 2);
 				u1.getZandaka();
-				result = Integer.valueOf(100);
+				result = new AmountOfMoney(100);
 			}
 		};
 		// do
