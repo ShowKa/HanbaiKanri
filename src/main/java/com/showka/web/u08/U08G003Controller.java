@@ -1,5 +1,7 @@
 package com.showka.web.u08;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -43,6 +45,26 @@ public class U08G003Controller extends ControllerBase {
 
 	@Autowired
 	private NyukinKeshikomiValidateService nyukinKeshikomiValidateService;
+
+	@RequestMapping(value = "/u08g003/refer", method = RequestMethod.POST)
+	public ResponseEntity<?> refer(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
+		// get 入金消込
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		// to model
+		List<Map<String, Object>> keshikomiList = nyukinKeshikomi.getKeshikomiMap().entrySet().stream().map(entry -> {
+			Map<String, Object> ret = new HashMap<String, Object>();
+			Keshikomi keshikomi = entry.getKey();
+			Urikake urikake = entry.getValue();
+			ret.put("keshikomiId", keshikomi.getRecordId());
+			ret.put("urikakeId", urikake.getRecordId());
+			ret.put("kingaku", keshikomi.getKingaku().intValue());
+			ret.put("version", keshikomi.getVersion());
+			return ret;
+		}).collect(Collectors.toList());
+		model.addObject("keshikomiList", keshikomiList);
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
 
 	/**
 	 * 登録.

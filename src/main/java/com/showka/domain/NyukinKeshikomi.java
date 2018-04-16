@@ -10,6 +10,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
+// TODO レコードID+バージョンが不要（SubDomainみたいな抽象クラスが必要）
 public class NyukinKeshikomi extends DomainBase {
 
 	/** 入金. */

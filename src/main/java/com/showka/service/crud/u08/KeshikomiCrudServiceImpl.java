@@ -1,15 +1,22 @@
 package com.showka.service.crud.u08;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Keshikomi;
+import com.showka.domain.Nyukin;
+import com.showka.domain.Urikake;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.entity.TKeshikomi;
 import com.showka.repository.i.TKeshikomiRepository;
+import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -20,27 +27,55 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	@Autowired
 	private TKeshikomiRepository repo;
 
+	@Autowired
+	private UrikakeCrudService urikakeCrudService;
+
 	@Override
-	// TODO 入金&売掛
-	public void save(Keshikomi domain) {
+	public void save(Nyukin nyukin, Urikake urikake, Keshikomi keshikomi) {
 		// entity
-		Optional<TKeshikomi> _e = repo.findById(domain.getRecordId());
+		Optional<TKeshikomi> _e = repo.findById(keshikomi.getRecordId());
 		TKeshikomi e = _e.orElse(new TKeshikomi());
 		// set columns
-		e.setDate(domain.getDate().toDate());
-		e.setKingaku(domain.getKingaku().intValue());
+		e.setDate(keshikomi.getDate().toDate());
+		e.setKingaku(keshikomi.getKingaku().intValue());
+		e.setNyukinId(nyukin.getRecordId());
+		e.setUrikakeId(urikake.getRecordId());
 		// OCC
-		e.setVersion(domain.getVersion());
+		e.setVersion(keshikomi.getVersion());
 		// record id
 		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
 		e.setRecordId(recordId);
-		domain.setRecordId(recordId);
+		keshikomi.setRecordId(recordId);
 		// save
 		repo.save(e);
 	}
 
 	@Override
-	public void delete(String keshikomiId, Integer version) {
+	public Map<Keshikomi, Urikake> getKeshikomiMap(String nyukinId) {
+		// example
+		TKeshikomi e = new TKeshikomi();
+		e.setNyukinId(nyukinId);
+		Example<TKeshikomi> example = Example.of(e);
+		// find
+		List<TKeshikomi> keshikomiList = repo.findAll(example);
+		// build as map
+		Map<Keshikomi, Urikake> keshikomiMap = keshikomiList.stream().collect(Collectors.toMap(keshikomi -> {
+			return this.getDomain(keshikomi.getRecordId());
+		}, keshikomi -> {
+			return urikakeCrudService.getDomain(keshikomi.getUrikakeId());
+		}));
+		return keshikomiMap;
+	}
+
+	/**
+	 * 削除.
+	 * 
+	 * @param keshikomiId
+	 *            消込ID
+	 * @param version
+	 *            バージョン
+	 */
+	void delete(String keshikomiId, Integer version) {
 		// entity
 		TKeshikomi e = repo.getOne(keshikomiId);
 		// OCC
@@ -49,8 +84,14 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		repo.delete(e);
 	}
 
-	@Override
-	public Keshikomi getDomain(String keshikomiId) {
+	/**
+	 * 消込取得.
+	 * 
+	 * @param keshikomiId
+	 *            消込ID
+	 * @return 消込
+	 */
+	Keshikomi getDomain(String keshikomiId) {
 		// entity
 		TKeshikomi e = repo.getOne(keshikomiId);
 		// set builder
@@ -63,8 +104,14 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		return b.build();
 	}
 
-	@Override
-	public boolean exsists(String keshikomiId) {
+	/**
+	 * 存在検証.
+	 * 
+	 * @param keshikomiId
+	 *            消込ID
+	 * @return 存在する場合true
+	 */
+	boolean exsists(String keshikomiId) {
 		return repo.existsById(keshikomiId);
 	}
 }

@@ -47,7 +47,7 @@ public class NyukinKeshikomiCrudServiceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				nyukinCrudService.save(nyukin);
-				keshikomiCrudService.save(keshikomi);
+				keshikomiCrudService.save(nyukin, urikake, keshikomi);
 			}
 		};
 		// do
@@ -57,7 +57,7 @@ public class NyukinKeshikomiCrudServiceImplTest extends SimpleTestCase {
 			{
 				nyukinCrudService.save(nyukin);
 				times = 1;
-				keshikomiCrudService.save(keshikomi);
+				keshikomiCrudService.save(nyukin, urikake, keshikomi);
 				times = 1;
 			}
 		};
