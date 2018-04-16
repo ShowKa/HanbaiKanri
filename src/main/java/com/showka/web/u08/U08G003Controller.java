@@ -53,6 +53,8 @@ public class U08G003Controller extends ControllerBase {
 	public ResponseEntity<?> register(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// 入金
 		Nyukin nyukin = nyukinCrudService.getDomain(form.getNyukinId());
+		// OCC
+		nyukin.setVersion(form.getVersion());
 		// 部署
 		Busho busho = nyukin.getBusho();
 		// 営業日

@@ -19,6 +19,9 @@ public class U08G003Form extends FormBase {
 	/** 入金ID. */
 	private String nyukinId;
 
+	/** 入金バージョン（排他制御用）. */
+	private Integer version;
+
 	/** 明細. */
 	private List<U08G003FormMeisai> meisai;
 }
