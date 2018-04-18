@@ -32,7 +32,7 @@ public class TUrikake extends EntityBase implements Serializable {
 	@Column(name = "uriage_id", nullable = false, length = 255)
 	private String uriageId;
 
-	/** 残高. */
+	/** 金額（掛売りにより発生した売掛金）. */
 	@Column(name = "kingaku", nullable = false)
 	private Integer kingaku;
 

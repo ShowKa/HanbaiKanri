@@ -68,7 +68,7 @@ public class SeikyuUrikakeSpecificationImplTest extends SimpleTestCase {
 	 * 
 	 * <pre>
 	 * 入力：なし
-	 * 条件：売掛.残高=1000円
+	 * 条件：売掛.金額=1000円
 	 * 結果：売掛の請求明細.金額=1000円
 	 * </pre>
 	 */

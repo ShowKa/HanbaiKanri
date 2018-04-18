@@ -28,7 +28,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 	 * <pre>
 	 * 入力：売上
 	 * 条件：販売区分=掛売, 入金予定日=2017/2/1, 売上合計=100円（税8%）
-	 * 結果：売掛 => 入金予定日=2017/2/1, 残高=108円
+	 * 結果：売掛 => 入金予定日=2017/2/1, 金額=108円
 	 * </pre>
 	 */
 	@Test
