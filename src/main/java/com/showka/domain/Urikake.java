@@ -20,6 +20,7 @@ public class Urikake extends DomainBase {
 	private Uriage uriage;
 
 	/** 残高. */
+	// TODO 残高 -> 売掛金（消込後ではなく、請求したときの値）
 	private AmountOfMoney zandaka;
 
 	/** 入金予定日. */
