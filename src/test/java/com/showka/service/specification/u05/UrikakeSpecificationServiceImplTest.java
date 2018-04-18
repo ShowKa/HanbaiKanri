@@ -68,7 +68,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 		};
 		// check
 		assertEquals(nyukinYoteiDate, actual.get().getNyukinYoteiDate());
-		assertEquals(108, actual.get().getZandaka().intValue());
+		assertEquals(108, actual.get().getKingaku().intValue());
 	}
 
 	/**

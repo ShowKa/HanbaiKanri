@@ -125,7 +125,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		Keshikomi keshikomi = kb.build();
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
-		ub.withZandaka(1000);
+		ub.withKingaku(1000);
 		Urikake urikake = ub.build();
 		// 消込マップ
 		Map<Keshikomi, Urikake> keshikomiMap = new HashMap<Keshikomi, Urikake>();
@@ -154,7 +154,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		Keshikomi keshikomi = kb.build();
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
-		ub.withZandaka(1000);
+		ub.withKingaku(1000);
 		Urikake urikake = ub.build();
 		// 消込マップ
 		Map<Keshikomi, Urikake> keshikomiMap = new HashMap<Keshikomi, Urikake>();

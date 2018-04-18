@@ -42,7 +42,7 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 		// 請求明細
 		return urikakeList.stream().map(urikake -> {
 			SeikyuMeisaiBuilder b = new SeikyuMeisaiBuilder();
-			b.withKingaku(urikake.getZandaka());
+			b.withKingaku(urikake.getKingaku());
 			b.withUrikake(urikake);
 			return b.build();
 		}).collect(Collectors.toList());

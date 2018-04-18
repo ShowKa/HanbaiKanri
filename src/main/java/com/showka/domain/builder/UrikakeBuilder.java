@@ -11,8 +11,8 @@ public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<
 	/** uriage */
 	private Uriage uriage;
 
-	/** zandaka */
-	private AmountOfMoney zandaka;
+	/** kingaku */
+	private AmountOfMoney kingaku;
 
 	/** nyukinYoteiDate */
 	private EigyoDate nyukinYoteiDate;
@@ -27,7 +27,7 @@ public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<
 	@Override
 	protected void apply(Urikake domain, UrikakeBuilder builder) {
 		builder.withUriage(domain.getUriage());
-		builder.withZandaka(domain.getZandaka());
+		builder.withKingaku(domain.getKingaku());
 		builder.withNyukinYoteiDate(domain.getNyukinYoteiDate());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
@@ -35,7 +35,7 @@ public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<
 
 	@Override
 	protected Urikake createDomainObject() {
-		Urikake domain = new Urikake(uriage, zandaka, nyukinYoteiDate);
+		Urikake domain = new Urikake(uriage, kingaku, nyukinYoteiDate);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -70,34 +70,34 @@ public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<
 	}
 
 	/**
-	 * {@link Urikake}に与えるzandakaをこのビルダに設定する。
+	 * {@link Urikake}に与えるkingakuをこのビルダに設定する。
 	 *
-	 * @param zandaka
-	 *            zandaka
+	 * @param kingaku
+	 *            kingaku
 	 * @return {@link UrikakeBuilder}
 	 */
-	public UrikakeBuilder withZandaka(final AmountOfMoney zandaka) {
+	public UrikakeBuilder withKingaku(final AmountOfMoney kingaku) {
 		addConfigurator(new BuilderConfigurator<UrikakeBuilder>() {
 			@Override
 			public void configure(UrikakeBuilder builder) {
-				builder.zandaka = zandaka;
+				builder.kingaku = kingaku;
 			}
 		});
 		return getThis();
 	}
 
 	/**
-	 * {@link Urikake}に与えるzandakaをこのビルダに設定する。
+	 * {@link Urikake}に与えるkingakuをこのビルダに設定する。
 	 *
-	 * @param zandaka
-	 *            zandaka
+	 * @param kingaku
+	 *            kingaku
 	 * @return {@link UrikakeBuilder}
 	 */
-	public UrikakeBuilder withZandaka(final Integer zandaka) {
+	public UrikakeBuilder withKingaku(final Integer kingaku) {
 		addConfigurator(new BuilderConfigurator<UrikakeBuilder>() {
 			@Override
 			public void configure(UrikakeBuilder builder) {
-				builder.zandaka = new AmountOfMoney(zandaka);
+				builder.kingaku = new AmountOfMoney(kingaku);
 			}
 		});
 		return getThis();

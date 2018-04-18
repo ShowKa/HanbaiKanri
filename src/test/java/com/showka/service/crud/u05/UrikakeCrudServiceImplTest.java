@@ -35,7 +35,7 @@ public class UrikakeCrudServiceImplTest extends CrudServiceTestCase {
 		Uriage uriage = new UriageBuilder().withRecordId("r-KK01-00001").build();
 		// 売掛
 		UrikakeBuilder b = new UrikakeBuilder();
-		b.withZandaka(new AmountOfMoney(108));
+		b.withKingaku(new AmountOfMoney(108));
 		b.withNyukinYoteiDate(new EigyoDate(2017, 1, 1));
 		b.withUriage(uriage);
 		b.withRecordId("r-KK01-00001");

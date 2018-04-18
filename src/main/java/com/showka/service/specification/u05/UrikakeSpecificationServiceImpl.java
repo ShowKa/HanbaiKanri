@@ -32,13 +32,13 @@ public class UrikakeSpecificationServiceImpl implements UrikakeSpecificationServ
 			TheDate temp = uriage.getKeijoDate().plusMonths(1);
 			nyukinYoteiDate = new EigyoDate(temp.withDayOfMonth(26));
 		}
-		// 残高=売上合計金額税込
-		AmountOfMoney zandaka = uriage.getUriageGokeiKakaku().getZeikomi();
+		// 売掛.金額=売上合計金額税込
+		AmountOfMoney kingaku = uriage.getUriageGokeiKakaku().getZeikomi();
 		// build
 		UrikakeBuilder b = new UrikakeBuilder();
 		b.withUriage(uriage);
 		b.withNyukinYoteiDate(nyukinYoteiDate);
-		b.withZandaka(zandaka);
+		b.withKingaku(kingaku);
 		return Optional.of(b.build());
 	}
 }

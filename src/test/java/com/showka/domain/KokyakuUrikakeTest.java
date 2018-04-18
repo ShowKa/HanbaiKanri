@@ -39,9 +39,9 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				u1.getZandaka();
+				u1.getKingaku();
 				result = new AmountOfMoney(100);
-				u2.getZandaka();
+				u2.getKingaku();
 				result = new AmountOfMoney(200);
 			}
 		};
@@ -50,9 +50,9 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				u1.getZandaka();
+				u1.getKingaku();
 				times = 1;
-				u2.getZandaka();
+				u2.getKingaku();
 				times = 1;
 			}
 		};
@@ -177,7 +177,7 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 				result = new EigyoDate(2017, 1, 1);
 				u2.getNyukinYoteiDate();
 				result = new EigyoDate(2017, 1, 2);
-				u1.getZandaka();
+				u1.getKingaku();
 				result = new AmountOfMoney(100);
 			}
 		};
@@ -190,7 +190,7 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 				times = 1;
 				u2.getNyukinYoteiDate();
 				times = 1;
-				u1.getZandaka();
+				u1.getKingaku();
 				times = 1;
 			}
 		};

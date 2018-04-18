@@ -38,7 +38,7 @@ public class UrikakeKeshikomi extends DomainAggregation {
 	 */
 	public AmountOfMoney getZandaka() {
 		AmountOfMoney keshikomiKingakuGokei = this.getKeshikomiKingakuGokei();
-		return urikake.getZandaka().subtract(keshikomiKingakuGokei);
+		return urikake.getKingaku().subtract(keshikomiKingakuGokei);
 	}
 
 	// override

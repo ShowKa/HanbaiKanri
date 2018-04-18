@@ -41,7 +41,8 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 		Map<Keshikomi, Urikake> keshikomiMap = nyukinKeshikomi.getKeshikomiMap();
 		keshikomiMap.forEach((keshikomi, urikake) -> {
 			AmountOfMoney keshikomiKingaku = keshikomi.getKingaku();
-			AmountOfMoney zandaka = urikake.getZandaka();
+			// TODO 売掛消込から残高を取得する
+			AmountOfMoney zandaka = urikake.getKingaku();
 			if (keshikomiKingaku.greaterThan(zandaka)) {
 				throw new ValidateException("消込金額が売掛金額を上回っています。");
 			}

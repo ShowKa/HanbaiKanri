@@ -82,7 +82,7 @@ public class SeikyuUrikakeSpecificationImplTest extends SimpleTestCase {
 		EigyoDate seikyuDate = new EigyoDate(2017, 1, 1);
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
-		ub.withZandaka(new AmountOfMoney(1000));
+		ub.withKingaku(new AmountOfMoney(1000));
 		Urikake urikake = ub.build();
 		List<Urikake> urikakeList = new ArrayList<Urikake>();
 		urikakeList.add(urikake);

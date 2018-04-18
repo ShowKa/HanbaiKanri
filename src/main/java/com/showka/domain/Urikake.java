@@ -19,23 +19,13 @@ public class Urikake extends DomainBase {
 	/** 売上. */
 	private Uriage uriage;
 
-	/** 残高. */
-	// TODO 残高 -> 売掛金（消込後ではなく、請求したときの値）
-	private AmountOfMoney zandaka;
+	/** 金額. */
+	private AmountOfMoney kingaku;
 
 	/** 入金予定日. */
 	private EigyoDate nyukinYoteiDate;
 
 	// public methods
-	/**
-	 * 現時点での入金額を取得.
-	 * 
-	 * @return 入金額
-	 */
-	public AmountOfMoney getPresentNyukinKingaku() {
-		return uriage.getUriageGokeiKakaku().getZeikomi().subtract(zandaka);
-	}
-
 	/**
 	 * 売上ID取得.
 	 * 
