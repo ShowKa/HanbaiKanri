@@ -103,7 +103,7 @@ VALUES
 
 -- 売掛
 INSERT INTO t_urikake
-(uriage_id, zandaka, nyukin_yotei_date, record_id)
+(uriage_id, kingaku, nyukin_yotei_date, record_id)
 VALUES
 -- 翌月9/30入金予定
 ('r-KK02-00001', 21610, to_date('2017/09/30', 'yyyy/MM/dd') ,'r-KK02-00001'),

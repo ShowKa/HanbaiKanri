@@ -33,8 +33,8 @@ public class TUrikake extends EntityBase implements Serializable {
 	private String uriageId;
 
 	/** 残高. */
-	@Column(name = "zandaka", nullable = false)
-	private Integer zandaka;
+	@Column(name = "kingaku", nullable = false)
+	private Integer kingaku;
 
 	/** 入金予定日. */
 	@Column(name = "nyukin_yotei_date", nullable = false)

@@ -43,7 +43,7 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 		// set column
 		e.setUriageId(uriageId);
 		e.setNyukinYoteiDate(domain.getNyukinYoteiDate().toDate());
-		e.setZandaka(domain.getKingaku().intValue());
+		e.setKingaku(domain.getKingaku().intValue());
 		// occ
 		e.setVersion(domain.getVersion());
 		// set record id
@@ -79,7 +79,7 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 		b.withNyukinYoteiDate(new EigyoDate(e.getNyukinYoteiDate()));
 		b.withRecordId(e.getRecordId());
 		b.withVersion(e.getVersion());
-		b.withKingaku(new AmountOfMoney(e.getZandaka()));
+		b.withKingaku(new AmountOfMoney(e.getKingaku()));
 		return b.build();
 	}
 
