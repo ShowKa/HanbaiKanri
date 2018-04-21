@@ -1,4 +1,4 @@
-package com.shoka;
+package com.showka;
 
 import java.io.BufferedWriter;
 import java.io.File;
