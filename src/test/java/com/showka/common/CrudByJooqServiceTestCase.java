@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.system.ExecuteListenerExtend;
 
-public class CrudByJooqServiceTestCase extends CrudServiceTestCase {
+public abstract class CrudByJooqServiceTestCase extends CrudServiceTestCase {
 
 	@Autowired
 	protected DSLContext create;
