@@ -1,6 +1,7 @@
 package com.showka.web.u05;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -35,7 +36,7 @@ public class U05G001Controller extends ControllerBase {
 	 * 参照.
 	 *
 	 */
-	@RequestMapping(value = "/u05g002/refer", method = RequestMethod.GET)
+	@RequestMapping(value = "/u05g001/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U05G001Form form, ModelAndViewExtended model) {
 		// ログインユーザーの所属部署営業日
 		EigyoDate eigyoDate = super.getLoginShain().getShozokuBusho().getEigyoDate();
@@ -52,16 +53,16 @@ public class U05G001Controller extends ControllerBase {
 	 * 検索.
 	 *
 	 */
-	@RequestMapping(value = "/u05g002/search", method = RequestMethod.GET)
+	@RequestMapping(value = "/u05g001/search", method = RequestMethod.GET)
 	public ResponseEntity<?> search(@ModelAttribute U05G001Form form, ModelAndViewExtended model) {
 		// get 顧客
 		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 		// search 売上
 		UriageSearchCriteria criteria = new UriageSearchCriteria();
-		criteria.setKokyaku(kokyaku);
+		criteria.setKokyaku(Optional.of(kokyaku));
 		criteria.setFrom(new EigyoDate(form.getFrom()));
 		criteria.setTo(new EigyoDate(form.getTo()));
-		criteria.setExistsUrikake(form.isExistsUrikake());
+		criteria.setOnlyUrikake(form.isOnlyUrikake());
 		List<Uriage> uriageList = uriageSearchService.search(criteria);
 		// set model
 		uriageList.forEach(uriage -> {

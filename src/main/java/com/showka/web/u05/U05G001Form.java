@@ -31,6 +31,6 @@ public class U05G001Form extends FormBase {
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date to;
 
-	/** 売掛残. */
-	private boolean existsUrikake;
+	/** 売掛のみ. */
+	private boolean onlyUrikake;
 }
