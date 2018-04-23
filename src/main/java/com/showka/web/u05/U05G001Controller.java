@@ -1,7 +1,10 @@
 package com.showka.web.u05;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -10,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.thymeleaf.util.StringUtils;
 
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Uriage;
@@ -40,12 +44,14 @@ public class U05G001Controller extends ControllerBase {
 	public ModelAndViewExtended refer(@ModelAttribute U05G001Form form, ModelAndViewExtended model) {
 		// ログインユーザーの所属部署営業日
 		EigyoDate eigyoDate = super.getLoginShain().getShozokuBusho().getEigyoDate();
-		form.setFrom(eigyoDate.toDate());
+		// defaults
+		form.setFrom(eigyoDate.withDayOfMonth(1).toDate());
 		form.setTo(eigyoDate.toDate());
+		form.setOnlyUrikake(false);
 		// set model
 		model.addForm(form);
 		model.setMode(Mode.READ);
-		model.setViewName("/u05/ug05001");
+		model.setViewName("/u05/u05g001");
 		return model;
 	}
 
@@ -53,26 +59,33 @@ public class U05G001Controller extends ControllerBase {
 	 * 検索.
 	 *
 	 */
-	@RequestMapping(value = "/u05g001/search", method = RequestMethod.GET)
+	@RequestMapping(value = "/u05g001/search", method = RequestMethod.POST)
 	public ResponseEntity<?> search(@ModelAttribute U05G001Form form, ModelAndViewExtended model) {
-		// get 顧客
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 		// search 売上
 		UriageSearchCriteria criteria = new UriageSearchCriteria();
-		criteria.setKokyaku(Optional.of(kokyaku));
+		// set 顧客
+		if (StringUtils.isEmpty(form.getKokyakuCode())) {
+			criteria.setKokyaku(Optional.empty());
+		} else {
+			Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+			criteria.setKokyaku(Optional.of(kokyaku));
+		}
 		criteria.setFrom(new EigyoDate(form.getFrom()));
 		criteria.setTo(new EigyoDate(form.getTo()));
 		criteria.setOnlyUrikake(form.isOnlyUrikake());
-		List<Uriage> uriageList = uriageSearchService.search(criteria);
+		List<Uriage> searchLislt = uriageSearchService.search(criteria);
 		// set model
-		uriageList.forEach(uriage -> {
-			model.addObject("kokyakuCode", uriage.getKokyaku().getCode());
-			model.addObject("kokyakuName", uriage.getKokyaku().getName());
-			model.addObject("denpyoNumber", uriage.getDenpyoNumber());
-			model.addObject("uriageDate", uriage.getUriageDate());
-			model.addObject("hanbaiKubun", uriage.getHanbaiKubun().name());
-			model.addObject("gokeiKakakuZeinuki", uriage.getUriageGokeiKakaku().getZeinukiFormatted());
-		});
+		List<Map<String, Object>> uriageList = searchLislt.stream().map(uriage -> {
+			Map<String, Object> ret = new HashMap<String, Object>();
+			ret.put("kokyakuCode", uriage.getKokyaku().getCode());
+			ret.put("kokyakuName", uriage.getKokyaku().getName());
+			ret.put("denpyoNumber", uriage.getDenpyoNumber());
+			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("hanbaiKubun", uriage.getHanbaiKubun().name());
+			ret.put("gokeiKakakuZeinuki", uriage.getUriageGokeiKakaku().getZeinukiFormatted());
+			return ret;
+		}).collect(Collectors.toList());
+		model.addObject("uriageList", uriageList);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
