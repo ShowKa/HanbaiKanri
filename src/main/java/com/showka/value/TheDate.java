@@ -73,6 +73,14 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return new TheDate(this.date.withDayOfMonth(dayOfMonth));
 	}
 
+	public LocalDateTime atTime(int hour, int minute, int second) {
+		return this.date.atTime(hour, minute, second);
+	}
+
+	public LocalDateTime atStartOfDay() {
+		return this.date.atStartOfDay();
+	}
+
 	/**
 	 * 文字列フォーマット.
 	 * 
