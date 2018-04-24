@@ -114,7 +114,15 @@ task jooqCodegen <<{
 				generator() {
 					database() { includes('public.*') }
 					generate([:]) {
+						// i dont need Indexes.java
+						indexes false
+						// i dont need ClobalObjects like Tables.java, Sequence.java....
+						globalObjectReferences false
+						// use Java8 API (LocalDateTime...)
+						javaTimeTypes true
+						// i dont need POJO classes
 						pojos false
+						// i dont need Database Access Objects
 						daos false
 					}
 					target() {
@@ -127,9 +135,16 @@ task jooqCodegen <<{
 								table(){
 									tableIdentifier() { transform('LOWER') }
 									tableClass(){ transform('UPPER') }
-									recordClass(){ transform('UPPER')
+									recordClass(){
+										transform('UPPER')
 										expression('$0_RECORD')
 									}
+								}
+							}
+							fields(){
+								field() {
+									fieldIdentifier() { transform('LOWER') }
+									fieldMember() { transform('LOWER') }
 								}
 							}
 						} }
