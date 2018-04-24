@@ -4,12 +4,11 @@
 package com.showka.table.public_.tables;
 
 
-import com.showka.table.public_.Indexes;
 import com.showka.table.public_.Keys;
 import com.showka.table.public_.Public;
 import com.showka.table.public_.tables.records.T_SHOHIN_ZAIKO_RECORD;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
 import org.jooq.Table;
@@ -40,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_SHOHIN_ZAIKO extends TableImpl<T_SHOHIN_ZAIKO_RECORD> {
 
-    private static final long serialVersionUID = -839528310;
+    private static final long serialVersionUID = -222435449;
 
     /**
      * The reference instance of <code>PUBLIC.T_SHOHIN_ZAIKO</code>
@@ -58,62 +56,62 @@ public class T_SHOHIN_ZAIKO extends TableImpl<T_SHOHIN_ZAIKO_RECORD> {
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.BUSHO_ID</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> BUSHO_ID = createField("BUSHO_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> busho_id = createField("BUSHO_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.EIGYO_DATE</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, Timestamp> EIGYO_DATE = createField("EIGYO_DATE", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, LocalDateTime> eigyo_date = createField("EIGYO_DATE", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.SHOHIN_ID</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> SHOHIN_ID = createField("SHOHIN_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> shohin_id = createField("SHOHIN_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.CREATE_FUNCTION</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> CREATE_FUNCTION = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> create_function = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.CREATE_TIMESTAMP</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, Timestamp> CREATE_TIMESTAMP = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, LocalDateTime> create_timestamp = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.CREATE_USER_ID</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> CREATE_USER_ID = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> create_user_id = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.RECORD_ID</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> RECORD_ID = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> record_id = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.UPDATE_FUNCTION</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> UPDATE_FUNCTION = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> update_function = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.UPDATE_TIMESTAMP</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, Timestamp> UPDATE_TIMESTAMP = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, LocalDateTime> update_timestamp = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.UPDATE_USER_ID</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> UPDATE_USER_ID = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, String> update_user_id = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.VERSION</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, Integer> VERSION = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_ZAIKO.NUMBER</code>.
      */
-    public final TableField<T_SHOHIN_ZAIKO_RECORD, Integer> NUMBER = createField("NUMBER", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<T_SHOHIN_ZAIKO_RECORD, Integer> number = createField("NUMBER", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>PUBLIC.T_SHOHIN_ZAIKO</code> table reference
@@ -150,14 +148,6 @@ public class T_SHOHIN_ZAIKO extends TableImpl<T_SHOHIN_ZAIKO_RECORD> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.FKTKU4TUGX74WKRAT36T4WWNWEB_INDEX_7, Indexes.PRIMARY_KEY_78, Indexes.UK_97I9YEJ178G3KQCKRFJ4GJH0N_INDEX_7);
     }
 
     /**

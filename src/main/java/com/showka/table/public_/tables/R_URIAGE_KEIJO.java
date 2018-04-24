@@ -4,12 +4,11 @@
 package com.showka.table.public_.tables;
 
 
-import com.showka.table.public_.Indexes;
 import com.showka.table.public_.Keys;
 import com.showka.table.public_.Public;
 import com.showka.table.public_.tables.records.R_URIAGE_KEIJO_RECORD;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
 import org.jooq.Table;
@@ -40,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class R_URIAGE_KEIJO extends TableImpl<R_URIAGE_KEIJO_RECORD> {
 
-    private static final long serialVersionUID = -1011441256;
+    private static final long serialVersionUID = 1622949494;
 
     /**
      * The reference instance of <code>PUBLIC.R_URIAGE_KEIJO</code>
@@ -58,52 +56,52 @@ public class R_URIAGE_KEIJO extends TableImpl<R_URIAGE_KEIJO_RECORD> {
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.URIAGE_RIREKI_ID</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, String> URIAGE_RIREKI_ID = createField("URIAGE_RIREKI_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, String> uriage_rireki_id = createField("URIAGE_RIREKI_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.CREATE_FUNCTION</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, String> CREATE_FUNCTION = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, String> create_function = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.CREATE_TIMESTAMP</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, Timestamp> CREATE_TIMESTAMP = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, LocalDateTime> create_timestamp = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.CREATE_USER_ID</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, String> CREATE_USER_ID = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, String> create_user_id = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.RECORD_ID</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, String> RECORD_ID = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, String> record_id = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.UPDATE_FUNCTION</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, String> UPDATE_FUNCTION = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, String> update_function = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.UPDATE_TIMESTAMP</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, Timestamp> UPDATE_TIMESTAMP = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, LocalDateTime> update_timestamp = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.UPDATE_USER_ID</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, String> UPDATE_USER_ID = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, String> update_user_id = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.VERSION</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, Integer> VERSION = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>PUBLIC.R_URIAGE_KEIJO.BUSHO_ID</code>.
      */
-    public final TableField<R_URIAGE_KEIJO_RECORD, String> BUSHO_ID = createField("BUSHO_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<R_URIAGE_KEIJO_RECORD, String> busho_id = createField("BUSHO_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * Create a <code>PUBLIC.R_URIAGE_KEIJO</code> table reference
@@ -140,14 +138,6 @@ public class R_URIAGE_KEIJO extends TableImpl<R_URIAGE_KEIJO_RECORD> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.FK88YWWSH8XTTSGK28INR0I5POH_INDEX_2, Indexes.PRIMARY_KEY_21, Indexes.UK_68YGMNT83I8TJ9VCTJUJ7DNOH_INDEX_2);
     }
 
     /**

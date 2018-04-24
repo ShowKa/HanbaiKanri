@@ -4,12 +4,11 @@
 package com.showka.table.public_.tables;
 
 
-import com.showka.table.public_.Indexes;
 import com.showka.table.public_.Keys;
 import com.showka.table.public_.Public;
 import com.showka.table.public_.tables.records.T_SEIKYU_MEISAI_RECORD;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
 import org.jooq.Table;
@@ -40,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_SEIKYU_MEISAI extends TableImpl<T_SEIKYU_MEISAI_RECORD> {
 
-    private static final long serialVersionUID = 429555576;
+    private static final long serialVersionUID = 1449048287;
 
     /**
      * The reference instance of <code>PUBLIC.T_SEIKYU_MEISAI</code>
@@ -58,57 +56,57 @@ public class T_SEIKYU_MEISAI extends TableImpl<T_SEIKYU_MEISAI_RECORD> {
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.SEIKYU_ID</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, String> SEIKYU_ID = createField("SEIKYU_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, String> seikyu_id = createField("SEIKYU_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.URIKAKE_ID</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, String> URIKAKE_ID = createField("URIKAKE_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, String> urikake_id = createField("URIKAKE_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.CREATE_FUNCTION</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, String> CREATE_FUNCTION = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, String> create_function = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.CREATE_TIMESTAMP</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, Timestamp> CREATE_TIMESTAMP = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, LocalDateTime> create_timestamp = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.CREATE_USER_ID</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, String> CREATE_USER_ID = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, String> create_user_id = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.RECORD_ID</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, String> RECORD_ID = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, String> record_id = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.UPDATE_FUNCTION</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, String> UPDATE_FUNCTION = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, String> update_function = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.UPDATE_TIMESTAMP</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, Timestamp> UPDATE_TIMESTAMP = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, LocalDateTime> update_timestamp = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.UPDATE_USER_ID</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, String> UPDATE_USER_ID = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, String> update_user_id = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.VERSION</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, Integer> VERSION = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SEIKYU_MEISAI.KINGAKU</code>.
      */
-    public final TableField<T_SEIKYU_MEISAI_RECORD, Integer> KINGAKU = createField("KINGAKU", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<T_SEIKYU_MEISAI_RECORD, Integer> kingaku = createField("KINGAKU", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>PUBLIC.T_SEIKYU_MEISAI</code> table reference
@@ -145,14 +143,6 @@ public class T_SEIKYU_MEISAI extends TableImpl<T_SEIKYU_MEISAI_RECORD> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.FK9AXJO7K5P73YYEWXSIC6HT04W_INDEX_E, Indexes.PRIMARY_KEY_ED, Indexes.UK_R4P4GM00P10V2HXDQSBCNVPP0_INDEX_E);
     }
 
     /**

@@ -4,12 +4,11 @@
 package com.showka.table.public_.tables;
 
 
-import com.showka.table.public_.Indexes;
 import com.showka.table.public_.Keys;
 import com.showka.table.public_.Public;
 import com.showka.table.public_.tables.records.T_SHOHIN_IDO_RECORD;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
 import org.jooq.Table;
@@ -40,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_SHOHIN_IDO extends TableImpl<T_SHOHIN_IDO_RECORD> {
 
-    private static final long serialVersionUID = -438830012;
+    private static final long serialVersionUID = 351941379;
 
     /**
      * The reference instance of <code>PUBLIC.T_SHOHIN_IDO</code>
@@ -58,67 +56,67 @@ public class T_SHOHIN_IDO extends TableImpl<T_SHOHIN_IDO_RECORD> {
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.ID</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> ID = createField("ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> id = createField("ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.CREATE_FUNCTION</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> CREATE_FUNCTION = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> create_function = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.CREATE_TIMESTAMP</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, Timestamp> CREATE_TIMESTAMP = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, LocalDateTime> create_timestamp = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.CREATE_USER_ID</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> CREATE_USER_ID = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> create_user_id = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.RECORD_ID</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> RECORD_ID = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> record_id = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.UPDATE_FUNCTION</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> UPDATE_FUNCTION = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> update_function = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.UPDATE_TIMESTAMP</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, Timestamp> UPDATE_TIMESTAMP = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, LocalDateTime> update_timestamp = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.UPDATE_USER_ID</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> UPDATE_USER_ID = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> update_user_id = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.VERSION</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, Integer> VERSION = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.BUSHO_ID</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> BUSHO_ID = createField("BUSHO_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> busho_id = createField("BUSHO_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.DATE</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, Timestamp> DATE = createField("DATE", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, LocalDateTime> date = createField("DATE", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.KUBUN</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, String> KUBUN = createField("KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, String> kubun = createField("KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.T_SHOHIN_IDO.SAGYO_TIMESTAMP</code>.
      */
-    public final TableField<T_SHOHIN_IDO_RECORD, Timestamp> SAGYO_TIMESTAMP = createField("SAGYO_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<T_SHOHIN_IDO_RECORD, LocalDateTime> sagyo_timestamp = createField("SAGYO_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * Create a <code>PUBLIC.T_SHOHIN_IDO</code> table reference
@@ -155,14 +153,6 @@ public class T_SHOHIN_IDO extends TableImpl<T_SHOHIN_IDO_RECORD> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.FKK5EMLYFTBF5PBADDC4QFNMGLH_INDEX_1, Indexes.PRIMARY_KEY_1, Indexes.UK_9HUM7RYAHI4JAIGE2V6TD9M13_INDEX_1);
     }
 
     /**

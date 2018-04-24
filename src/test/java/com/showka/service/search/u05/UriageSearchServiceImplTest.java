@@ -180,8 +180,8 @@ public class UriageSearchServiceImplTest extends CrudByJooqServiceTestCase {
 		// input
 		// records
 		T_URIAGE_RECORD record = new T_URIAGE_RECORD();
-		record.set(t_uriage.KOKYAKU_ID, "r-KK01");
-		record.set(t_uriage.DENPYO_NUMBER, "00001");
+		record.set(t_uriage.kokyaku_id, "r-KK01");
+		record.set(t_uriage.denpyo_number, "00001");
 		List<T_URIAGE_RECORD> records = new ArrayList<T_URIAGE_RECORD>();
 		records.add(record);
 		// pk

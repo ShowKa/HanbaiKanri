@@ -4,12 +4,11 @@
 package com.showka.table.public_.tables;
 
 
-import com.showka.table.public_.Indexes;
 import com.showka.table.public_.Keys;
 import com.showka.table.public_.Public;
 import com.showka.table.public_.tables.records.M_NYUKIN_KAKE_INFO_RECORD;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import javax.annotation.Generated;
 
 import org.jooq.Field;
 import org.jooq.ForeignKey;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
 import org.jooq.Table;
@@ -40,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class M_NYUKIN_KAKE_INFO extends TableImpl<M_NYUKIN_KAKE_INFO_RECORD> {
 
-    private static final long serialVersionUID = 1165358802;
+    private static final long serialVersionUID = 1087779831;
 
     /**
      * The reference instance of <code>PUBLIC.M_NYUKIN_KAKE_INFO</code>
@@ -58,67 +56,67 @@ public class M_NYUKIN_KAKE_INFO extends TableImpl<M_NYUKIN_KAKE_INFO_RECORD> {
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.KOKYAKU_ID</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> KOKYAKU_ID = createField("KOKYAKU_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> kokyaku_id = createField("KOKYAKU_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.CREATE_FUNCTION</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> CREATE_FUNCTION = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> create_function = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.CREATE_TIMESTAMP</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Timestamp> CREATE_TIMESTAMP = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, LocalDateTime> create_timestamp = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.CREATE_USER_ID</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> CREATE_USER_ID = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> create_user_id = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.RECORD_ID</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> RECORD_ID = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> record_id = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.UPDATE_FUNCTION</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> UPDATE_FUNCTION = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> update_function = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.UPDATE_TIMESTAMP</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Timestamp> UPDATE_TIMESTAMP = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, LocalDateTime> update_timestamp = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.UPDATE_USER_ID</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> UPDATE_USER_ID = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> update_user_id = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.VERSION</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Integer> VERSION = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.NYUKIN_DATE</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Integer> NYUKIN_DATE = createField("NYUKIN_DATE", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Integer> nyukin_date = createField("NYUKIN_DATE", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.NYUKIN_HOHO_KUBUN</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> NYUKIN_HOHO_KUBUN = createField("NYUKIN_HOHO_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> nyukin_hoho_kubun = createField("NYUKIN_HOHO_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.NYUKIN_TSUKI_KUBUN</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> NYUKIN_TSUKI_KUBUN = createField("NYUKIN_TSUKI_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, String> nyukin_tsuki_kubun = createField("NYUKIN_TSUKI_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_NYUKIN_KAKE_INFO.SHIMEBI</code>.
      */
-    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Integer> SHIMEBI = createField("SHIMEBI", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+    public final TableField<M_NYUKIN_KAKE_INFO_RECORD, Integer> shimebi = createField("SHIMEBI", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>PUBLIC.M_NYUKIN_KAKE_INFO</code> table reference
@@ -155,14 +153,6 @@ public class M_NYUKIN_KAKE_INFO extends TableImpl<M_NYUKIN_KAKE_INFO_RECORD> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PRIMARY_KEY_E7, Indexes.UK_L40OVD3L702092P9XG88XU4VX_INDEX_E);
     }
 
     /**

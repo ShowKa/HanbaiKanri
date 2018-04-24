@@ -4,19 +4,17 @@
 package com.showka.table.public_.tables;
 
 
-import com.showka.table.public_.Indexes;
 import com.showka.table.public_.Keys;
 import com.showka.table.public_.Public;
 import com.showka.table.public_.tables.records.M_BUSHO_RECORD;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Generated;
 
 import org.jooq.Field;
-import org.jooq.Index;
 import org.jooq.Name;
 import org.jooq.Schema;
 import org.jooq.Table;
@@ -39,7 +37,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class M_BUSHO extends TableImpl<M_BUSHO_RECORD> {
 
-    private static final long serialVersionUID = -473619064;
+    private static final long serialVersionUID = -1229531385;
 
     /**
      * The reference instance of <code>PUBLIC.M_BUSHO</code>
@@ -57,62 +55,62 @@ public class M_BUSHO extends TableImpl<M_BUSHO_RECORD> {
     /**
      * The column <code>PUBLIC.M_BUSHO.CODE</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> CODE = createField("CODE", org.jooq.impl.SQLDataType.VARCHAR(4).nullable(false), this, "");
+    public final TableField<M_BUSHO_RECORD, String> code = createField("CODE", org.jooq.impl.SQLDataType.VARCHAR(4).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.CREATE_FUNCTION</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> CREATE_FUNCTION = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_BUSHO_RECORD, String> create_function = createField("CREATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.CREATE_TIMESTAMP</code>.
      */
-    public final TableField<M_BUSHO_RECORD, Timestamp> CREATE_TIMESTAMP = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<M_BUSHO_RECORD, LocalDateTime> create_timestamp = createField("CREATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.CREATE_USER_ID</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> CREATE_USER_ID = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_BUSHO_RECORD, String> create_user_id = createField("CREATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.RECORD_ID</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> RECORD_ID = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<M_BUSHO_RECORD, String> record_id = createField("RECORD_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.UPDATE_FUNCTION</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> UPDATE_FUNCTION = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_BUSHO_RECORD, String> update_function = createField("UPDATE_FUNCTION", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.UPDATE_TIMESTAMP</code>.
      */
-    public final TableField<M_BUSHO_RECORD, Timestamp> UPDATE_TIMESTAMP = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<M_BUSHO_RECORD, LocalDateTime> update_timestamp = createField("UPDATE_TIMESTAMP", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false).defaultValue(org.jooq.impl.DSL.field("CURRENT_TIMESTAMP()", org.jooq.impl.SQLDataType.LOCALDATETIME)), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.UPDATE_USER_ID</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> UPDATE_USER_ID = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<M_BUSHO_RECORD, String> update_user_id = createField("UPDATE_USER_ID", org.jooq.impl.SQLDataType.VARCHAR(2147483647).nullable(false).defaultValue(org.jooq.impl.DSL.field("'default'", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.VERSION</code>.
      */
-    public final TableField<M_BUSHO_RECORD, Integer> VERSION = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<M_BUSHO_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.BUSHO_KUBUN</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> BUSHO_KUBUN = createField("BUSHO_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
+    public final TableField<M_BUSHO_RECORD, String> busho_kubun = createField("BUSHO_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.JIGYO_KUBUN</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> JIGYO_KUBUN = createField("JIGYO_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
+    public final TableField<M_BUSHO_RECORD, String> jigyo_kubun = createField("JIGYO_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
 
     /**
      * The column <code>PUBLIC.M_BUSHO.NAME</code>.
      */
-    public final TableField<M_BUSHO_RECORD, String> NAME = createField("NAME", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
+    public final TableField<M_BUSHO_RECORD, String> name = createField("NAME", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * Create a <code>PUBLIC.M_BUSHO</code> table reference
@@ -149,14 +147,6 @@ public class M_BUSHO extends TableImpl<M_BUSHO_RECORD> {
     @Override
     public Schema getSchema() {
         return Public.PUBLIC;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.PRIMARY_KEY_8, Indexes.UK_5BY1GUP4TXK8FK16KGF8MPF38_INDEX_8);
     }
 
     /**

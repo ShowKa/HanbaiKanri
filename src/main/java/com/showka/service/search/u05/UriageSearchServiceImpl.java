@@ -3,7 +3,7 @@ package com.showka.service.search.u05;
 import static com.showka.table.public_.tables.T_URIAGE.*;
 import static com.showka.table.public_.tables.T_URIKAKE.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,18 +55,18 @@ public class UriageSearchServiceImpl implements UriageSearchService {
 		SelectJoinStep<Record> from = select.from(uri);
 		// join 売掛
 		if (criteria.isOnlyUrikake()) {
-			from = from.innerJoin(kake).on(kake.URIAGE_ID.eq(uri.RECORD_ID));
+			from = from.innerJoin(kake).on(kake.uriage_id.eq(uri.record_id));
 		}
 		SelectConditionStep<Record> where = from.where();
 		// 顧客
 		if (criteria.getKokyaku().isPresent()) {
 			Kokyaku kokyaku = criteria.getKokyaku().get();
-			where = where.and(uri.KOKYAKU_ID.eq(kokyaku.getRecordId()));
+			where = where.and(uri.kokyaku_id.eq(kokyaku.getRecordId()));
 		}
 		// 売上日 between from & to
-		Timestamp minValue = criteria.getFrom().toTimestamp();
-		Timestamp maxValue = criteria.getTo().toTimestamp();
-		where = where.and(uri.URIAGE_DATE.between(minValue, maxValue));
+		LocalDateTime minValue = criteria.getFrom().atStartOfDay();
+		LocalDateTime maxValue = criteria.getTo().atStartOfDay();
+		where = where.and(uri.uriage_date.between(minValue, maxValue));
 		// fetch
 		List<T_URIAGE_RECORD> records = where.fetchInto(T_URIAGE_RECORD.class);
 		return records;
@@ -82,8 +82,8 @@ public class UriageSearchServiceImpl implements UriageSearchService {
 	List<Uriage> buildFromRecord(List<T_URIAGE_RECORD> records) {
 		return records.stream().map(r -> {
 			TUriagePK pk = new TUriagePK();
-			pk.setKokyakuId(r.get(t_uriage.KOKYAKU_ID));
-			pk.setDenpyoNumber(r.get(t_uriage.DENPYO_NUMBER));
+			pk.setKokyakuId(r.get(t_uriage.kokyaku_id));
+			pk.setDenpyoNumber(r.get(t_uriage.denpyo_number));
 			return uriageCrudService.getDomain(pk);
 		}).collect(Collectors.toList());
 	}
