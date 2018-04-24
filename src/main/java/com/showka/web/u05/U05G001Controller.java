@@ -20,6 +20,7 @@ import com.showka.domain.Uriage;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.search.u05.UriageSearchCriteria;
 import com.showka.service.search.u05.i.UriageSearchService;
+import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -34,6 +35,9 @@ public class U05G001Controller extends ControllerBase {
 
 	@Autowired
 	private KokyakuCrudService kokyakuCrudService;
+
+	@Autowired
+	private KokyakuValidateService kokyakuValidateService;
 
 	// public method called by request
 	/**
@@ -67,6 +71,7 @@ public class U05G001Controller extends ControllerBase {
 		if (StringUtils.isEmpty(form.getKokyakuCode())) {
 			criteria.setKokyaku(Optional.empty());
 		} else {
+			kokyakuValidateService.validateForRefer(form.getKokyakuCode());
 			Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 			criteria.setKokyaku(Optional.of(kokyaku));
 		}
