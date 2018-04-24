@@ -100,7 +100,7 @@ task jacocoReport(type: JacocoReport) {
 }
 
 // jooq codegen
-task jooqCodegen {
+task jooqCodegen <<{
 	// make xml
 	def writer = new StringWriter()
 	def xml = new groovy.xml.MarkupBuilder(writer)
