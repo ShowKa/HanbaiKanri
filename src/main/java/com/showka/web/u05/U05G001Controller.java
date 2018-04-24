@@ -1,5 +1,6 @@
 package com.showka.web.u05;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +76,15 @@ public class U05G001Controller extends ControllerBase {
 			Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 			criteria.setKokyaku(Optional.of(kokyaku));
 		}
+		// set 売上日from
+		if (form.getFrom() == null) {
+			form.setFrom(new Date(0));
+		}
 		criteria.setFrom(new EigyoDate(form.getFrom()));
+		// set 売上日to
+		if (form.getTo() == null) {
+			form.setTo(new Date(Long.MAX_VALUE));
+		}
 		criteria.setTo(new EigyoDate(form.getTo()));
 		criteria.setOnlyUrikake(form.isOnlyUrikake());
 		List<Uriage> searchLislt = uriageSearchService.search(criteria);
