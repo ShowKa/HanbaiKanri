@@ -1,6 +1,9 @@
 package com.showka.value;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -41,6 +44,11 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return c;
 	}
 
+	public Timestamp toTimestamp() {
+		LocalDateTime localDateTime = date.atTime(LocalTime.MIN);
+		return Timestamp.valueOf(localDateTime);
+	}
+
 	public boolean isAfter(TheDate other) {
 		return this.date.isAfter(other.date);
 	}
@@ -63,6 +71,14 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 
 	public TheDate withDayOfMonth(int dayOfMonth) {
 		return new TheDate(this.date.withDayOfMonth(dayOfMonth));
+	}
+
+	public LocalDateTime atTime(int hour, int minute, int second) {
+		return this.date.atTime(hour, minute, second);
+	}
+
+	public LocalDateTime atStartOfDay() {
+		return this.date.atStartOfDay();
 	}
 
 	/**
