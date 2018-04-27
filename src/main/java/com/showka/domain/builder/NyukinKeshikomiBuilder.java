@@ -1,11 +1,10 @@
 package com.showka.domain.builder;
 
-import java.util.Map;
+import java.util.List;
 
 import com.showka.domain.Keshikomi;
 import com.showka.domain.Nyukin;
 import com.showka.domain.NyukinKeshikomi;
-import com.showka.domain.Urikake;
 
 public class NyukinKeshikomiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<NyukinKeshikomi, NyukinKeshikomiBuilder> {
@@ -14,8 +13,8 @@ public class NyukinKeshikomiBuilder
 	/** nyukin */
 	private Nyukin nyukin;
 
-	/** keshikomiMap */
-	private Map<Keshikomi, Urikake> keshikomiMap;
+	/** keshikomiList */
+	private List<Keshikomi> keshikomiList;
 
 	/** recordId */
 	private String recordId;
@@ -27,14 +26,14 @@ public class NyukinKeshikomiBuilder
 	@Override
 	protected void apply(NyukinKeshikomi domain, NyukinKeshikomiBuilder builder) {
 		builder.withNyukin(domain.getNyukin());
-		builder.withKeshikomiMap(domain.getKeshikomiMap());
+		builder.withKeshikomiList(domain.getKeshikomiList());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected NyukinKeshikomi createDomainObject() {
-		NyukinKeshikomi domain = new NyukinKeshikomi(nyukin, keshikomiMap);
+		NyukinKeshikomi domain = new NyukinKeshikomi(nyukin, keshikomiList);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -69,17 +68,17 @@ public class NyukinKeshikomiBuilder
 	}
 
 	/**
-	 * {@link NyukinKeshikomi}に与えるkeshikomiMapをこのビルダに設定する。
+	 * {@link NyukinKeshikomi}に与えるkeshikomiListをこのビルダに設定する。
 	 *
-	 * @param keshikomiMap
-	 *            keshikomiMap
+	 * @param keshikomiList
+	 *            keshikomiList
 	 * @return {@link NyukinKeshikomiBuilder}
 	 */
-	public NyukinKeshikomiBuilder withKeshikomiMap(final Map<Keshikomi, Urikake> keshikomiMap) {
+	public NyukinKeshikomiBuilder withKeshikomiList(final List<Keshikomi> keshikomiList) {
 		addConfigurator(new BuilderConfigurator<NyukinKeshikomiBuilder>() {
 			@Override
 			public void configure(NyukinKeshikomiBuilder builder) {
-				builder.keshikomiMap = keshikomiMap;
+				builder.keshikomiList = keshikomiList;
 			}
 		});
 		return getThis();

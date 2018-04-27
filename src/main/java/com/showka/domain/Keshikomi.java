@@ -11,11 +11,37 @@ import lombok.Getter;
 @Getter
 public class Keshikomi extends DomainBase {
 
+	/** 入金. */
+	private Nyukin nyukin;
+
+	/** 売掛. */
+	private Urikake urikake;
+
 	/** 消込日. */
 	private EigyoDate date;
 
 	/** 消込額. */
 	private AmountOfMoney kingaku;
+
+	// public method
+	// getter
+	/**
+	 * 入金ID取得.
+	 * 
+	 * @return 入金ID
+	 */
+	public String getNyukinId() {
+		return nyukin.getRecordId();
+	}
+
+	/**
+	 * 売掛ID取得.
+	 * 
+	 * @return 売掛ID
+	 */
+	public String getUrikakeId() {
+		return urikake.getRecordId();
+	}
 
 	// override
 	@Override

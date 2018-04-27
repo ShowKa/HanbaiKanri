@@ -1,7 +1,7 @@
 package com.showka.service.validate.u08;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -119,23 +119,24 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 	@Test(expected = ValidateException.class)
 	public void test03_validateKeshikomiKingaku(@Injectable NyukinKeshikomi nyukinKeshikomi) throws Exception {
 		// input
-		// 消込
-		KeshikomiBuilder kb = new KeshikomiBuilder();
-		kb.withKingaku(1001);
-		Keshikomi keshikomi = kb.build();
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
 		ub.withKingaku(1000);
 		Urikake urikake = ub.build();
+		// 消込
+		KeshikomiBuilder kb = new KeshikomiBuilder();
+		kb.withKingaku(1001);
+		kb.withUrikake(urikake);
+		Keshikomi keshikomi = kb.build();
 		// 消込マップ
-		Map<Keshikomi, Urikake> keshikomiMap = new HashMap<Keshikomi, Urikake>();
-		keshikomiMap.put(keshikomi, urikake);
+		List<Keshikomi> keshikomiList = new ArrayList<Keshikomi>();
+		keshikomiList.add(keshikomi);
 		// expect
 		new Expectations() {
 			{
 				// 消込マップ取得
-				nyukinKeshikomi.getKeshikomiMap();
-				result = keshikomiMap;
+				nyukinKeshikomi.getKeshikomiList();
+				result = keshikomiList;
 			}
 		};
 		// do
@@ -148,23 +149,24 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 	@Test
 	public void test04_validateKeshikomiKingaku(@Injectable NyukinKeshikomi nyukinKeshikomi) throws Exception {
 		// input
-		// 消込
-		KeshikomiBuilder kb = new KeshikomiBuilder();
-		kb.withKingaku(1000);
-		Keshikomi keshikomi = kb.build();
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
 		ub.withKingaku(1000);
 		Urikake urikake = ub.build();
+		// 消込
+		KeshikomiBuilder kb = new KeshikomiBuilder();
+		kb.withKingaku(1000);
+		kb.withUrikake(urikake);
+		Keshikomi keshikomi = kb.build();
 		// 消込マップ
-		Map<Keshikomi, Urikake> keshikomiMap = new HashMap<Keshikomi, Urikake>();
-		keshikomiMap.put(keshikomi, urikake);
+		List<Keshikomi> keshikomiList = new ArrayList<Keshikomi>();
+		keshikomiList.add(keshikomi);
 		// expect
 		new Expectations() {
 			{
 				// 消込マップ取得
-				nyukinKeshikomi.getKeshikomiMap();
-				result = keshikomiMap;
+				nyukinKeshikomi.getKeshikomiList();
+				result = keshikomiList;
 			}
 		};
 		// do
@@ -173,7 +175,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		new Verifications() {
 			{
 				// 消込マップ取得
-				nyukinKeshikomi.getKeshikomiMap();
+				nyukinKeshikomi.getKeshikomiList();
 				times = 1;
 			}
 		};
@@ -190,23 +192,25 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		KeshikomiBuilder kb1 = new KeshikomiBuilder();
 		kb1.withKingaku(1000);
 		kb1.withRecordId("r-001");
+		kb1.withUrikake(urikake);
 		Keshikomi keshikomi1 = kb1.build();
 		// 消込2
 		KeshikomiBuilder kb2 = new KeshikomiBuilder();
 		kb2.withKingaku(1000);
 		kb2.withRecordId("r-002");
+		kb2.withUrikake(urikake);
 		Keshikomi keshikomi2 = kb2.build();
 		// 売掛
 		// 消込マップ
-		Map<Keshikomi, Urikake> keshikomiMap = new HashMap<Keshikomi, Urikake>();
-		keshikomiMap.put(keshikomi1, urikake);
-		keshikomiMap.put(keshikomi2, urikake);
+		List<Keshikomi> keshikomiList = new ArrayList<Keshikomi>();
+		keshikomiList.add(keshikomi1);
+		keshikomiList.add(keshikomi2);
 		// expect
 		new Expectations() {
 			{
 				// 消込マップ取得
-				nyukinKeshikomi.getKeshikomiMap();
-				result = keshikomiMap;
+				nyukinKeshikomi.getKeshikomiList();
+				result = keshikomiList;
 			}
 		};
 		// do
@@ -224,23 +228,25 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		KeshikomiBuilder kb1 = new KeshikomiBuilder();
 		kb1.withKingaku(1000);
 		kb1.withRecordId("r-001");
+		kb1.withUrikake(urikake1);
 		Keshikomi keshikomi1 = kb1.build();
 		// 消込2
 		KeshikomiBuilder kb2 = new KeshikomiBuilder();
 		kb2.withKingaku(1000);
+		kb2.withUrikake(urikake2);
 		kb2.withRecordId("r-002");
 		Keshikomi keshikomi2 = kb2.build();
 		// 売掛
 		// 消込マップ
-		Map<Keshikomi, Urikake> keshikomiMap = new HashMap<Keshikomi, Urikake>();
-		keshikomiMap.put(keshikomi1, urikake1);
-		keshikomiMap.put(keshikomi2, urikake2);
+		List<Keshikomi> keshikomiList = new ArrayList<Keshikomi>();
+		keshikomiList.add(keshikomi1);
+		keshikomiList.add(keshikomi2);
 		// expect
 		new Expectations() {
 			{
 				// 消込マップ取得
-				nyukinKeshikomi.getKeshikomiMap();
-				result = keshikomiMap;
+				nyukinKeshikomi.getKeshikomiList();
+				result = keshikomiList;
 			}
 		};
 		// do
@@ -249,7 +255,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		new Verifications() {
 			{
 				// 消込マップ取得
-				nyukinKeshikomi.getKeshikomiMap();
+				nyukinKeshikomi.getKeshikomiList();
 				times = 1;
 			}
 		};

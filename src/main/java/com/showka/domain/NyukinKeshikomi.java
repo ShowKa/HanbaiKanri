@@ -1,6 +1,6 @@
 package com.showka.domain;
 
-import java.util.Map;
+import java.util.List;
 
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
@@ -17,7 +17,7 @@ public class NyukinKeshikomi extends DomainBase {
 	private Nyukin nyukin;
 
 	/** 消込リスト. */
-	private Map<Keshikomi, Urikake> keshikomiMap;
+	private List<Keshikomi> keshikomiList;
 
 	// public method
 	/**
@@ -26,8 +26,7 @@ public class NyukinKeshikomi extends DomainBase {
 	 * @return 消込.金額の合計
 	 */
 	public AmountOfMoney getKeshikomiKingakuGokei() {
-		int amount = keshikomiMap.entrySet().stream().mapToInt(entry -> {
-			Keshikomi k = entry.getKey();
+		int amount = keshikomiList.stream().mapToInt(k -> {
 			return k.getKingaku().intValue();
 		}).sum();
 		return new AmountOfMoney(amount);
@@ -54,7 +53,11 @@ public class NyukinKeshikomi extends DomainBase {
 	// override
 	@Override
 	public void validate() throws SystemException {
-		// nothing to do
+		keshikomiList.forEach(keshikomi -> {
+			if (!keshikomi.getNyukin().equals(this.nyukin)) {
+				throw new SystemException("異なる入金が組み込まれています。 : " + keshikomi.getNyukin());
+			}
+		});
 	}
 
 	@Override

@@ -1,12 +1,20 @@
 package com.showka.domain.builder;
 
 import com.showka.domain.Keshikomi;
+import com.showka.domain.Nyukin;
+import com.showka.domain.Urikake;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBase<Keshikomi, KeshikomiBuilder> {
 
 	// private member
+	/** nyukin */
+	private Nyukin nyukin;
+
+	/** urikake */
+	private Urikake urikake;
+
 	/** date */
 	private EigyoDate date;
 
@@ -22,6 +30,8 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 	// protected method
 	@Override
 	protected void apply(Keshikomi domain, KeshikomiBuilder builder) {
+		builder.withNyukin(domain.getNyukin());
+		builder.withUrikake(domain.getUrikake());
 		builder.withDate(domain.getDate());
 		builder.withKingaku(domain.getKingaku());
 		builder.withRecordId(domain.getRecordId());
@@ -30,7 +40,7 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 
 	@Override
 	protected Keshikomi createDomainObject() {
-		Keshikomi domain = new Keshikomi(date, kingaku);
+		Keshikomi domain = new Keshikomi(nyukin, urikake, date, kingaku);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -47,6 +57,40 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 	}
 
 	// public method
+	/**
+	 * {@link Keshikomi}に与えるnyukinをこのビルダに設定する。
+	 *
+	 * @param nyukin
+	 *            nyukin
+	 * @return {@link KeshikomiBuilder}
+	 */
+	public KeshikomiBuilder withNyukin(final Nyukin nyukin) {
+		addConfigurator(new BuilderConfigurator<KeshikomiBuilder>() {
+			@Override
+			public void configure(KeshikomiBuilder builder) {
+				builder.nyukin = nyukin;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link Keshikomi}に与えるurikakeをこのビルダに設定する。
+	 *
+	 * @param urikake
+	 *            urikake
+	 * @return {@link KeshikomiBuilder}
+	 */
+	public KeshikomiBuilder withUrikake(final Urikake urikake) {
+		addConfigurator(new BuilderConfigurator<KeshikomiBuilder>() {
+			@Override
+			public void configure(KeshikomiBuilder builder) {
+				builder.urikake = urikake;
+			}
+		});
+		return getThis();
+	}
+
 	/**
 	 * {@link Keshikomi}に与えるdateをこのビルダに設定する。
 	 *

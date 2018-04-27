@@ -1,6 +1,8 @@
 package com.showka.domain;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
@@ -44,7 +46,13 @@ public class UrikakeKeshikomi extends DomainAggregation {
 	// override
 	@Override
 	public void validate() throws SystemException {
-		// nothing to do
+		Set<Urikake> urikakeSet = keshikomiList.stream().map(keshikomi -> {
+			return keshikomi.getUrikake();
+		}).collect(Collectors.toSet());
+		if (urikakeSet.size() > 1) {
+			List<String> uriageIds = urikakeSet.stream().map(Urikake::getUriageId).collect(Collectors.toList());
+			throw new SystemException("別の売掛への消込がセットされています。 : " + uriageIds);
+		}
 	}
 
 	/**

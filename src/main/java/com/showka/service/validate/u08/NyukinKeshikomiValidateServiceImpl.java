@@ -1,6 +1,6 @@
 package com.showka.service.validate.u08;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -38,10 +38,11 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 	 * エラー: 消込.金額 > 売掛.残高
 	 */
 	void validateKeshikomiKingaku(NyukinKeshikomi nyukinKeshikomi) throws ValidateException {
-		Map<Keshikomi, Urikake> keshikomiMap = nyukinKeshikomi.getKeshikomiMap();
-		keshikomiMap.forEach((keshikomi, urikake) -> {
+		List<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiList();
+		keshikomiList.forEach(keshikomi -> {
 			AmountOfMoney keshikomiKingaku = keshikomi.getKingaku();
-			// TODO 売掛消込から残高を取得する
+			Urikake urikake = keshikomi.getUrikake();
+			// TODO 売掛消込サービスから残高を取得する
 			AmountOfMoney zandaka = urikake.getKingaku();
 			if (keshikomiKingaku.greaterThan(zandaka)) {
 				throw new ValidateException("消込金額が売掛金額を上回っています。");
@@ -51,11 +52,13 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 
 	/**
 	 * エラー: 1つの売掛への消込が、2つ以上存在する
+	 *
 	 */
+	// TODO 同じ日に同じ売掛に対する消込を行っていたらエラーとする。
 	void validateUrikakeDuplication(NyukinKeshikomi nyukinKeshikomi) throws ValidateException {
-		Map<Keshikomi, Urikake> keshikomiMap = nyukinKeshikomi.getKeshikomiMap();
-		Set<Urikake> urikakeSet = keshikomiMap.values().stream().collect(Collectors.toSet());
-		if (urikakeSet.size() < keshikomiMap.size()) {
+		List<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiList();
+		Set<Urikake> urikakeSet = keshikomiList.stream().map(Keshikomi::getUrikake).collect(Collectors.toSet());
+		if (urikakeSet.size() < keshikomiList.size()) {
 			// 重複があれば売掛のセットは消込マップよりサイズが小さくなる
 			throw new ValidateException("同一の売掛が重複して消し込まれています。");
 		}

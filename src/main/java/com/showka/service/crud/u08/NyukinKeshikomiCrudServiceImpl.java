@@ -1,6 +1,6 @@
 package com.showka.service.crud.u08;
 
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.Keshikomi;
 import com.showka.domain.Nyukin;
 import com.showka.domain.NyukinKeshikomi;
-import com.showka.domain.Urikake;
 import com.showka.domain.builder.NyukinKeshikomiBuilder;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
@@ -29,9 +28,9 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		nyukinCrudService.save(nyukin);
 		// save 消込
-		Map<Keshikomi, Urikake> keshikomiMap = nyukinKeshikomi.getKeshikomiMap();
-		keshikomiMap.forEach((keshikomi, urikake) -> {
-			keshikomiCrudService.save(nyukin, urikake, keshikomi);
+		List<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiList();
+		keshikomiList.forEach(keshikomi -> {
+			keshikomiCrudService.save(keshikomi);
 		});
 	}
 
@@ -40,11 +39,11 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		// 入金
 		Nyukin nyukin = nyukinCrudService.getDomain(nyukinId);
 		// 消込マップ
-		Map<Keshikomi, Urikake> keshikomiMap = keshikomiCrudService.getKeshikomiMap(nyukinId);
+		List<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiList(nyukinId);
 		// set builder
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);
-		b.withKeshikomiMap(keshikomiMap);
+		b.withKeshikomiList(keshikomiList);
 		// return 入金消込
 		return b.build();
 	}

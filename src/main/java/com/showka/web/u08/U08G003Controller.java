@@ -51,12 +51,10 @@ public class U08G003Controller extends ControllerBase {
 		// get 入金消込
 		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
 		// to model
-		List<Map<String, Object>> keshikomiList = nyukinKeshikomi.getKeshikomiMap().entrySet().stream().map(entry -> {
+		List<Map<String, Object>> keshikomiList = nyukinKeshikomi.getKeshikomiList().stream().map(keshikomi -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
-			Keshikomi keshikomi = entry.getKey();
-			Urikake urikake = entry.getValue();
 			ret.put("keshikomiId", keshikomi.getRecordId());
-			ret.put("urikakeId", urikake.getRecordId());
+			ret.put("urikakeId", keshikomi.getUrikakeId());
 			ret.put("kingaku", keshikomi.getKingaku().intValue());
 			ret.put("version", keshikomi.getVersion());
 			return ret;
@@ -81,20 +79,23 @@ public class U08G003Controller extends ControllerBase {
 		// 営業日
 		EigyoDate eigyoDate = busho.getEigyoDate();
 		// 売掛消込
-		Map<Keshikomi, Urikake> keshikomiMap = form.getMeisai().stream().collect(Collectors.toMap(m -> {
+		List<Keshikomi> keshikomiList = form.getMeisai().stream().map(m -> {
+			// 売掛
+			String urikakeId = m.getUrikakeId();
+			Urikake urikake = urikakeCrudService.getDomain(urikakeId);
+			// build 消込
 			KeshikomiBuilder b = new KeshikomiBuilder();
+			b.withNyukin(nyukin);
+			b.withUrikake(urikake);
 			b.withDate(eigyoDate);
 			b.withKingaku(m.getKingaku());
 			b.withVersion(m.getVersion());
 			return b.build();
-		}, m -> {
-			String urikakeId = m.getUrikakeId();
-			return urikakeCrudService.getDomain(urikakeId);
-		}));
+		}).collect(Collectors.toList());
 		// 入金消込
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);
-		b.withKeshikomiMap(keshikomiMap);
+		b.withKeshikomiList(keshikomiList);
 		NyukinKeshikomi nyukinKeshikomi = b.build();
 		// validate
 		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
