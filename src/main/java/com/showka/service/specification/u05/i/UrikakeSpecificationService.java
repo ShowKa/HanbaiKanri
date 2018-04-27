@@ -11,7 +11,7 @@ import com.showka.domain.Urikake;
  */
 public interface UrikakeSpecificationService {
 	/**
-	 * 売上から売掛をビル
+	 * 売上から売掛をビルド
 	 * 
 	 * <pre>
 	 * 掛売りじゃない場合はemptyを返却。

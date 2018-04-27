@@ -27,8 +27,20 @@ public interface KeshikomiCrudService {
 	 * 
 	 * @param nyukinId
 	 *            入金ID
-	 * @return 消込マップ
+	 * @return 消込リスト
 	 */
+	public List<Keshikomi> getKeshikomiListOfNyukin(String nyukinId);
 
-	public List<Keshikomi> getKeshikomiList(String nyukinId);
+	/**
+	 * 消込リスト取得.
+	 * 
+	 * <pre>
+	 * 売掛の消込のリスト返却。
+	 * </pre>
+	 * 
+	 * @param urikakeId
+	 *            売掛ID
+	 * @return 消込リスト
+	 */
+	public List<Keshikomi> getKeshikomiListOfUrikake(String urikakeId);
 }

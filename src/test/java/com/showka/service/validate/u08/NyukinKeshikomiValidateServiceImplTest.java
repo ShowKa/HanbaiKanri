@@ -13,6 +13,7 @@ import com.showka.domain.Urikake;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.builder.NyukinBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.AmountOfMoney;
 
@@ -27,6 +28,9 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 	@Tested
 	@Injectable
 	private NyukinKeshikomiValidateServiceImpl service;
+
+	@Injectable
+	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
 
 	/**
 	 * 各整合性検証用メソッドの呼出確認
@@ -167,6 +171,8 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiList();
 				result = keshikomiList;
+				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
+				result = new AmountOfMoney(1000);
 			}
 		};
 		// do
@@ -176,6 +182,8 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 			{
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiList();
+				times = 1;
+				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
 				times = 1;
 			}
 		};

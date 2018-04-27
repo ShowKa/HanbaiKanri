@@ -12,7 +12,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UrikakeKeshikomi extends DomainAggregation {
+public class UrikakeKeshikomi extends DomainBase {
 
 	/** 売掛. */
 	private Urikake urikake;
@@ -61,7 +61,7 @@ public class UrikakeKeshikomi extends DomainAggregation {
 	 * @return 同じ売掛ならtrue
 	 */
 	@Override
-	protected boolean equals(DomainAggregation other) {
+	protected boolean equals(DomainBase other) {
 		UrikakeKeshikomi o = (UrikakeKeshikomi) other;
 		return urikake.equals(o.urikake);
 	}

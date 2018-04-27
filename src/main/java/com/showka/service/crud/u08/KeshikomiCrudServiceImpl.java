@@ -44,10 +44,24 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	}
 
 	@Override
-	public List<Keshikomi> getKeshikomiList(String nyukinId) {
+	public List<Keshikomi> getKeshikomiListOfNyukin(String nyukinId) {
 		// example
 		TKeshikomi e = new TKeshikomi();
 		e.setNyukinId(nyukinId);
+		Example<TKeshikomi> example = Example.of(e);
+		// find
+		List<TKeshikomi> keshikomiList = repo.findAll(example);
+		// build as map
+		return keshikomiList.stream().map(k -> {
+			return this.getDomain(k.getRecordId());
+		}).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Keshikomi> getKeshikomiListOfUrikake(String urikakeId) {
+		// example
+		TKeshikomi e = new TKeshikomi();
+		e.setUrikakeId(urikakeId);
 		Example<TKeshikomi> example = Example.of(e);
 		// find
 		List<TKeshikomi> keshikomiList = repo.findAll(example);

@@ -39,7 +39,7 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		// 入金
 		Nyukin nyukin = nyukinCrudService.getDomain(nyukinId);
 		// 消込マップ
-		List<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiList(nyukinId);
+		List<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiListOfNyukin(nyukinId);
 		// set builder
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);

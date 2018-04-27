@@ -25,7 +25,9 @@ import com.showka.domain.builder.NyukinKeshikomiBuilder;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
+import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
@@ -46,17 +48,37 @@ public class U08G003Controller extends ControllerBase {
 	@Autowired
 	private NyukinKeshikomiValidateService nyukinKeshikomiValidateService;
 
+	@Autowired
+	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+
 	@RequestMapping(value = "/u08g003/refer", method = RequestMethod.POST)
 	public ResponseEntity<?> refer(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
 		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
-		// to model
+		// set form
+		Nyukin nyukin = nyukinKeshikomi.getNyukin();
+		form.setVersion(nyukin.getVersion());
+		// set model
+		// 入金
+		model.addObject("nyukinKingaku", nyukin.getKingaku().intValue());
+		model.addObject("kokyakuName", nyukin.getKokyaku().getName());
+		model.addObject("nyukinHoho", nyukin.getNyukinHohoKubun().name());
+		model.addObject("nyukinDate", nyukin.getDate().toString());
+		model.addObject("bushoName", nyukin.getBusho().getName());
+		// 消込リスト
 		List<Map<String, Object>> keshikomiList = nyukinKeshikomi.getKeshikomiList().stream().map(keshikomi -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
+			// 消込
 			ret.put("keshikomiId", keshikomi.getRecordId());
 			ret.put("urikakeId", keshikomi.getUrikakeId());
 			ret.put("kingaku", keshikomi.getKingaku().intValue());
 			ret.put("version", keshikomi.getVersion());
+			// 売掛
+			Urikake urikake = keshikomi.getUrikake();
+			ret.put("urikakeKingaku", urikake.getKingaku().intValue());
+			// 残高
+			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
+			ret.put("urikakeZandaka", zandaka.intValue());
 			return ret;
 		}).collect(Collectors.toList());
 		model.addObject("keshikomiList", keshikomiList);
