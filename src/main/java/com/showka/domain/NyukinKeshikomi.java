@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
+import com.showka.value.EigyoDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -48,6 +49,44 @@ public class NyukinKeshikomi extends DomainBase {
 	 */
 	public boolean done() {
 		return this.getMikeshikomi().intValue() == 0;
+	}
+
+	// operate collection
+	/**
+	 * 消込セットマージ.
+	 * 
+	 * <pre>
+	 * Collection#addAll() を代理で呼び出すだけ。
+	 * 既存の消込があっても上書きはしない。
+	 * </pre>
+	 * 
+	 * @param マージ対象
+	 * @return
+	 */
+	public void mergeKeshikomiSet(NyukinKeshikomi nyukinKeshikomi) {
+		this.keshikomiSet.addAll(nyukinKeshikomi.getKeshikomiSet());
+	}
+
+	/**
+	 * 指定した日付の消込を除去する。
+	 * 
+	 * @param date
+	 *            日付
+	 */
+	public void removeKeshikomiOf(EigyoDate date) {
+		this.keshikomiSet.removeIf(k -> {
+			return k.getDate().equals(date);
+		});
+	}
+
+	// getter
+	/**
+	 * 入金部署営業日取得.
+	 * 
+	 * @return 入金部署営業日
+	 */
+	public EigyoDate getNyukinBushoEigyoDate() {
+		return this.nyukin.getBusho().getEigyoDate();
 	}
 
 	// override

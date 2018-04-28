@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -95,11 +96,14 @@ public class U08G003Controller extends ControllerBase {
 	public ResponseEntity<?> register(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// build 入金消込
 		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
+		// 営業日
+		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
 		// validate
 		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
 		// save
-		nyukinKeshikomiCrudService.save(nyukinKeshikomi);
+		nyukinKeshikomiCrudService.save(eigyoDate, nyukinKeshikomi);
 		// return model
+		form.setSuccessMessage("登録成功");
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
@@ -114,7 +118,37 @@ public class U08G003Controller extends ControllerBase {
 		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
 		// get 入金消込更新前
 		NyukinKeshikomi nyukinKeshikomiBeforeUpdate = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
-		// merge 消込リスト
+		EigyoDate eigyoDate = nyukinKeshikomiBeforeUpdate.getNyukinBushoEigyoDate();
+		nyukinKeshikomiBeforeUpdate.removeKeshikomiOf(eigyoDate);
+		// merge 消込セット
+		nyukinKeshikomi.mergeKeshikomiSet(nyukinKeshikomiBeforeUpdate);
+		// validate
+		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
+		// save
+		nyukinKeshikomiCrudService.save(eigyoDate, nyukinKeshikomi);
+		// return model
+		form.setSuccessMessage("更新成功");
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	/**
+	 * キャンセル.
+	 */
+	@Transactional
+	@RequestMapping(value = "/u08g003/cancel", method = RequestMethod.POST)
+	public ResponseEntity<?> cancel(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
+		// 消込対象の消込ID
+		Set<String> target = form.getMeisai().stream().map(m -> {
+			return m.getKeshikomiId();
+		}).collect(Collectors.toSet());
+		// 入金消込
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		// OCC
+		Nyukin nyukin = nyukinKeshikomi.getNyukin();
+		nyukin.setVersion(form.getVersion());
+		// 消込
+		nyukinKeshikomiCrudService.cancel(nyukin, target);
 		// return model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
@@ -148,6 +182,8 @@ public class U08G003Controller extends ControllerBase {
 			b.withDate(eigyoDate);
 			b.withKingaku(m.getKingaku());
 			b.withVersion(m.getVersion());
+			// FIXME need record id
+			b.withRecordId(UUID.randomUUID().toString());
 			return b.build();
 		}).collect(Collectors.toSet());
 		// 入金消込

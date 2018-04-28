@@ -1,5 +1,6 @@
 package com.showka.service.crud.u08;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	}
 
 	@Override
-	public void overrideList(String nyukinId, EigyoDate date, List<Keshikomi> keshikomiList) {
+	public void override(String nyukinId, EigyoDate date, Collection<Keshikomi> keshikomiList) {
 		if (keshikomiList.isEmpty()) {
 			return;
 		}

@@ -1,6 +1,6 @@
 package com.showka.service.crud.u08.i;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Set;
 
 import com.showka.domain.Keshikomi;
@@ -33,7 +33,7 @@ public interface KeshikomiCrudService {
 	 * @param date
 	 *            対象営業日
 	 */
-	public void overrideList(String nyukinId, EigyoDate date, List<Keshikomi> keshikomiList);
+	public void override(String nyukinId, EigyoDate date, Collection<Keshikomi> keshikomiList);
 
 	/**
 	 * 消込リスト取得.

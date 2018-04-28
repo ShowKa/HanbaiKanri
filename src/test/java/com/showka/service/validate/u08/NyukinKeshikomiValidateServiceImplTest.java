@@ -16,6 +16,7 @@ import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.AmountOfMoney;
+import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -171,7 +172,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				result = keshikomiSet;
-				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
+				urikakeKeshikomiSpecificationService.getZandakaOfExcludingSpecificKeshikomi(urikake, keshikomi);
 				result = new AmountOfMoney(1000);
 			}
 		};
@@ -183,14 +184,14 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				times = 1;
-				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
+				urikakeKeshikomiSpecificationService.getZandakaOfExcludingSpecificKeshikomi(urikake, keshikomi);
 				times = 1;
 			}
 		};
 	}
 
 	/**
-	 * 同一の売掛が消し込まれている -> エラー
+	 * 同一日に同一の売掛が消し込まれている -> エラー
 	 */
 	@Test(expected = ValidateException.class)
 	public void test05_validateUrikakeDuplication(@Injectable NyukinKeshikomi nyukinKeshikomi, @Mocked Urikake urikake)
@@ -201,12 +202,14 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		kb1.withKingaku(1000);
 		kb1.withRecordId("r-001");
 		kb1.withUrikake(urikake);
+		kb1.withDate(new EigyoDate(2017, 1, 1));
 		Keshikomi keshikomi1 = kb1.build();
 		// 消込2
 		KeshikomiBuilder kb2 = new KeshikomiBuilder();
 		kb2.withKingaku(1000);
 		kb2.withRecordId("r-002");
 		kb2.withUrikake(urikake);
+		kb2.withDate(new EigyoDate(2017, 1, 1));
 		Keshikomi keshikomi2 = kb2.build();
 		// 売掛
 		// 消込マップ
@@ -216,7 +219,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				// 消込マップ取得
+				// 消込セット取得
 				nyukinKeshikomi.getKeshikomiSet();
 				result = keshikomiSet;
 			}
@@ -226,7 +229,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 	}
 
 	/**
-	 * 同一の売掛が消し込まれていない -> 正常終了
+	 * 同一日に同一売掛が消し込まれていない -> 正常終了
 	 */
 	@Test
 	public void test06_validateUrikakeDuplication(@Injectable NyukinKeshikomi nyukinKeshikomi, @Mocked Urikake urikake1,
@@ -237,12 +240,14 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		kb1.withKingaku(1000);
 		kb1.withRecordId("r-001");
 		kb1.withUrikake(urikake1);
+		kb1.withDate(new EigyoDate(2017, 1, 1));
 		Keshikomi keshikomi1 = kb1.build();
 		// 消込2
 		KeshikomiBuilder kb2 = new KeshikomiBuilder();
 		kb2.withKingaku(1000);
 		kb2.withUrikake(urikake2);
 		kb2.withRecordId("r-002");
+		kb2.withDate(new EigyoDate(2017, 1, 1));
 		Keshikomi keshikomi2 = kb2.build();
 		// 売掛
 		// 消込マップ

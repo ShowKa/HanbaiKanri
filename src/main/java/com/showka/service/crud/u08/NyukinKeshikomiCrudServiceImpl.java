@@ -12,6 +12,7 @@ import com.showka.domain.builder.NyukinKeshikomiBuilder;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
+import com.showka.value.EigyoDate;
 
 @Service
 public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudService {
@@ -23,15 +24,13 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 	private KeshikomiCrudService keshikomiCrudService;
 
 	@Override
-	public void save(NyukinKeshikomi nyukinKeshikomi) {
+	public void save(EigyoDate date, NyukinKeshikomi nyukinKeshikomi) {
 		// OCC
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		nyukinCrudService.save(nyukin);
 		// save 消込
 		Set<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiSet();
-		keshikomiList.forEach(keshikomi -> {
-			keshikomiCrudService.save(keshikomi);
-		});
+		keshikomiCrudService.override(nyukin.getRecordId(), date, keshikomiList);
 	}
 
 	@Override
@@ -46,5 +45,12 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		b.withKeshikomiSet(keshikomiList);
 		// return 入金消込
 		return b.build();
+	}
+
+	@Override
+	public void cancel(Nyukin nyukin, Set<String> keshikomiIdSet) {
+		// OCC
+		nyukinCrudService.save(nyukin);
+		// TODO
 	}
 }
