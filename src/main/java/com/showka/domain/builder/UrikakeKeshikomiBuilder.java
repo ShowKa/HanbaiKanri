@@ -1,6 +1,6 @@
 package com.showka.domain.builder;
 
-import java.util.List;
+import java.util.Set;
 
 import com.showka.domain.Keshikomi;
 import com.showka.domain.Urikake;
@@ -14,18 +14,18 @@ public class UrikakeKeshikomiBuilder
 	private Urikake urikake;
 
 	/** keshikomiList */
-	private List<Keshikomi> keshikomiList;
+	private Set<Keshikomi> keshikomiSet;
 
 	// protected method
 	@Override
 	protected void apply(UrikakeKeshikomi domain, UrikakeKeshikomiBuilder builder) {
 		builder.withUrikake(domain.getUrikake());
-		builder.withKeshikomiList(domain.getKeshikomiList());
+		builder.withKeshikomiSet(domain.getKeshikomiSet());
 	}
 
 	@Override
 	protected UrikakeKeshikomi createDomainObject() {
-		UrikakeKeshikomi domain = new UrikakeKeshikomi(urikake, keshikomiList);
+		UrikakeKeshikomi domain = new UrikakeKeshikomi(urikake, keshikomiSet);
 		return domain;
 	}
 
@@ -64,11 +64,11 @@ public class UrikakeKeshikomiBuilder
 	 *            keshikomiList
 	 * @return {@link UrikakeKeshikomiBuilder}
 	 */
-	public UrikakeKeshikomiBuilder withKeshikomiList(final List<Keshikomi> keshikomiList) {
+	public UrikakeKeshikomiBuilder withKeshikomiSet(final Set<Keshikomi> keshikomiList) {
 		addConfigurator(new BuilderConfigurator<UrikakeKeshikomiBuilder>() {
 			@Override
 			public void configure(UrikakeKeshikomiBuilder builder) {
-				builder.keshikomiList = keshikomiList;
+				builder.keshikomiSet = keshikomiList;
 			}
 		});
 		return getThis();

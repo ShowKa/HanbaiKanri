@@ -1,7 +1,7 @@
 package com.showka.service.crud.u08;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -42,12 +42,12 @@ public class NyukinKeshikomiCrudServiceImplTest extends SimpleTestCase {
 		kb.withNyukin(nyukin);
 		Keshikomi keshikomi = kb.build();
 		// 消込MAP
-		List<Keshikomi> keshikomiList = new ArrayList<Keshikomi>();
+		Set<Keshikomi> keshikomiList = new HashSet<Keshikomi>();
 		keshikomiList.add(keshikomi);
 		// 入金消込
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);
-		b.withKeshikomiList(keshikomiList);
+		b.withKeshikomiSet(keshikomiList);
 		NyukinKeshikomi nyukinKeshikomi = b.build();
 		// expect
 		new Expectations() {

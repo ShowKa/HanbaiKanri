@@ -1,6 +1,6 @@
 package com.showka.domain.builder;
 
-import java.util.List;
+import java.util.Set;
 
 import com.showka.domain.Keshikomi;
 import com.showka.domain.Nyukin;
@@ -14,7 +14,7 @@ public class NyukinKeshikomiBuilder
 	private Nyukin nyukin;
 
 	/** keshikomiList */
-	private List<Keshikomi> keshikomiList;
+	private Set<Keshikomi> keshikomiSet;
 
 	/** recordId */
 	private String recordId;
@@ -26,14 +26,14 @@ public class NyukinKeshikomiBuilder
 	@Override
 	protected void apply(NyukinKeshikomi domain, NyukinKeshikomiBuilder builder) {
 		builder.withNyukin(domain.getNyukin());
-		builder.withKeshikomiList(domain.getKeshikomiList());
+		builder.withKeshikomiSet(domain.getKeshikomiSet());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected NyukinKeshikomi createDomainObject() {
-		NyukinKeshikomi domain = new NyukinKeshikomi(nyukin, keshikomiList);
+		NyukinKeshikomi domain = new NyukinKeshikomi(nyukin, keshikomiSet);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -74,11 +74,11 @@ public class NyukinKeshikomiBuilder
 	 *            keshikomiList
 	 * @return {@link NyukinKeshikomiBuilder}
 	 */
-	public NyukinKeshikomiBuilder withKeshikomiList(final List<Keshikomi> keshikomiList) {
+	public NyukinKeshikomiBuilder withKeshikomiSet(final Set<Keshikomi> keshikomiList) {
 		addConfigurator(new BuilderConfigurator<NyukinKeshikomiBuilder>() {
 			@Override
 			public void configure(NyukinKeshikomiBuilder builder) {
-				builder.keshikomiList = keshikomiList;
+				builder.keshikomiSet = keshikomiList;
 			}
 		});
 		return getThis();

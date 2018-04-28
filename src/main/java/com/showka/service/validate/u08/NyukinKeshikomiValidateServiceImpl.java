@@ -1,6 +1,5 @@
 package com.showka.service.validate.u08;
 
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,7 +43,7 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 	 */
 	// FIXME update時のことが考慮されていない。
 	void validateKeshikomiKingaku(NyukinKeshikomi nyukinKeshikomi) throws ValidateException {
-		List<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiList();
+		Set<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiSet();
 		keshikomiList.forEach(keshikomi -> {
 			AmountOfMoney keshikomiKingaku = keshikomi.getKingaku();
 			Urikake urikake = keshikomi.getUrikake();
@@ -61,7 +60,7 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 	 */
 	// TODO 同じ日に同じ売掛に対する消込を行っていたらエラーとする。
 	void validateUrikakeDuplication(NyukinKeshikomi nyukinKeshikomi) throws ValidateException {
-		List<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiList();
+		Set<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiSet();
 		Set<Urikake> urikakeSet = keshikomiList.stream().map(Keshikomi::getUrikake).collect(Collectors.toSet());
 		if (urikakeSet.size() < keshikomiList.size()) {
 			// 重複があれば売掛のセットは消込マップよりサイズが小さくなる

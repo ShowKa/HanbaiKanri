@@ -1,6 +1,6 @@
 package com.showka.service.crud.u08;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		nyukinCrudService.save(nyukin);
 		// save 消込
-		List<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiList();
+		Set<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiSet();
 		keshikomiList.forEach(keshikomi -> {
 			keshikomiCrudService.save(keshikomi);
 		});
@@ -39,11 +39,11 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		// 入金
 		Nyukin nyukin = nyukinCrudService.getDomain(nyukinId);
 		// 消込マップ
-		List<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiListOfNyukin(nyukinId);
+		Set<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiSetOfNyukin(nyukinId);
 		// set builder
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);
-		b.withKeshikomiList(keshikomiList);
+		b.withKeshikomiSet(keshikomiList);
 		// return 入金消込
 		return b.build();
 	}

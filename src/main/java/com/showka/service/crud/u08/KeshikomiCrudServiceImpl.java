@@ -2,6 +2,7 @@ package com.showka.service.crud.u08;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -49,7 +50,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 			return;
 		}
 		// get old
-		List<Keshikomi> oldList = this.getKeshikomiListOfNyukin(nyukinId).stream().filter(k -> {
+		List<Keshikomi> oldList = this.getKeshikomiSetOfNyukin(nyukinId).stream().filter(k -> {
 			// 営業日が同じもののみ抽出
 			return k.getDate().equals(date);
 		}).collect(Collectors.toList());
@@ -64,7 +65,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	}
 
 	@Override
-	public List<Keshikomi> getKeshikomiListOfNyukin(String nyukinId) {
+	public Set<Keshikomi> getKeshikomiSetOfNyukin(String nyukinId) {
 		// example
 		TKeshikomi e = new TKeshikomi();
 		e.setNyukinId(nyukinId);
@@ -74,11 +75,11 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		// build as map
 		return keshikomiList.stream().map(k -> {
 			return this.getDomain(k.getRecordId());
-		}).collect(Collectors.toList());
+		}).collect(Collectors.toSet());
 	}
 
 	@Override
-	public List<Keshikomi> getKeshikomiListOfUrikake(String urikakeId) {
+	public Set<Keshikomi> getKeshikomiSetOfUrikake(String urikakeId) {
 		// example
 		TKeshikomi e = new TKeshikomi();
 		e.setUrikakeId(urikakeId);
@@ -88,7 +89,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		// build as map
 		return keshikomiList.stream().map(k -> {
 			return this.getDomain(k.getRecordId());
-		}).collect(Collectors.toList());
+		}).collect(Collectors.toSet());
 	}
 
 	/**

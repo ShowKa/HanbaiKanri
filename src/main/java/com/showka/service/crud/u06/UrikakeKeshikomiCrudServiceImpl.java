@@ -1,6 +1,6 @@
 package com.showka.service.crud.u06;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,11 +27,11 @@ public class UrikakeKeshikomiCrudServiceImpl implements UrikakeKeshikomiCrudServ
 		// get 売掛
 		Urikake urikake = urikakeCrudService.getDomain(urikakeId);
 		// get 消込リスト
-		List<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiListOfUrikake(urikakeId);
+		Set<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiSetOfUrikake(urikakeId);
 		// build 売掛消込
 		UrikakeKeshikomiBuilder ub = new UrikakeKeshikomiBuilder();
 		ub.withUrikake(urikake);
-		ub.withKeshikomiList(keshikomiList);
+		ub.withKeshikomiSet(keshikomiList);
 		return ub.build();
 	}
 }

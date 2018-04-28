@@ -3,6 +3,7 @@ package com.showka.web.u08;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -66,7 +67,7 @@ public class U08G003Controller extends ControllerBase {
 		model.addObject("nyukinDate", nyukin.getDate().toString());
 		model.addObject("bushoName", nyukin.getBusho().getName());
 		// 消込リスト
-		List<Map<String, Object>> keshikomiList = nyukinKeshikomi.getKeshikomiList().stream().map(keshikomi -> {
+		List<Map<String, Object>> keshikomiList = nyukinKeshikomi.getKeshikomiSet().stream().map(keshikomi -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			// 消込
 			ret.put("keshikomiId", keshikomi.getRecordId());
@@ -107,7 +108,7 @@ public class U08G003Controller extends ControllerBase {
 	 * 更新.
 	 */
 	@Transactional
-	@RequestMapping(value = "/u08g003/register", method = RequestMethod.POST)
+	@RequestMapping(value = "/u08g003/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// build 入金消込
 		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
@@ -136,7 +137,7 @@ public class U08G003Controller extends ControllerBase {
 		// 営業日
 		EigyoDate eigyoDate = busho.getEigyoDate();
 		// 売掛消込
-		List<Keshikomi> keshikomiList = form.getMeisai().stream().map(m -> {
+		Set<Keshikomi> keshikomiSet = form.getMeisai().stream().map(m -> {
 			// 売掛
 			String urikakeId = m.getUrikakeId();
 			Urikake urikake = urikakeCrudService.getDomain(urikakeId);
@@ -148,11 +149,11 @@ public class U08G003Controller extends ControllerBase {
 			b.withKingaku(m.getKingaku());
 			b.withVersion(m.getVersion());
 			return b.build();
-		}).collect(Collectors.toList());
+		}).collect(Collectors.toSet());
 		// 入金消込
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);
-		b.withKeshikomiList(keshikomiList);
+		b.withKeshikomiSet(keshikomiSet);
 		NyukinKeshikomi nyukinKeshikomi = b.build();
 		return nyukinKeshikomi;
 	}

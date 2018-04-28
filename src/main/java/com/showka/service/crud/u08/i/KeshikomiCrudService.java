@@ -1,6 +1,7 @@
 package com.showka.service.crud.u08.i;
 
 import java.util.List;
+import java.util.Set;
 
 import com.showka.domain.Keshikomi;
 import com.showka.value.EigyoDate;
@@ -45,7 +46,7 @@ public interface KeshikomiCrudService {
 	 *            入金ID
 	 * @return 消込リスト
 	 */
-	public List<Keshikomi> getKeshikomiListOfNyukin(String nyukinId);
+	public Set<Keshikomi> getKeshikomiSetOfNyukin(String nyukinId);
 
 	/**
 	 * 消込リスト取得.
@@ -58,5 +59,5 @@ public interface KeshikomiCrudService {
 	 *            売掛ID
 	 * @return 消込リスト
 	 */
-	public List<Keshikomi> getKeshikomiListOfUrikake(String urikakeId);
+	public Set<Keshikomi> getKeshikomiSetOfUrikake(String urikakeId);
 }

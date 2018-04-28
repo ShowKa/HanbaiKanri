@@ -18,7 +18,7 @@ public class UrikakeKeshikomi extends DomainBase {
 	private Urikake urikake;
 
 	/** 消込リスト. */
-	private List<Keshikomi> keshikomiList;
+	private Set<Keshikomi> keshikomiSet;
 
 	// public
 	/**
@@ -27,7 +27,7 @@ public class UrikakeKeshikomi extends DomainBase {
 	 * @return 消込.金額の合計
 	 */
 	public AmountOfMoney getKeshikomiKingakuGokei() {
-		int keshikomiKingakuGokei = keshikomiList.stream().mapToInt(k -> {
+		int keshikomiKingakuGokei = keshikomiSet.stream().mapToInt(k -> {
 			return k.getKingaku().intValue();
 		}).sum();
 		return new AmountOfMoney(keshikomiKingakuGokei);
@@ -46,7 +46,7 @@ public class UrikakeKeshikomi extends DomainBase {
 	// override
 	@Override
 	public void validate() throws SystemException {
-		Set<Urikake> urikakeSet = keshikomiList.stream().map(keshikomi -> {
+		Set<Urikake> urikakeSet = keshikomiSet.stream().map(keshikomi -> {
 			return keshikomi.getUrikake();
 		}).collect(Collectors.toSet());
 		if (urikakeSet.size() > 1) {
