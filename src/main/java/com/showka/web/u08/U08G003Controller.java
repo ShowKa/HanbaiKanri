@@ -92,6 +92,41 @@ public class U08G003Controller extends ControllerBase {
 	@Transactional
 	@RequestMapping(value = "/u08g003/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
+		// build 入金消込
+		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
+		// validate
+		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
+		// save
+		nyukinKeshikomiCrudService.save(nyukinKeshikomi);
+		// return model
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	/**
+	 * 更新.
+	 */
+	@Transactional
+	@RequestMapping(value = "/u08g003/register", method = RequestMethod.POST)
+	public ResponseEntity<?> update(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
+		// build 入金消込
+		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
+		// get 入金消込更新前
+		NyukinKeshikomi nyukinKeshikomiBeforeUpdate = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		// merge 消込リスト
+		// return model
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
+	/**
+	 * フォームから入金消込をビルドする.
+	 * 
+	 * @param form
+	 *            フォーム
+	 * @return 入金消込
+	 */
+	private NyukinKeshikomi buildNyukinKeshikomiFromForm(U08G003Form form) {
 		// 入金
 		Nyukin nyukin = nyukinCrudService.getDomain(form.getNyukinId());
 		// OCC
@@ -119,12 +154,6 @@ public class U08G003Controller extends ControllerBase {
 		b.withNyukin(nyukin);
 		b.withKeshikomiList(keshikomiList);
 		NyukinKeshikomi nyukinKeshikomi = b.build();
-		// validate
-		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
-		// save
-		nyukinKeshikomiCrudService.save(nyukinKeshikomi);
-		// return model
-		model.addForm(form);
-		return ResponseEntity.ok(model);
+		return nyukinKeshikomi;
 	}
 }

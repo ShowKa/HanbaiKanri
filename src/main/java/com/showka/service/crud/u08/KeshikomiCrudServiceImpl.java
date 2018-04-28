@@ -44,6 +44,26 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	}
 
 	@Override
+	public void overrideList(String nyukinId, EigyoDate date, List<Keshikomi> keshikomiList) {
+		if (keshikomiList.isEmpty()) {
+			return;
+		}
+		// get old
+		List<Keshikomi> oldList = this.getKeshikomiListOfNyukin(nyukinId).stream().filter(k -> {
+			// 営業日が同じもののみ抽出
+			return k.getDate().equals(date);
+		}).collect(Collectors.toList());
+		// delete removed
+		oldList.stream().filter(o -> {
+			return !keshikomiList.contains(o);
+		}).forEach(o -> {
+			delete(o.getRecordId(), o.getVersion());
+		});
+		// save
+		keshikomiList.forEach(this::save);
+	}
+
+	@Override
 	public List<Keshikomi> getKeshikomiListOfNyukin(String nyukinId) {
 		// example
 		TKeshikomi e = new TKeshikomi();

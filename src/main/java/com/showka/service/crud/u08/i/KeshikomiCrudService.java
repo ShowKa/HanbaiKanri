@@ -3,6 +3,7 @@ package com.showka.service.crud.u08.i;
 import java.util.List;
 
 import com.showka.domain.Keshikomi;
+import com.showka.value.EigyoDate;
 
 public interface KeshikomiCrudService {
 
@@ -17,6 +18,21 @@ public interface KeshikomiCrudService {
 	 *            消込
 	 */
 	public void save(Keshikomi keshikomi);
+
+	/**
+	 * 消込上書保存.
+	 * 
+	 * <pre>
+	 * 対象営業日の消込リストを保存。
+	 * 既存消込のうち、リストに含まれないものは削除対象となる。
+	 * </pre>
+	 * 
+	 * @param keshikomiList
+	 *            消込リスト
+	 * @param date
+	 *            対象営業日
+	 */
+	public void overrideList(String nyukinId, EigyoDate date, List<Keshikomi> keshikomiList);
 
 	/**
 	 * 消込リスト取得.
