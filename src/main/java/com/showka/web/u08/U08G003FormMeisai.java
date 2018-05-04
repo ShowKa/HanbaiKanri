@@ -23,6 +23,9 @@ public class U08G003FormMeisai extends FormBase {
 	/** 消込金額. */
 	private Integer kingaku;
 
+	/** 消込ID */
+	private String id;
+
 	/** 消込バージョン. */
 	private Integer version;
 }

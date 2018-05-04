@@ -53,8 +53,8 @@ public class U08G003Controller extends ControllerBase {
 	@Autowired
 	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
 
-	@RequestMapping(value = "/u08g003/refer", method = RequestMethod.POST)
-	public ResponseEntity<?> refer(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
+	@RequestMapping(value = "/u08g003/refer", method = RequestMethod.GET)
+	public ModelAndViewExtended refer(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
 		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
 		// set form
@@ -85,7 +85,8 @@ public class U08G003Controller extends ControllerBase {
 		}).collect(Collectors.toList());
 		model.addObject("keshikomiList", keshikomiList);
 		model.addForm(form);
-		return ResponseEntity.ok(model);
+		model.setViewName("/u08/u08g003");
+		return model;
 	}
 
 	/**
@@ -175,6 +176,8 @@ public class U08G003Controller extends ControllerBase {
 			// 売掛
 			String urikakeId = m.getUrikakeId();
 			Urikake urikake = urikakeCrudService.getDomain(urikakeId);
+			// FIXME
+			String keshikomiId = m.getId() != null ? m.getId() : "dummy_" + UUID.randomUUID().toString();
 			// build 消込
 			KeshikomiBuilder b = new KeshikomiBuilder();
 			b.withNyukin(nyukin);
@@ -182,8 +185,7 @@ public class U08G003Controller extends ControllerBase {
 			b.withDate(eigyoDate);
 			b.withKingaku(m.getKingaku());
 			b.withVersion(m.getVersion());
-			// FIXME need record id
-			b.withRecordId(UUID.randomUUID().toString());
+			b.withRecordId(keshikomiId);
 			return b.build();
 		}).collect(Collectors.toSet());
 		// 入金消込

@@ -109,6 +109,13 @@ VALUES
 ('r-KK02-00001', 21610, to_date('2017/09/30', 'yyyy/MM/dd') ,'r-KK02-00001'),
 ;
 
+-- 入金
+INSERT INTO t_nyukin
+(id, kokyaku_id, busho_id, date, nyukin_hoho_kubun, kingaku, record_id)
+VALUES
+('r-001', 'r-KK02', 'r-BS02', to_date('2017/08/20', 'yyyy/MM/dd'), '10', 21610, 'r-001'),
+;
+
 -- 商品在庫
 INSERT INTO t_shohin_zaiko
 (busho_id, eigyo_date, shohin_id, number, record_id)
