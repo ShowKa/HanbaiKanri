@@ -12,6 +12,7 @@ import com.showka.domain.Nyukin;
 import com.showka.domain.builder.NyukinBuilder;
 import com.showka.entity.TNyukin;
 import com.showka.kubun.NyukinHohoKubun;
+import com.showka.kubun.i.Kubun;
 import com.showka.repository.i.TNyukinRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
@@ -75,7 +76,7 @@ public class NyukinCrudServiceImpl implements NyukinCrudService {
 		b.withDate(new EigyoDate(e.getDate()));
 		b.withKingaku(new AmountOfMoney(e.getKingaku()));
 		b.withKokyaku(kokyaku);
-		b.withNyukinHohoKubun(NyukinHohoKubun.valueOf(e.getNyukinHohoKubun()));
+		b.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, e.getNyukinHohoKubun()));
 		b.withRecordId(e.getRecordId());
 		b.withVersion(e.getVersion());
 		// build
