@@ -12,10 +12,14 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Keshikomi;
+import com.showka.domain.Nyukin;
+import com.showka.domain.Urikake;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.entity.TKeshikomi;
 import com.showka.repository.i.TKeshikomiRepository;
+import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
+import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
@@ -24,6 +28,12 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 
 	@Autowired
 	private TKeshikomiRepository repo;
+
+	@Autowired
+	private NyukinCrudService nyukinCrudService;
+
+	@Autowired
+	private UrikakeCrudService urikakeCrudService;
 
 	@Override
 	public void save(Keshikomi keshikomi) {
@@ -120,8 +130,14 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	Keshikomi getDomain(String keshikomiId) {
 		// entity
 		TKeshikomi e = repo.getOne(keshikomiId);
+		// get 入金
+		Nyukin nyukin = nyukinCrudService.getDomain(e.getNyukinId());
+		// get 売掛
+		Urikake urikake = urikakeCrudService.getDomain(e.getUrikakeId());
 		// set builder
 		KeshikomiBuilder b = new KeshikomiBuilder();
+		b.withNyukin(nyukin);
+		b.withUrikake(urikake);
 		b.withDate(new EigyoDate(e.getDate()));
 		b.withKingaku(new AmountOfMoney(e.getKingaku()));
 		b.withRecordId(e.getRecordId());
