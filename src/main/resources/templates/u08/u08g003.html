@@ -14,54 +14,107 @@
 		<div
 			class="container"
 			ng-controller="MainController">
+			<form>
+				<input
+					class="form-control"
+					id="nyukinId"
+					name="nyukinId"
+					type="hidden"
+					th:value="${form.nyukinId}"
+					ng-model="nyukinId"
+					required />
+			</form>
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<form
-						id="nyukinForm"
-						class="form-horizontal">
-						<div class="form-group form-group-sm">
-							<label
-								class="control-label col-sm-2"
-								for="kokyakuCode">顧客</label>
-							<div class="col-sm-10">
-								<input
-									class="form-control"
-									id="kokyakuName"
-									name="kokyakuName"
-									type="text"
-									placeholder="顧客01"
-									th:value="${kokyakuName}"
-									ng-model="kokyakuName"
-									ng-init-from-value
-									required />
-							</div>
-						</div>
-					</form>
+					<div class="col-sm-2 col-sm-offset-9 col-xs-2 col-xs-offset-9">
+						<input
+							id="deleteBtn"
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="更新モードへ"
+							ng-disabled="editable"
+							ng-click="updateForm()"></input>
+					</div>
 				</div>
 			</div>
-			<div class="col-md-6 col-sm-6 col-xs-12">
-				<table class="table table-striped">
-					<caption>{{kokyakuName}}</caption>
-					<thead>
-						<tr>
-							<th>請求日</th>
-							<th>合計金額</th>
-							<th>支払期日</th>
-						</tr>
-					</thead>
-					<tbody id="seikyuList">
-						<tr ng-repeat="seikyu in seikyuList">
-							<td class="col-sm-1">
-								<span
-									class="glyphicon glyphicon-list-alt"
-									style="padding-right: 5px; cursor: pointer;"
-									ng-click="get(seikyu.seikyuDate);"> </span>{{seikyu.seikyuDate}}
-							</td>
-							<td class="col-sm-1">{{seikyu.gokeiKingaku}}</td>
-							<td class="col-sm-1">{{seikyu.shiharaiDate}}</td>
-						</tr>
-					</tbody>
-				</table>
+			<h4>入金</h4>
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>顧客</th>
+								<th>部署</th>
+								<th>入金日</th>
+								<th>入金方法</th>
+								<th>金額</th>
+								<th>未消込</th>
+							</tr>
+						</thead>
+						<tbody id="nyukin">
+							<tr>
+								<td class="col-sm-1">{{kokyakuName}}</td>
+								<td class="col-sm-1">{{bushoName}}</td>
+								<td class="col-sm-1">{{nyukinDate}}</td>
+								<td class="col-sm-1">{{nyukinHoho}}</td>
+								<td class="col-sm-1">{{nyukinKingaku}}</td>
+								<td class="col-sm-1">{{mikeshikomi}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<h4>入金消込</h4>
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>売上日</th>
+								<th>売上</th>
+								<th>売掛残高</th>
+								<th>消込金額</th>
+								<th>消込後</th>
+							</tr>
+						</thead>
+						<tbody id="keshikomiList">
+							<tr ng-repeat="keshikomi in keshikomiList">
+								<td class="col-sm-1">{{keshikomi.uriageDate}}</td>
+								<td class="col-sm-1">{{keshikomi.uriageKingaku}}</td>
+								<td class="col-sm-2">{{keshikomi.urikakeZandaka}}</td>
+								<td class="col-sm-3">
+									<input
+										type="text"
+										class="form-control"
+										ng-readonly="!editable"
+										ng-model="keshikomi.kingaku" />
+								</td>
+								<td>{{keshikomi.urikakeZandaka - keshikomi.kingaku}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="form-group">
+						<div class="col-sm-1">
+							<input
+								id="registerBtn"
+								type="button"
+								class="btn btn-primary btn-sm"
+								ng-click="register()"
+								ng-disabled="true"
+								value="登録"
+								ng-show="false" />
+							<input
+								ng-click="update();"
+								id="updateBtn"
+								type="button"
+								class="btn btn-primary btn-sm"
+								value="更新"
+								ng-disabled="true"
+								ng-show="true" />
+						</div>
+					</div>
+
+				</div>
 			</div>
 		</div>
 	</div>

@@ -2,35 +2,68 @@ ngModules.service('keshikomi', [ '$rootScope', '$filter', '$httpw',
 // モデルの操作・取得
 function($scope, $filter, $httpw) {
 	/**
-	 * 消込リスト取得.
+	 * 更新form.
 	 */
-	this.getList = function(params, callback) {
+	this.updateForm = function(params, callback) {
 		// do
-		$httpw.post("/u08g003/getList", {
-			kokyakuCode : params.kokyakuCode,
+		$httpw.post("/u08g003/updateForm", {
+			nyukinId : params.nyukinId,
+		}, callback);
+	};
+	/**
+	 * 消込取得.
+	 */
+	this.get = function(params, callback) {
+		// do
+		$httpw.post("/u08g003/get", {
+			nyukinId : params.nyukinId,
 		}, callback);
 	};
 } ])
 // controllers
-.controller('MainController', [ '$scope', '$window', '$http', 'keshikomi', 'common', 'meisai',
+.controller('MainController', [ '$scope', 'keshikomi', 'common', 'meisai',
 // main
-function($scope, $window, $http, keshikomiService, common, meisaiService) {
-	// 消込リスト取得
-	$scope.getList = function(kokyakuCode) {
-		// callback
+function($scope, keshikomiService, common, meisaiService) {
+	// 変数初期設定
+	function init() {
+		// 入金ID
+		$scope.nyukinId = $("#nyukinId").val();
+		// 編集不可
+		$scope.editable = false;
+	}
+	// 更新モードへ
+	$scope.updateForm = function() {
 		var callback = function(model) {
 			var keshikomiList = model.keshikomiList;
+			var newKeshikomiList = model.newKeshikomiList;
+			keshikomiList = keshikomiList.concat(newKeshikomiList);
 			$scope.keshikomiList = keshikomiList;
-			$scope.kokyakuName = model.kokyakuName;
 		};
 		// 全取得
-		keshikomiService.getList({
-			kokyakuCode : $scope.kokyakuCode,
+		keshikomiService.updateForm({
+			nyukinId : $scope.nyukinId,
+		}, callback);
+		// 編集可
+		$scope.editable = true;
+	};
+	// 入金消込取得
+	$scope.get = function() {
+		// callback
+		var callback = function(model) {
+			$scope.kokyakuName = model.kokyakuName;
+			$scope.bushoName = model.bushoName;
+			$scope.nyukinDate = model.nyukinDate;
+			$scope.nyukinHoho = model.nyukinHoho;
+			$scope.nyukinKingaku = model.nyukinKingaku;
+			$scope.mikeshikomi = model.mikeshikomi;
+			$scope.keshikomiList = model.keshikomiList;
+		};
+		// 全取得
+		keshikomiService.get({
+			nyukinId : $scope.nyukinId,
 		}, callback);
 	};
-	// 消込取得
-	$scope.get = function(keshikomiDate) {
-		var kokyakuCode = $scope.kokyakuCode;
-		$window.open("/u08g002/refer?kokyakuCode=" + kokyakuCode + "&keshikomiDate=" + keshikomiDate, "_blank");
-	};
+	// get
+	init();
+	$scope.get();
 } ]);

@@ -79,6 +79,22 @@ public class NyukinKeshikomi extends DomainBase {
 		});
 	}
 
+	/**
+	 * 指定した日付より前の消込を除去する。
+	 * 
+	 * <pre>
+	 * 除去対象: 消込.日付 < 引数.日付
+	 * </pre>
+	 * 
+	 * @param date
+	 *            日付
+	 */
+	public void removeKeshikomiBefore(EigyoDate date) {
+		this.keshikomiSet.removeIf(k -> {
+			return k.getDate().isBefore(date);
+		});
+	}
+
 	// getter
 	/**
 	 * 入金部署営業日取得.
