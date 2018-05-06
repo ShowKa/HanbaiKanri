@@ -35,6 +35,7 @@ import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
+import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
 @Controller
@@ -133,6 +134,7 @@ public class U08G003Controller extends ControllerBase {
 		}).collect(Collectors.toList());
 		model.addObject("newKeshikomiList", newKeshikomiList);
 		// form
+		model.setMode(Mode.UPDATE);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}

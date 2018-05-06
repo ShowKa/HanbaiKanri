@@ -50,6 +50,10 @@
 				}
 				// hide error message
 				_.hideErrorMessage();
+				// update mode
+				if (model.mode) {
+					$scope.mode = model.mode;
+				}
 			}, errorCallback);
 		};
 	} ]);
@@ -228,6 +232,7 @@
 		};
 	});
 
+	// FIXME need updating after $httpw.post()
 	/*<![CDATA[*/
 	function isReadMode() {
 		return "read" === /*[[${mode}]]*/null;
