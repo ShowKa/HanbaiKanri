@@ -62,7 +62,6 @@ public class U08G003Controller extends ControllerBase {
 
 	@RequestMapping(value = "/u08g003/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
-		form.setNyukinId(form.getNyukinId());
 		model.addForm(form);
 		model.setViewName("/u08/u08g003");
 		return model;
@@ -227,7 +226,7 @@ public class U08G003Controller extends ControllerBase {
 			String urikakeId = m.getUrikakeId();
 			Urikake urikake = urikakeCrudService.getDomain(urikakeId);
 			// FIXME
-			String id = m.getId();
+			String id = m.getKeshikomiId();
 			String keshikomiId = !StringUtils.isEmpty(id) ? id : "dummy_" + UUID.randomUUID().toString();
 			// build 消込
 			KeshikomiBuilder b = new KeshikomiBuilder();

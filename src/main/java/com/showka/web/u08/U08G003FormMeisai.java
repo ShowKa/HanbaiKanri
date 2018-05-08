@@ -1,6 +1,6 @@
 package com.showka.web.u08;
 
-import com.showka.web.FormBase;
+import com.showka.web.MeisaiFormBase;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class U08G003FormMeisai extends FormBase {
+public class U08G003FormMeisai extends MeisaiFormBase {
 
 	/** SID. */
 	private static final long serialVersionUID = -423046719788412124L;
@@ -22,9 +22,6 @@ public class U08G003FormMeisai extends FormBase {
 
 	/** 消込金額. */
 	private Integer kingaku;
-
-	/** 消込ID */
-	private String id;
 
 	/** 消込バージョン. */
 	private Integer version;

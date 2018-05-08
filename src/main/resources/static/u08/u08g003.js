@@ -11,6 +11,17 @@ function($scope, $filter, $httpw) {
 		}, callback);
 	};
 	/**
+	 * update
+	 */
+	this.update = function(params, callback) {
+		// do
+		$httpw.post("/u08g003/update", {
+			nyukinId : params.nyukinId,
+			version : params.version,
+			meisai : params.meisai,
+		}, callback);
+	};
+	/**
 	 * 消込取得.
 	 */
 	this.get = function(params, callback) {
@@ -46,6 +57,30 @@ function($scope, keshikomiService, common, meisaiService) {
 		// 編集可
 		$scope.editable = true;
 	};
+	// 更新
+	$scope.update = function() {
+		var meisai = [];
+		$scope.keshikomiList.forEach(function (k){
+			var m = {};
+			m.urikakeId = k.urikakeId;
+			m.keshikomiId = k.keshikomiId;
+			m.kingaku = k.kingaku;
+			m.version = k.version;
+			meisai.push(m);
+		});
+		var callback = function(model) {
+			// 編集不可
+			$scope.editable = false;
+			// 再取得
+			$scope.get();
+		};
+		// 全取得
+		keshikomiService.update({
+			nyukinId : $scope.nyukinId,
+			version : $scope.version,
+			meisai : meisai,
+		}, callback);
+	};
 	// 入金消込取得
 	$scope.get = function() {
 		// callback
@@ -56,6 +91,7 @@ function($scope, keshikomiService, common, meisaiService) {
 			$scope.nyukinHoho = model.nyukinHoho;
 			$scope.nyukinKingaku = model.nyukinKingaku;
 			$scope.mikeshikomi = model.mikeshikomi;
+			$scope.version = model.form.version;
 			$scope.keshikomiList = model.keshikomiList;
 		};
 		// 全取得

@@ -37,10 +37,25 @@
 		};
 		// post
 		this.post = function(url, params, successCallback) {
+			// FIXME test code for -> List<U08G003FormMeisai> meisai;
+			var _params = {};
+			jQuery.extend(_params, params);
+			for(var key in _params) {
+				var value = _params[key];
+				if(Array.isArray(value)) {
+					for (var i = 0; i < value.length; i++){
+						var v = value[i];
+						for (var p in v) {
+							_params[key +　"[" + i + "]." + p] = v[p];
+						} 
+					}
+					delete _params[key];
+				}
+			}
 			$http({
 				method : "POST",
 				url : url,
-				params : params,
+				params : _params,
 			}).then(function(response) {
 				var model = response.data.model;
 				successCallback(model);
