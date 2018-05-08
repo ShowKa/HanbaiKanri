@@ -22,6 +22,7 @@ import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheTimestamp;
 
 @Service
 public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
@@ -42,6 +43,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		TKeshikomi e = _e.orElse(new TKeshikomi());
 		// set columns
 		e.setDate(keshikomi.getDate().toDate());
+		e.setTimestamp(keshikomi.getTimestamp().toDate());
 		e.setKingaku(keshikomi.getKingaku().intValue());
 		e.setNyukinId(keshikomi.getNyukin().getRecordId());
 		e.setUrikakeId(keshikomi.getUrikake().getRecordId());
@@ -139,6 +141,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		b.withNyukin(nyukin);
 		b.withUrikake(urikake);
 		b.withDate(new EigyoDate(e.getDate()));
+		b.withTimestamp(new TheTimestamp(e.getTimestamp()));
 		b.withKingaku(new AmountOfMoney(e.getKingaku()));
 		b.withRecordId(e.getRecordId());
 		b.withVersion(e.getVersion());

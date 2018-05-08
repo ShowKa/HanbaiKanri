@@ -172,7 +172,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				result = keshikomiSet;
-				urikakeKeshikomiSpecificationService.getZandakaOfExcludingSpecificKeshikomi(urikake, keshikomi);
+				urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake, keshikomi);
 				result = new AmountOfMoney(1000);
 			}
 		};
@@ -184,7 +184,7 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				times = 1;
-				urikakeKeshikomiSpecificationService.getZandakaOfExcludingSpecificKeshikomi(urikake, keshikomi);
+				urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake, keshikomi);
 				times = 1;
 			}
 		};

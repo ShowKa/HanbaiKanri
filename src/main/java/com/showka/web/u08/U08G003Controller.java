@@ -34,6 +34,7 @@ import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationServi
 import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheTimestamp;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
@@ -233,6 +234,7 @@ public class U08G003Controller extends ControllerBase {
 			b.withNyukin(nyukin);
 			b.withUrikake(urikake);
 			b.withDate(eigyoDate);
+			b.withTimestamp(new TheTimestamp());
 			b.withKingaku(m.getKingaku());
 			b.withVersion(m.getVersion());
 			b.withRecordId(keshikomiId);
@@ -269,7 +271,7 @@ public class U08G003Controller extends ControllerBase {
 			Urikake urikake = keshikomi.getUrikake();
 			ret.put("urikakeKingaku", urikake.getKingaku().intValue());
 			// 残高
-			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaOfExcludingSpecificKeshikomi(urikake,
+			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake,
 					keshikomi);
 			ret.put("urikakeZandaka", zandaka.intValue());
 			return ret;

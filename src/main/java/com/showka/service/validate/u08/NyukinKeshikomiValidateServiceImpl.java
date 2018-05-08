@@ -49,7 +49,7 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 		keshikomiList.forEach(keshikomi -> {
 			AmountOfMoney keshikomiKingaku = keshikomi.getKingaku();
 			Urikake urikake = keshikomi.getUrikake();
-			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaOfExcludingSpecificKeshikomi(urikake,
+			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake,
 					keshikomi);
 			if (keshikomiKingaku.greaterThan(zandaka)) {
 				throw new ValidateException("消込金額が売掛金額を上回っています。");

@@ -3,6 +3,7 @@ package com.showka.domain;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,9 @@ public class Keshikomi extends DomainBase {
 
 	/** 消込日. */
 	private EigyoDate date;
+
+	/** タイムスタンプ(営業日とは関係のないシステム日付). */
+	private TheTimestamp timestamp;
 
 	/** 消込額. */
 	private AmountOfMoney kingaku;

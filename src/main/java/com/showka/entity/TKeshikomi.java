@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +31,16 @@ public class TKeshikomi extends EntityUsingRecordIdAsId implements Serializable 
 	/** 消込日. */
 	@Column(name = "date", unique = false, nullable = false)
 	private Date date;
+
+	/** タイムスタンプ. */
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(
+			name = "timestamp",
+				unique = false,
+				nullable = false,
+				length = 255,
+				columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	private Date timestamp;
 
 	/** 金額. */
 	@Column(name = "kingaku", unique = false, nullable = false)

@@ -126,9 +126,9 @@ VALUES
 
 -- 消込
 INSERT INTO t_keshikomi
-(id, date, kingaku, nyukin_id, urikake_id, record_id)
+(id, date, timestamp, kingaku, nyukin_id, urikake_id, record_id)
 VALUES
-('r-001', to_date('2017/08/20', 'yyyy/MM/dd'), 21610,'r-001', 'r-KK02-00001', 'r-001'),
+('r-001', to_date('2017/08/20', 'yyyy/MM/dd'), to_date('2017/08/20', 'yyyy/MM/dd'), 21610,'r-001', 'r-KK02-00001', 'r-001'),
 ;
 -- 商品在庫
 INSERT INTO t_shohin_zaiko

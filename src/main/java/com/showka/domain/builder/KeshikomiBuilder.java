@@ -5,6 +5,7 @@ import com.showka.domain.Nyukin;
 import com.showka.domain.Urikake;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheTimestamp;
 
 public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBase<Keshikomi, KeshikomiBuilder> {
 
@@ -17,6 +18,9 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 
 	/** date */
 	private EigyoDate date;
+
+	/** timestamp */
+	private TheTimestamp timestamp;
 
 	/** kingaku */
 	private AmountOfMoney kingaku;
@@ -33,6 +37,7 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 		builder.withNyukin(domain.getNyukin());
 		builder.withUrikake(domain.getUrikake());
 		builder.withDate(domain.getDate());
+		builder.withTimestamp(domain.getTimestamp());
 		builder.withKingaku(domain.getKingaku());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
@@ -40,7 +45,7 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 
 	@Override
 	protected Keshikomi createDomainObject() {
-		Keshikomi domain = new Keshikomi(nyukin, urikake, date, kingaku);
+		Keshikomi domain = new Keshikomi(nyukin, urikake, date, timestamp, kingaku);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -103,6 +108,23 @@ public class KeshikomiBuilder extends com.showka.domain.builder.DomainBuilderBas
 			@Override
 			public void configure(KeshikomiBuilder builder) {
 				builder.date = date;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link Keshikomi}に与えるtimestampをこのビルダに設定する。
+	 *
+	 * @param timestamp
+	 *            timestamp
+	 * @return {@link KeshikomiBuilder}
+	 */
+	public KeshikomiBuilder withTimestamp(final TheTimestamp timestamp) {
+		addConfigurator(new BuilderConfigurator<KeshikomiBuilder>() {
+			@Override
+			public void configure(KeshikomiBuilder builder) {
+				builder.timestamp = timestamp;
 			}
 		});
 		return getThis();
