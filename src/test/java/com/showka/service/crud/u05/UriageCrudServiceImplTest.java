@@ -10,10 +10,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
+import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Uriage;
 import com.showka.domain.UriageMeisai;
 import com.showka.domain.UriageRireki;
+import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
@@ -27,6 +29,7 @@ import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageCancelCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;
 
@@ -70,7 +73,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 	private static final Object[] KOKYAKU_01 = { "KK01", "顧客01", "左京区", "01", "00", "r-BS01", "r-KK01" };
 
 	/** 部署01. */
-	private static final Object[] M_BUSHO_V01 = { "BS01", "01", "01", "部署01", "r-BS01" };
+	private static final Object[] M_BUSHO_01 = { "BS01", "01", "01", "部署01", "r-BS01" };
 
 	/**
 	 * save for register
@@ -210,7 +213,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		// data
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
-		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_01);
 		assertEquals(1, repo.findAll().size());
 		// do
 		TUriagePK pk = new TUriagePK();
@@ -309,9 +312,16 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
 		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, URIAGE_MEISAI_01);
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
-		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_01);
+		// 部署
+		BushoBuilder bb = new BushoBuilder();
+		bb.withEigyoDate(new EigyoDate());
+		bb.withCode("BS01");
+		bb.withRecordId("r-BS01");
+		Busho busho = bb.build();
 		// 顧客
 		KokyakuBuilder bk = new KokyakuBuilder();
+		bk.withShukanBusho(busho);
 		bk.withRecordId("r-KK01");
 		Kokyaku kokyaku01 = bk.build();
 		// expect
@@ -399,7 +409,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01, URIAGE_02);
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
 		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, URIAGE_MEISAI_01);
-		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_01);
 		List<Uriage> actual = service.getUriageOfKokyaku("KK01");
 		assertEquals(2, actual.size());
 	}
@@ -414,7 +424,7 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		// data
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
-		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_V01);
+		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_01);
 		assertEquals(1, repo.findAll().size());
 		// expect
 		List<Uriage> u = new ArrayList<Uriage>();
