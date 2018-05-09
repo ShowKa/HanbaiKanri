@@ -119,11 +119,13 @@ public class U08G003Controller extends ControllerBase {
 			// 売上
 			Uriage uriage = u.getUriage();
 			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("uriageDenpyoNumber", uriage.getDenpyoNumber());
 			ret.put("uriageKingaku", uriage.getUriageGokeiKakaku().getZeikomiFormatted());
 			// 消込
 			ret.put("keshikomiId", null);
 			ret.put("urikakeId", u.getRecordId());
 			ret.put("kingaku", 0);
+			ret.put("date", eigyoDate.toString());
 			ret.put("version", null);
 			// 売掛
 			ret.put("urikakeKingaku", u.getKingaku().intValue());
@@ -240,6 +242,10 @@ public class U08G003Controller extends ControllerBase {
 			b.withRecordId(keshikomiId);
 			return b.build();
 		}).collect(Collectors.toSet());
+		// remove 消込.金額 = 0
+		keshikomiSet.removeIf(k -> {
+			return k.getKingaku().intValue() == 0;
+		});
 		// 入金消込
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);
@@ -256,23 +262,26 @@ public class U08G003Controller extends ControllerBase {
 	 * @return
 	 */
 	private List<Map<String, Object>> buildKeshikomiList(NyukinKeshikomi nyukinKeshikomi) {
-		return nyukinKeshikomi.getKeshikomiSet().stream().map(keshikomi -> {
+		// build
+		Set<Keshikomi> keshikomiSet = nyukinKeshikomi.getKeshikomiSet();
+		return keshikomiSet.stream().map(keshikomi -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			// 売上
 			Uriage uriage = keshikomi.getUrikake().getUriage();
 			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("uriageDenpyoNumber", uriage.getDenpyoNumber());
 			ret.put("uriageKingaku", uriage.getUriageGokeiKakaku().getZeikomiFormatted());
 			// 消込
 			ret.put("keshikomiId", keshikomi.getRecordId());
 			ret.put("urikakeId", keshikomi.getUrikakeId());
 			ret.put("kingaku", keshikomi.getKingaku().intValue());
+			ret.put("date", keshikomi.getDate().toString());
 			ret.put("version", keshikomi.getVersion());
 			// 売掛
 			Urikake urikake = keshikomi.getUrikake();
 			ret.put("urikakeKingaku", urikake.getKingaku().intValue());
 			// 残高
-			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake,
-					keshikomi);
+			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake, keshikomi);
 			ret.put("urikakeZandaka", zandaka.intValue());
 			return ret;
 		}).collect(Collectors.toList());

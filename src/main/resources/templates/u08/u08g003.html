@@ -39,7 +39,7 @@
 			</div>
 			<h4>入金</h4>
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-md-6 col-sm-9 col-xs-12">
 					<table class="table table-striped">
 						<thead>
 							<tr>
@@ -66,20 +66,23 @@
 			</div>
 			<h4>入金消込</h4>
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-md-7 col-sm-10 col-xs-12">
 					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th>売上日</th>
+								<th>伝票番号</th>
 								<th>売上</th>
-								<th>売掛残高</th>
+								<th>消込前残高</th>
 								<th>消込金額</th>
 								<th>消込後</th>
+								<th>消込日</th>
 							</tr>
 						</thead>
 						<tbody id="keshikomiList">
-							<tr ng-repeat="keshikomi in keshikomiList">
+							<tr ng-repeat="keshikomi in keshikomiList | orderBy:['uriageDate', 'uriageDenpyoNumber', 'date']">
 								<td class="col-sm-1">{{keshikomi.uriageDate}}</td>
+								<td class="col-sm-1">{{keshikomi.uriageDenpyoNumber}}</td>
 								<td class="col-sm-1">{{keshikomi.uriageKingaku}}</td>
 								<td class="col-sm-2">{{keshikomi.urikakeZandaka}}</td>
 								<td class="col-sm-3">
@@ -90,6 +93,7 @@
 										ng-model="keshikomi.kingaku" />
 								</td>
 								<td>{{keshikomi.urikakeZandaka - keshikomi.kingaku}}</td>
+								<td class="col-sm-1">{{keshikomi.date}}</td>
 							</tr>
 						</tbody>
 					</table>
