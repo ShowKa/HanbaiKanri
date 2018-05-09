@@ -1,5 +1,7 @@
 package com.showka.service.specification.u06;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,15 +27,20 @@ public class UrikakeKeshikomiSpecificationServiceImpl implements UrikakeKeshikom
 	}
 
 	@Override
-	public AmountOfMoney getZandakaOfExcludingSpecificKeshikomi(Urikake urikake, Keshikomi keshikomi) {
+	public AmountOfMoney getZandakaAsOfKeshikomi(Urikake urikake, Keshikomi keshikomi) {
 		// 売掛の消込リスト取得
 		String urikakeId = urikake.getRecordId();
 		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(urikakeId);
-		int keshikomiKingaku = urikakeKeshikomi.getKeshikomiSet().stream().filter(k -> {
+		// 引数.消込と同様の消込を除去
+		Set<Keshikomi> keshikomiSet = urikakeKeshikomi.getKeshikomiSet();
+		keshikomiSet.removeIf(k -> {
 			return k.equals(keshikomi);
-		}).mapToInt(k -> {
-			return k.getKingaku().intValue();
-		}).sum();
-		return urikakeKeshikomi.getZandaka().add(keshikomiKingaku);
+		});
+		// 引数.タイムスタンプ < 対象 の消込を除去
+		keshikomiSet.removeIf(k -> {
+			return k.getTimestamp().isAfter(keshikomi.getTimestamp());
+		});
+		// 残高返却
+		return urikakeKeshikomi.getZandaka();
 	}
 }

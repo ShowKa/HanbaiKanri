@@ -19,17 +19,16 @@ public interface UrikakeKeshikomiSpecificationService {
 	public AmountOfMoney getZandakaOf(Urikake urikake);
 
 	/**
-	 * 消込後の残高を取得する。
+	 * 消込時の残高を取得する。
 	 * 
 	 * <pre>
-	 * ただし確定（DB登録済み）した消込のみが残高計算の対象となる。
-	 * また、指定した消込イベントがすでにある場合は、その金額を除いて値を算出する。
-	 * 例：売掛.残高が70円 & 指定した消込による金額=30円 -> 100円を返却。
+	 * 引数で指定した消込を行う直前の残高。
+	 * 確定（DB登録済み）した消込のみが残高計算の対象となる。
 	 * </pre>
 	 * 
 	 * @param urikake
 	 *            売掛
 	 * @return 売掛金額.残高
 	 */
-	public AmountOfMoney getZandakaOfExcludingSpecificKeshikomi(Urikake urikake, Keshikomi keshikomi);
+	public AmountOfMoney getZandakaAsOfKeshikomi(Urikake urikake, Keshikomi keshikomi);
 }
