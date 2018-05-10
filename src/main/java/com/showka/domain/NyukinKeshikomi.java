@@ -1,6 +1,7 @@
 package com.showka.domain;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
@@ -103,6 +104,20 @@ public class NyukinKeshikomi extends DomainBase {
 	 */
 	public EigyoDate getNyukinBushoEigyoDate() {
 		return this.nyukin.getBusho().getEigyoDate();
+	}
+
+	/**
+	 * 消込日 = 引数.営業日の売掛を取得する
+	 * 
+	 * @param date
+	 *            営業日
+	 * @return 売掛
+	 */
+	public Set<Urikake> getUrikakeSetOf(EigyoDate date) {
+		Set<Keshikomi> keshikomiSet = this.getKeshikomiSet();
+		return keshikomiSet.stream().filter(k -> {
+			return k.getDate().equals(date);
+		}).map(Keshikomi::getUrikake).collect(Collectors.toSet());
 	}
 
 	// override

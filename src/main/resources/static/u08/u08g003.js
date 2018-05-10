@@ -63,6 +63,7 @@ function($scope, keshikomiService, common, meisaiService) {
 		$scope.keshikomiList.forEach(function (k){
 			var m = {};
 			m.urikakeId = k.urikakeId;
+			m.urikakeVersion = k.urikakeVersion;
 			m.keshikomiId = k.keshikomiId;
 			m.kingaku = k.kingaku;
 			m.version = k.version;

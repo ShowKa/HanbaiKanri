@@ -124,6 +124,7 @@ public class U08G003Controller extends ControllerBase {
 			// 消込
 			ret.put("keshikomiId", null);
 			ret.put("urikakeId", u.getRecordId());
+			ret.put("urikakeVersion", u.getVersion());
 			ret.put("kingaku", 0);
 			ret.put("date", eigyoDate.toString());
 			ret.put("version", null);
@@ -175,6 +176,18 @@ public class U08G003Controller extends ControllerBase {
 		nyukinKeshikomiBeforeUpdate.removeKeshikomiOf(eigyoDate);
 		// merge 消込セット
 		nyukinKeshikomi.mergeKeshikomiSet(nyukinKeshikomiBeforeUpdate);
+		// set 売掛 version for OCC
+		Map<String, Integer> versionMap = form.getMeisai().stream().collect(Collectors.toMap(m -> {
+			System.out.println(m.getUrikakeId());
+			return m.getUrikakeId();
+		}, m -> {
+			return m.getUrikakeVersion();
+		}));
+		Set<Urikake> urikakeSet = nyukinKeshikomi.getUrikakeSetOf(eigyoDate);
+		urikakeSet.forEach(u -> {
+			Integer v = versionMap.get(u.getRecordId());
+			u.setVersion(v);
+		});
 		// validate
 		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
 		// save
@@ -274,6 +287,7 @@ public class U08G003Controller extends ControllerBase {
 			// 消込
 			ret.put("keshikomiId", keshikomi.getRecordId());
 			ret.put("urikakeId", keshikomi.getUrikakeId());
+			ret.put("urikakeVersion", keshikomi.getUrikake().getVersion());
 			ret.put("kingaku", keshikomi.getKingaku().intValue());
 			ret.put("date", keshikomi.getDate().toString());
 			ret.put("version", keshikomi.getVersion());

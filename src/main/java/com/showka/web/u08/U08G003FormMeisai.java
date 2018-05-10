@@ -17,6 +17,9 @@ public class U08G003FormMeisai extends MeisaiFormBase {
 	/** 売掛ID. */
 	private String urikakeId;
 
+	/** 売掛バージョン. */
+	private Integer urikakeVersion;
+
 	/** 消込ID. */
 	private String keshikomiId;
 

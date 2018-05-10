@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.Keshikomi;
 import com.showka.domain.Nyukin;
 import com.showka.domain.NyukinKeshikomi;
+import com.showka.domain.Urikake;
 import com.showka.domain.builder.NyukinKeshikomiBuilder;
+import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
@@ -23,14 +25,22 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 	@Autowired
 	private KeshikomiCrudService keshikomiCrudService;
 
+	@Autowired
+	private UrikakeCrudService urikakeCrudService;
+
 	@Override
 	public void save(EigyoDate date, NyukinKeshikomi nyukinKeshikomi) {
 		// OCC
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		nyukinCrudService.save(nyukin);
+		// OCC
+		Set<Urikake> urikakeSet = nyukinKeshikomi.getUrikakeSetOf(date);
+		urikakeSet.forEach(u -> {
+			urikakeCrudService.save(u);
+		});
 		// save 消込
-		Set<Keshikomi> keshikomiList = nyukinKeshikomi.getKeshikomiSet();
-		keshikomiCrudService.override(nyukin.getRecordId(), date, keshikomiList);
+		Set<Keshikomi> keshikomiSet = nyukinKeshikomi.getKeshikomiSet();
+		keshikomiCrudService.override(nyukin.getRecordId(), date, keshikomiSet);
 	}
 
 	@Override
