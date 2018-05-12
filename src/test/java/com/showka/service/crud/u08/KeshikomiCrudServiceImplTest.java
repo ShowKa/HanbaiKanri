@@ -1,6 +1,5 @@
 package com.showka.service.crud.u08;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -113,27 +112,12 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 	 * override.
 	 * 
 	 * <pre>
-	 *  空コレクションを渡したら何もしない。
-	 * </pre>
-	 */
-	@Test
-	public void test01_override() throws Exception {
-		// do
-		service.override(null, null, new ArrayList<Keshikomi>());
-		// check : done nothing!
-		assertTrue(true);
-	}
-
-	/**
-	 * override.
-	 * 
-	 * <pre>
 	 * 引数に無い消込は削除される。
 	 * 引数にある消込は保存される。
 	 * </pre>
 	 */
 	@Test
-	public void test02_override() throws Exception {
+	public void test01_override() throws Exception {
 		// database
 		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01, T_KESHIKOMI_02);
 		// input

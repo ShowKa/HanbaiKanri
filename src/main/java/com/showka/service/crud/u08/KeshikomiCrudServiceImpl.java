@@ -59,9 +59,6 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 
 	@Override
 	public void override(String nyukinId, EigyoDate date, Collection<Keshikomi> keshikomiList) {
-		if (keshikomiList.isEmpty()) {
-			return;
-		}
 		// get old
 		List<Keshikomi> oldList = this.getKeshikomiSetOfNyukin(nyukinId).stream().filter(k -> {
 			// 営業日が同じもののみ抽出
