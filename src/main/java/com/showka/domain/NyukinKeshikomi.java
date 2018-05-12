@@ -107,6 +107,16 @@ public class NyukinKeshikomi extends DomainBase {
 	}
 
 	/**
+	 * 売掛を取得する
+	 * 
+	 * @return 売掛
+	 */
+	public Set<Urikake> getUrikakeSet() {
+		Set<Keshikomi> keshikomiSet = this.getKeshikomiSet();
+		return keshikomiSet.stream().map(Keshikomi::getUrikake).collect(Collectors.toSet());
+	}
+
+	/**
 	 * 消込日 = 引数.営業日の売掛を取得する
 	 * 
 	 * @param date

@@ -43,6 +43,33 @@ public class UrikakeKeshikomi extends DomainBase {
 		return urikake.getKingaku().subtract(keshikomiKingakuGokei);
 	}
 
+	/**
+	 * 引数.入金の消込の金額の合計
+	 * 
+	 * @param nyukin
+	 *            入金
+	 * @return 消込金額
+	 */
+	public AmountOfMoney getKeshikomiKingakuOf(Nyukin nyukin) {
+		int amount = this.keshikomiSet.stream().filter(k -> {
+			return k.getNyukin().equals(nyukin);
+		}).mapToInt(k -> {
+			return k.getKingaku().intValue();
+		}).sum();
+		return new AmountOfMoney(amount);
+	}
+
+	/**
+	 * 引数でしていした入金以外による消込金額.
+	 * 
+	 * @param nyukin
+	 *            入金
+	 * @return 消込金額
+	 */
+	public AmountOfMoney getKeshikomiKigakuExcluding(Nyukin nyukin) {
+		return getKeshikomiKingakuGokei().subtract(this.getKeshikomiKingakuOf(nyukin));
+	}
+
 	// override
 	@Override
 	public void validate() throws SystemException {
