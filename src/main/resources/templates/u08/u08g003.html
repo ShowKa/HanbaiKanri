@@ -72,10 +72,12 @@
 							<tr>
 								<th>売上日</th>
 								<th>伝票番号</th>
-								<th>売上</th>
-								<th>消込前残高</th>
-								<th>消込金額</th>
-								<th>消込後</th>
+								<th ng-show="editable">売掛金</th>
+								<th ng-show="editable">前回消込</th>
+								<th ng-show="true">今回消込</th>
+								<th ng-show="false">消込合計</th>
+								<th ng-show="editable">他入消込</th>
+								<th ng-show="editable">消込後</th>
 								<th>消込日</th>
 							</tr>
 						</thead>
@@ -83,16 +85,30 @@
 							<tr ng-repeat="keshikomi in keshikomiList | orderBy:['uriageDate', 'uriageDenpyoNumber', 'date']">
 								<td class="col-sm-1">{{keshikomi.uriageDate}}</td>
 								<td class="col-sm-1">{{keshikomi.uriageDenpyoNumber}}</td>
-								<td class="col-sm-1">{{keshikomi.uriageKingaku}}</td>
-								<td class="col-sm-2">{{keshikomi.urikakeZandaka}}</td>
-								<td class="col-sm-3">
+								<td
+									class="col-sm-1"
+									ng-show="editable">{{keshikomi.urikakeKingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="editable">{{keshikomi.otherKeshikomiKingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="true">
 									<input
 										type="text"
 										class="form-control"
-										ng-readonly="!editable"
-										ng-model="keshikomi.kingaku" />
+										ng-model="keshikomi.kingaku"
+										ng-readonly="!editable" />
 								</td>
-								<td>{{keshikomi.urikakeZandaka - keshikomi.kingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="editable">{{keshikomi.otherNyukinKeshikomiKingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="false">{{keshikomi.otherKeshikomiKingaku + keshikomi.kingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="editable">{{keshikomi.urikakeKingaku - keshikomi.otherNyukinKeshikomiKingaku - keshikomi.otherKeshikomiKingaku - keshikomi.kingaku}}</td>
 								<td class="col-sm-1">{{keshikomi.date}}</td>
 							</tr>
 						</tbody>
@@ -106,10 +122,38 @@
 								class="btn btn-primary btn-sm"
 								value="更新"
 								ng-disabled="!editable"
-								ng-show="isUpdateMode()" />
+								ng-show="editable" />
 						</div>
 					</div>
-
+				</div>
+			</div>
+			<h4 ng-show="!editable">売掛</h4>
+			<div
+				class="row"
+				ng-show="!editable">
+				<div class="col-md-6 col-sm-9 col-xs-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>売上日</th>
+								<th>伝票番号</th>
+								<th>売掛</th>
+								<th>消込金額</th>
+								<th>他入消込</th>
+								<th>残高</th>
+							</tr>
+						</thead>
+						<tbody id="urikake">
+							<tr ng-repeat="uk in urikakeKeshikomiList">
+								<td class="col-sm-1">{{uk.uriageDate}}</td>
+								<td class="col-sm-1">{{uk.uriageDenpyoNumber}}</td>
+								<td class="col-sm-1">{{uk.urikakeKingaku}}</td>
+								<td class="col-sm-1">{{uk.thisKeshikomiKingaku}}</td>
+								<td class="col-sm-1">{{uk.otherKeshikomiKingaku}}</td>
+								<td class="col-sm-1">{{uk.urikakeKingaku - uk.thisKeshikomiKingaku - uk.otherKeshikomiKingaku}}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

@@ -86,6 +86,7 @@ function($scope, keshikomiService, common, meisaiService) {
 	$scope.get = function() {
 		// callback
 		var callback = function(model) {
+			$scope.eigyoDate = model.eigyoDate;
 			$scope.kokyakuName = model.kokyakuName;
 			$scope.bushoName = model.bushoName;
 			$scope.nyukinDate = model.nyukinDate;
@@ -94,6 +95,7 @@ function($scope, keshikomiService, common, meisaiService) {
 			$scope.mikeshikomi = model.mikeshikomi;
 			$scope.version = model.form.version;
 			$scope.keshikomiList = model.keshikomiList;
+			$scope.urikakeKeshikomiList = model.urikakeKeshikomiList;
 		};
 		// 全取得
 		keshikomiService.get({
