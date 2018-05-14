@@ -33,7 +33,7 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		// OCC
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		nyukinCrudService.save(nyukin);
-		// OCC
+		// FIXME OCC should remove to another service
 		Set<Urikake> urikakeSet = nyukinKeshikomi.getUrikakeSetOf(date);
 		urikakeSet.forEach(u -> {
 			urikakeCrudService.save(u);
@@ -61,6 +61,10 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 	public void cancel(Nyukin nyukin, Set<String> keshikomiIdSet) {
 		// OCC
 		nyukinCrudService.save(nyukin);
-		// TODO
+		// cancel
+		EigyoDate eigyoDate = nyukin.getBusho().getEigyoDate();
+		keshikomiIdSet.forEach(id -> {
+			keshikomiCrudService.cancel(id, eigyoDate);
+		});
 	}
 }

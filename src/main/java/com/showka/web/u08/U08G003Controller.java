@@ -32,7 +32,6 @@ import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
 import com.showka.service.search.u05.i.UrikakeSearchService;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -56,9 +55,6 @@ public class U08G003Controller extends ControllerBase {
 
 	@Autowired
 	private NyukinKeshikomiValidateService nyukinKeshikomiValidateService;
-
-	@Autowired
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
 
 	@Autowired
 	private UrikakeSearchService urikakeSearchService;
@@ -173,26 +169,6 @@ public class U08G003Controller extends ControllerBase {
 	}
 
 	/**
-	 * 登録.
-	 */
-	@Transactional
-	@RequestMapping(value = "/u08g003/register", method = RequestMethod.POST)
-	public ResponseEntity<?> register(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
-		// build 入金消込
-		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
-		// 営業日
-		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
-		// validate
-		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
-		// save
-		nyukinKeshikomiCrudService.save(eigyoDate, nyukinKeshikomi);
-		// return model
-		form.setSuccessMessage("登録成功");
-		model.addForm(form);
-		return ResponseEntity.ok(model);
-	}
-
-	/**
 	 * 更新.
 	 */
 	@Transactional
@@ -208,7 +184,6 @@ public class U08G003Controller extends ControllerBase {
 		nyukinKeshikomi.mergeKeshikomiSet(nyukinKeshikomiBeforeUpdate);
 		// set 売掛 version for OCC
 		Map<String, Integer> versionMap = form.getMeisai().stream().collect(Collectors.toMap(m -> {
-			System.out.println(m.getUrikakeId());
 			return m.getUrikakeId();
 		}, m -> {
 			return m.getUrikakeVersion();

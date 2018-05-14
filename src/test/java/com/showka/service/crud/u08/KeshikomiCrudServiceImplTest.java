@@ -14,6 +14,7 @@ import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.builder.NyukinBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.entity.TKeshikomi;
+import com.showka.repository.i.CKeshikomiRepository;
 import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
@@ -32,6 +33,10 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 	@Autowired
 	@Injectable
 	private TKeshikomiRepository repo;
+
+	@Autowired
+	@Injectable
+	private CKeshikomiRepository cancelRepo;
 
 	@Injectable
 	private NyukinCrudService nyukinCrudService;
@@ -158,7 +163,6 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01, T_KESHIKOMI_02);
 		// do
 		Set<Keshikomi> actual = service.getKeshikomiSetOfNyukin("r-001");
-		System.out.println(actual);
 		assertEquals(2, actual.size());
 	}
 
@@ -200,5 +204,18 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 		boolean actual = service.exsists("r-001");
 		// check
 		assertTrue(actual);
+	}
+
+	@Test
+	public void test01_cancel() throws Exception {
+		// database
+		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01);
+		// do
+		service.cancel("r-001", new EigyoDate(2099, 9, 9));
+		// check
+		boolean keshikomi = repo.existsById("r-001");
+		assertFalse(keshikomi);
+		boolean cancel = cancelRepo.existsById("r-001");
+		assertTrue(cancel);
 	}
 }

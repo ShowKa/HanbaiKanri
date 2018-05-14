@@ -60,4 +60,18 @@ public interface KeshikomiCrudService {
 	 * @return 消込リスト
 	 */
 	public Set<Keshikomi> getKeshikomiSetOfUrikake(String urikakeId);
+
+	/**
+	 * キャンセル.
+	 * 
+	 * <pre>
+	 * OCC対象外
+	 * </pre>
+	 * 
+	 * @param keshikomiId
+	 *            消込ID
+	 * @param date
+	 *            キャンセル日付
+	 */
+	public void cancel(String keshikomiId, EigyoDate date);
 }

@@ -15,7 +15,9 @@ import com.showka.domain.Keshikomi;
 import com.showka.domain.Nyukin;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.KeshikomiBuilder;
+import com.showka.entity.CKeshikomi;
 import com.showka.entity.TKeshikomi;
+import com.showka.repository.i.CKeshikomiRepository;
 import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
@@ -29,6 +31,9 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 
 	@Autowired
 	private TKeshikomiRepository repo;
+
+	@Autowired
+	private CKeshikomiRepository cancelRepo;
 
 	@Autowired
 	private NyukinCrudService nyukinCrudService;
@@ -100,6 +105,23 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		return keshikomiList.stream().map(k -> {
 			return this.getDomain(k.getRecordId());
 		}).collect(Collectors.toSet());
+	}
+
+	@Override
+	public void cancel(String keshikomiId, EigyoDate date) {
+		TKeshikomi e = repo.getOne(keshikomiId);
+		// delete
+		this.delete(e.getRecordId(), e.getVersion());
+		// cancel
+		CKeshikomi ce = new CKeshikomi();
+		ce.setCancelDate(date.toDate());
+		ce.setDate(e.getDate());
+		ce.setKingaku(e.getKingaku());
+		ce.setNyukinId(e.getNyukinId());
+		ce.setTimestamp(e.getTimestamp());
+		ce.setUrikakeId(e.getUrikakeId());
+		ce.setRecordId(e.getRecordId());
+		cancelRepo.save(ce);
 	}
 
 	/**
