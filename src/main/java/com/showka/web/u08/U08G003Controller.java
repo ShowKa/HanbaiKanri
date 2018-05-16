@@ -203,9 +203,22 @@ public class U08G003Controller extends ControllerBase {
 		return ResponseEntity.ok(model);
 	}
 
-	/**
-	 * キャンセル.
-	 */
+	@RequestMapping(value = "/u08g003/cancelForm", method = RequestMethod.POST)
+	public ResponseEntity<?> cancelForm(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
+		// get 入金消込
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		// 本日営業日のみ削除(キャンセル対象ではないため)
+		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
+		nyukinKeshikomi.removeKeshikomiOf(eigyoDate);
+		// set to model
+		List<Map<String, Object>> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
+		model.addObject("keshikomiList", keshikomiList);
+		// form
+		model.setMode(Mode.UPDATE);
+		model.addForm(form);
+		return ResponseEntity.ok(model);
+	}
+
 	@Transactional
 	@RequestMapping(value = "/u08g003/cancel", method = RequestMethod.POST)
 	public ResponseEntity<?> cancel(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {

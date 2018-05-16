@@ -22,6 +22,26 @@ function($scope, $filter, $httpw) {
 		}, callback);
 	};
 	/**
+	 * キャンセルform.
+	 */
+	this.cancelForm = function(params, callback) {
+		// do
+		$httpw.post("/u08g003/cancelForm", {
+			nyukinId : params.nyukinId,
+		}, callback);
+	};
+	/**
+	 * cancel
+	 */
+	this.cancel = function(params, callback) {
+		// do
+		$httpw.post("/u08g003/cancel", {
+			nyukinId : params.nyukinId,
+			version : params.version,
+			meisai : params.meisai,
+		}, callback);
+	};
+	/**
 	 * 消込取得.
 	 */
 	this.get = function(params, callback) {
@@ -60,7 +80,7 @@ function($scope, keshikomiService, common, meisaiService) {
 	// 更新
 	$scope.update = function() {
 		var meisai = [];
-		$scope.keshikomiList.forEach(function (k){
+		$scope.keshikomiList.forEach(function(k) {
 			var m = {};
 			m.urikakeId = k.urikakeId;
 			m.urikakeVersion = k.urikakeVersion;
@@ -77,6 +97,47 @@ function($scope, keshikomiService, common, meisaiService) {
 		};
 		// 全取得
 		keshikomiService.update({
+			nyukinId : $scope.nyukinId,
+			version : $scope.version,
+			meisai : meisai,
+		}, callback);
+	};
+	// キャンセルモードへ
+	$scope.cancelForm = function() {
+		var callback = function(model) {
+			$scope.keshikomiList = model.keshikomiList;
+			$scope.cancelMode = true;
+		};
+		// form取得
+		keshikomiService.cancelForm({
+			nyukinId : $scope.nyukinId,
+		}, callback);
+	};
+	// キャンセル選択
+	$scope.select = function(keshikomi) {
+		keshikomi.canceled = !keshikomi.canceled;
+	};
+	// キャンセル
+	$scope.cancel = function() {
+		$scope.cancelMode = false;
+		var meisai = [];
+		$scope.keshikomiList.forEach(function(k) {
+			if (k.canceled === false) {
+				return;
+			}
+			var m = {};
+			m.keshikomiId = k.keshikomiId;
+			meisai.push(m);
+		});
+		if (meisai.length == 0) {
+			return;
+		}
+		var callback = function(model) {
+			// 再取得
+			$scope.get();
+		};
+		// キャンセル
+		keshikomiService.cancel({
 			nyukinId : $scope.nyukinId,
 			version : $scope.version,
 			meisai : meisai,

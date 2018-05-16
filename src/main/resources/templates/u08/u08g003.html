@@ -6,6 +6,11 @@
 <script
 	th:inmeisai="javascript"
 	src="/u08/u08g003.js"></script>
+<style>
+tr.canceled {
+	text-decoration: line-through;
+}
+</style>
 </head>
 <body ng-app="App">
 	<div th:replace="common/header :: common_header"></div>
@@ -26,9 +31,18 @@
 			</form>
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
-					<div class="col-sm-2 col-sm-offset-9 col-xs-2 col-xs-offset-9">
+					<div class="col-sm-3 col-sm-offset-6 col-xs-3 col-xs-offset-6">
 						<input
-							id="deleteBtn"
+							id="cancelFormBtn"
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="キャンセルモードへ"
+							ng-disabled="editable"
+							ng-click="cancelForm()"></input>
+					</div>
+					<div class="col-sm-2 col-xs-2">
+						<input
+							id="updateFormBtn"
 							type="button"
 							class="btn btn-primary btn-sm"
 							value="更新モードへ"
@@ -79,10 +93,13 @@
 								<th ng-show="editable">他入消込</th>
 								<th ng-show="editable">消込後</th>
 								<th>消込日</th>
+								<th ng-show="cancelMode"></th>
 							</tr>
 						</thead>
 						<tbody id="keshikomiList">
-							<tr ng-repeat="keshikomi in keshikomiList | orderBy:['uriageDate', 'uriageDenpyoNumber', 'date']">
+							<tr
+								ng-class="{true: 'canceled'}[keshikomi.canceled]"
+								ng-repeat="keshikomi in keshikomiList | orderBy:['uriageDate', 'uriageDenpyoNumber', 'date']">
 								<td class="col-sm-1">{{keshikomi.uriageDate}}</td>
 								<td class="col-sm-1">{{keshikomi.uriageDenpyoNumber}}</td>
 								<td
@@ -110,6 +127,14 @@
 									class="col-sm-1"
 									ng-show="editable">{{keshikomi.urikakeKingaku - keshikomi.otherNyukinKeshikomiKingaku - keshikomi.otherKeshikomiKingaku - keshikomi.kingaku}}</td>
 								<td class="col-sm-1">{{keshikomi.date}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="cancelMode">
+									<span
+										class="glyphicon glyphicon-pushpin"
+										style="padding-right: 5px; cursor: pointer;"
+										ng-click="select(keshikomi);"> </span>
+								</td>
 							</tr>
 						</tbody>
 					</table>
@@ -123,6 +148,13 @@
 								value="更新"
 								ng-disabled="!editable"
 								ng-show="editable" />
+							<input
+								ng-click="cancel();"
+								id="cancelBtn"
+								type="button"
+								class="btn btn-primary btn-sm"
+								value="キャンセル"
+								ng-show="cancelMode" />
 						</div>
 					</div>
 				</div>
