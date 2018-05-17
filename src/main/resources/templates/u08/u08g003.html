@@ -37,7 +37,7 @@ tr.canceled {
 							type="button"
 							class="btn btn-primary btn-sm"
 							value="キャンセルモードへ"
-							ng-disabled="editable"
+							ng-show="mode == 'refer'"
 							ng-click="cancelForm()"></input>
 					</div>
 					<div class="col-sm-2 col-xs-2">
@@ -46,8 +46,15 @@ tr.canceled {
 							type="button"
 							class="btn btn-primary btn-sm"
 							value="更新モードへ"
-							ng-disabled="editable"
+							ng-show="mode == 'refer'"
 							ng-click="updateForm()"></input>
+						<input
+							id="referBtn"
+							type="button"
+							class="btn btn-secondary btn-sm"
+							value="参照モードへ"
+							ng-show="mode != 'refer'"
+							ng-click="get()"></input>
 					</div>
 				</div>
 			</div>
@@ -62,7 +69,7 @@ tr.canceled {
 								<th>入金日</th>
 								<th>入金方法</th>
 								<th>金額</th>
-								<th>未消込</th>
+								<th>未処理</th>
 							</tr>
 						</thead>
 						<tbody id="nyukin">
@@ -80,20 +87,21 @@ tr.canceled {
 			</div>
 			<h4>入金消込</h4>
 			<div class="row">
-				<div class="col-md-7 col-sm-10 col-xs-12">
+				<div class="col-md-8 col-sm-10 col-xs-12">
 					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th>売上日</th>
 								<th>伝票番号</th>
-								<th ng-show="editable">売掛金</th>
-								<th ng-show="editable">前回消込</th>
-								<th ng-show="true">今回消込</th>
+								<th ng-show="mode == 'update'">売掛金</th>
+								<th ng-show="mode == 'update'">前回消込</th>
+								<th ng-show="mode == 'update'">今回消込</th>
+								<th ng-show="mode != 'update'">今回消込</th>
 								<th ng-show="false">消込合計</th>
-								<th ng-show="editable">他入消込</th>
-								<th ng-show="editable">消込後</th>
+								<th ng-show="mode == 'update'">他入消込</th>
+								<th ng-show="mode == 'update'">消込後</th>
 								<th>消込日</th>
-								<th ng-show="cancelMode"></th>
+								<th ng-show="mode == 'cancel'"></th>
 							</tr>
 						</thead>
 						<tbody id="keshikomiList">
@@ -104,32 +112,34 @@ tr.canceled {
 								<td class="col-sm-1">{{keshikomi.uriageDenpyoNumber}}</td>
 								<td
 									class="col-sm-1"
-									ng-show="editable">{{keshikomi.urikakeKingaku}}</td>
+									ng-show="mode == 'update'">{{keshikomi.urikakeKingaku}}</td>
 								<td
 									class="col-sm-1"
-									ng-show="editable">{{keshikomi.otherKeshikomiKingaku}}</td>
+									ng-show="mode == 'update'">{{keshikomi.otherKeshikomiKingaku}}</td>
 								<td
-									class="col-sm-1"
-									ng-show="true">
+									class="col-sm-2"
+									ng-show="mode == 'update'">
 									<input
 										type="text"
 										class="form-control"
-										ng-model="keshikomi.kingaku"
-										ng-readonly="!editable" />
+										ng-model="keshikomi.kingaku" />
 								</td>
 								<td
 									class="col-sm-1"
-									ng-show="editable">{{keshikomi.otherNyukinKeshikomiKingaku}}</td>
+									ng-show="mode != 'update'">{{keshikomi.kingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="mode == 'update'">{{keshikomi.otherNyukinKeshikomiKingaku}}</td>
 								<td
 									class="col-sm-1"
 									ng-show="false">{{keshikomi.otherKeshikomiKingaku + keshikomi.kingaku}}</td>
 								<td
 									class="col-sm-1"
-									ng-show="editable">{{keshikomi.urikakeKingaku - keshikomi.otherNyukinKeshikomiKingaku - keshikomi.otherKeshikomiKingaku - keshikomi.kingaku}}</td>
+									ng-show="mode == 'update'">{{keshikomi.urikakeKingaku - keshikomi.otherNyukinKeshikomiKingaku - keshikomi.otherKeshikomiKingaku - keshikomi.kingaku}}</td>
 								<td class="col-sm-1">{{keshikomi.date}}</td>
 								<td
 									class="col-sm-1"
-									ng-show="cancelMode">
+									ng-show="mode == 'cancel'">
 									<span
 										class="glyphicon glyphicon-pushpin"
 										style="padding-right: 5px; cursor: pointer;"
@@ -146,23 +156,22 @@ tr.canceled {
 								type="button"
 								class="btn btn-primary btn-sm"
 								value="更新"
-								ng-disabled="!editable"
-								ng-show="editable" />
+								ng-show="mode == 'update'" />
 							<input
 								ng-click="cancel();"
 								id="cancelBtn"
 								type="button"
 								class="btn btn-primary btn-sm"
 								value="キャンセル"
-								ng-show="cancelMode" />
+								ng-show="mode == 'cancel'" />
 						</div>
 					</div>
 				</div>
 			</div>
-			<h4 ng-show="!editable">売掛</h4>
+			<h4 ng-show="mode == 'refer'">売掛</h4>
 			<div
 				class="row"
-				ng-show="!editable">
+				ng-show="mode == 'refer'">
 				<div class="col-md-6 col-sm-9 col-xs-12">
 					<table class="table table-striped">
 						<thead>

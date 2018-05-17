@@ -59,8 +59,8 @@ function($scope, keshikomiService, common, meisaiService) {
 	function init() {
 		// 入金ID
 		$scope.nyukinId = $("#nyukinId").val();
-		// 編集不可
-		$scope.editable = false;
+		// モード
+		$scope.mode = "refer";
 	}
 	// 更新モードへ
 	$scope.updateForm = function() {
@@ -68,14 +68,17 @@ function($scope, keshikomiService, common, meisaiService) {
 			var keshikomiList = model.keshikomiList;
 			var newKeshikomiList = model.newKeshikomiList;
 			keshikomiList = keshikomiList.concat(newKeshikomiList);
+			if (keshikomiList.length == 0) {
+				alert("消込対象が存在しません。");
+				return;
+			}
 			$scope.keshikomiList = keshikomiList;
+			$scope.mode = "update";
 		};
 		// 全取得
 		keshikomiService.updateForm({
 			nyukinId : $scope.nyukinId,
 		}, callback);
-		// 編集可
-		$scope.editable = true;
 	};
 	// 更新
 	$scope.update = function() {
@@ -90,8 +93,7 @@ function($scope, keshikomiService, common, meisaiService) {
 			meisai.push(m);
 		});
 		var callback = function(model) {
-			// 編集不可
-			$scope.editable = false;
+			$scope.mode = "refer";
 			// 再取得
 			$scope.get();
 		};
@@ -105,8 +107,12 @@ function($scope, keshikomiService, common, meisaiService) {
 	// キャンセルモードへ
 	$scope.cancelForm = function() {
 		var callback = function(model) {
+			if (model.keshikomiList.length == 0) {
+				alert("キャンセル対象の消込が存在しません。");
+				return;
+			}
 			$scope.keshikomiList = model.keshikomiList;
-			$scope.cancelMode = true;
+			$scope.mode = "cancel";
 		};
 		// form取得
 		keshikomiService.cancelForm({
@@ -119,10 +125,9 @@ function($scope, keshikomiService, common, meisaiService) {
 	};
 	// キャンセル
 	$scope.cancel = function() {
-		$scope.cancelMode = false;
 		var meisai = [];
 		$scope.keshikomiList.forEach(function(k) {
-			if (k.canceled === false) {
+			if (!k.canceled) {
 				return;
 			}
 			var m = {};
@@ -130,11 +135,13 @@ function($scope, keshikomiService, common, meisaiService) {
 			meisai.push(m);
 		});
 		if (meisai.length == 0) {
+			alert("キャンセル対象が未選択です。");
 			return;
 		}
 		var callback = function(model) {
 			// 再取得
 			$scope.get();
+			$scope.cancel = "refer";
 		};
 		// キャンセル
 		keshikomiService.cancel({
@@ -157,6 +164,7 @@ function($scope, keshikomiService, common, meisaiService) {
 			$scope.version = model.form.version;
 			$scope.keshikomiList = model.keshikomiList;
 			$scope.urikakeKeshikomiList = model.urikakeKeshikomiList;
+			$scope.mode = "refer";
 		};
 		// 全取得
 		keshikomiService.get({
