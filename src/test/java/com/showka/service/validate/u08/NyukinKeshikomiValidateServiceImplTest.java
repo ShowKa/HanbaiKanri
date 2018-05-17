@@ -41,6 +41,8 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
+				service.validateKingakuRange(nyukinKeshikomi);
+				times = 1;
 				service.validateKeshikomiKingakuGokei(nyukinKeshikomi);
 				times = 1;
 				service.validateKeshikomiKingaku(nyukinKeshikomi);
@@ -272,5 +274,55 @@ public class NyukinKeshikomiValidateServiceImplTest extends SimpleTestCase {
 				times = 1;
 			}
 		};
+	}
+
+	@Test
+	public void test07_validateKingakuRange(@Injectable NyukinKeshikomi nyukinKeshikomi) throws Exception {
+		// input
+		// 消込
+		KeshikomiBuilder kb = new KeshikomiBuilder();
+		kb.withKingaku(0);
+		Keshikomi keshikomi = kb.build();
+		// 消込マップ
+		Set<Keshikomi> keshikomiSet = new HashSet<Keshikomi>();
+		keshikomiSet.add(keshikomi);
+		// expect
+		new Expectations() {
+			{
+				nyukinKeshikomi.getKeshikomiSet();
+				result = keshikomiSet;
+			}
+		};
+		// do
+		service.validateKingakuRange(nyukinKeshikomi);
+		// verify
+		new Verifications() {
+			{
+				nyukinKeshikomi.getKeshikomiSet();
+				times = 1;
+			}
+		};
+		assertTrue(true);
+	}
+
+	@Test(expected = ValidateException.class)
+	public void test08_validateKingakuRange(@Injectable NyukinKeshikomi nyukinKeshikomi) throws Exception {
+		// input
+		// 消込
+		KeshikomiBuilder kb = new KeshikomiBuilder();
+		kb.withKingaku(-1);
+		Keshikomi keshikomi = kb.build();
+		// 消込マップ
+		Set<Keshikomi> keshikomiSet = new HashSet<Keshikomi>();
+		keshikomiSet.add(keshikomi);
+		// expect
+		new Expectations() {
+			{
+				nyukinKeshikomi.getKeshikomiSet();
+				result = keshikomiSet;
+			}
+		};
+		// do
+		service.validateKingakuRange(nyukinKeshikomi);
 	}
 }

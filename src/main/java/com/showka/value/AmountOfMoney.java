@@ -123,9 +123,31 @@ public class AmountOfMoney extends ValueBase {
 	 * 
 	 * @param another
 	 *            比較対象
+	 * @return this > another なら true
+	 */
+	public boolean greaterThan(Integer another) {
+		return this.intValue() > another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
 	 * @return this >= another なら true
 	 */
 	public boolean greaterThanEquals(AmountOfMoney another) {
+		return this.intValue() >= another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this >= another なら true
+	 */
+	public boolean greaterThanEquals(Integer another) {
 		return this.intValue() >= another.intValue();
 	}
 
@@ -145,9 +167,31 @@ public class AmountOfMoney extends ValueBase {
 	 * 
 	 * @param another
 	 *            比較対象
+	 * @return this < another なら true
+	 */
+	public boolean lesserThan(Integer another) {
+		return this.intValue() < another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
 	 * @return this <= another なら true
 	 */
 	public boolean lesserThanEquals(AmountOfMoney another) {
+		return this.intValue() <= another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this <= another なら true
+	 */
+	public boolean lesserThanEquals(Integer another) {
 		return this.intValue() <= another.intValue();
 	}
 

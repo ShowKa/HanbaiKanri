@@ -25,9 +25,22 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 
 	@Override
 	public void validate(NyukinKeshikomi nyukinKeshikomi) throws ValidateException {
+		this.validateKingakuRange(nyukinKeshikomi);
 		this.validateKeshikomiKingakuGokei(nyukinKeshikomi);
 		this.validateKeshikomiKingaku(nyukinKeshikomi);
 		this.validateUrikakeDuplication(nyukinKeshikomi);
+	}
+
+	/**
+	 * エラー: 消込.金額 < 0
+	 */
+	void validateKingakuRange(NyukinKeshikomi nyukinKeshikomi) throws ValidateException {
+		Set<Keshikomi> keshikomiSet = nyukinKeshikomi.getKeshikomiSet();
+		keshikomiSet.forEach(k -> {
+			if (k.getKingaku().lesserThan(0)) {
+				throw new ValidateException("マイナスの消込が含まれています");
+			}
+		});
 	}
 
 	/**
@@ -49,8 +62,7 @@ public class NyukinKeshikomiValidateServiceImpl implements NyukinKeshikomiValida
 		keshikomiList.forEach(keshikomi -> {
 			AmountOfMoney keshikomiKingaku = keshikomi.getKingaku();
 			Urikake urikake = keshikomi.getUrikake();
-			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake,
-					keshikomi);
+			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake, keshikomi);
 			if (keshikomiKingaku.greaterThan(zandaka)) {
 				throw new ValidateException("消込金額が売掛金額を上回っています。");
 			}
