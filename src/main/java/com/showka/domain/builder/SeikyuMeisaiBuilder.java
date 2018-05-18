@@ -2,6 +2,7 @@ package com.showka.domain.builder;
 
 import com.showka.domain.SeikyuMeisai;
 import com.showka.domain.Urikake;
+import com.showka.value.AmountOfMoney;
 
 public class SeikyuMeisaiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<SeikyuMeisai, SeikyuMeisaiBuilder> {
@@ -11,7 +12,7 @@ public class SeikyuMeisaiBuilder
 	private Urikake urikake;
 
 	/** kingaku */
-	private Integer kingaku;
+	private AmountOfMoney kingaku;
 
 	/** recordId */
 	private String recordId;
@@ -71,7 +72,7 @@ public class SeikyuMeisaiBuilder
 	 *            kingaku
 	 * @return {@link SeikyuMeisaiBuilder}
 	 */
-	public SeikyuMeisaiBuilder withKingaku(final Integer kingaku) {
+	public SeikyuMeisaiBuilder withKingaku(final AmountOfMoney kingaku) {
 		addConfigurator(new BuilderConfigurator<SeikyuMeisaiBuilder>() {
 			@Override
 			public void configure(SeikyuMeisaiBuilder builder) {

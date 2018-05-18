@@ -7,7 +7,6 @@ import com.showka.domain.Kokyaku;
 import com.showka.domain.NyukinKakeInfo;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
-import com.showka.system.EmptyProxy;
 
 public class KokyakuBuilder extends com.showka.domain.builder.DomainBuilderBase<Kokyaku, KokyakuBuilder> {
 
@@ -28,7 +27,7 @@ public class KokyakuBuilder extends com.showka.domain.builder.DomainBuilderBase<
 	private HanbaiKubun hanbaiKubun = HanbaiKubun.EMPTY;
 
 	/** shukanBusho */
-	private Busho shukanBusho = EmptyProxy.domain(Busho.class);
+	private Busho shukanBusho;
 
 	/** nyukinKakeInfo */
 	private Optional<NyukinKakeInfo> nyukinKakeInfo = Optional.empty();

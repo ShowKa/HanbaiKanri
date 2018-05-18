@@ -111,6 +111,11 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 	}
 
 	@Override
+	public int hashCode() {
+		return date.hashCode();
+	}
+
+	@Override
 	public String toString() {
 		DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		return date.format(f);
@@ -120,5 +125,4 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 	public int compareTo(TheDate o) {
 		return date.compareTo(o.date);
 	}
-
 }

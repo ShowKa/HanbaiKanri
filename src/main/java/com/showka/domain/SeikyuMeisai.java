@@ -1,6 +1,7 @@
 package com.showka.domain;
 
 import com.showka.system.exception.SystemException;
+import com.showka.value.AmountOfMoney;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class SeikyuMeisai extends DomainBase {
 	private Urikake urikake;
 
 	/** 請求金額(=請求時の売掛残高). */
-	private Integer kingaku;
+	private AmountOfMoney kingaku;
 
 	// public method
 	/**

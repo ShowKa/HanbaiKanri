@@ -52,6 +52,17 @@ public class AmountOfMoney extends ValueBase {
 	}
 
 	/**
+	 * 加算.
+	 * 
+	 * @param augend
+	 *            加算対象
+	 * @return 加算後(new instance)
+	 */
+	public AmountOfMoney add(Integer augend) {
+		return new AmountOfMoney(this.amount.add(BigDecimal.valueOf(augend)));
+	}
+
+	/**
 	 * 乗算.
 	 * 
 	 * @param multiplicand
@@ -63,6 +74,17 @@ public class AmountOfMoney extends ValueBase {
 	}
 
 	/**
+	 * 乗算.
+	 * 
+	 * @param multiplicand
+	 *            乗算する数
+	 * @return 乗算後 (new instance)
+	 */
+	public AmountOfMoney multiply(Integer multiplicand) {
+		return new AmountOfMoney(this.amount.multiply(BigDecimal.valueOf(multiplicand)));
+	}
+
+	/**
 	 * 減算.
 	 * 
 	 * @param subtrahend
@@ -71,6 +93,106 @@ public class AmountOfMoney extends ValueBase {
 	 */
 	public AmountOfMoney subtract(AmountOfMoney subtrahend) {
 		return new AmountOfMoney(this.amount.subtract(subtrahend.amount));
+	}
+
+	/**
+	 * 減算.
+	 * 
+	 * @param subtrahend
+	 *            減算対象
+	 * @return 減算後 (new instance)
+	 */
+	public AmountOfMoney subtract(Integer subtrahend) {
+		return new AmountOfMoney(this.amount.subtract(BigDecimal.valueOf(subtrahend)));
+	}
+
+	// 比較
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this > another なら true
+	 */
+	public boolean greaterThan(AmountOfMoney another) {
+		return this.intValue() > another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this > another なら true
+	 */
+	public boolean greaterThan(Integer another) {
+		return this.intValue() > another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this >= another なら true
+	 */
+	public boolean greaterThanEquals(AmountOfMoney another) {
+		return this.intValue() >= another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this >= another なら true
+	 */
+	public boolean greaterThanEquals(Integer another) {
+		return this.intValue() >= another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this < another なら true
+	 */
+	public boolean lesserThan(AmountOfMoney another) {
+		return this.intValue() < another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this < another なら true
+	 */
+	public boolean lesserThan(Integer another) {
+		return this.intValue() < another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this <= another なら true
+	 */
+	public boolean lesserThanEquals(AmountOfMoney another) {
+		return this.intValue() <= another.intValue();
+	}
+
+	/**
+	 * 大小比較.
+	 * 
+	 * @param another
+	 *            比較対象
+	 * @return this <= another なら true
+	 */
+	public boolean lesserThanEquals(Integer another) {
+		return this.intValue() <= another.intValue();
 	}
 
 	// get formatted

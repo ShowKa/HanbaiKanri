@@ -49,6 +49,7 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 	public void seikyu(Kokyaku kokyaku, EigyoDate shimeDate) {
 		// 売掛リスト取得
 		String kokyakuId = kokyaku.getRecordId();
+		// TODO 未請求分のみを対象とするべき
 		List<Urikake> urikakeList = urikakeSearchService.getUrikakeOfKokyaku(kokyakuId);
 		// 請求
 		this.seikyu(kokyaku, shimeDate, urikakeList);

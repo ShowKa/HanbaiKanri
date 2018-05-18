@@ -75,6 +75,26 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 	}
 
 	/**
+	 * タイムスタンプ前後判定.
+	 * 
+	 * @param other
+	 * @return this < other の場合true
+	 */
+	public boolean isAfter(TheTimestamp other) {
+		return this.timestamp.isAfter(other.timestamp);
+	}
+
+	/**
+	 * タイムスタンプ前後判定.
+	 * 
+	 * @param other
+	 * @return this > other の場合true
+	 */
+	public boolean isBefore(TheTimestamp other) {
+		return this.timestamp.isBefore(other.timestamp);
+	}
+
+	/**
 	 * Date型に変換.
 	 * 
 	 * @return Date

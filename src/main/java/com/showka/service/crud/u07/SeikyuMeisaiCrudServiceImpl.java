@@ -17,6 +17,7 @@ import com.showka.entity.TSeikyuMeisaiPK;
 import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuMeisaiCrudService;
+import com.showka.value.AmountOfMoney;
 
 @Service
 public class SeikyuMeisaiCrudServiceImpl implements SeikyuMeisaiCrudService {
@@ -38,7 +39,7 @@ public class SeikyuMeisaiCrudServiceImpl implements SeikyuMeisaiCrudService {
 		TSeikyuMeisai e = _e.orElse(new TSeikyuMeisai());
 		// set columns
 		e.setPk(pk);
-		e.setKingaku(domain.getKingaku());
+		e.setKingaku(domain.getKingaku().intValue());
 		// record id
 		String recordId = _e.isPresent() ? _e.get().getRecordId() : UUID.randomUUID().toString();
 		e.setRecordId(recordId);
@@ -65,7 +66,7 @@ public class SeikyuMeisaiCrudServiceImpl implements SeikyuMeisaiCrudService {
 		Urikake urikake = urikakeCrudService.getDomain(e.getUrikakeId());
 		// build
 		SeikyuMeisaiBuilder b = new SeikyuMeisaiBuilder();
-		b.withKingaku(e.getKingaku());
+		b.withKingaku(new AmountOfMoney(e.getKingaku()));
 		b.withUrikake(urikake);
 		b.withRecordId(e.getRecordId());
 		b.withVersion(e.getVersion());

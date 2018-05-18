@@ -8,6 +8,7 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.Uriage;
 import com.showka.domain.Urikake;
 import com.showka.kubun.HanbaiKubun;
+import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
 import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
 import com.showka.value.TheDate;
@@ -22,13 +23,16 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 	@Tested
 	private UrikakeSpecificationServiceImpl service;
 
+	@Injectable
+	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+
 	/**
 	 * 売掛ビルド.
 	 * 
 	 * <pre>
 	 * 入力：売上
 	 * 条件：販売区分=掛売, 入金予定日=2017/2/1, 売上合計=100円（税8%）
-	 * 結果：売掛 => 入金予定日=2017/2/1, 残高=108円
+	 * 結果：売掛 => 入金予定日=2017/2/1, 金額=108円
 	 * </pre>
 	 */
 	@Test
@@ -68,7 +72,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 		};
 		// check
 		assertEquals(nyukinYoteiDate, actual.get().getNyukinYoteiDate());
-		assertEquals(108, actual.get().getZandaka().intValue());
+		assertEquals(108, actual.get().getKingaku().intValue());
 	}
 
 	/**

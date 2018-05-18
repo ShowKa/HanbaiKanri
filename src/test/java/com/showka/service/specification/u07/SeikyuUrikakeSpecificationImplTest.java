@@ -12,6 +12,7 @@ import com.showka.domain.SeikyuMeisai;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -67,7 +68,7 @@ public class SeikyuUrikakeSpecificationImplTest extends SimpleTestCase {
 	 * 
 	 * <pre>
 	 * 入力：なし
-	 * 条件：売掛.残高=1000円
+	 * 条件：売掛.金額=1000円
 	 * 結果：売掛の請求明細.金額=1000円
 	 * </pre>
 	 */
@@ -81,7 +82,7 @@ public class SeikyuUrikakeSpecificationImplTest extends SimpleTestCase {
 		EigyoDate seikyuDate = new EigyoDate(2017, 1, 1);
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
-		ub.withZandaka(1000);
+		ub.withKingaku(new AmountOfMoney(1000));
 		Urikake urikake = ub.build();
 		List<Urikake> urikakeList = new ArrayList<Urikake>();
 		urikakeList.add(urikake);

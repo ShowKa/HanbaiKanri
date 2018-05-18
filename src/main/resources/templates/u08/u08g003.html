@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<link th:replace="common/head :: common_link" />
+<script
+	th:inmeisai="javascript"
+	src="/u08/u08g003.js"></script>
+<style>
+tr.canceled {
+	text-decoration: line-through;
+}
+</style>
+</head>
+<body ng-app="App">
+	<div th:replace="common/header :: common_header"></div>
+	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
+	<div class="bootstrap-iso">
+		<div
+			class="container"
+			ng-controller="MainController">
+			<form>
+				<input
+					class="form-control"
+					id="nyukinId"
+					name="nyukinId"
+					type="hidden"
+					th:value="${form.nyukinId}"
+					ng-model="nyukinId"
+					required />
+			</form>
+			<div class="row">
+				<div class="col-md-8 col-sm-10 col-xs-12">
+					<div class="col-md-offset-8 col-md-2 col-sm-offset-7 col-sm-2 col-xs-12">
+						<input
+							id="cancelFormBtn"
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="キャンセルモード"
+							ng-show="mode == 'refer'"
+							ng-click="cancelForm()"></input>
+					</div>
+					<div class="col-md-2 col-sm-2 col-xs-12">
+						<input
+							id="updateFormBtn"
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="更新モード"
+							ng-show="mode == 'refer'"
+							ng-click="updateForm()"></input>
+						<input
+							id="referBtn"
+							type="button"
+							class="btn btn-secondary btn-sm"
+							value="参照モード"
+							ng-show="mode != 'refer'"
+							ng-click="get()"></input>
+					</div>
+				</div>
+			</div>
+			<h4>入金</h4>
+			<div class="row">
+				<div class="col-md-8 col-sm-10 col-xs-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>顧客</th>
+								<th>部署</th>
+								<th>営業日</th>
+								<th>入金日</th>
+								<th>入金方法</th>
+								<th>金額</th>
+								<th>未処理</th>
+							</tr>
+						</thead>
+						<tbody id="nyukin">
+							<tr>
+								<td class="col-sm-1">{{kokyakuName}}</td>
+								<td class="col-sm-1">{{bushoName}}</td>
+								<td class="col-sm-1">{{eigyoDate}}</td>
+								<td class="col-sm-1">{{nyukinDate}}</td>
+								<td class="col-sm-1">{{nyukinHoho}}</td>
+								<td class="col-sm-1">{{nyukinKingaku}}</td>
+								<td class="col-sm-1">{{mikeshikomi}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<h4>入金消込</h4>
+			<div class="row">
+				<div class="col-md-8 col-sm-10 col-xs-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>売上日</th>
+								<th>伝票番号</th>
+								<th ng-show="mode == 'update'">売掛金</th>
+								<th ng-show="mode == 'update'">前回消込</th>
+								<th ng-show="mode == 'update'">今回消込</th>
+								<th ng-show="mode != 'update'">今回消込</th>
+								<th ng-show="false">消込合計</th>
+								<th ng-show="mode == 'update'">他入消込</th>
+								<th ng-show="mode == 'update'">消込後</th>
+								<th>消込日</th>
+								<th ng-show="mode == 'cancel'"></th>
+							</tr>
+						</thead>
+						<tbody id="keshikomiList">
+							<tr
+								ng-class="{true: 'canceled'}[keshikomi.canceled]"
+								ng-repeat="keshikomi in keshikomiList | orderBy:['uriageDate', 'uriageDenpyoNumber', 'date']">
+								<td class="col-sm-1">{{keshikomi.uriageDate}}</td>
+								<td class="col-sm-1">{{keshikomi.uriageDenpyoNumber}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="mode == 'update'">{{keshikomi.urikakeKingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="mode == 'update'">{{keshikomi.otherKeshikomiKingaku}}</td>
+								<td
+									class="col-sm-2"
+									ng-show="mode == 'update'"><input
+									type="text"
+									class="form-control"
+									ng-model="keshikomi.kingaku" /></td>
+								<td
+									class="col-sm-1"
+									ng-show="mode != 'update'">{{keshikomi.kingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="mode == 'update'">{{keshikomi.otherNyukinKeshikomiKingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="false">{{keshikomi.otherKeshikomiKingaku + keshikomi.kingaku}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="mode == 'update'">{{keshikomi.urikakeKingaku - keshikomi.otherNyukinKeshikomiKingaku -
+									keshikomi.otherKeshikomiKingaku - keshikomi.kingaku}}</td>
+								<td class="col-sm-1">{{keshikomi.date}}</td>
+								<td
+									class="col-sm-1"
+									ng-show="mode == 'cancel'"><span
+									class="glyphicon glyphicon-trash"
+									style="padding-right: 5px; cursor: pointer;"
+									ng-click="select(keshikomi);"> </span></td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="form-group">
+						<div class="col-sm-1">
+							<input
+								ng-click="update();"
+								id="updateBtn"
+								type="button"
+								class="btn btn-primary btn-sm"
+								value="更新"
+								ng-show="mode == 'update'" /> <input
+								ng-click="cancel();"
+								id="cancelBtn"
+								type="button"
+								class="btn btn-primary btn-sm"
+								value="キャンセル"
+								ng-show="mode == 'cancel'" />
+						</div>
+					</div>
+				</div>
+			</div>
+			<h4 ng-show="mode == 'refer'">売掛</h4>
+			<div
+				class="row"
+				ng-show="mode == 'refer'">
+				<div class="col-md-8 col-sm-10 col-xs-12">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>売上日</th>
+								<th>伝票番号</th>
+								<th>売掛</th>
+								<th>消込金額</th>
+								<th>他入消込</th>
+								<th>残高</th>
+							</tr>
+						</thead>
+						<tbody id="urikake">
+							<tr ng-repeat="uk in urikakeKeshikomiList">
+								<td class="col-sm-1">{{uk.uriageDate}}</td>
+								<td class="col-sm-1">{{uk.uriageDenpyoNumber}}</td>
+								<td class="col-sm-1">{{uk.urikakeKingaku}}</td>
+								<td class="col-sm-1">{{uk.thisKeshikomiKingaku}}</td>
+								<td class="col-sm-1">{{uk.otherKeshikomiKingaku}}</td>
+								<td class="col-sm-1">{{uk.urikakeKingaku - uk.thisKeshikomiKingaku - uk.otherKeshikomiKingaku}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="common/footer :: common_footer"></div>
+</body>
+</html>

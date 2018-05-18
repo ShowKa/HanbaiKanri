@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.showka.system.exception.SystemException;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 import lombok.AllArgsConstructor;
@@ -22,11 +23,11 @@ public class KokyakuUrikake extends DomainBase {
 
 	// public methods
 	/**
-	 * 売上の売掛金残高の合計金額を取得.
+	 * 売上の売掛金の合計金額を取得.
 	 * 
 	 * @return 合計
 	 */
-	public Integer getGokeiKingaku() {
+	public AmountOfMoney getGokeiKingaku() {
 		return this.getGokeiKingaku(urikakeList);
 	}
 
@@ -58,9 +59,9 @@ public class KokyakuUrikake extends DomainBase {
 	 * 
 	 * @param date
 	 *            営業日
-	 * @return 入金が必要な売掛の残高合計金額
+	 * @return 入金が必要な売掛の合計金額
 	 */
-	public Integer getGokeiKingakuNyukinRequiredBy(EigyoDate date) {
+	public AmountOfMoney getGokeiKingakuNyukinRequiredBy(EigyoDate date) {
 		List<Urikake> _urikakeList = this.getUrikakeListNyukinRequiredBy(date);
 		return this.getGokeiKingaku(_urikakeList);
 	}
@@ -84,15 +85,16 @@ public class KokyakuUrikake extends DomainBase {
 
 	// private methods
 	/**
-	 * 売掛の残高の合計金額を取得.
+	 * 売掛の合計金額を取得.
 	 * 
 	 * @param urikakeList
 	 *            売掛のリスト
 	 * @return 残高合計
 	 */
-	private Integer getGokeiKingaku(List<Urikake> urikakeList) {
-		return urikakeList.parallelStream().mapToInt(urikake -> {
-			return urikake.getZandaka();
+	private AmountOfMoney getGokeiKingaku(List<Urikake> urikakeList) {
+		int gokeiKingaku = urikakeList.parallelStream().mapToInt(urikake -> {
+			return urikake.getKingaku().intValue();
 		}).sum();
+		return new AmountOfMoney(gokeiKingaku);
 	}
 }

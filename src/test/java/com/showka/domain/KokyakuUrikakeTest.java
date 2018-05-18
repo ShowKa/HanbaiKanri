@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.KokyakuUrikakeBuilder;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -38,20 +39,20 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				u1.getZandaka();
-				result = Integer.valueOf(100);
-				u2.getZandaka();
-				result = Integer.valueOf(200);
+				u1.getKingaku();
+				result = new AmountOfMoney(100);
+				u2.getKingaku();
+				result = new AmountOfMoney(200);
 			}
 		};
 		// do
-		Integer actual = kokyakuUrikake.getGokeiKingaku();
+		AmountOfMoney actual = kokyakuUrikake.getGokeiKingaku();
 		// verify
 		new Verifications() {
 			{
-				u1.getZandaka();
+				u1.getKingaku();
 				times = 1;
-				u2.getZandaka();
+				u2.getKingaku();
 				times = 1;
 			}
 		};
@@ -176,12 +177,12 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 				result = new EigyoDate(2017, 1, 1);
 				u2.getNyukinYoteiDate();
 				result = new EigyoDate(2017, 1, 2);
-				u1.getZandaka();
-				result = Integer.valueOf(100);
+				u1.getKingaku();
+				result = new AmountOfMoney(100);
 			}
 		};
 		// do
-		Integer actual = kokyakuUrikake.getGokeiKingakuNyukinRequiredBy(new EigyoDate(2017, 1, 1));
+		AmountOfMoney actual = kokyakuUrikake.getGokeiKingakuNyukinRequiredBy(new EigyoDate(2017, 1, 1));
 		// verify
 		new Verifications() {
 			{
@@ -189,7 +190,7 @@ public class KokyakuUrikakeTest extends SimpleTestCase {
 				times = 1;
 				u2.getNyukinYoteiDate();
 				times = 1;
-				u1.getZandaka();
+				u1.getKingaku();
 				times = 1;
 			}
 		};

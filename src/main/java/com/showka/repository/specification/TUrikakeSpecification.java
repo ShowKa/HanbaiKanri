@@ -20,12 +20,13 @@ public class TUrikakeSpecification {
 	 *            残高
 	 * @return
 	 */
+	// FIXME TUrikake から zandakaを除去した
 	public static Specification<TUrikake> zandakaGreaterThan(Integer zandaka) {
 		if (zandaka == null) {
 			return null;
 		}
 		return (root, query, cb) -> {
-			return cb.greaterThan(root.get(TUrikake_.zandaka), zandaka);
+			return cb.greaterThan(root.get(TUrikake_.kingaku), zandaka);
 		};
 	}
 

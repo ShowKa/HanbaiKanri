@@ -15,6 +15,7 @@ import com.showka.entity.TUrikake;
 import com.showka.repository.i.TUrikakeRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.search.u05.i.UrikakeSearchService;
+import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 
 @Service
 public class UrikakeSearchServiceImpl implements UrikakeSearchService {
@@ -25,7 +26,11 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 	@Autowired
 	private UrikakeCrudService urikakeCrudService;
 
+	@Autowired
+	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+
 	@Override
+	// FIXME should implement by jooq
 	public List<Urikake> getUrikakeOfKokyaku(String kokyakuId) {
 		// 残高仕様
 		Specification<TUrikake> spec = Specification.where(zandakaGreaterThan(0));
@@ -35,7 +40,9 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 		List<TUrikake> result = tUrikakeRepository.findAll(spec);
 		// build domain
 		return result.stream().map(_urikake -> {
-			return urikakeCrudService.getDomain(_urikake.getUriageId());
+			return urikakeCrudService.getDomain(_urikake.getRecordId());
+		}).filter(u -> {
+			return urikakeKeshikomiSpecificationService.getZandakaOf(u).intValue() > 0;
 		}).collect(Collectors.toList());
 	}
 }

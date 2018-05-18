@@ -17,6 +17,7 @@ import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.specification.u05.i.UrikakeSpecificationService;
+import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -42,7 +43,7 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 		// set column
 		e.setUriageId(uriageId);
 		e.setNyukinYoteiDate(domain.getNyukinYoteiDate().toDate());
-		e.setZandaka(domain.getZandaka());
+		e.setKingaku(domain.getKingaku().intValue());
 		// occ
 		e.setVersion(domain.getVersion());
 		// set record id
@@ -78,7 +79,7 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 		b.withNyukinYoteiDate(new EigyoDate(e.getNyukinYoteiDate()));
 		b.withRecordId(e.getRecordId());
 		b.withVersion(e.getVersion());
-		b.withZandaka(e.getZandaka());
+		b.withKingaku(new AmountOfMoney(e.getKingaku()));
 		return b.build();
 	}
 
