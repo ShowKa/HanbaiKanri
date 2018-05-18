@@ -30,29 +30,29 @@ tr.canceled {
 					required />
 			</form>
 			<div class="row">
-				<div class="col-md-6 col-sm-6 col-xs-12">
-					<div class="col-sm-3 col-sm-offset-6 col-xs-3 col-xs-offset-6">
+				<div class="col-md-8 col-sm-10 col-xs-12">
+					<div class="col-md-offset-8 col-md-2 col-sm-offset-7 col-sm-2 col-xs-12">
 						<input
 							id="cancelFormBtn"
 							type="button"
 							class="btn btn-primary btn-sm"
-							value="キャンセルモードへ"
+							value="キャンセルモード"
 							ng-show="mode == 'refer'"
 							ng-click="cancelForm()"></input>
 					</div>
-					<div class="col-sm-2 col-xs-2">
+					<div class="col-md-2 col-sm-2 col-xs-12">
 						<input
 							id="updateFormBtn"
 							type="button"
 							class="btn btn-primary btn-sm"
-							value="更新モードへ"
+							value="更新モード"
 							ng-show="mode == 'refer'"
 							ng-click="updateForm()"></input>
 						<input
 							id="referBtn"
 							type="button"
 							class="btn btn-secondary btn-sm"
-							value="参照モードへ"
+							value="参照モード"
 							ng-show="mode != 'refer'"
 							ng-click="get()"></input>
 					</div>
@@ -60,12 +60,13 @@ tr.canceled {
 			</div>
 			<h4>入金</h4>
 			<div class="row">
-				<div class="col-md-6 col-sm-9 col-xs-12">
+				<div class="col-md-8 col-sm-10 col-xs-12">
 					<table class="table table-striped">
 						<thead>
 							<tr>
 								<th>顧客</th>
 								<th>部署</th>
+								<th>営業日</th>
 								<th>入金日</th>
 								<th>入金方法</th>
 								<th>金額</th>
@@ -76,6 +77,7 @@ tr.canceled {
 							<tr>
 								<td class="col-sm-1">{{kokyakuName}}</td>
 								<td class="col-sm-1">{{bushoName}}</td>
+								<td class="col-sm-1">{{eigyoDate}}</td>
 								<td class="col-sm-1">{{nyukinDate}}</td>
 								<td class="col-sm-1">{{nyukinHoho}}</td>
 								<td class="col-sm-1">{{nyukinKingaku}}</td>
@@ -118,12 +120,10 @@ tr.canceled {
 									ng-show="mode == 'update'">{{keshikomi.otherKeshikomiKingaku}}</td>
 								<td
 									class="col-sm-2"
-									ng-show="mode == 'update'">
-									<input
-										type="text"
-										class="form-control"
-										ng-model="keshikomi.kingaku" />
-								</td>
+									ng-show="mode == 'update'"><input
+									type="text"
+									class="form-control"
+									ng-model="keshikomi.kingaku" /></td>
 								<td
 									class="col-sm-1"
 									ng-show="mode != 'update'">{{keshikomi.kingaku}}</td>
@@ -135,16 +135,15 @@ tr.canceled {
 									ng-show="false">{{keshikomi.otherKeshikomiKingaku + keshikomi.kingaku}}</td>
 								<td
 									class="col-sm-1"
-									ng-show="mode == 'update'">{{keshikomi.urikakeKingaku - keshikomi.otherNyukinKeshikomiKingaku - keshikomi.otherKeshikomiKingaku - keshikomi.kingaku}}</td>
+									ng-show="mode == 'update'">{{keshikomi.urikakeKingaku - keshikomi.otherNyukinKeshikomiKingaku -
+									keshikomi.otherKeshikomiKingaku - keshikomi.kingaku}}</td>
 								<td class="col-sm-1">{{keshikomi.date}}</td>
 								<td
 									class="col-sm-1"
-									ng-show="mode == 'cancel'">
-									<span
-										class="glyphicon glyphicon-pushpin"
-										style="padding-right: 5px; cursor: pointer;"
-										ng-click="select(keshikomi);"> </span>
-								</td>
+									ng-show="mode == 'cancel'"><span
+									class="glyphicon glyphicon-trash"
+									style="padding-right: 5px; cursor: pointer;"
+									ng-click="select(keshikomi);"> </span></td>
 							</tr>
 						</tbody>
 					</table>
@@ -156,8 +155,7 @@ tr.canceled {
 								type="button"
 								class="btn btn-primary btn-sm"
 								value="更新"
-								ng-show="mode == 'update'" />
-							<input
+								ng-show="mode == 'update'" /> <input
 								ng-click="cancel();"
 								id="cancelBtn"
 								type="button"
@@ -172,7 +170,7 @@ tr.canceled {
 			<div
 				class="row"
 				ng-show="mode == 'refer'">
-				<div class="col-md-6 col-sm-9 col-xs-12">
+				<div class="col-md-8 col-sm-10 col-xs-12">
 					<table class="table table-striped">
 						<thead>
 							<tr>

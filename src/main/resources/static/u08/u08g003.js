@@ -69,7 +69,7 @@ function($scope, keshikomiService, common, meisaiService) {
 			var newKeshikomiList = model.newKeshikomiList;
 			keshikomiList = keshikomiList.concat(newKeshikomiList);
 			if (keshikomiList.length == 0) {
-				alert("消込対象が存在しません。");
+				alert("消込対象の売掛が存在しません。");
 				return;
 			}
 			$scope.keshikomiList = keshikomiList;
