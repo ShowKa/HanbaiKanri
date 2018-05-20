@@ -30,6 +30,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// rest api = basic auth
+		http.antMatcher("/api/**").authorizeRequests().anyRequest().authenticated();
+		http.httpBasic();
+		// web = form login
 		http.headers()
 				.frameOptions()
 				.sameOrigin()
