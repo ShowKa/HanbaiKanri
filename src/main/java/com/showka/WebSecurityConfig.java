@@ -30,10 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// rest api = basic auth
-		http.antMatcher("/api/**").authorizeRequests().anyRequest().authenticated();
-		http.httpBasic();
-		// web = form login
+		// web => use form login
+		// batch(rest api) => use basic
 		http.headers()
 				.frameOptions()
 				.sameOrigin()
@@ -45,6 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.anyRequest()
 				.authenticated()
+				.and()
+				.httpBasic()
 				.and()
 				.formLogin()
 				.loginPage("/u00g000")
