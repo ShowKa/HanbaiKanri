@@ -1,4 +1,4 @@
-package com.showka.system;
+package com.showka.system.io;
 
 import java.io.File;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.showka.common.SimpleTestCase;
+import com.showka.system.io.FileReader;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
