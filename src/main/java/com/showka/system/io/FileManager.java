@@ -25,7 +25,12 @@ public class FileManager {
 			}
 		} else {
 			root = root.replaceAll("/$", "");
-			return new File(root + _path);
+			String absolutePath = root + _path;
+			File file = new File(absolutePath);
+			if (!file.exists()) {
+				throw new SystemException("ファイルが存在しません。 : " + absolutePath);
+			}
+			return file;
 		}
 	}
 }
