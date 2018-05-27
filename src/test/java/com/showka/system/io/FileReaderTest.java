@@ -8,7 +8,6 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.showka.common.SimpleTestCase;
-import com.showka.system.io.FileReader;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +17,7 @@ public class FileReaderTest extends SimpleTestCase {
 
 	@Test
 	public void test01_read() throws Exception {
-		String path = "/data/system/FileReaderTest.csv";
+		String path = "/data/system/FileReaderTest1.csv";
 		File file = new ClassPathResource(path).getFile();
 		String absoluteFilePath = file.getAbsolutePath();
 		List<DTO> result = FileReader.read(DTO.class, absoluteFilePath);
@@ -27,10 +26,27 @@ public class FileReaderTest extends SimpleTestCase {
 
 	@Test
 	public void test02_read() throws Exception {
-		String path = "/data/system/FileReaderTest.csv";
+		String path = "/data/system/FileReaderTest1.csv";
 		File file = new ClassPathResource(path).getFile();
 		List<DTO> result = FileReader.read(DTO.class, file);
 		assertEquals("ABC", result.get(1).getNamae());
+	}
+
+	@Test
+	public void test01_readOnlyReadable() throws Exception {
+		String path = "/data/system/FileReaderTest2.csv";
+		File file = new ClassPathResource(path).getFile();
+		List<DTO> result = FileReader.readOnlyReadeble(DTO.class, file);
+		assertEquals(2, result.size());
+		assertEquals("ABC", result.get(1).getNamae());
+	}
+
+	@Test
+	public void test01_getError() throws Exception {
+		String path = "/data/system/FileReaderTest2.csv";
+		File file = new ClassPathResource(path).getFile();
+		List<CsvError> actual = FileReader.getError(DTO.class, file);
+		assertEquals(1, actual.size());
 	}
 
 	@NoArgsConstructor
@@ -41,5 +57,8 @@ public class FileReaderTest extends SimpleTestCase {
 		String namae;
 		@JsonProperty("id")
 		String id;
+		@JsonProperty("number")
+		Integer number;
 	}
+
 }
