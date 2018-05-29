@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.entity.TFirmBankFurikomi;
 import com.showka.repository.i.TFirmBankFurikomiRepository;
 import com.showka.system.io.FileManager;
-import com.showka.system.io.FileReader;
+import com.showka.system.io.CsvReader;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
 
@@ -54,7 +54,7 @@ public class U08B001Controller extends ControllerBase {
 		// read csv
 		String filePath = form.getFilePath();
 		File file = fileManager.get(filePath);
-		List<U08B001Csv> csv = FileReader.read(U08B001Csv.class, file);
+		List<U08B001Csv> csv = CsvReader.read(U08B001Csv.class, file);
 		// get entities
 		List<TFirmBankFurikomi> entities = csv.parallelStream().map(c -> {
 			TFirmBankFurikomi e = c.toFirmBankFurikomiEntity();

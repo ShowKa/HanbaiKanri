@@ -12,7 +12,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.showka.system.exception.SystemException;
 
-public class FileReader {
+public class CsvReader {
 
 	/**
 	 * CSVを指定した型にパース.
