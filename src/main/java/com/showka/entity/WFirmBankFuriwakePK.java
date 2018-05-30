@@ -28,8 +28,8 @@ public class WFirmBankFuriwakePK implements Serializable {
 	@Column(name = "furikomi_irainin_id", unique = false, nullable = false, length = 255)
 	private String furikomiIraininId;
 
-	/** 請求日付. */
-	@Column(name = "seikyu_date", unique = false, nullable = false)
-	private Date seikyuDate;
+	/** 請求ID. */
+	@Column(name = "seikyu_id", unique = false, nullable = false, length = 255)
+	private Date seikyuId;
 
 }

@@ -31,7 +31,7 @@ public class WFirmBankFuriwake extends EntityBase implements Serializable {
 	@EmbeddedId
 	private WFirmBankFuriwakePK pk;
 
-	/** 債権金額. */
+	/** 債権金額（請求金額でなく、現時点での売掛金額の残高の合計）. */
 	@Column(name = "saiken_kingaku", unique = false, nullable = false)
 	private Integer saikenKingaku;
 
@@ -40,6 +40,11 @@ public class WFirmBankFuriwake extends EntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "furikomi_irainin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MFurikomiIrainin furikomiIrainin;
+
+	/** 請求. */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "seikyu_id", referencedColumnName = "record_id", insertable = false, updatable = false)
+	private TSeikyu seikyu;
 
 	// getter
 	/**
@@ -56,7 +61,7 @@ public class WFirmBankFuriwake extends EntityBase implements Serializable {
 	 * 
 	 * @return 請求日
 	 */
-	public Date getSeikyuDate() {
-		return pk.getSeikyuDate();
+	public Date getSeikyuId() {
+		return pk.getSeikyuId();
 	}
 }
