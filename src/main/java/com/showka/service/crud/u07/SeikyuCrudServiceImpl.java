@@ -89,6 +89,17 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 	}
 
 	@Override
+	public Seikyu getDomain(SeikyuSpecification spec) {
+		TSeikyuPK pk = new TSeikyuPK();
+		Kokyaku kokyaku = spec.getKokyaku();
+		String kokyakuId = kokyaku.getRecordId();
+		pk.setKokyakuId(kokyakuId);
+		EigyoDate seikyuDate = spec.getSeikyuDate();
+		pk.setSeikyuDate(seikyuDate.toDate());
+		return this.getDomain(pk);
+	}
+
+	@Override
 	public boolean exsists(TSeikyuPK pk) {
 		return repo.existsById(pk);
 	}

@@ -1,13 +1,18 @@
 package com.showka.service.crud.u07;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
+import com.showka.domain.Seikyu;
 import com.showka.domain.Urikake;
+import com.showka.entity.JSeikyuUrikake;
+import com.showka.repository.i.JSeikyuUrikakeRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
@@ -35,6 +40,9 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 	@Autowired
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
 
+	@Autowired
+	private JSeikyuUrikakeRepository repo;
+
 	@Override
 	public void seikyu(Busho busho, EigyoDate shimeDate) {
 		// 締日の顧客リスト
@@ -61,11 +69,38 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 		SeikyuSpecification spec = seikyuUrikakeSpecificationFactory.create(kokyaku, shimeDate, urikakeList);
 		// save
 		seikyuCrudService.save(spec);
-		// 売掛の入金予定日更新
+		// get saved
+		Seikyu seikyu = seikyuCrudService.getDomain(spec);
 		urikakeList.forEach(urikake -> {
-			EigyoDate shiharaiDate = spec.getShiharaiDate();
+			// 売掛の入金予定日更新
 			// TODO OCC?
+			EigyoDate shiharaiDate = spec.getShiharaiDate();
 			urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);
+			// 売掛の最新請求を登録
+			this.save(seikyu.getRecordId(), urikake.getRecordId());
 		});
+	}
+
+	/**
+	 * 売掛の最新請求を登録.
+	 * 
+	 * <pre>
+	 * OCC対象外
+	 * </pre>
+	 * 
+	 * @param seikyuId
+	 *            請求ID
+	 * @param urikakeId
+	 *            売掛ID
+	 */
+	void save(String seikyuId, String urikakeId) {
+		Optional<JSeikyuUrikake> _e = repo.findById(urikakeId);
+		JSeikyuUrikake e = _e.orElse(new JSeikyuUrikake());
+		e.setSeikyuId(seikyuId);
+		e.setUrikakeId(urikakeId);
+		// record id
+		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
+		e.setRecordId(recordId);
+		repo.save(e);
 	}
 }

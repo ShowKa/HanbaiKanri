@@ -12,6 +12,7 @@ import com.showka.domain.Urikake;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.repository.i.JSeikyuUrikakeRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
@@ -45,6 +46,9 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
+
+	@Injectable
+	private JSeikyuUrikakeRepository repo;
 
 	/**
 	 * 請求.
@@ -179,6 +183,9 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 				result = shiharaiDate;
 				// 売掛の入金予定日更新
 				urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);
+				// 売掛の最新請求を登録
+				service.save((String) any, urikake.getRecordId());
+				times = 1;
 			}
 		};
 		// do
