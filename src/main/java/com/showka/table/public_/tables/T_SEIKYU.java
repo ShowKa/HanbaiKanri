@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_SEIKYU extends TableImpl<T_SEIKYU_RECORD> {
 
-    private static final long serialVersionUID = 298329565;
+    private static final long serialVersionUID = -1360931799;
 
     /**
      * The reference instance of <code>PUBLIC.T_SEIKYU</code>
@@ -104,9 +104,19 @@ public class T_SEIKYU extends TableImpl<T_SEIKYU_RECORD> {
     public final TableField<T_SEIKYU_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
+     * The column <code>PUBLIC.T_SEIKYU.NYUKIN_HOHO_KUBUN</code>.
+     */
+    public final TableField<T_SEIKYU_RECORD, String> nyukin_hoho_kubun = createField("NYUKIN_HOHO_KUBUN", org.jooq.impl.SQLDataType.VARCHAR(2).nullable(false), this, "");
+
+    /**
      * The column <code>PUBLIC.T_SEIKYU.SHIHARAI_DATE</code>.
      */
     public final TableField<T_SEIKYU_RECORD, LocalDateTime> shiharai_date = createField("SHIHARAI_DATE", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
+
+    /**
+     * The column <code>PUBLIC.T_SEIKYU.TANTO_BUSHO_ID</code>.
+     */
+    public final TableField<T_SEIKYU_RECORD, String> tanto_busho_id = createField("TANTO_BUSHO_ID", org.jooq.impl.SQLDataType.VARCHAR(255).nullable(false), this, "");
 
     /**
      * Create a <code>PUBLIC.T_SEIKYU</code> table reference
@@ -150,7 +160,7 @@ public class T_SEIKYU extends TableImpl<T_SEIKYU_RECORD> {
      */
     @Override
     public UniqueKey<T_SEIKYU_RECORD> getPrimaryKey() {
-        return Keys.CONSTRAINT_4;
+        return Keys.CONSTRAINT_48;
     }
 
     /**
@@ -158,7 +168,7 @@ public class T_SEIKYU extends TableImpl<T_SEIKYU_RECORD> {
      */
     @Override
     public List<UniqueKey<T_SEIKYU_RECORD>> getKeys() {
-        return Arrays.<UniqueKey<T_SEIKYU_RECORD>>asList(Keys.CONSTRAINT_4, Keys.UK_4SCPAF4QMJRAM1VXMKUYJ269J);
+        return Arrays.<UniqueKey<T_SEIKYU_RECORD>>asList(Keys.CONSTRAINT_48, Keys.UK_4SCPAF4QMJRAM1VXMKUYJ269J);
     }
 
     /**
@@ -166,7 +176,7 @@ public class T_SEIKYU extends TableImpl<T_SEIKYU_RECORD> {
      */
     @Override
     public List<ForeignKey<T_SEIKYU_RECORD, ?>> getReferences() {
-        return Arrays.<ForeignKey<T_SEIKYU_RECORD, ?>>asList(Keys.FKS8KT4C3Q2N4GLUH51SN6LLX73);
+        return Arrays.<ForeignKey<T_SEIKYU_RECORD, ?>>asList(Keys.FKS8KT4C3Q2N4GLUH51SN6LLX73, Keys.FKMYSDPL0APGLYANVFC65WIR2U);
     }
 
     /**

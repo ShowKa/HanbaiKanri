@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_URIAGE_MEISAI extends TableImpl<T_URIAGE_MEISAI_RECORD> {
 
-    private static final long serialVersionUID = -1791128090;
+    private static final long serialVersionUID = 826824130;
 
     /**
      * The reference instance of <code>PUBLIC.T_URIAGE_MEISAI</code>
@@ -160,7 +160,7 @@ public class T_URIAGE_MEISAI extends TableImpl<T_URIAGE_MEISAI_RECORD> {
      */
     @Override
     public UniqueKey<T_URIAGE_MEISAI_RECORD> getPrimaryKey() {
-        return Keys.CONSTRAINT_B;
+        return Keys.CONSTRAINT_B9;
     }
 
     /**
@@ -168,7 +168,7 @@ public class T_URIAGE_MEISAI extends TableImpl<T_URIAGE_MEISAI_RECORD> {
      */
     @Override
     public List<UniqueKey<T_URIAGE_MEISAI_RECORD>> getKeys() {
-        return Arrays.<UniqueKey<T_URIAGE_MEISAI_RECORD>>asList(Keys.CONSTRAINT_B, Keys.UK_QRBW4ETEB9S2JK3SPMEXAULIG);
+        return Arrays.<UniqueKey<T_URIAGE_MEISAI_RECORD>>asList(Keys.CONSTRAINT_B9, Keys.UK_QRBW4ETEB9S2JK3SPMEXAULIG);
     }
 
     /**

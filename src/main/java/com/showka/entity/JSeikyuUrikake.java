@@ -13,8 +13,19 @@ import javax.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * 請求と売掛の関係テーブル.
+ * 
+ * <pre>
+ * 売掛を請求と紐付ける。
+ * ・有効な請求
+ * ・再請求したら、請求IDを更新
+ * ・入金や貸倒で消込されたら、レコードが消える
+ * </pre>
+ *
+ */
 @Entity
-@Table(name = "j_urikake_seikyu")
+@Table(name = "j_seikyu_urikake")
 @Getter
 @Setter
 public class JSeikyuUrikake extends EntityBase implements Serializable {
