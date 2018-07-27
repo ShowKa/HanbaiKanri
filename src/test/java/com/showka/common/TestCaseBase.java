@@ -64,6 +64,10 @@ public abstract class TestCaseBase extends TestCase {
 			"nyukin_date",
 			"record_id" };
 
+	// 振込依頼人
+	protected static final String M_FURIKOMI_IRANIN = "m_furikomi_irainin";
+	protected static final String[] M_FURIKOMI_IRANIN_COLUMN = { "kokyaku_id", "furikomi_irainin_name", "record_id" };
+
 	// 売上
 	protected static final String T_URIAGE = "t_uriage";
 	protected static final String[] T_URIAGE_COLUMN = {
@@ -126,7 +130,17 @@ public abstract class TestCaseBase extends TestCase {
 
 	// 請求
 	protected static final String T_SEIKYU = "T_SEIKYU";
-	protected static final String[] T_SEIKYU_COLUMN = { "kokyaku_id", "seikyu_date", "shiharai_date", "record_id" };
+	protected static final String[] T_SEIKYU_COLUMN = {
+			"kokyaku_id",
+			"tanto_busho_id",
+			"nyukin_hoho_kubun",
+			"seikyu_date",
+			"shiharai_date",
+			"record_id" };
+
+	// 請求売掛
+	protected static final String J_SEIKYU_URIKAKE = "J_SEIKYU_URIKAKE";
+	protected static final String[] J_SEIKYU_URIKAKE_COLUMN = { "urikake_id", "seikyu_id", "record_id" };
 
 	// 消込
 	protected static final String T_KESHIKOMI = "T_KESHIKOMI";

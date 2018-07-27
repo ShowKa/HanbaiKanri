@@ -44,6 +44,15 @@ public class UrikakeKeshikomi extends DomainBase {
 	}
 
 	/**
+	 * 消込完了判定.
+	 * 
+	 * @return 消込完了（残高=0円）ならtrue
+	 */
+	public boolean done() {
+		return this.getZandaka().equals(0);
+	}
+
+	/**
 	 * 引数.入金の消込の金額の合計
 	 * 
 	 * @param nyukin

@@ -3,10 +3,12 @@ package com.showka.service.search.u07;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jooq.DSLContext;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
+import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Seikyu;
 import com.showka.domain.builder.KokyakuBuilder;
@@ -15,13 +17,22 @@ import com.showka.entity.TSeikyu;
 import com.showka.entity.TSeikyuPK;
 import com.showka.repository.i.TSeikyuRepository;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.table.public_.tables.records.T_SEIKYU_RECORD;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 
+/**
+ * 請求SearchService Test.
+ * 
+ * <pre>
+ * テストの一部は「SeikyuSearchServiceImplTest2」に移譲。
+ * </pre>
+ */
 public class SeikyuSearchServiceImplTest extends CrudServiceTestCase {
 
 	@Tested
@@ -35,12 +46,27 @@ public class SeikyuSearchServiceImplTest extends CrudServiceTestCase {
 	@Injectable
 	private SeikyuCrudService seikyuCrudService;
 
+	@Injectable
+	private DSLContext create;
+
 	/** 請求. */
-	private static final Object[] T_SEIKYU_01 = { "r-KK01", d("20170101"), d("20170201"), "r-KK01-20170101" };
-	private static final Object[] T_SEIKYU_02 = { "r-KK01", d("20170201"), d("20170301"), "r-KK01-20170201" };
+	private static final Object[] T_SEIKYU_01 = {
+			"r-KK01",
+			"r-BS01",
+			"10",
+			d("20170101"),
+			d("20170201"),
+			"r-KK01-20170101" };
+	private static final Object[] T_SEIKYU_02 = {
+			"r-KK01",
+			"r-BS01",
+			"10",
+			d("20170201"),
+			d("20170301"),
+			"r-KK01-20170201" };
 
 	@Test
-	public void test01_getAllOf() throws Exception {
+	public void test_getAllOf_01() throws Exception {
 		// input
 		// 請求日
 		EigyoDate seikyuDate = new EigyoDate();
@@ -87,7 +113,7 @@ public class SeikyuSearchServiceImplTest extends CrudServiceTestCase {
 	}
 
 	@Test
-	public void test02_getAllEntitiesOf() throws Exception {
+	public void test_getAllEntitiesOf_02() throws Exception {
 		// database
 		super.deleteAndInsert(T_SEIKYU, T_SEIKYU_COLUMN, T_SEIKYU_01, T_SEIKYU_02);
 		// input
@@ -100,4 +126,27 @@ public class SeikyuSearchServiceImplTest extends CrudServiceTestCase {
 		assertEquals(2, actual.size());
 	}
 
+	@Test
+	public void test_GetAllOfBusho_01(@Mocked Busho busho, @Mocked T_SEIKYU_RECORD seikyuRecord, @Mocked Seikyu seikyu)
+			throws Exception {
+		// input
+		List<T_SEIKYU_RECORD> records = new ArrayList<>();
+		records.add(seikyuRecord);
+		// expect
+		new Expectations() {
+			{
+				service.getAllRecordsOf(busho);
+				result = records;
+				seikyuRecord.getRecordId();
+				result = "r-001";
+				seikyuCrudService.getDomain("r-001");
+				result = seikyu;
+			}
+		};
+		// do
+		List<Seikyu> actual = service.getAllOf(busho);
+		// assert
+		assertEquals(1, actual.size());
+		assertEquals(seikyu, actual.get(0));
+	}
 }

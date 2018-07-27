@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
 import com.showka.domain.Urikake;
 import com.showka.entity.TUrikake;
 import com.showka.repository.i.TUrikakeRepository;
@@ -44,11 +43,5 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 		}).filter(u -> {
 			return urikakeKeshikomiSpecificationService.getZandakaOf(u).intValue() > 0;
 		}).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<Urikake> search(Busho busho) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

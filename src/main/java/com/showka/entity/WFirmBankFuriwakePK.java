@@ -1,7 +1,6 @@
 package com.showka.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -30,6 +29,6 @@ public class WFirmBankFuriwakePK implements Serializable {
 
 	/** 請求ID. */
 	@Column(name = "seikyu_id", unique = false, nullable = false, length = 255)
-	private Date seikyuId;
+	private String seikyuId;
 
 }

@@ -9,11 +9,13 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Urikake;
+import com.showka.domain.UrikakeKeshikomi;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.repository.i.JSeikyuUrikakeRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
+import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
 import com.showka.service.search.u05.i.UrikakeSearchService;
@@ -23,6 +25,7 @@ import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
+import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 
@@ -46,6 +49,9 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
+
+	@Injectable
+	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
 
 	@Injectable
 	private JSeikyuUrikakeRepository repo;
@@ -205,6 +211,80 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 				// 売掛の入金予定日更新
 				urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);
 				times = 1;
+			}
+		};
+	}
+
+	/**
+	 * 請求削除.
+	 * 
+	 * <pre>
+	 * 入力：売掛ID=任意
+	 * 条件：消込完了済
+	 * 結果：請求・売掛データ削除処理が呼び出される。
+	 * </pre>
+	 */
+	@Test
+	public void test04_deleteIfKeshikomiDone(@Mocked UrikakeKeshikomi urikakeKeshikomi) {
+		// input
+		String urikakeId = "r-001";
+		// expect
+		new Expectations() {
+			{
+				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				result = urikakeKeshikomi;
+				urikakeKeshikomi.done();
+				result = true;
+			}
+		};
+		// do
+		service.deleteIfKeshikomiDone(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				times = 1;
+				urikakeKeshikomi.done();
+				times = 1;
+				repo.deleteById(urikakeId);
+				times = 1;
+			}
+		};
+	}
+
+	/**
+	 * 請求削除.
+	 * 
+	 * <pre>
+	 * 入力：売掛ID=任意
+	 * 条件：消込未完了
+	 * 結果：請求・売掛データ削除処理が呼び出されない。
+	 * </pre>
+	 */
+	@Test
+	public void test05_deleteIfKeshikomiDone(@Mocked UrikakeKeshikomi urikakeKeshikomi) {
+		// input
+		String urikakeId = "r-001";
+		// expect
+		new Expectations() {
+			{
+				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				result = urikakeKeshikomi;
+				urikakeKeshikomi.done();
+				result = false;
+			}
+		};
+		// do
+		service.deleteIfKeshikomiDone(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				times = 1;
+				urikakeKeshikomi.done();
+				times = 1;
+				repo.deleteById(urikakeId);
+				times = 0;
 			}
 		};
 	}

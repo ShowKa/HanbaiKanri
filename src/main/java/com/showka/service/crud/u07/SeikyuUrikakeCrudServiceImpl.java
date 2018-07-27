@@ -11,9 +11,11 @@ import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Seikyu;
 import com.showka.domain.Urikake;
+import com.showka.domain.UrikakeKeshikomi;
 import com.showka.entity.JSeikyuUrikake;
 import com.showka.repository.i.JSeikyuUrikakeRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
+import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
@@ -41,6 +43,9 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
 
 	@Autowired
+	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+
+	@Autowired
 	private JSeikyuUrikakeRepository repo;
 
 	@Override
@@ -57,7 +62,7 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 	public void seikyu(Kokyaku kokyaku, EigyoDate shimeDate) {
 		// 売掛リスト取得
 		String kokyakuId = kokyaku.getRecordId();
-		// TODO 未請求分のみを対象とするべき
+		// TODO 「未請求分」あるいは「請求済みで入金日が過ぎている」もののみを対象とするべき
 		List<Urikake> urikakeList = urikakeSearchService.getUrikakeOfKokyaku(kokyakuId);
 		// 請求
 		this.seikyu(kokyaku, shimeDate, urikakeList);
@@ -102,5 +107,13 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
 		e.setRecordId(recordId);
 		repo.save(e);
+	}
+
+	@Override
+	public void deleteIfKeshikomiDone(String urikakeId) {
+		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(urikakeId);
+		if (urikakeKeshikomi.done()) {
+			repo.deleteById(urikakeId);
+		}
 	}
 }

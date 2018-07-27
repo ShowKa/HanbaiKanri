@@ -1,7 +1,6 @@
 package com.showka.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -57,11 +56,11 @@ public class WFirmBankFuriwake extends EntityBase implements Serializable {
 	}
 
 	/**
-	 * 請求日取得.
+	 * 請求ID取得.
 	 * 
-	 * @return 請求日
+	 * @return 請求ID
 	 */
-	public Date getSeikyuId() {
+	public String getSeikyuId() {
 		return pk.getSeikyuId();
 	}
 }

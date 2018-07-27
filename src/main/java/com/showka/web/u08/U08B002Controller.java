@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.Busho;
-import com.showka.domain.Urikake;
+import com.showka.domain.Seikyu;
 import com.showka.service.crud.u08.i.FirmBankFuriwakeCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.search.u05.i.UrikakeSearchService;
+import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
 
@@ -25,7 +25,7 @@ public class U08B002Controller extends ControllerBase {
 	private FirmBankFuriwakeCrudService firmBankFuriwakeCrudService;
 
 	@Autowired
-	private UrikakeSearchService urikakeSearchService;
+	private SeikyuSearchService seikyuSearchService;
 
 	@Autowired
 	private BushoCrudService bushoCrudService;
@@ -34,19 +34,24 @@ public class U08B002Controller extends ControllerBase {
 	 * FirmBank振分データ作成.
 	 * 
 	 * <pre>
+	 * 処理単位：
+	 * ・部署
+	 * データ更新方針：
+	 * ・全件削除
+	 * ・insert
+	 * トランザクション：
+	 * ・1件でもエラーの場合、コミットしない。
 	 * </pre>
-	 * 
-	 * @param form
-	 *            form
-	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> loadFB(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
+	public ResponseEntity<?> fbFuriwake(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
 		// delete
 		firmBankFuriwakeCrudService.deleteAll();
-		// urikake search
+		// search 請求・売掛
 		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
-		List<Urikake> urikakeList = urikakeSearchService.search(busho);
+		List<Seikyu> seikyuList = seikyuSearchService.getAllOf(busho);
+		// save FB振分
+		firmBankFuriwakeCrudService.save(seikyuList);
 		// return
 		form.setSuccessMessage("FB振分データ作成成功");
 		model.addForm(form);
