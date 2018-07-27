@@ -12,6 +12,7 @@ import com.showka.domain.Busho;
 import com.showka.domain.Shohin;
 import com.showka.domain.ShohinIdo;
 import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.entity.MBusho;
 import com.showka.entity.TShohinIdo;
@@ -103,7 +104,10 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		b.withKubun(ShohinIdoKubun.売上);
 		b.withMeisai(meisai);
 		b.withRecordId("r-001");
-		b.withBusho(EmptyProxy.domain(Busho.class));
+		BushoBuilder bb = new BushoBuilder();
+		bb.withRecordId("r-BS01");
+		Busho busho = bb.build();
+		b.withBusho(busho);
 		b.withDate(new TheDate(2017, 1, 1));
 		ido01 = b;
 	}
