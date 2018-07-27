@@ -28,6 +28,14 @@ VALUES
 ('r-KK02', '00', '10', '20', '30', 'r-KK02'),
 ;
 
+INSERT INTO m_furikomi_irainin
+(kokyaku_id, furikomi_irainin_name, record_id)
+VALUES
+-- 顧客02
+('r-KK02', '顧客02振込依頼人1', 'r-KK02-1'),
+('r-KK02', '顧客02振込依頼人2', 'r-KK02-2'),
+;
+
 INSERT INTO m_user
 (id, username, password, record_id)
 VALUES

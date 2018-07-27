@@ -56,7 +56,7 @@ public class FirmBankFuriwakeCrudServiceImpl implements FirmBankFuriwakeCrudServ
 		pk.setSeikyuId(seikyuId);
 		pk.setFurikomiIraininId(furikomiIrainin.getRecordId());
 		// entity
-		WFirmBankFuriwake e = new WFirmBankFuriwake();
+		WFirmBankFuriwake e = repo.findById(pk).orElse(new WFirmBankFuriwake());
 		e.setPk(pk);
 		// 請求合計金額でなく、請求明細の各売掛.残高の合計
 		int urikakeZandakaGokei = seikyu.getSeikyuMeisai().stream().mapToInt(m -> {

@@ -28,7 +28,9 @@ public class FurikomiIraininSearchServiceImpl implements FurikomiIraininSearchSe
 		List<MFurikomiIrainin> resultList = this.searchEntity(kokyaku);
 		// build 振込依頼人set
 		Set<FurikomiIrainin> furikomiIraininSet = resultList.stream().map(i -> {
-			return new FurikomiIrainin(i.getFurikomiIraininName());
+			FurikomiIrainin f = new FurikomiIrainin(i.getFurikomiIraininName());
+			f.setRecordId(i.getRecordId());
+			return f;
 		}).collect(Collectors.toSet());
 		return new FurikomiIraininSet(kokyaku, furikomiIraininSet);
 	}

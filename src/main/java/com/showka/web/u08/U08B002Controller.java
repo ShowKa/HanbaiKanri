@@ -2,6 +2,8 @@ package com.showka.web.u08;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -44,6 +46,7 @@ public class U08B002Controller extends ControllerBase {
 	 * </pre>
 	 */
 	@RequestMapping(method = RequestMethod.GET)
+	@Transactional
 	public ResponseEntity<?> fbFuriwake(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
 		// delete
 		firmBankFuriwakeCrudService.deleteAll();
