@@ -1,7 +1,6 @@
 package com.showka.service.search.u05;
 
-import static com.showka.repository.specification.TUrikakeSpecification.kokyaku;
-import static com.showka.repository.specification.TUrikakeSpecification.zandakaGreaterThan;
+import static com.showka.repository.specification.TUrikakeSpecification.*;
 
 import java.util.List;
 import java.util.stream.Collectors;

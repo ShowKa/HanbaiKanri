@@ -17,12 +17,15 @@ import com.showka.entity.TKeshikomi;
 import com.showka.repository.i.CKeshikomiRepository;
 import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
+import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
+import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
+import mockit.Verifications;
 
 public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 
@@ -44,6 +47,9 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 	@Injectable
 	private UrikakeCrudService urikakeCrudService;
 
+	@Injectable
+	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
+
 	/** 消込 */
 	private static final Object[] T_KESHIKOMI_01 = { "r-001", d("20170101"), 1000, "r-001", "r-KK01-00001", "r-001" };
 	private static final Object[] T_KESHIKOMI_02 = { "r-002", d("20170101"), 2000, "r-001", "r-KK01-00002", "r-002" };
@@ -62,7 +68,8 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 		Nyukin nyukin = nb.build();
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
-		ub.withRecordId("r-KK01-00001");
+		String urikakeId = "r-KK01-00001";
+		ub.withRecordId(urikakeId);
 		Urikake urikake = ub.build();
 		// 消込
 		KeshikomiBuilder kb = new KeshikomiBuilder();
@@ -72,8 +79,21 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 		kb.withNyukin(nyukin);
 		kb.withUrikake(urikake);
 		Keshikomi keshikomi = kb.build();
+		// expect
+		new Expectations() {
+			{
+				seikyuUrikakeCrudService.deleteIfKeshikomiDone(urikakeId);
+			}
+		};
 		// do
 		service.save(keshikomi);
+		// verify
+		new Verifications() {
+			{
+				seikyuUrikakeCrudService.deleteIfKeshikomiDone(urikakeId);
+				times = 1;
+			}
+		};
 		// check
 		TKeshikomi actual = repo.getOne(keshikomi.getRecordId());
 		assertNotNull(actual);

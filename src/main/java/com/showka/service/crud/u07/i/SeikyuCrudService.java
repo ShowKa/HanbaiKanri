@@ -14,4 +14,22 @@ public interface SeikyuCrudService extends CrudService<Seikyu, TSeikyuPK> {
 	 *            請求仕様
 	 */
 	public void save(SeikyuSpecification spec);
+
+	/**
+	 * 請求取得.
+	 * 
+	 * @param spec
+	 *            請求仕様
+	 * @return 請求.
+	 */
+	public Seikyu getDomain(SeikyuSpecification spec);
+
+	/**
+	 * 請求取得.
+	 * 
+	 * @param seikyuId
+	 *            請求ID
+	 * @return 請求.
+	 */
+	public Seikyu getDomain(String seikyuId);
 }
