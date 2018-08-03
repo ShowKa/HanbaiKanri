@@ -12,6 +12,14 @@ VALUES
 ('r-BS02', to_date('2017/08/20', 'yyyy/MM/dd'), 'r-BS02'),
 ;
 
+INSERT INTO m_busho_bank_account
+(busho_id, bank_code, account_number, record_id)
+VALUES
+('r-BS01', '0001', '1000001', 'r-BS01'),
+('r-BS02', '0002', '2000001', 'r-BS02'),
+;
+
+
 INSERT INTO m_kokyaku
 (code, name, address, hanbai_kubun, kokyaku_kubun, shukan_busho_id, record_id)
 VALUES
