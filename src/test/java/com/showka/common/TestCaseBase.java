@@ -39,6 +39,14 @@ public abstract class TestCaseBase extends TestCase {
 	protected static final String M_BUSHO_DATE = "m_busho_date";
 	protected static final String[] M_BUSHO_DATE_COLUMN = { "busho_id", "eigyo_date", "record_id" };
 
+	// 部署銀行口座
+	protected static final String M_BUSHO_BANK_ACCOUNT = "m_busho_bank_account";
+	protected static final String[] M_BUSHO_BANK_ACCOUNT_COLUMN = {
+			"busho_id",
+			"bank_code",
+			"account_number",
+			"record_id" };
+
 	// 社員
 	protected static final String M_SHAIN = "m_shain";
 	protected static final String[] M_SHAIN_COLUMN = { "code", "name", "shozoku_busho_id", "record_id" };
@@ -182,6 +190,25 @@ public abstract class TestCaseBase extends TestCase {
 			"meisai_number",
 			"shohin_id",
 			"number",
+			"record_id" };
+
+	// FB振込
+	protected static final String T_FIRM_BANK_FURIKOMI = "t_firm_bank_furikomi";
+	protected static final String[] T_FIRM_BANK_FURIKOMI_COLUMN = {
+			"transmission_date",
+			"transmission_number",
+			"bank_code",
+			"account_number",
+			"settlement_date",
+			"kingaku",
+			"furikomi_irainin_name",
+			"record_id" };
+
+	// FB振込マッチング
+	protected static final String W_FIRM_BANK_FURIKOMI_MATCHING = "w_firm_bank_furikomi_matching";
+	protected static final String[] W_FIRM_BANK_FURIKOMI_MATCHING_COLUMN = {
+			"fb_furikomi_id",
+			"furiwake_id",
 			"record_id" };
 
 }
