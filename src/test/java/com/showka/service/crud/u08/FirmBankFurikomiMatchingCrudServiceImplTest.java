@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.FBFurikomiMatched;
 import com.showka.entity.WFirmBankFurikomiMatching;
 import com.showka.repository.i.WFirmBankFurikomiMatchingRepository;
 
@@ -36,10 +35,8 @@ public class FirmBankFurikomiMatchingCrudServiceImplTest extends CrudServiceTest
 	public void test_Save_01() throws Exception {
 		// database
 		super.deleteAll(W_FIRM_BANK_FURIKOMI_MATCHING);
-		// input
-		FBFurikomiMatched domain = new FBFurikomiMatched("r-20170820-01", "r-KK02-1-001");
 		// do
-		service.save(domain);
+		service.save("r-20170820-01", "r-KK02-1-001");
 		// check
 		List<WFirmBankFurikomiMatching> actual = repo.findAll();
 		assertEquals(1, actual.size());

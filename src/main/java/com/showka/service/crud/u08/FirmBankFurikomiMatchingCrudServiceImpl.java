@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.FBFurikomiMatched;
 import com.showka.entity.WFirmBankFurikomiMatching;
 import com.showka.entity.WFirmBankFurikomiMatchingPK;
 import com.showka.repository.i.WFirmBankFurikomiMatchingRepository;
@@ -25,11 +24,11 @@ public class FirmBankFurikomiMatchingCrudServiceImpl implements FirmBankFurikomi
 	}
 
 	@Override
-	public void save(FBFurikomiMatched domain) {
+	public void save(String furikomiId, String furiwakeId) {
 		// pk
 		WFirmBankFurikomiMatchingPK pk = new WFirmBankFurikomiMatchingPK();
-		pk.setFbFurikomiId(domain.getFurikomiId());
-		pk.setFuriwakeId(domain.getFuriwakeId());
+		pk.setFbFurikomiId(furikomiId);
+		pk.setFuriwakeId(furiwakeId);
 		// entity
 		WFirmBankFurikomiMatching e = new WFirmBankFurikomiMatching();
 		e.setPk(pk);

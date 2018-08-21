@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.Busho;
-import com.showka.domain.FBFurikomiMatched;
+import com.showka.domain.FBFurikomiMatchingResult;
 import com.showka.kubun.FurikomiMatchintErrorCause;
 import com.showka.service.crud.u08.i.FirmBankFurikomiMatchingCrudService;
 import com.showka.service.crud.u08.i.FirmBankFurikomiMatchingErrorCrudService;
@@ -56,28 +56,28 @@ public class U08B003Controller extends ControllerBase {
 	public ResponseEntity<?> match(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// busho
 		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
+		// matching error
+		TheDate date = new TheDate(form.getDate());
 		// delete
 		crudService.deleteAll();
-		// matching error
-		// FB振込：同一部署内に同一振込依頼人名が存在する場合 => エラー
-		TheDate date = new TheDate(form.getDate());
-		List<String> errorList1 = searchService.searchIraininRepetition(busho, date);
-		errorList1.forEach(e -> {
-			errorService.save(e, FurikomiMatchintErrorCause.振込依頼人名重複);
+		// マッチングデータ抽出
+		FBFurikomiMatchingResult result = searchService.searchMatched(busho, date);
+		// マッチング成功
+		result.getMatched().entrySet().parallelStream().forEach(e -> {
+			crudService.save(e.getKey(), e.getValue());
 		});
-		// FB振込:マッチする振分データが存在しない => エラー
-		List<String> errorList2 = searchService.searchNotMatched(busho, date);
-		errorList2.forEach(e -> {
-			errorService.save(e, FurikomiMatchintErrorCause.マッチング対象なし);
+		// マッチングエラー
+		result.getMultipleMathed().parallelStream().forEach(fbFurikomiId -> {
+			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.複数マッチング);
 		});
-		// FB振込：マッチするデータが2つ以上ある => エラー
-		List<String> errorList3 = searchService.searchMultipleMatched(busho, date);
-		errorList3.forEach(e -> {
-			errorService.save(e, FurikomiMatchintErrorCause.複数マッチング);
+		result.getRepetition().parallelStream().forEach(fbFurikomiId -> {
+			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.同一振込);
 		});
-		// matching
-		List<FBFurikomiMatched> matchedList = searchService.searchMatched(busho, date);
-		matchedList.forEach(crudService::save);
+		// アンマッチ
+		List<String> unmatchedList = searchService.searchUnmatched(busho, date);
+		unmatchedList.forEach(fbFurikomiId -> {
+			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.マッチング対象なし);
+		});
 		// return
 		form.setSuccessMessage("FBマッチング成功");
 		model.addForm(form);
