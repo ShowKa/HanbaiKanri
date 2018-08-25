@@ -203,12 +203,26 @@ public abstract class TestCaseBase extends TestCase {
 			"kingaku",
 			"furikomi_irainin_name",
 			"record_id" };
+	// FB振分
+	protected static final String W_FIRM_BANK_FURIWAKE = "w_firm_bank_furiwake";
+	protected static final String[] W_FIRM_BANK_FURIWAKE_COLUMN = {
+			"furikomi_irainin_id",
+			"seikyu_id",
+			"saiken_kingaku",
+			"record_id" };
 
 	// FB振込マッチング
 	protected static final String W_FIRM_BANK_FURIKOMI_MATCHING = "w_firm_bank_furikomi_matching";
 	protected static final String[] W_FIRM_BANK_FURIKOMI_MATCHING_COLUMN = {
 			"fb_furikomi_id",
 			"furiwake_id",
+			"record_id" };
+
+	// FB振込マッチングエラー
+	protected static final String W_FIRM_BANK_FURIKOMI_MATCHING_ERROR = "w_firm_bank_furikomi_matching_error";
+	protected static final String[] W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_COLUMN = {
+			"fb_furikomi_id",
+			"cause",
 			"record_id" };
 
 }
