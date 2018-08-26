@@ -15,8 +15,9 @@ import lombok.NoArgsConstructor;
 public class U08B001Csv {
 
 	/** 伝送日付. */
+	// FIXME Timezone SpringBootでデフォルト値を設定しても有効になってくれない。。。
 	@JsonProperty("transmissionDate")
-	@JsonFormat(pattern = "yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy/MM/dd", timezone = "Asia/Tokyo")
 	private Date transmissionDate;
 
 	/** 伝送番号（日付毎の連番）. */
@@ -33,7 +34,7 @@ public class U08B001Csv {
 
 	/** 勘定日付(決済日付). */
 	@JsonProperty("settlementDate")
-	@JsonFormat(pattern = "yyyy/MM/dd")
+	@JsonFormat(pattern = "yyyy/MM/dd", timezone = "Asia/Tokyo")
 	private Date settlementDate;
 
 	/** 振込金額. */

@@ -42,6 +42,8 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 		// 請求明細
 		return urikakeList.stream().map(urikake -> {
 			SeikyuMeisaiBuilder b = new SeikyuMeisaiBuilder();
+			// FIXME 売掛金残高にするべき（これだと、消込されてても請求金額に含まれてしまう）
+			// urikakeKeshikomiSpecificationService.getZandakaOf(urikake).intValue();
 			b.withKingaku(urikake.getKingaku());
 			b.withUrikake(urikake);
 			return b.build();

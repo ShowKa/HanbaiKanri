@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.entity.TFirmBankFurikomi;
 import com.showka.repository.i.TFirmBankFurikomiRepository;
-import com.showka.system.io.FileManager;
 import com.showka.system.io.CsvReader;
+import com.showka.system.io.FileManager;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
 
@@ -50,6 +52,7 @@ public class U08B001Controller extends ControllerBase {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.GET)
+	@Transactional
 	public ResponseEntity<?> loadFB(@ModelAttribute U08B001Form form, ModelAndViewExtended model) {
 		// read csv
 		String filePath = form.getFilePath();

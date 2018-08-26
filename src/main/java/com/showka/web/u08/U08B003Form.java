@@ -2,6 +2,8 @@ package com.showka.web.u08;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.showka.web.FormBase;
 
 import lombok.Getter;
@@ -20,5 +22,6 @@ public class U08B003Form extends FormBase {
 	private String bushoCode;
 
 	/** 伝送日付. */
+	@DateTimeFormat(pattern = "yyyyMMdd")
 	private Date date;
 }

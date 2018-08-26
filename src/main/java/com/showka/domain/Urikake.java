@@ -19,7 +19,7 @@ public class Urikake extends DomainBase {
 	/** 売上. */
 	private Uriage uriage;
 
-	/** 金額. */
+	/** 金額（消込後の残高ではない！）. */
 	private AmountOfMoney kingaku;
 
 	/** 入金予定日. */
