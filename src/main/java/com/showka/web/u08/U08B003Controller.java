@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,10 @@ public class U08B003Controller extends ControllerBase {
 	@Autowired
 	private BushoCrudService bushoCrudService;
 
+	// transaction制御のため自クラスをinject
+	@Autowired
+	private U08B003Controller thisConroller;
+
 	/**
 	 * 全部署のFirmBank振込のマッチング.
 	 * 
@@ -53,7 +58,6 @@ public class U08B003Controller extends ControllerBase {
 	 * ・エラーが発生した場合、その部署の処理はロールバックして次の部署の処理に移る。
 	 * </pre>
 	 */
-	// TODO トランザクション制御未実装
 	@RequestMapping(value = "matchAll", method = RequestMethod.GET)
 	@Transactional
 	public ResponseEntity<?> matchAll(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
@@ -64,14 +68,27 @@ public class U08B003Controller extends ControllerBase {
 		// 伝送日付
 		Date date = form.getDate();
 		// 部署毎にマッチング処理
-		bushoList.parallelStream().forEach(busho -> {
+		int error = bushoList.stream().mapToInt(busho -> {
 			U08B003Form _form = new U08B003Form();
 			_form.setBushoCode(busho.getCode());
 			_form.setDate(date);
-			this.match(_form, model);
-		});
+			try {
+				thisConroller.match(_form, model);
+				logger.info("処理成功 部署コード： " + busho.getCode());
+			} catch (Exception e) {
+				logger.error("処理失敗 部署コード： " + busho.getCode(), e);
+				return 1;
+			}
+			return 0;
+		}).sum();
 		// return
-		form.setSuccessMessage("全部署のFBマッチング成功");
+		if (error > 0) {
+			String message = "エラー部署あり。件数 : " + error;
+			logger.warn(message);
+			form.setWarningMessage(message);
+		} else {
+			form.setSuccessMessage("全部署のFBマッチング成功");
+		}
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
@@ -89,7 +106,7 @@ public class U08B003Controller extends ControllerBase {
 	 * </pre>
 	 */
 	@RequestMapping(value = "match", method = RequestMethod.GET)
-	@Transactional
+	@Transactional(TxType.REQUIRES_NEW)
 	public ResponseEntity<?> match(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// 部署
 		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
@@ -98,14 +115,14 @@ public class U08B003Controller extends ControllerBase {
 		// マッチングデータ抽出
 		FBFurikomiMatchingResult result = searchService.searchMatched(busho, date);
 		// マッチング成功
-		result.getMatched().entrySet().parallelStream().forEach(e -> {
+		result.getMatched().entrySet().stream().forEach(e -> {
 			crudService.save(e.getKey(), e.getValue());
 		});
 		// マッチングエラー
-		result.getMultipleMathed().parallelStream().forEach(fbFurikomiId -> {
+		result.getMultipleMathed().stream().forEach(fbFurikomiId -> {
 			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.複数マッチング);
 		});
-		result.getRepetition().parallelStream().forEach(fbFurikomiId -> {
+		result.getRepetition().stream().forEach(fbFurikomiId -> {
 			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.同一振込);
 		});
 		// return
@@ -132,7 +149,7 @@ public class U08B003Controller extends ControllerBase {
 		// アンマッチ
 		TheDate date = new TheDate(form.getDate());
 		List<String> unmatchedList = searchService.searchUnmatched(date);
-		unmatchedList.parallelStream().forEach(fbFurikomiId -> {
+		unmatchedList.stream().forEach(fbFurikomiId -> {
 			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.マッチング対象なし);
 		});
 		// return
