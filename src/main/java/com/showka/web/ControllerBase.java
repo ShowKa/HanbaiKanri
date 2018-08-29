@@ -1,5 +1,7 @@
 package com.showka.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,9 @@ public abstract class ControllerBase {
 	/** 社員CrudService */
 	@Autowired
 	private ShainCrudService shainCrudService;
+
+	/** Logger. */
+	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * ログインユーザーのユーザーコードを返却.
