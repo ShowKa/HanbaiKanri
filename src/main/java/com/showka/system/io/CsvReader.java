@@ -40,8 +40,7 @@ public class CsvReader {
 	 * @throws IOException
 	 */
 	public static <T> List<T> read(Class<T> type, File file) {
-		MappingIterator<T> mi = getMappingIterator(type, file);
-		try {
+		try (MappingIterator<T> mi = getMappingIterator(type, file)) {
 			return mi.readAll();
 		} catch (IOException e) {
 			throw new SystemException("全データ同時読み込みに失敗しました。", e);
