@@ -17,12 +17,6 @@ public class MatchedFBFurikomi extends DomainBase {
 	/** FB振込ID */
 	private String fBFurikomiId;
 
-	/** 振込をした顧客. */
-	private Kokyaku kokyaku;
-
-	/** 振込先の部署. */
-	private Busho busho;
-
 	/** 伝送日付. */
 	private TheDate transmissionDate;
 
