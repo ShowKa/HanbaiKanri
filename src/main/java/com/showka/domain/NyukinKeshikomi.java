@@ -12,8 +12,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-// TODO レコードID+バージョンが不要（SubDomainみたいな抽象クラスが必要）
-public class NyukinKeshikomi extends DomainBase {
+public class NyukinKeshikomi extends DomainAggregation {
 
 	/** 入金. */
 	private Nyukin nyukin;
@@ -141,13 +140,13 @@ public class NyukinKeshikomi extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
-		NyukinKeshikomi o = (NyukinKeshikomi) other;
-		return nyukin.equals(o.nyukin);
+	public int hashCode() {
+		return generateHashCode(this.nyukin);
 	}
 
 	@Override
-	public int hashCode() {
-		return generateHashCode(this.nyukin);
+	protected boolean equals(DomainAggregation other) {
+		NyukinKeshikomi o = (NyukinKeshikomi) other;
+		return nyukin.equals(o.nyukin);
 	}
 }

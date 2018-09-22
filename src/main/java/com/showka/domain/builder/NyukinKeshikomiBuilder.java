@@ -16,26 +16,16 @@ public class NyukinKeshikomiBuilder
 	/** keshikomiList */
 	private Set<Keshikomi> keshikomiSet;
 
-	/** recordId */
-	private String recordId;
-
-	/** version */
-	private Integer version;
-
 	// protected method
 	@Override
 	protected void apply(NyukinKeshikomi domain, NyukinKeshikomiBuilder builder) {
 		builder.withNyukin(domain.getNyukin());
 		builder.withKeshikomiSet(domain.getKeshikomiSet());
-		builder.withRecordId(domain.getRecordId());
-		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected NyukinKeshikomi createDomainObject() {
 		NyukinKeshikomi domain = new NyukinKeshikomi(nyukin, keshikomiSet);
-		domain.setRecordId(recordId);
-		domain.setVersion(version);
 		return domain;
 	}
 
@@ -83,39 +73,4 @@ public class NyukinKeshikomiBuilder
 		});
 		return getThis();
 	}
-
-	/**
-	 * {@link NyukinKeshikomi}に与えるrecordIdをこのビルダに設定する。
-	 *
-	 * @param recordId
-	 *            recordId
-	 * @return {@link NyukinKeshikomiBuilder}
-	 */
-	public NyukinKeshikomiBuilder withRecordId(final String recordId) {
-		addConfigurator(new BuilderConfigurator<NyukinKeshikomiBuilder>() {
-			@Override
-			public void configure(NyukinKeshikomiBuilder builder) {
-				builder.recordId = recordId;
-			}
-		});
-		return getThis();
-	}
-
-	/**
-	 * {@link NyukinKeshikomi}に与えるversionをこのビルダに設定する。
-	 *
-	 * @param version
-	 *            version
-	 * @return {@link NyukinKeshikomiBuilder}
-	 */
-	public NyukinKeshikomiBuilder withVersion(final Integer version) {
-		addConfigurator(new BuilderConfigurator<NyukinKeshikomiBuilder>() {
-			@Override
-			public void configure(NyukinKeshikomiBuilder builder) {
-				builder.version = version;
-			}
-		});
-		return getThis();
-	}
-
 }

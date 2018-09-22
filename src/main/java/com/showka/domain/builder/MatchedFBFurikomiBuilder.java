@@ -34,15 +34,11 @@ public class MatchedFBFurikomiBuilder
 		builder.withTransmissionDate(domain.getTransmissionDate());
 		builder.withKingaku(domain.getKingaku());
 		builder.withSeikyu(domain.getSeikyu());
-		builder.withRecordId(domain.getRecordId());
-		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected MatchedFBFurikomi createDomainObject() {
 		MatchedFBFurikomi domain = new MatchedFBFurikomi(fBFurikomiId, transmissionDate, kingaku, seikyu);
-		domain.setRecordId(recordId);
-		domain.setVersion(version);
 		return domain;
 	}
 

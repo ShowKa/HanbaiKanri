@@ -12,7 +12,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class MatchedFBFurikomi extends DomainBase {
+public class MatchedFBFurikomi extends DomainAggregation {
 
 	/** FB振込ID */
 	private String fBFurikomiId;
@@ -27,17 +27,20 @@ public class MatchedFBFurikomi extends DomainBase {
 	private Seikyu seikyu;
 
 	@Override
-	protected boolean equals(DomainBase other) {
-		MatchedFBFurikomi o = (MatchedFBFurikomi) other;
-		return this.fBFurikomiId.equals(o.fBFurikomiId);
-	}
-
-	@Override
 	public int hashCode() {
 		return this.fBFurikomiId.hashCode();
 	}
 
 	@Override
 	public void validate() throws SystemException {
+	}
+
+	@Override
+	protected boolean equals(DomainAggregation other) {
+		// if (this == other) {
+		// return true;
+		// }
+		MatchedFBFurikomi o = (MatchedFBFurikomi) other;
+		return this.fBFurikomiId.equals(o.fBFurikomiId);
 	}
 }
