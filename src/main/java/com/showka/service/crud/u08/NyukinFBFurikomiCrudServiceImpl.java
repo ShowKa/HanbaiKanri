@@ -3,6 +3,7 @@ package com.showka.service.crud.u08;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Busho;
@@ -79,5 +80,28 @@ public class NyukinFBFurikomiCrudServiceImpl implements NyukinFBFurikomiCrudServ
 		// build
 		Nyukin nyukin = nb.build();
 		return nyukin;
+	}
+
+	@Override
+	public Nyukin getNyukin(String fbFurikomiId) {
+		JNyukinFBFurikomi result = this.findByFbFurikomiId(fbFurikomiId);
+		String nyukinId = result.getNyukinId();
+		Nyukin nyukin = nyukinCrudService.getDomain(nyukinId);
+		return nyukin;
+	}
+
+	/**
+	 * 入金FB振込レコード取得.
+	 * 
+	 * @param fbFurikomiId
+	 *            FB振込ID
+	 * @return 入金FB振込レコード
+	 */
+	JNyukinFBFurikomi findByFbFurikomiId(String fbFurikomiId) {
+		JNyukinFBFurikomi e = new JNyukinFBFurikomi();
+		e.setFbFurikomiId(fbFurikomiId);
+		Example<JNyukinFBFurikomi> example = Example.of(e);
+		JNyukinFBFurikomi result = repo.findOne(example).get();
+		return result;
 	}
 }

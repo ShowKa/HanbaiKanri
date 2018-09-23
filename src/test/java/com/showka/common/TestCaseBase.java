@@ -203,6 +203,11 @@ public abstract class TestCaseBase extends TestCase {
 			"kingaku",
 			"furikomi_irainin_name",
 			"record_id" };
+
+	// 入金FB振込
+	protected static final String J_NYUKIN_FB_FURIKOMI = "j_nyukin_fb_furikomi";
+	protected static final String[] J_NYUKIN_FB_FURIKOMI_COLUMN = { "nyukin_id", "fb_furikomi_id", "record_id" };
+
 	// FB振分
 	protected static final String W_FIRM_BANK_FURIWAKE = "w_firm_bank_furiwake";
 	protected static final String[] W_FIRM_BANK_FURIWAKE_COLUMN = {
