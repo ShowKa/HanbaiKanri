@@ -181,6 +181,7 @@ public class U08G003Controller extends ControllerBase {
 		EigyoDate eigyoDate = nyukinKeshikomiBeforeUpdate.getNyukinBushoEigyoDate();
 		nyukinKeshikomiBeforeUpdate.removeKeshikomiOf(eigyoDate);
 		// merge 消込セット
+		// FIXME mergeは逆のほうがよい? 古い方を新しい振込SETで上書き。
 		nyukinKeshikomi.mergeKeshikomiSet(nyukinKeshikomiBeforeUpdate);
 		// set 売掛 version for OCC
 		Map<String, Integer> versionMap = form.getMeisai().stream().collect(Collectors.toMap(m -> {

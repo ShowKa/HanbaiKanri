@@ -22,6 +22,9 @@ import lombok.Setter;
 @Table(name = "t_keshikomi")
 @Getter
 @Setter
+// 消込の主キーはIDでなく複合キーの方がよかったかも（入金ID、売掛ID、消込日）
+// もしくは消込Entity自体を入金と切り離した方がよかった。
+// 消込は入金以外でもありえるため（貸倒等）
 public class TKeshikomi extends EntityUsingRecordIdAsId implements Serializable {
 
 	/** SID. */

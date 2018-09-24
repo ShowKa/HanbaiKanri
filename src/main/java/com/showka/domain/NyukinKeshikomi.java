@@ -63,8 +63,26 @@ public class NyukinKeshikomi extends DomainAggregation {
 	 * @param マージ対象
 	 * @return
 	 */
+	// FIXME すこし変。mergeは下記#mergeの考え方の方がスマート。
 	public void mergeKeshikomiSet(NyukinKeshikomi nyukinKeshikomi) {
 		this.keshikomiSet.addAll(nyukinKeshikomi.getKeshikomiSet());
+	}
+
+	/**
+	 * 消込セットマージ.
+	 * 
+	 * <pre>
+	 * 既存の消込がある場合は上書き。
+	 * </pre>
+	 * 
+	 * @param マージ対象消込セット
+	 * @return
+	 */
+	public void merge(Set<Keshikomi> _keshikomiSet) {
+		this.keshikomiSet.removeIf(k -> {
+			return _keshikomiSet.contains(k);
+		});
+		this.keshikomiSet.addAll(_keshikomiSet);
 	}
 
 	/**
