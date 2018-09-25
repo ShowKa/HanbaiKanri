@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
 import com.showka.domain.Keshikomi;
 import com.showka.domain.MatchedFBFurikomi;
 import com.showka.domain.Nyukin;
@@ -62,8 +61,7 @@ public class NyukinKeshikomiBuildServiceImpl implements NyukinKeshikomiBuildServ
 	 */
 	Set<Keshikomi> buildKeshikomiSet(Nyukin nyukin, MatchedFBFurikomi matchedFBFurikomi) {
 		// 消込日=請求担当部署の営業日
-		Busho seikyuTantoBusho = matchedFBFurikomi.getSeikyu().getTantoBusho();
-		EigyoDate keshikomiDate = seikyuTantoBusho.getEigyoDate();
+		EigyoDate keshikomiDate = matchedFBFurikomi.getSeikyuTantoBushoEigyoDate();
 		// タイムスタンプ
 		TheTimestamp timestamp = new TheTimestamp();
 		// 消込リスト構築

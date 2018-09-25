@@ -5,7 +5,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
 import com.showka.domain.Keshikomi;
 import com.showka.domain.MatchedFBFurikomi;
 import com.showka.domain.Nyukin;
@@ -53,8 +52,7 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 	@Override
 	public void save(MatchedFBFurikomi matchedFBFurikomi) {
 		// 営業日=請求担当部署の営業日
-		Busho seikyuTantoBusho = matchedFBFurikomi.getSeikyu().getTantoBusho();
-		EigyoDate eigyoDate = seikyuTantoBusho.getEigyoDate();
+		EigyoDate eigyoDate = matchedFBFurikomi.getSeikyuTantoBushoEigyoDate();
 		// 入金消込
 		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiBuildService.build(matchedFBFurikomi);
 		// save
