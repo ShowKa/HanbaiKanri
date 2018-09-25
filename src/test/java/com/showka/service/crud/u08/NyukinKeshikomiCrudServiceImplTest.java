@@ -1,6 +1,6 @@
 package com.showka.service.crud.u08;
 
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,17 +10,22 @@ import org.junit.Test;
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.Busho;
 import com.showka.domain.Keshikomi;
+import com.showka.domain.MatchedFBFurikomi;
 import com.showka.domain.Nyukin;
 import com.showka.domain.NyukinKeshikomi;
+import com.showka.domain.Seikyu;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KeshikomiBuilder;
+import com.showka.domain.builder.MatchedFBFurikomiBuilder;
 import com.showka.domain.builder.NyukinBuilder;
 import com.showka.domain.builder.NyukinKeshikomiBuilder;
+import com.showka.domain.builder.SeikyuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
+import com.showka.service.specification.u08.i.NyukinKeshikomiBuildService;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -31,6 +36,7 @@ import mockit.Verifications;
 public class NyukinKeshikomiCrudServiceImplTest extends SimpleTestCase {
 
 	@Tested
+	@Injectable
 	private NyukinKeshikomiCrudServiceImpl service;
 
 	@Injectable
@@ -41,6 +47,9 @@ public class NyukinKeshikomiCrudServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private UrikakeCrudService urikakeCrudService;
+
+	@Injectable
+	private NyukinKeshikomiBuildService nyukinKeshikomiBuildService;
 
 	@Test
 	public void test01_save() throws Exception {
@@ -168,6 +177,57 @@ public class NyukinKeshikomiCrudServiceImplTest extends SimpleTestCase {
 				nyukinCrudService.save(nyukin);
 				times = 1;
 				keshikomiCrudService.cancel(target, eigyoDate);
+				times = 1;
+			}
+		};
+	}
+
+	/**
+	 * FBマッチング済振込の消込.
+	 * 
+	 * <pre>
+	 * 確認事項.
+	 * - 入金消込をマッチング済FB振込から構築。
+	 * - 請求担当部署の営業日を基準にして、入金消込を登録する。
+	 * </pre>
+	 */
+	@Test
+	public void test01_Save_MatchedFBFurikomi() throws Exception {
+		// input
+		// 営業日
+		EigyoDate eigyoDate = new EigyoDate(2017, 8, 20);
+		// 請求担当部署
+		BushoBuilder bb = new BushoBuilder();
+		bb.withEigyoDate(eigyoDate);
+		Busho busho = bb.build();
+		// 請求
+		SeikyuBuilder sb = new SeikyuBuilder();
+		sb.withTantoBusho(busho);
+		Seikyu seikyu = sb.build();
+		// マッチング済FB振込
+		MatchedFBFurikomiBuilder mb = new MatchedFBFurikomiBuilder();
+		mb.withSeikyu(seikyu);
+		MatchedFBFurikomi matchedFBFurikomi = mb.build();
+		// 入金消込
+		NyukinKeshikomiBuilder nb = new NyukinKeshikomiBuilder();
+		nb.withKeshikomiSet(new HashSet<>());
+		NyukinKeshikomi nyukinKeshikomi = nb.build();
+		// expect
+		new Expectations() {
+			{
+				nyukinKeshikomiBuildService.build(matchedFBFurikomi);
+				result = nyukinKeshikomi;
+				service.save(eigyoDate, nyukinKeshikomi);
+			}
+		};
+		// do
+		service.save(matchedFBFurikomi);
+		// verify
+		new Verifications() {
+			{
+				nyukinKeshikomiBuildService.build(matchedFBFurikomi);
+				times = 1;
+				service.save(eigyoDate, nyukinKeshikomi);
 				times = 1;
 			}
 		};

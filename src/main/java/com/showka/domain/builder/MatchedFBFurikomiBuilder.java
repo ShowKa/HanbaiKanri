@@ -21,12 +21,6 @@ public class MatchedFBFurikomiBuilder
 	/** seikyu */
 	private Seikyu seikyu;
 
-	/** recordId */
-	private String recordId;
-
-	/** version */
-	private Integer version;
-
 	// protected method
 	@Override
 	protected void apply(MatchedFBFurikomi domain, MatchedFBFurikomiBuilder builder) {
@@ -120,39 +114,4 @@ public class MatchedFBFurikomiBuilder
 		});
 		return getThis();
 	}
-
-	/**
-	 * {@link MatchedFBFurikomi}に与えるrecordIdをこのビルダに設定する。
-	 *
-	 * @param recordId
-	 *            recordId
-	 * @return {@link MatchedFBFurikomiBuilder}
-	 */
-	public MatchedFBFurikomiBuilder withRecordId(final String recordId) {
-		addConfigurator(new BuilderConfigurator<MatchedFBFurikomiBuilder>() {
-			@Override
-			public void configure(MatchedFBFurikomiBuilder builder) {
-				builder.recordId = recordId;
-			}
-		});
-		return getThis();
-	}
-
-	/**
-	 * {@link MatchedFBFurikomi}に与えるversionをこのビルダに設定する。
-	 *
-	 * @param version
-	 *            version
-	 * @return {@link MatchedFBFurikomiBuilder}
-	 */
-	public MatchedFBFurikomiBuilder withVersion(final Integer version) {
-		addConfigurator(new BuilderConfigurator<MatchedFBFurikomiBuilder>() {
-			@Override
-			public void configure(MatchedFBFurikomiBuilder builder) {
-				builder.version = version;
-			}
-		});
-		return getThis();
-	}
-
 }
