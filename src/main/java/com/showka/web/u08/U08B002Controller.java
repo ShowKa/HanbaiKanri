@@ -39,8 +39,7 @@ public class U08B002Controller extends ControllerBase {
 	 * 処理単位：
 	 * ・部署
 	 * データ更新方針：
-	 * ・全件削除
-	 * ・insert
+	 * ・特になし。
 	 * トランザクション：
 	 * ・1件でもエラーの場合、コミットしない。
 	 * </pre>
@@ -48,8 +47,6 @@ public class U08B002Controller extends ControllerBase {
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional
 	public ResponseEntity<?> fbFuriwake(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
-		// delete
-		firmBankFuriwakeCrudService.deleteAll();
 		// search 請求・売掛
 		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
 		List<Seikyu> seikyuList = seikyuSearchService.getAllOf(busho);
