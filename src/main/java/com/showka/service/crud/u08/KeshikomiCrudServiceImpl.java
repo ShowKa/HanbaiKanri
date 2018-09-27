@@ -139,6 +139,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	 * @param version
 	 *            バージョン
 	 */
+	// FIXME 障害：消込データが削除された場合、請求売掛関係テーブルのレコード復帰処理が必要。
 	void delete(String keshikomiId, Integer version) {
 		// entity
 		TKeshikomi e = repo.getOne(keshikomiId);
