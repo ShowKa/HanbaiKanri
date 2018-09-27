@@ -8,9 +8,7 @@ import static com.showka.table.public_.tables.W_FIRM_BANK_FURIKOMI_MATCHING.*;
 import static com.showka.table.public_.tables.W_FIRM_BANK_FURIKOMI_MATCHING_ERROR.*;
 import static com.showka.table.public_.tables.W_FIRM_BANK_FURIWAKE.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.jooq.DSLContext;
@@ -23,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.Busho;
 import com.showka.domain.FBFurikomiMatchingResult;
+import com.showka.domain.FBFurikomiMatchingResult.MatchedPair;
 import com.showka.service.search.u08.i.FirmBankFurikomiSearchService;
 import com.showka.table.public_.tables.M_BUSHO_BANK_ACCOUNT;
 import com.showka.table.public_.tables.M_FURIKOMI_IRAININ;
@@ -60,46 +59,15 @@ public class FirmBankFurikomiSearchServiceImpl implements FirmBankFurikomiSearch
 	public FBFurikomiMatchingResult searchMatched(Busho busho, TheDate date) {
 		// 検索
 		Result<Record> result = this.searchOf(busho, date);
-		// 複数マッチングの振込を抽出
-		// group key = FB振込#id
-		List<String> multipledList = new ArrayList<>();
-		Map<String, Result<Record>> groupedByFB = result.intoGroups(fb.record_id);
-		groupedByFB.entrySet().parallelStream().filter(e -> {
-			return e.getValue().size() > 1;
-		}).forEach(e -> {
-			String id = e.getKey();
-			multipledList.add(id);
-		});
-		// 複数マッチングの振込を除去
-		result.removeIf(r -> {
-			String id = r.get(fb.record_id);
-			return multipledList.contains(id);
-		});
-		// 同一振込を抽出
-		List<String> repetitionList = new ArrayList<>();
-		Map<String, Result<Record>> groupedBySeikyu = result.intoGroups(ts.record_id);
-		groupedBySeikyu.entrySet().parallelStream().filter(e -> {
-			return e.getValue().size() > 1;
-		}).forEach(e -> {
-			Result<Record> _result = e.getValue();
-			_result.forEach(r -> {
-				String id = r.get(fb.record_id);
-				repetitionList.add(id);
-			});
-		});
-		// 同一振込を除去
-		result.removeIf(r -> {
-			String id = r.get(fb.record_id);
-			return repetitionList.contains(id);
-		});
-		// マッチングOK
-		Map<String, String> matched = result.parallelStream().collect(Collectors.toMap(r -> {
-			return r.get(fb.record_id);
-		}, r -> {
-			return r.get(fw.record_id);
-		}));
+		// マッチング
+		List<MatchedPair> matched = result.parallelStream().map(r -> {
+			String fbFurikomiId = r.getValue(fb.record_id);
+			String furiwakeId = r.getValue(fw.record_id);
+			String seikyuId = r.getValue(ts.record_id);
+			return new MatchedPair(fbFurikomiId, furiwakeId, seikyuId);
+		}).collect(Collectors.toList());
 		// マッチング結果
-		return new FBFurikomiMatchingResult(matched, multipledList, repetitionList);
+		return new FBFurikomiMatchingResult(matched);
 	}
 
 	// select from fb

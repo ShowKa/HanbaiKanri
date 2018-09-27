@@ -115,8 +115,8 @@ public class U08B003Controller extends ControllerBase {
 		// マッチングデータ抽出
 		FBFurikomiMatchingResult result = searchService.searchMatched(busho, date);
 		// マッチング成功
-		result.getMatched().entrySet().stream().forEach(e -> {
-			crudService.save(e.getKey(), e.getValue());
+		result.getMatchedNormally().parallelStream().forEach(m -> {
+			crudService.save(m.getFbFurikomiId(), m.getFuriwakeId());
 		});
 		// マッチングエラー
 		result.getMultipleMathed().stream().forEach(fbFurikomiId -> {
