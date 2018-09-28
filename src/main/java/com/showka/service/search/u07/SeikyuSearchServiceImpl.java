@@ -72,7 +72,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 		T_SEIKYU s = t_seikyu.as("s");
 		J_SEIKYU_URIKAKE su = j_seikyu_urikake.as("su");
 		// build SQL
-		SelectSelectStep<Record> select = create.select(s.fields());
+		SelectSelectStep<Record> select = create.selectDistinct(s.fields());
 		SelectJoinStep<Record> from = select.from(s);
 		// join
 		from.innerJoin(su).on(s.record_id.eq(su.seikyu_id));
