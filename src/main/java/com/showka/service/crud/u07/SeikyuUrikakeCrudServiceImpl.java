@@ -20,6 +20,7 @@ import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
 import com.showka.service.search.u05.i.UrikakeSearchService;
+import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
@@ -47,6 +48,9 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 
 	@Autowired
 	private JSeikyuUrikakeRepository repo;
+
+	@Autowired
+	private SeikyuSearchService seikyuSearchService;
 
 	@Override
 	public void seikyu(Busho busho, EigyoDate shimeDate) {
@@ -115,5 +119,25 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 		if (urikakeKeshikomi.done()) {
 			repo.deleteById(urikakeId);
 		}
+	}
+
+	@Override
+	public void revert(String urikakeId) {
+		// レコード存在チェック
+		// 既存の場合は何もせず処理終了。
+		boolean exists = repo.existsById(urikakeId);
+		if (exists) {
+			return;
+		}
+		// 最新請求を取得。
+		// 未請求の場合、処理終了。
+		Optional<Seikyu> _newest = seikyuSearchService.getNewestOf(urikakeId);
+		if (!_newest.isPresent()) {
+			return;
+		}
+		// 最新請求
+		Seikyu seikyu = _newest.get();
+		// save
+		this.save(seikyu.getRecordId(), urikakeId);
 	}
 }
