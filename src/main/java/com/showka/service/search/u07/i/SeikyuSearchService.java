@@ -1,6 +1,7 @@
 package com.showka.service.search.u07.i;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
@@ -30,4 +31,26 @@ public interface SeikyuSearchService {
 	 * @return 請求リスト
 	 */
 	public List<Seikyu> getAllOf(Kokyaku kokyaku);
+
+	/**
+	 * 売掛の請求履歴を取得する。
+	 * 
+	 * @param urikakeId
+	 *            売掛ID
+	 * @return 請求リスト
+	 */
+	public List<Seikyu> getHistoryOf(String urikakeId);
+
+	/**
+	 * 売掛の請求履歴のうち、最近のものを取得する。
+	 * 
+	 * <pre>
+	 * 最近 = 請求日が最も大きい
+	 * </pre>
+	 * 
+	 * @param urikakeId
+	 *            売掛ID
+	 * @return 最新の請求
+	 */
+	public Optional<Seikyu> getNewestOf(String urikakeId);
 }

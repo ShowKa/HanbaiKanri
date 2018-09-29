@@ -4,6 +4,8 @@ import static com.showka.table.public_.tables.J_SEIKYU_URIKAKE.*;
 import static com.showka.table.public_.tables.T_SEIKYU.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jooq.DSLContext;
@@ -19,7 +21,10 @@ import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Seikyu;
 import com.showka.entity.TSeikyu;
+import com.showka.entity.TSeikyuMeisai;
+import com.showka.entity.TSeikyuMeisaiPK;
 import com.showka.entity.TSeikyuPK;
+import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.repository.i.TSeikyuRepository;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.search.u07.i.SeikyuSearchService;
@@ -32,6 +37,9 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 
 	@Autowired
 	private TSeikyuRepository repo;
+
+	@Autowired
+	private TSeikyuMeisaiRepository meisaiRepo;
 
 	@Autowired
 	private SeikyuCrudService seikyuCrudService;
@@ -67,7 +75,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 	 *            部署
 	 * @return 請求レコード
 	 */
-	protected List<T_SEIKYU_RECORD> getAllRecordsOf(Busho busho) {
+	List<T_SEIKYU_RECORD> getAllRecordsOf(Busho busho) {
 		// alias
 		T_SEIKYU s = t_seikyu.as("s");
 		J_SEIKYU_URIKAKE su = j_seikyu_urikake.as("su");
@@ -90,7 +98,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 	 *            顧客
 	 * @return 請求Entity
 	 */
-	protected List<TSeikyu> getAllEntitiesOf(Kokyaku kokyaku) {
+	List<TSeikyu> getAllEntitiesOf(Kokyaku kokyaku) {
 		// 請求PK
 		TSeikyuPK pk = new TSeikyuPK();
 		pk.setKokyakuId(kokyaku.getRecordId());
@@ -103,4 +111,49 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 		return repo.findAll(example);
 	}
 
+	@Override
+	public List<Seikyu> getHistoryOf(String urikakeId) {
+		// 請求明細取得
+		List<TSeikyuMeisai> result = this.getHistoryEntitiesOf(urikakeId);
+		// 請求IDのみ抽出（重複排除）
+		Set<String> seikyuIdSet = result.parallelStream().map(r -> {
+			return r.getSeikyuId();
+		}).collect(Collectors.toSet());
+		// 請求リスト
+		List<Seikyu> seikyuList = seikyuIdSet.parallelStream().map(id -> {
+			return seikyuCrudService.getDomain(id);
+		}).collect(Collectors.toList());
+		return seikyuList;
+	}
+
+	/**
+	 * 売掛IDで請求明細テーブルのレコードを検索し取得する。
+	 * 
+	 * @param urikakeId
+	 *            売掛ID
+	 * @return 請求明細レコード
+	 */
+	List<TSeikyuMeisai> getHistoryEntitiesOf(String urikakeId) {
+		// pk
+		TSeikyuMeisaiPK pk = new TSeikyuMeisaiPK();
+		pk.setUrikakeId(urikakeId);
+		// entity
+		TSeikyuMeisai e = new TSeikyuMeisai();
+		e.setPk(pk);
+		// findAll
+		Example<TSeikyuMeisai> example = Example.of(e);
+		List<TSeikyuMeisai> result = meisaiRepo.findAll(example);
+		return result;
+	}
+
+	@Override
+	public Optional<Seikyu> getNewestOf(String urikakeId) {
+		// 請求履歴
+		List<Seikyu> seikyuList = this.getHistoryOf(urikakeId);
+		// 最新のものを抽出。
+		Optional<Seikyu> newest = seikyuList.parallelStream().max((one, two) -> {
+			return one.getSeikyuDate().compareTo(two.getSeikyuDate());
+		});
+		return newest;
+	}
 }
