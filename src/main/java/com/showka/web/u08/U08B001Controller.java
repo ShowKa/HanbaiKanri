@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.entity.TFirmBankFurikomi;
 import com.showka.repository.i.TFirmBankFurikomiRepository;
+import com.showka.system.io.CsvError;
 import com.showka.system.io.CsvReader;
+import com.showka.system.io.CsvWriter;
 import com.showka.system.io.FileManager;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
@@ -54,18 +56,23 @@ public class U08B001Controller extends ControllerBase {
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional
 	public ResponseEntity<?> loadFB(@ModelAttribute U08B001Form form, ModelAndViewExtended model) {
-		// read csv
+		// FB振込ファイル 取得
 		String filePath = form.getFilePath();
 		File file = fileManager.get(filePath);
-		List<U08B001Csv> csv = CsvReader.read(U08B001Csv.class, file);
-		// get entities
-		List<TFirmBankFurikomi> entities = csv.parallelStream().map(c -> {
+		// 読込不可能データリストを読込
+		List<CsvError> unreadableList = CsvReader.getError(U08B001Csv.class, file);
+		// 読込不可能データリストを FB振込読込不可能データリスト Fileとして出力
+		File errorFile = fileManager.create("/output/u08b001_unreadable.csv");
+		CsvWriter.write(unreadableList, errorFile);
+		// 読込可能行を FB振込リスト として読込
+		List<U08B001Csv> fbFurikomiList = CsvReader.readOnlyReadable(U08B001Csv.class, file);
+		// FB振込リスト をFB振込Table に登録
+		List<TFirmBankFurikomi> entities = fbFurikomiList.parallelStream().map(c -> {
 			TFirmBankFurikomi e = c.toFirmBankFurikomiEntity();
 			String id = UUID.randomUUID().toString();
 			e.setRecordId(id);
 			return e;
 		}).collect(Collectors.toList());
-		// save
 		entities.forEach(tFirmBankFurikomiRepository::save);
 		// return
 		form.setSuccessMessage("FBファイル取込成功");

@@ -60,7 +60,7 @@ public class CsvReader {
 	 *            CSVファイル
 	 * @throws IOException
 	 */
-	public static <T> List<T> readOnlyReadeble(Class<T> type, File file) {
+	public static <T> List<T> readOnlyReadable(Class<T> type, File file) {
 		MappingIterator<T> readValues = getMappingIterator(type, file);
 		List<T> result = new ArrayList<T>();
 		while (readValues.hasNext()) {
@@ -76,12 +76,13 @@ public class CsvReader {
 	}
 
 	/**
-	 * 指定した型へのキャストエラーを取得する.
+	 * エラー（読込不可）行をCSVエラーリストとして取得する.
 	 * 
 	 * @param type
 	 *            型
 	 * @param file
 	 *            CSVファイル
+	 * @return CSVエラーリスト
 	 * @throws IOException
 	 */
 	public static <T> List<CsvError> getError(Class<T> type, File file) {

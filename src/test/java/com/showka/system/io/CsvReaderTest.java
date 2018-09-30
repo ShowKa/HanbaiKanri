@@ -36,7 +36,7 @@ public class CsvReaderTest extends SimpleTestCase {
 	public void test01_readOnlyReadable() throws Exception {
 		String path = "/data/system/FileReaderTest2.csv";
 		File file = new ClassPathResource(path).getFile();
-		List<DTO> result = CsvReader.readOnlyReadeble(DTO.class, file);
+		List<DTO> result = CsvReader.readOnlyReadable(DTO.class, file);
 		assertEquals(2, result.size());
 		assertEquals("ABC", result.get(1).getNamae());
 	}

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.showka.entity.TFirmBankFurikomi;
 import com.showka.entity.TFirmBankFurikomiPK;
+import com.showka.system.exception.SingleInputValidateException;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,6 +45,36 @@ public class U08B001Csv {
 	/** 振込依頼人名. */
 	@JsonProperty("furikomiIraininName")
 	private String furikomiIraininName;
+
+	/**
+	 * 銀行コード設定.
+	 */
+	void setBankCode(String bankCode) {
+		if (!bankCode.matches("\\d{4}")) {
+			throw new SingleInputValidateException("銀行コードは数値4桁です。");
+		}
+		this.bankCode = bankCode;
+	}
+
+	/**
+	 * 口座番号設定
+	 */
+	public void setAccountNumber(String accountNumber) {
+		if (!accountNumber.matches("\\d{7}")) {
+			throw new SingleInputValidateException("口座番号は数値7桁です。");
+		}
+		this.accountNumber = accountNumber;
+	}
+
+	/**
+	 * 金額設定.
+	 */
+	public void setKingaku(Integer kingaku) {
+		if (kingaku < 1) {
+			throw new SingleInputValidateException("金額は1以上です。");
+		}
+		this.kingaku = kingaku;
+	}
 
 	/**
 	 * FB Entity.
