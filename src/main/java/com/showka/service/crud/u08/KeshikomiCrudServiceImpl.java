@@ -14,12 +14,14 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.Keshikomi;
 import com.showka.domain.Nyukin;
 import com.showka.domain.Urikake;
+import com.showka.domain.UrikakeKeshikomi;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.entity.CKeshikomi;
 import com.showka.entity.TKeshikomi;
 import com.showka.repository.i.CKeshikomiRepository;
 import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
+import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
@@ -45,6 +47,9 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	@Autowired
 	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
 
+	@Autowired
+	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+
 	@Override
 	public void save(Keshikomi keshikomi) {
 		// entity
@@ -66,7 +71,13 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		// save
 		repo.save(e);
 		// 消込完了の場合、JSeikyuUrikakeからレコードを削除する
-		seikyuUrikakeCrudService.deleteIfKeshikomiDone(urikakeId);
+		// 消込未完の場合、JSeikyuUrikakeのレコードを戻す。
+		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(urikakeId);
+		if (urikakeKeshikomi.done()) {
+			seikyuUrikakeCrudService.deleteIfExists(urikakeId);
+		} else {
+			seikyuUrikakeCrudService.revert(urikakeId);
+		}
 	}
 
 	@Override

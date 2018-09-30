@@ -59,12 +59,12 @@ public interface SeikyuUrikakeCrudService {
 	public void seikyu(Kokyaku kokyaku, EigyoDate shimeDate, List<Urikake> urikakeList);
 
 	/**
-	 * 消込完了に際し、請求・売掛を削除する。
+	 * 対象レコードが存在した場合のみ、請求・売掛を削除する。
 	 * 
 	 * @param urikakeId
 	 *            売掛ID
 	 */
-	public void deleteIfKeshikomiDone(String urikakeId);
+	public void deleteIfExists(String urikakeId);
 
 	/**
 	 * 請求・売掛を復活させる。

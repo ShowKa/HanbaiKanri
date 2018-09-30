@@ -11,10 +11,10 @@ public interface KeshikomiCrudService {
 	/**
 	 * 消込保存.
 	 * 
-	 * @param nyukin
-	 *            入金
-	 * @param urikake
-	 *            売掛
+	 * <pre>
+	 * 消込が完了した場合は、請求状態を解除する（請求・売掛関係テーブルのレコードも削除する）。
+	 * </pre>
+	 * 
 	 * @param keshikomi
 	 *            消込
 	 */

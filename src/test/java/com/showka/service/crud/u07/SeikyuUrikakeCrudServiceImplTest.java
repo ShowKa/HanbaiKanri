@@ -11,14 +11,12 @@ import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Seikyu;
 import com.showka.domain.Urikake;
-import com.showka.domain.UrikakeKeshikomi;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.SeikyuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.repository.i.JSeikyuUrikakeRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
 import com.showka.service.search.u05.i.UrikakeSearchService;
@@ -29,7 +27,6 @@ import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
-import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 
@@ -53,9 +50,6 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
-
-	@Injectable
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
 
 	@Injectable
 	private SeikyuSearchService seikyuSearchService;
@@ -223,35 +217,29 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 	}
 
 	/**
-	 * 請求削除.
+	 * 削除.
 	 * 
 	 * <pre>
-	 * 入力：売掛ID=任意
-	 * 条件：消込完了済
-	 * 結果：請求・売掛データ削除処理が呼び出される。
+	 * レコードが既存の場合削除される。
 	 * </pre>
 	 */
 	@Test
-	public void test04_deleteIfKeshikomiDone(@Mocked UrikakeKeshikomi urikakeKeshikomi) {
+	public void test04_deleteIfExists() {
 		// input
 		String urikakeId = "r-001";
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
-				result = urikakeKeshikomi;
-				urikakeKeshikomi.done();
+				repo.existsById(urikakeId);
 				result = true;
 			}
 		};
 		// do
-		service.deleteIfKeshikomiDone(urikakeId);
+		service.deleteIfExists(urikakeId);
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
-				times = 1;
-				urikakeKeshikomi.done();
+				repo.existsById(urikakeId);
 				times = 1;
 				repo.deleteById(urikakeId);
 				times = 1;
@@ -260,35 +248,29 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 	}
 
 	/**
-	 * 請求削除.
+	 * 削除.
 	 * 
 	 * <pre>
-	 * 入力：売掛ID=任意
-	 * 条件：消込未完了
-	 * 結果：請求・売掛データ削除処理が呼び出されない。
+	 * レコードがない場合処理終了。
 	 * </pre>
 	 */
 	@Test
-	public void test05_deleteIfKeshikomiDone(@Mocked UrikakeKeshikomi urikakeKeshikomi) {
+	public void test05_deleteIfExists() {
 		// input
 		String urikakeId = "r-001";
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
-				result = urikakeKeshikomi;
-				urikakeKeshikomi.done();
+				repo.existsById(urikakeId);
 				result = false;
 			}
 		};
 		// do
-		service.deleteIfKeshikomiDone(urikakeId);
+		service.deleteIfExists(urikakeId);
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
-				times = 1;
-				urikakeKeshikomi.done();
+				repo.existsById(urikakeId);
 				times = 1;
 				repo.deleteById(urikakeId);
 				times = 0;
