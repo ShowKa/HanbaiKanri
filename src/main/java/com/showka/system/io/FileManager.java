@@ -23,7 +23,6 @@ public class FileManager {
 	 * 
 	 * <pre>
 	 * propertiesでファイル格納フォルダのパスを設定している場合、そこからの相対パスでファイルを取得する。
-	 * ただしこれを設定していない場合、クラスパスからファイルを取得する。
 	 * ファイルが無ければシステムエラー。
 	 * </pre>
 	 * 
@@ -66,12 +65,15 @@ public class FileManager {
 	 * @return ファイルパス
 	 */
 	private String getAbsolutePath(String pathFromRoot) {
-		String _path = pathFromRoot.replace("^" + fs, "").replaceAll("/", fs);
 		if (root == null || root.length() == 0) {
 			throw new SystemException("ファイル格納フォルダのルートパスを設定してください。");
-		} else {
-			String _root = root.endsWith(fs) ? root : root + fs;
-			return _root + _path;
 		}
+		// ファイルの相対パス
+		String _fsReg = fs.equals("\\") ? "\\\\" : fs;
+		String _path = pathFromRoot.replaceAll("/", _fsReg);
+		_path = _path.replaceAll("^" + _fsReg, "");
+		// フルパス
+		String _root = root.endsWith(_fsReg) ? root : root + fs;
+		return _root + _path;
 	}
 }
