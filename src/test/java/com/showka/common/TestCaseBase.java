@@ -39,6 +39,14 @@ public abstract class TestCaseBase extends TestCase {
 	protected static final String M_BUSHO_DATE = "m_busho_date";
 	protected static final String[] M_BUSHO_DATE_COLUMN = { "busho_id", "eigyo_date", "record_id" };
 
+	// 部署銀行口座
+	protected static final String M_BUSHO_BANK_ACCOUNT = "m_busho_bank_account";
+	protected static final String[] M_BUSHO_BANK_ACCOUNT_COLUMN = {
+			"busho_id",
+			"bank_code",
+			"account_number",
+			"record_id" };
+
 	// 社員
 	protected static final String M_SHAIN = "m_shain";
 	protected static final String[] M_SHAIN_COLUMN = { "code", "name", "shozoku_busho_id", "record_id" };
@@ -63,6 +71,10 @@ public abstract class TestCaseBase extends TestCase {
 			"shimebi",
 			"nyukin_date",
 			"record_id" };
+
+	// 振込依頼人
+	protected static final String M_FURIKOMI_IRANIN = "m_furikomi_irainin";
+	protected static final String[] M_FURIKOMI_IRANIN_COLUMN = { "kokyaku_id", "furikomi_irainin_name", "record_id" };
 
 	// 売上
 	protected static final String T_URIAGE = "t_uriage";
@@ -126,7 +138,21 @@ public abstract class TestCaseBase extends TestCase {
 
 	// 請求
 	protected static final String T_SEIKYU = "T_SEIKYU";
-	protected static final String[] T_SEIKYU_COLUMN = { "kokyaku_id", "seikyu_date", "shiharai_date", "record_id" };
+	protected static final String[] T_SEIKYU_COLUMN = {
+			"kokyaku_id",
+			"tanto_busho_id",
+			"nyukin_hoho_kubun",
+			"seikyu_date",
+			"shiharai_date",
+			"record_id" };
+
+	// 請求明細
+	protected static final String T_SEIKYU_MEISAI = "T_SEIKYU_MEISAI";
+	protected static final String[] T_SEIKYU_MEISAI_COLUMN = { "seikyu_id", "urikake_id", "kingaku", "record_id" };
+
+	// 請求売掛
+	protected static final String J_SEIKYU_URIKAKE = "J_SEIKYU_URIKAKE";
+	protected static final String[] J_SEIKYU_URIKAKE_COLUMN = { "urikake_id", "seikyu_id", "record_id" };
 
 	// 消込
 	protected static final String T_KESHIKOMI = "T_KESHIKOMI";
@@ -168,6 +194,44 @@ public abstract class TestCaseBase extends TestCase {
 			"meisai_number",
 			"shohin_id",
 			"number",
+			"record_id" };
+
+	// FB振込
+	protected static final String T_FIRM_BANK_FURIKOMI = "t_firm_bank_furikomi";
+	protected static final String[] T_FIRM_BANK_FURIKOMI_COLUMN = {
+			"transmission_date",
+			"transmission_number",
+			"bank_code",
+			"account_number",
+			"settlement_date",
+			"kingaku",
+			"furikomi_irainin_name",
+			"record_id" };
+
+	// 入金FB振込
+	protected static final String J_NYUKIN_FB_FURIKOMI = "j_nyukin_fb_furikomi";
+	protected static final String[] J_NYUKIN_FB_FURIKOMI_COLUMN = { "nyukin_id", "fb_furikomi_id", "record_id" };
+
+	// FB振分
+	protected static final String W_FIRM_BANK_FURIWAKE = "w_firm_bank_furiwake";
+	protected static final String[] W_FIRM_BANK_FURIWAKE_COLUMN = {
+			"furikomi_irainin_id",
+			"seikyu_id",
+			"saiken_kingaku",
+			"record_id" };
+
+	// FB振込マッチング
+	protected static final String W_FIRM_BANK_FURIKOMI_MATCHING = "w_firm_bank_furikomi_matching";
+	protected static final String[] W_FIRM_BANK_FURIKOMI_MATCHING_COLUMN = {
+			"fb_furikomi_id",
+			"furiwake_id",
+			"record_id" };
+
+	// FB振込マッチングエラー
+	protected static final String W_FIRM_BANK_FURIKOMI_MATCHING_ERROR = "w_firm_bank_furikomi_matching_error";
+	protected static final String[] W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_COLUMN = {
+			"fb_furikomi_id",
+			"cause",
 			"record_id" };
 
 }

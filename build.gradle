@@ -45,11 +45,13 @@ dependencies {
 
 	//よく使うライブラリたち
 	compile 'org.projectlombok:lombok:1.16.8'
-	compile 'org.apache.commons:commons-csv:1.2'
 	compile 'org.apache.commons:commons-lang3:3.4'
 	compile 'org.apache.commons:commons-io:1.3.2'
 	compile 'org.apache.commons:commons-collections4:4.1'
 
+	// csv
+	compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.9.5'
+	
 	// jooq
 	compile 'org.jooq:jooq:3.10.6'
 	runtime 'org.jooq:jooq-codegen:3.10.6'

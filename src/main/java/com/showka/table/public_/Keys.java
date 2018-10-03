@@ -4,10 +4,15 @@
 package com.showka.table.public_;
 
 
+import com.showka.table.public_.tables.C_KESHIKOMI;
 import com.showka.table.public_.tables.C_URIAGE;
+import com.showka.table.public_.tables.J_SEIKYU_URIKAKE;
 import com.showka.table.public_.tables.J_SHOHIN_IDO_URIAGE;
+import com.showka.table.public_.tables.J_URIKAKE_SEIKYU;
 import com.showka.table.public_.tables.M_BUSHO;
+import com.showka.table.public_.tables.M_BUSHO_BANK_ACCOUNT;
 import com.showka.table.public_.tables.M_BUSHO_DATE;
+import com.showka.table.public_.tables.M_FURIKOMI_IRAININ;
 import com.showka.table.public_.tables.M_KOKYAKU;
 import com.showka.table.public_.tables.M_NYUKIN_KAKE_INFO;
 import com.showka.table.public_.tables.M_SHAIN;
@@ -17,6 +22,9 @@ import com.showka.table.public_.tables.R_URIAGE;
 import com.showka.table.public_.tables.R_URIAGE_KEIJO;
 import com.showka.table.public_.tables.R_URIAGE_KEIJO_TEISEI;
 import com.showka.table.public_.tables.R_URIAGE_MEISAI;
+import com.showka.table.public_.tables.T_FIRM_BANK_FURIKOMI;
+import com.showka.table.public_.tables.T_KESHIKOMI;
+import com.showka.table.public_.tables.T_NYUKIN;
 import com.showka.table.public_.tables.T_SEIKYU;
 import com.showka.table.public_.tables.T_SEIKYU_MEISAI;
 import com.showka.table.public_.tables.T_SHOHIN_IDO;
@@ -25,10 +33,18 @@ import com.showka.table.public_.tables.T_SHOHIN_ZAIKO;
 import com.showka.table.public_.tables.T_URIAGE;
 import com.showka.table.public_.tables.T_URIAGE_MEISAI;
 import com.showka.table.public_.tables.T_URIKAKE;
+import com.showka.table.public_.tables.W_FIRM_BANK_FURIKOMI_MATCHING;
+import com.showka.table.public_.tables.W_FIRM_BANK_FURIKOMI_MATCHING_ERROR;
+import com.showka.table.public_.tables.W_FIRM_BANK_FURIWAKE;
+import com.showka.table.public_.tables.records.C_KESHIKOMI_RECORD;
 import com.showka.table.public_.tables.records.C_URIAGE_RECORD;
+import com.showka.table.public_.tables.records.J_SEIKYU_URIKAKE_RECORD;
 import com.showka.table.public_.tables.records.J_SHOHIN_IDO_URIAGE_RECORD;
+import com.showka.table.public_.tables.records.J_URIKAKE_SEIKYU_RECORD;
+import com.showka.table.public_.tables.records.M_BUSHO_BANK_ACCOUNT_RECORD;
 import com.showka.table.public_.tables.records.M_BUSHO_DATE_RECORD;
 import com.showka.table.public_.tables.records.M_BUSHO_RECORD;
+import com.showka.table.public_.tables.records.M_FURIKOMI_IRAININ_RECORD;
 import com.showka.table.public_.tables.records.M_KOKYAKU_RECORD;
 import com.showka.table.public_.tables.records.M_NYUKIN_KAKE_INFO_RECORD;
 import com.showka.table.public_.tables.records.M_SHAIN_RECORD;
@@ -38,6 +54,9 @@ import com.showka.table.public_.tables.records.R_URIAGE_KEIJO_RECORD;
 import com.showka.table.public_.tables.records.R_URIAGE_KEIJO_TEISEI_RECORD;
 import com.showka.table.public_.tables.records.R_URIAGE_MEISAI_RECORD;
 import com.showka.table.public_.tables.records.R_URIAGE_RECORD;
+import com.showka.table.public_.tables.records.T_FIRM_BANK_FURIKOMI_RECORD;
+import com.showka.table.public_.tables.records.T_KESHIKOMI_RECORD;
+import com.showka.table.public_.tables.records.T_NYUKIN_RECORD;
 import com.showka.table.public_.tables.records.T_SEIKYU_MEISAI_RECORD;
 import com.showka.table.public_.tables.records.T_SEIKYU_RECORD;
 import com.showka.table.public_.tables.records.T_SHOHIN_IDO_MEISAI_RECORD;
@@ -46,6 +65,9 @@ import com.showka.table.public_.tables.records.T_SHOHIN_ZAIKO_RECORD;
 import com.showka.table.public_.tables.records.T_URIAGE_MEISAI_RECORD;
 import com.showka.table.public_.tables.records.T_URIAGE_RECORD;
 import com.showka.table.public_.tables.records.T_URIKAKE_RECORD;
+import com.showka.table.public_.tables.records.W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_RECORD;
+import com.showka.table.public_.tables.records.W_FIRM_BANK_FURIKOMI_MATCHING_RECORD;
+import com.showka.table.public_.tables.records.W_FIRM_BANK_FURIWAKE_RECORD;
 
 import javax.annotation.Generated;
 
@@ -77,14 +99,24 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final UniqueKey<C_KESHIKOMI_RECORD> CONSTRAINT_B = UniqueKeys0.CONSTRAINT_B;
+    public static final UniqueKey<C_KESHIKOMI_RECORD> UK_SSOE3IYNBJW5S1LQAL26BKO3O = UniqueKeys0.UK_SSOE3IYNBJW5S1LQAL26BKO3O;
     public static final UniqueKey<C_URIAGE_RECORD> CONSTRAINT_6 = UniqueKeys0.CONSTRAINT_6;
     public static final UniqueKey<C_URIAGE_RECORD> UK_C90UBJW54JK7MVI3FGQ9NA2QU = UniqueKeys0.UK_C90UBJW54JK7MVI3FGQ9NA2QU;
+    public static final UniqueKey<J_SEIKYU_URIKAKE_RECORD> CONSTRAINT_B6 = UniqueKeys0.CONSTRAINT_B6;
+    public static final UniqueKey<J_SEIKYU_URIKAKE_RECORD> UK_98X5IAK847A13XRFNB7S8PS47 = UniqueKeys0.UK_98X5IAK847A13XRFNB7S8PS47;
     public static final UniqueKey<J_SHOHIN_IDO_URIAGE_RECORD> CONSTRAINT_2 = UniqueKeys0.CONSTRAINT_2;
     public static final UniqueKey<J_SHOHIN_IDO_URIAGE_RECORD> UK_CFXPYU7SU1PV9WO2AUTSACG0I = UniqueKeys0.UK_CFXPYU7SU1PV9WO2AUTSACG0I;
+    public static final UniqueKey<J_URIKAKE_SEIKYU_RECORD> CONSTRAINT_6B = UniqueKeys0.CONSTRAINT_6B;
+    public static final UniqueKey<J_URIKAKE_SEIKYU_RECORD> UK_4Q852GGA0X74LAO0IDIAB7PB1 = UniqueKeys0.UK_4Q852GGA0X74LAO0IDIAB7PB1;
     public static final UniqueKey<M_BUSHO_RECORD> CONSTRAINT_8 = UniqueKeys0.CONSTRAINT_8;
     public static final UniqueKey<M_BUSHO_RECORD> UK_5BY1GUP4TXK8FK16KGF8MPF38 = UniqueKeys0.UK_5BY1GUP4TXK8FK16KGF8MPF38;
+    public static final UniqueKey<M_BUSHO_BANK_ACCOUNT_RECORD> CONSTRAINT_2B = UniqueKeys0.CONSTRAINT_2B;
+    public static final UniqueKey<M_BUSHO_BANK_ACCOUNT_RECORD> UK_LYH59B9M0JXKR9RNUJTREW108 = UniqueKeys0.UK_LYH59B9M0JXKR9RNUJTREW108;
     public static final UniqueKey<M_BUSHO_DATE_RECORD> CONSTRAINT_E = UniqueKeys0.CONSTRAINT_E;
     public static final UniqueKey<M_BUSHO_DATE_RECORD> UK_KGBIV56WTAT03W6I4V383FU7A = UniqueKeys0.UK_KGBIV56WTAT03W6I4V383FU7A;
+    public static final UniqueKey<M_FURIKOMI_IRAININ_RECORD> CONSTRAINT_1 = UniqueKeys0.CONSTRAINT_1;
+    public static final UniqueKey<M_FURIKOMI_IRAININ_RECORD> UK_T4BDS7XGTDERQPYFQ4BRFKN0V = UniqueKeys0.UK_T4BDS7XGTDERQPYFQ4BRFKN0V;
     public static final UniqueKey<M_KOKYAKU_RECORD> CONSTRAINT_2F = UniqueKeys0.CONSTRAINT_2F;
     public static final UniqueKey<M_KOKYAKU_RECORD> UK_7UBB14KG5P5MBCYPBMRVYR7HO = UniqueKeys0.UK_7UBB14KG5P5MBCYPBMRVYR7HO;
     public static final UniqueKey<M_NYUKIN_KAKE_INFO_RECORD> CONSTRAINT_E7 = UniqueKeys0.CONSTRAINT_E7;
@@ -104,11 +136,17 @@ public class Keys {
     public static final UniqueKey<R_URIAGE_KEIJO_TEISEI_RECORD> UK_5FQTU9VF1ITABDUFF88E46ALY = UniqueKeys0.UK_5FQTU9VF1ITABDUFF88E46ALY;
     public static final UniqueKey<R_URIAGE_MEISAI_RECORD> CONSTRAINT_5 = UniqueKeys0.CONSTRAINT_5;
     public static final UniqueKey<R_URIAGE_MEISAI_RECORD> UK_DHV8J2AK6U0FRWNAWO7MHUDEP = UniqueKeys0.UK_DHV8J2AK6U0FRWNAWO7MHUDEP;
-    public static final UniqueKey<T_SEIKYU_RECORD> CONSTRAINT_4 = UniqueKeys0.CONSTRAINT_4;
+    public static final UniqueKey<T_FIRM_BANK_FURIKOMI_RECORD> CONSTRAINT_1B = UniqueKeys0.CONSTRAINT_1B;
+    public static final UniqueKey<T_FIRM_BANK_FURIKOMI_RECORD> UK_SCNOHX9Y1NGRANOP6YEHAHYWV = UniqueKeys0.UK_SCNOHX9Y1NGRANOP6YEHAHYWV;
+    public static final UniqueKey<T_KESHIKOMI_RECORD> CONSTRAINT_97 = UniqueKeys0.CONSTRAINT_97;
+    public static final UniqueKey<T_KESHIKOMI_RECORD> UK_I4KPCF09Y455HV7L6WAQ63M9K = UniqueKeys0.UK_I4KPCF09Y455HV7L6WAQ63M9K;
+    public static final UniqueKey<T_NYUKIN_RECORD> CONSTRAINT_4 = UniqueKeys0.CONSTRAINT_4;
+    public static final UniqueKey<T_NYUKIN_RECORD> UK_L792YLAIHK8HQ7S2FG0EPWB70 = UniqueKeys0.UK_L792YLAIHK8HQ7S2FG0EPWB70;
+    public static final UniqueKey<T_SEIKYU_RECORD> CONSTRAINT_48 = UniqueKeys0.CONSTRAINT_48;
     public static final UniqueKey<T_SEIKYU_RECORD> UK_4SCPAF4QMJRAM1VXMKUYJ269J = UniqueKeys0.UK_4SCPAF4QMJRAM1VXMKUYJ269J;
     public static final UniqueKey<T_SEIKYU_MEISAI_RECORD> CONSTRAINT_ED = UniqueKeys0.CONSTRAINT_ED;
     public static final UniqueKey<T_SEIKYU_MEISAI_RECORD> UK_R4P4GM00P10V2HXDQSBCNVPP0 = UniqueKeys0.UK_R4P4GM00P10V2HXDQSBCNVPP0;
-    public static final UniqueKey<T_SHOHIN_IDO_RECORD> CONSTRAINT_1 = UniqueKeys0.CONSTRAINT_1;
+    public static final UniqueKey<T_SHOHIN_IDO_RECORD> CONSTRAINT_1E = UniqueKeys0.CONSTRAINT_1E;
     public static final UniqueKey<T_SHOHIN_IDO_RECORD> UK_9HUM7RYAHI4JAIGE2V6TD9M13 = UniqueKeys0.UK_9HUM7RYAHI4JAIGE2V6TD9M13;
     public static final UniqueKey<T_SHOHIN_IDO_MEISAI_RECORD> CONSTRAINT_25 = UniqueKeys0.CONSTRAINT_25;
     public static final UniqueKey<T_SHOHIN_IDO_MEISAI_RECORD> UK_QMKOJB8N58COAAOK60IQVBJ5B = UniqueKeys0.UK_QMKOJB8N58COAAOK60IQVBJ5B;
@@ -116,18 +154,30 @@ public class Keys {
     public static final UniqueKey<T_SHOHIN_ZAIKO_RECORD> UK_97I9YEJ178G3KQCKRFJ4GJH0N = UniqueKeys0.UK_97I9YEJ178G3KQCKRFJ4GJH0N;
     public static final UniqueKey<T_URIAGE_RECORD> CONSTRAINT_4D = UniqueKeys0.CONSTRAINT_4D;
     public static final UniqueKey<T_URIAGE_RECORD> UK_9F7L0VVJA040FK4UIR58IBQUN = UniqueKeys0.UK_9F7L0VVJA040FK4UIR58IBQUN;
-    public static final UniqueKey<T_URIAGE_MEISAI_RECORD> CONSTRAINT_B = UniqueKeys0.CONSTRAINT_B;
+    public static final UniqueKey<T_URIAGE_MEISAI_RECORD> CONSTRAINT_B9 = UniqueKeys0.CONSTRAINT_B9;
     public static final UniqueKey<T_URIAGE_MEISAI_RECORD> UK_QRBW4ETEB9S2JK3SPMEXAULIG = UniqueKeys0.UK_QRBW4ETEB9S2JK3SPMEXAULIG;
     public static final UniqueKey<T_URIKAKE_RECORD> CONSTRAINT_53 = UniqueKeys0.CONSTRAINT_53;
     public static final UniqueKey<T_URIKAKE_RECORD> UK_3RCPSMXXRKKRO42FWTDIPIAXB = UniqueKeys0.UK_3RCPSMXXRKKRO42FWTDIPIAXB;
+    public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD> CONSTRAINT_A = UniqueKeys0.CONSTRAINT_A;
+    public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD> UK_F87YWKD2K029GHSGU9B9YF8P8 = UniqueKeys0.UK_F87YWKD2K029GHSGU9B9YF8P8;
+    public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_RECORD> CONSTRAINT_62 = UniqueKeys0.CONSTRAINT_62;
+    public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_RECORD> UK_KM593D34T0GN80SEUKI5LFO4F = UniqueKeys0.UK_KM593D34T0GN80SEUKI5LFO4F;
+    public static final UniqueKey<W_FIRM_BANK_FURIWAKE_RECORD> CONSTRAINT_D = UniqueKeys0.CONSTRAINT_D;
+    public static final UniqueKey<W_FIRM_BANK_FURIWAKE_RECORD> UK_O0NFTJ9KHBGOSYKRQ0M6MXIXN = UniqueKeys0.UK_O0NFTJ9KHBGOSYKRQ0M6MXIXN;
 
     // -------------------------------------------------------------------------
     // FOREIGN KEY definitions
     // -------------------------------------------------------------------------
 
+    public static final ForeignKey<C_KESHIKOMI_RECORD, T_NYUKIN_RECORD> FK76494XLSJXCW1QWO8QLVW4HUI = ForeignKeys0.FK76494XLSJXCW1QWO8QLVW4HUI;
+    public static final ForeignKey<C_KESHIKOMI_RECORD, T_URIKAKE_RECORD> FKTBCYL9MLX9OHE7CQEVIVISUF4 = ForeignKeys0.FKTBCYL9MLX9OHE7CQEVIVISUF4;
     public static final ForeignKey<C_URIAGE_RECORD, T_URIAGE_RECORD> FKEDPVU5W0BXSMRNXCHN19IA4KK = ForeignKeys0.FKEDPVU5W0BXSMRNXCHN19IA4KK;
+    public static final ForeignKey<J_SEIKYU_URIKAKE_RECORD, T_URIKAKE_RECORD> FK637NJ3XRK9G26CTQOFIEC9SX0 = ForeignKeys0.FK637NJ3XRK9G26CTQOFIEC9SX0;
+    public static final ForeignKey<J_SEIKYU_URIKAKE_RECORD, T_SEIKYU_RECORD> FK2IVRU3BRR8933JBMDDLU35Y9S = ForeignKeys0.FK2IVRU3BRR8933JBMDDLU35Y9S;
     public static final ForeignKey<J_SHOHIN_IDO_URIAGE_RECORD, T_SHOHIN_IDO_RECORD> FK5DYE4WJDXP0GYE240FAHRWIYY = ForeignKeys0.FK5DYE4WJDXP0GYE240FAHRWIYY;
     public static final ForeignKey<J_SHOHIN_IDO_URIAGE_RECORD, T_URIAGE_RECORD> FKTFEGJY18RHN048QJ3D5GH9SRV = ForeignKeys0.FKTFEGJY18RHN048QJ3D5GH9SRV;
+    public static final ForeignKey<M_BUSHO_BANK_ACCOUNT_RECORD, M_BUSHO_RECORD> FKQ9NLESW719PKWP7LFK7ALKQL7 = ForeignKeys0.FKQ9NLESW719PKWP7LFK7ALKQL7;
+    public static final ForeignKey<M_FURIKOMI_IRAININ_RECORD, M_KOKYAKU_RECORD> FKK6JOMMDT8V5VMFXWWVAE1VWBV = ForeignKeys0.FKK6JOMMDT8V5VMFXWWVAE1VWBV;
     public static final ForeignKey<M_KOKYAKU_RECORD, M_BUSHO_RECORD> FKM9UAXXH78HO91ET19MDDUBHGL = ForeignKeys0.FKM9UAXXH78HO91ET19MDDUBHGL;
     public static final ForeignKey<M_NYUKIN_KAKE_INFO_RECORD, M_KOKYAKU_RECORD> FK78QFGCRWR2OUM5CYOICF0ULU4 = ForeignKeys0.FK78QFGCRWR2OUM5CYOICF0ULU4;
     public static final ForeignKey<M_SHAIN_RECORD, M_BUSHO_RECORD> FK6EXWC57AN76H9BS794TJGTUGN = ForeignKeys0.FK6EXWC57AN76H9BS794TJGTUGN;
@@ -138,7 +188,12 @@ public class Keys {
     public static final ForeignKey<R_URIAGE_KEIJO_TEISEI_RECORD, R_URIAGE_RECORD> FKJ7YBAXR6IN6VUA1KLM2I10YEK = ForeignKeys0.FKJ7YBAXR6IN6VUA1KLM2I10YEK;
     public static final ForeignKey<R_URIAGE_MEISAI_RECORD, R_URIAGE_RECORD> FKBIIJRTBUHPP07F2W0VMMA3P8F = ForeignKeys0.FKBIIJRTBUHPP07F2W0VMMA3P8F;
     public static final ForeignKey<R_URIAGE_MEISAI_RECORD, M_SHOHIN_RECORD> FKMGXRSBS5HMJ32AOXEMX6UROQR = ForeignKeys0.FKMGXRSBS5HMJ32AOXEMX6UROQR;
+    public static final ForeignKey<T_KESHIKOMI_RECORD, T_NYUKIN_RECORD> FKDDDHKUFDK40A00OBP9JYRXDWS = ForeignKeys0.FKDDDHKUFDK40A00OBP9JYRXDWS;
+    public static final ForeignKey<T_KESHIKOMI_RECORD, T_URIKAKE_RECORD> FKLHQSQ859ORWM4HL275BXGEOYX = ForeignKeys0.FKLHQSQ859ORWM4HL275BXGEOYX;
+    public static final ForeignKey<T_NYUKIN_RECORD, M_BUSHO_RECORD> FK373T5DKXS4W8AX6S8YKTKCYF1 = ForeignKeys0.FK373T5DKXS4W8AX6S8YKTKCYF1;
+    public static final ForeignKey<T_NYUKIN_RECORD, M_KOKYAKU_RECORD> FKEBDCJX6BN1VW9767JNL3HIFC3 = ForeignKeys0.FKEBDCJX6BN1VW9767JNL3HIFC3;
     public static final ForeignKey<T_SEIKYU_RECORD, M_KOKYAKU_RECORD> FKS8KT4C3Q2N4GLUH51SN6LLX73 = ForeignKeys0.FKS8KT4C3Q2N4GLUH51SN6LLX73;
+    public static final ForeignKey<T_SEIKYU_RECORD, M_BUSHO_RECORD> FKMYSDPL0APGLYANVFC65WIR2U = ForeignKeys0.FKMYSDPL0APGLYANVFC65WIR2U;
     public static final ForeignKey<T_SEIKYU_MEISAI_RECORD, T_SEIKYU_RECORD> FKIJ280RY31WVS01KUE3MGM0XP0 = ForeignKeys0.FKIJ280RY31WVS01KUE3MGM0XP0;
     public static final ForeignKey<T_SEIKYU_MEISAI_RECORD, T_URIKAKE_RECORD> FK9AXJO7K5P73YYEWXSIC6HT04W = ForeignKeys0.FK9AXJO7K5P73YYEWXSIC6HT04W;
     public static final ForeignKey<T_SHOHIN_IDO_RECORD, M_BUSHO_RECORD> FKK5EMLYFTBF5PBADDC4QFNMGLH = ForeignKeys0.FKK5EMLYFTBF5PBADDC4QFNMGLH;
@@ -150,20 +205,35 @@ public class Keys {
     public static final ForeignKey<T_URIAGE_MEISAI_RECORD, T_URIAGE_RECORD> FKEFJRU4SE98KKBOBDKHDJC8IIM = ForeignKeys0.FKEFJRU4SE98KKBOBDKHDJC8IIM;
     public static final ForeignKey<T_URIAGE_MEISAI_RECORD, M_SHOHIN_RECORD> FKR12W6PQB2GNMH56OFRHY0LOSC = ForeignKeys0.FKR12W6PQB2GNMH56OFRHY0LOSC;
     public static final ForeignKey<T_URIKAKE_RECORD, T_URIAGE_RECORD> FK5QEL4CGVEMJKPVIBO5647PES1 = ForeignKeys0.FK5QEL4CGVEMJKPVIBO5647PES1;
+    public static final ForeignKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD, T_FIRM_BANK_FURIKOMI_RECORD> FKGIKKFU7X4CJ37NU7JOSOB3OJB = ForeignKeys0.FKGIKKFU7X4CJ37NU7JOSOB3OJB;
+    public static final ForeignKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD, W_FIRM_BANK_FURIWAKE_RECORD> FK41MGAYK1QC7W2E1M1BJJRIGYA = ForeignKeys0.FK41MGAYK1QC7W2E1M1BJJRIGYA;
+    public static final ForeignKey<W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_RECORD, T_FIRM_BANK_FURIKOMI_RECORD> FKLVOYS9EDYUHVK71CA1HHLRKCX = ForeignKeys0.FKLVOYS9EDYUHVK71CA1HHLRKCX;
+    public static final ForeignKey<W_FIRM_BANK_FURIWAKE_RECORD, M_FURIKOMI_IRAININ_RECORD> FKEHHL7O3JECBBM9M62M0U7MKVV = ForeignKeys0.FKEHHL7O3JECBBM9M62M0U7MKVV;
+    public static final ForeignKey<W_FIRM_BANK_FURIWAKE_RECORD, T_SEIKYU_RECORD> FKOPWLF5YSCBCMYSMND5VUG1DC3 = ForeignKeys0.FKOPWLF5YSCBCMYSMND5VUG1DC3;
 
     // -------------------------------------------------------------------------
     // [#1459] distribute members to avoid static initialisers > 64kb
     // -------------------------------------------------------------------------
 
     private static class UniqueKeys0 {
+        public static final UniqueKey<C_KESHIKOMI_RECORD> CONSTRAINT_B = Internal.createUniqueKey(C_KESHIKOMI.c_keshikomi, "CONSTRAINT_B", C_KESHIKOMI.c_keshikomi.id);
+        public static final UniqueKey<C_KESHIKOMI_RECORD> UK_SSOE3IYNBJW5S1LQAL26BKO3O = Internal.createUniqueKey(C_KESHIKOMI.c_keshikomi, "UK_SSOE3IYNBJW5S1LQAL26BKO3O", C_KESHIKOMI.c_keshikomi.record_id);
         public static final UniqueKey<C_URIAGE_RECORD> CONSTRAINT_6 = Internal.createUniqueKey(C_URIAGE.c_uriage, "CONSTRAINT_6", C_URIAGE.c_uriage.uriage_id);
         public static final UniqueKey<C_URIAGE_RECORD> UK_C90UBJW54JK7MVI3FGQ9NA2QU = Internal.createUniqueKey(C_URIAGE.c_uriage, "UK_C90UBJW54JK7MVI3FGQ9NA2QU", C_URIAGE.c_uriage.record_id);
+        public static final UniqueKey<J_SEIKYU_URIKAKE_RECORD> CONSTRAINT_B6 = Internal.createUniqueKey(J_SEIKYU_URIKAKE.j_seikyu_urikake, "CONSTRAINT_B6", J_SEIKYU_URIKAKE.j_seikyu_urikake.urikake_id);
+        public static final UniqueKey<J_SEIKYU_URIKAKE_RECORD> UK_98X5IAK847A13XRFNB7S8PS47 = Internal.createUniqueKey(J_SEIKYU_URIKAKE.j_seikyu_urikake, "UK_98X5IAK847A13XRFNB7S8PS47", J_SEIKYU_URIKAKE.j_seikyu_urikake.record_id);
         public static final UniqueKey<J_SHOHIN_IDO_URIAGE_RECORD> CONSTRAINT_2 = Internal.createUniqueKey(J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage, "CONSTRAINT_2", J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage.shohin_ido_id);
         public static final UniqueKey<J_SHOHIN_IDO_URIAGE_RECORD> UK_CFXPYU7SU1PV9WO2AUTSACG0I = Internal.createUniqueKey(J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage, "UK_CFXPYU7SU1PV9WO2AUTSACG0I", J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage.record_id);
+        public static final UniqueKey<J_URIKAKE_SEIKYU_RECORD> CONSTRAINT_6B = Internal.createUniqueKey(J_URIKAKE_SEIKYU.j_urikake_seikyu, "CONSTRAINT_6B", J_URIKAKE_SEIKYU.j_urikake_seikyu.urikake_id);
+        public static final UniqueKey<J_URIKAKE_SEIKYU_RECORD> UK_4Q852GGA0X74LAO0IDIAB7PB1 = Internal.createUniqueKey(J_URIKAKE_SEIKYU.j_urikake_seikyu, "UK_4Q852GGA0X74LAO0IDIAB7PB1", J_URIKAKE_SEIKYU.j_urikake_seikyu.record_id);
         public static final UniqueKey<M_BUSHO_RECORD> CONSTRAINT_8 = Internal.createUniqueKey(M_BUSHO.m_busho, "CONSTRAINT_8", M_BUSHO.m_busho.code);
         public static final UniqueKey<M_BUSHO_RECORD> UK_5BY1GUP4TXK8FK16KGF8MPF38 = Internal.createUniqueKey(M_BUSHO.m_busho, "UK_5BY1GUP4TXK8FK16KGF8MPF38", M_BUSHO.m_busho.record_id);
+        public static final UniqueKey<M_BUSHO_BANK_ACCOUNT_RECORD> CONSTRAINT_2B = Internal.createUniqueKey(M_BUSHO_BANK_ACCOUNT.m_busho_bank_account, "CONSTRAINT_2B", M_BUSHO_BANK_ACCOUNT.m_busho_bank_account.busho_id);
+        public static final UniqueKey<M_BUSHO_BANK_ACCOUNT_RECORD> UK_LYH59B9M0JXKR9RNUJTREW108 = Internal.createUniqueKey(M_BUSHO_BANK_ACCOUNT.m_busho_bank_account, "UK_LYH59B9M0JXKR9RNUJTREW108", M_BUSHO_BANK_ACCOUNT.m_busho_bank_account.record_id);
         public static final UniqueKey<M_BUSHO_DATE_RECORD> CONSTRAINT_E = Internal.createUniqueKey(M_BUSHO_DATE.m_busho_date, "CONSTRAINT_E", M_BUSHO_DATE.m_busho_date.busho_id);
         public static final UniqueKey<M_BUSHO_DATE_RECORD> UK_KGBIV56WTAT03W6I4V383FU7A = Internal.createUniqueKey(M_BUSHO_DATE.m_busho_date, "UK_KGBIV56WTAT03W6I4V383FU7A", M_BUSHO_DATE.m_busho_date.record_id);
+        public static final UniqueKey<M_FURIKOMI_IRAININ_RECORD> CONSTRAINT_1 = Internal.createUniqueKey(M_FURIKOMI_IRAININ.m_furikomi_irainin, "CONSTRAINT_1", M_FURIKOMI_IRAININ.m_furikomi_irainin.furikomi_irainin_name, M_FURIKOMI_IRAININ.m_furikomi_irainin.kokyaku_id);
+        public static final UniqueKey<M_FURIKOMI_IRAININ_RECORD> UK_T4BDS7XGTDERQPYFQ4BRFKN0V = Internal.createUniqueKey(M_FURIKOMI_IRAININ.m_furikomi_irainin, "UK_T4BDS7XGTDERQPYFQ4BRFKN0V", M_FURIKOMI_IRAININ.m_furikomi_irainin.record_id);
         public static final UniqueKey<M_KOKYAKU_RECORD> CONSTRAINT_2F = Internal.createUniqueKey(M_KOKYAKU.m_kokyaku, "CONSTRAINT_2F", M_KOKYAKU.m_kokyaku.code);
         public static final UniqueKey<M_KOKYAKU_RECORD> UK_7UBB14KG5P5MBCYPBMRVYR7HO = Internal.createUniqueKey(M_KOKYAKU.m_kokyaku, "UK_7UBB14KG5P5MBCYPBMRVYR7HO", M_KOKYAKU.m_kokyaku.record_id);
         public static final UniqueKey<M_NYUKIN_KAKE_INFO_RECORD> CONSTRAINT_E7 = Internal.createUniqueKey(M_NYUKIN_KAKE_INFO.m_nyukin_kake_info, "CONSTRAINT_E7", M_NYUKIN_KAKE_INFO.m_nyukin_kake_info.kokyaku_id);
@@ -183,11 +253,17 @@ public class Keys {
         public static final UniqueKey<R_URIAGE_KEIJO_TEISEI_RECORD> UK_5FQTU9VF1ITABDUFF88E46ALY = Internal.createUniqueKey(R_URIAGE_KEIJO_TEISEI.r_uriage_keijo_teisei, "UK_5FQTU9VF1ITABDUFF88E46ALY", R_URIAGE_KEIJO_TEISEI.r_uriage_keijo_teisei.record_id);
         public static final UniqueKey<R_URIAGE_MEISAI_RECORD> CONSTRAINT_5 = Internal.createUniqueKey(R_URIAGE_MEISAI.r_uriage_meisai, "CONSTRAINT_5", R_URIAGE_MEISAI.r_uriage_meisai.meisai_number, R_URIAGE_MEISAI.r_uriage_meisai.uriage_id);
         public static final UniqueKey<R_URIAGE_MEISAI_RECORD> UK_DHV8J2AK6U0FRWNAWO7MHUDEP = Internal.createUniqueKey(R_URIAGE_MEISAI.r_uriage_meisai, "UK_DHV8J2AK6U0FRWNAWO7MHUDEP", R_URIAGE_MEISAI.r_uriage_meisai.record_id);
-        public static final UniqueKey<T_SEIKYU_RECORD> CONSTRAINT_4 = Internal.createUniqueKey(T_SEIKYU.t_seikyu, "CONSTRAINT_4", T_SEIKYU.t_seikyu.kokyaku_id, T_SEIKYU.t_seikyu.seikyu_date);
+        public static final UniqueKey<T_FIRM_BANK_FURIKOMI_RECORD> CONSTRAINT_1B = Internal.createUniqueKey(T_FIRM_BANK_FURIKOMI.t_firm_bank_furikomi, "CONSTRAINT_1B", T_FIRM_BANK_FURIKOMI.t_firm_bank_furikomi.transmission_date, T_FIRM_BANK_FURIKOMI.t_firm_bank_furikomi.transmission_number);
+        public static final UniqueKey<T_FIRM_BANK_FURIKOMI_RECORD> UK_SCNOHX9Y1NGRANOP6YEHAHYWV = Internal.createUniqueKey(T_FIRM_BANK_FURIKOMI.t_firm_bank_furikomi, "UK_SCNOHX9Y1NGRANOP6YEHAHYWV", T_FIRM_BANK_FURIKOMI.t_firm_bank_furikomi.record_id);
+        public static final UniqueKey<T_KESHIKOMI_RECORD> CONSTRAINT_97 = Internal.createUniqueKey(T_KESHIKOMI.t_keshikomi, "CONSTRAINT_97", T_KESHIKOMI.t_keshikomi.id);
+        public static final UniqueKey<T_KESHIKOMI_RECORD> UK_I4KPCF09Y455HV7L6WAQ63M9K = Internal.createUniqueKey(T_KESHIKOMI.t_keshikomi, "UK_I4KPCF09Y455HV7L6WAQ63M9K", T_KESHIKOMI.t_keshikomi.record_id);
+        public static final UniqueKey<T_NYUKIN_RECORD> CONSTRAINT_4 = Internal.createUniqueKey(T_NYUKIN.t_nyukin, "CONSTRAINT_4", T_NYUKIN.t_nyukin.id);
+        public static final UniqueKey<T_NYUKIN_RECORD> UK_L792YLAIHK8HQ7S2FG0EPWB70 = Internal.createUniqueKey(T_NYUKIN.t_nyukin, "UK_L792YLAIHK8HQ7S2FG0EPWB70", T_NYUKIN.t_nyukin.record_id);
+        public static final UniqueKey<T_SEIKYU_RECORD> CONSTRAINT_48 = Internal.createUniqueKey(T_SEIKYU.t_seikyu, "CONSTRAINT_48", T_SEIKYU.t_seikyu.kokyaku_id, T_SEIKYU.t_seikyu.seikyu_date);
         public static final UniqueKey<T_SEIKYU_RECORD> UK_4SCPAF4QMJRAM1VXMKUYJ269J = Internal.createUniqueKey(T_SEIKYU.t_seikyu, "UK_4SCPAF4QMJRAM1VXMKUYJ269J", T_SEIKYU.t_seikyu.record_id);
         public static final UniqueKey<T_SEIKYU_MEISAI_RECORD> CONSTRAINT_ED = Internal.createUniqueKey(T_SEIKYU_MEISAI.t_seikyu_meisai, "CONSTRAINT_ED", T_SEIKYU_MEISAI.t_seikyu_meisai.seikyu_id, T_SEIKYU_MEISAI.t_seikyu_meisai.urikake_id);
         public static final UniqueKey<T_SEIKYU_MEISAI_RECORD> UK_R4P4GM00P10V2HXDQSBCNVPP0 = Internal.createUniqueKey(T_SEIKYU_MEISAI.t_seikyu_meisai, "UK_R4P4GM00P10V2HXDQSBCNVPP0", T_SEIKYU_MEISAI.t_seikyu_meisai.record_id);
-        public static final UniqueKey<T_SHOHIN_IDO_RECORD> CONSTRAINT_1 = Internal.createUniqueKey(T_SHOHIN_IDO.t_shohin_ido, "CONSTRAINT_1", T_SHOHIN_IDO.t_shohin_ido.id);
+        public static final UniqueKey<T_SHOHIN_IDO_RECORD> CONSTRAINT_1E = Internal.createUniqueKey(T_SHOHIN_IDO.t_shohin_ido, "CONSTRAINT_1E", T_SHOHIN_IDO.t_shohin_ido.id);
         public static final UniqueKey<T_SHOHIN_IDO_RECORD> UK_9HUM7RYAHI4JAIGE2V6TD9M13 = Internal.createUniqueKey(T_SHOHIN_IDO.t_shohin_ido, "UK_9HUM7RYAHI4JAIGE2V6TD9M13", T_SHOHIN_IDO.t_shohin_ido.record_id);
         public static final UniqueKey<T_SHOHIN_IDO_MEISAI_RECORD> CONSTRAINT_25 = Internal.createUniqueKey(T_SHOHIN_IDO_MEISAI.t_shohin_ido_meisai, "CONSTRAINT_25", T_SHOHIN_IDO_MEISAI.t_shohin_ido_meisai.meisai_number, T_SHOHIN_IDO_MEISAI.t_shohin_ido_meisai.shohin_ido_id);
         public static final UniqueKey<T_SHOHIN_IDO_MEISAI_RECORD> UK_QMKOJB8N58COAAOK60IQVBJ5B = Internal.createUniqueKey(T_SHOHIN_IDO_MEISAI.t_shohin_ido_meisai, "UK_QMKOJB8N58COAAOK60IQVBJ5B", T_SHOHIN_IDO_MEISAI.t_shohin_ido_meisai.record_id);
@@ -195,16 +271,28 @@ public class Keys {
         public static final UniqueKey<T_SHOHIN_ZAIKO_RECORD> UK_97I9YEJ178G3KQCKRFJ4GJH0N = Internal.createUniqueKey(T_SHOHIN_ZAIKO.t_shohin_zaiko, "UK_97I9YEJ178G3KQCKRFJ4GJH0N", T_SHOHIN_ZAIKO.t_shohin_zaiko.record_id);
         public static final UniqueKey<T_URIAGE_RECORD> CONSTRAINT_4D = Internal.createUniqueKey(T_URIAGE.t_uriage, "CONSTRAINT_4D", T_URIAGE.t_uriage.denpyo_number, T_URIAGE.t_uriage.kokyaku_id);
         public static final UniqueKey<T_URIAGE_RECORD> UK_9F7L0VVJA040FK4UIR58IBQUN = Internal.createUniqueKey(T_URIAGE.t_uriage, "UK_9F7L0VVJA040FK4UIR58IBQUN", T_URIAGE.t_uriage.record_id);
-        public static final UniqueKey<T_URIAGE_MEISAI_RECORD> CONSTRAINT_B = Internal.createUniqueKey(T_URIAGE_MEISAI.t_uriage_meisai, "CONSTRAINT_B", T_URIAGE_MEISAI.t_uriage_meisai.meisai_number, T_URIAGE_MEISAI.t_uriage_meisai.uriage_id);
+        public static final UniqueKey<T_URIAGE_MEISAI_RECORD> CONSTRAINT_B9 = Internal.createUniqueKey(T_URIAGE_MEISAI.t_uriage_meisai, "CONSTRAINT_B9", T_URIAGE_MEISAI.t_uriage_meisai.meisai_number, T_URIAGE_MEISAI.t_uriage_meisai.uriage_id);
         public static final UniqueKey<T_URIAGE_MEISAI_RECORD> UK_QRBW4ETEB9S2JK3SPMEXAULIG = Internal.createUniqueKey(T_URIAGE_MEISAI.t_uriage_meisai, "UK_QRBW4ETEB9S2JK3SPMEXAULIG", T_URIAGE_MEISAI.t_uriage_meisai.record_id);
         public static final UniqueKey<T_URIKAKE_RECORD> CONSTRAINT_53 = Internal.createUniqueKey(T_URIKAKE.t_urikake, "CONSTRAINT_53", T_URIKAKE.t_urikake.uriage_id);
         public static final UniqueKey<T_URIKAKE_RECORD> UK_3RCPSMXXRKKRO42FWTDIPIAXB = Internal.createUniqueKey(T_URIKAKE.t_urikake, "UK_3RCPSMXXRKKRO42FWTDIPIAXB", T_URIKAKE.t_urikake.record_id);
+        public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD> CONSTRAINT_A = Internal.createUniqueKey(W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching, "CONSTRAINT_A", W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching.fb_furikomi_id, W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching.furiwake_id);
+        public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD> UK_F87YWKD2K029GHSGU9B9YF8P8 = Internal.createUniqueKey(W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching, "UK_F87YWKD2K029GHSGU9B9YF8P8", W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching.record_id);
+        public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_RECORD> CONSTRAINT_62 = Internal.createUniqueKey(W_FIRM_BANK_FURIKOMI_MATCHING_ERROR.w_firm_bank_furikomi_matching_error, "CONSTRAINT_62", W_FIRM_BANK_FURIKOMI_MATCHING_ERROR.w_firm_bank_furikomi_matching_error.fb_furikomi_id);
+        public static final UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_RECORD> UK_KM593D34T0GN80SEUKI5LFO4F = Internal.createUniqueKey(W_FIRM_BANK_FURIKOMI_MATCHING_ERROR.w_firm_bank_furikomi_matching_error, "UK_KM593D34T0GN80SEUKI5LFO4F", W_FIRM_BANK_FURIKOMI_MATCHING_ERROR.w_firm_bank_furikomi_matching_error.record_id);
+        public static final UniqueKey<W_FIRM_BANK_FURIWAKE_RECORD> CONSTRAINT_D = Internal.createUniqueKey(W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake, "CONSTRAINT_D", W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake.furikomi_irainin_id, W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake.seikyu_id);
+        public static final UniqueKey<W_FIRM_BANK_FURIWAKE_RECORD> UK_O0NFTJ9KHBGOSYKRQ0M6MXIXN = Internal.createUniqueKey(W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake, "UK_O0NFTJ9KHBGOSYKRQ0M6MXIXN", W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake.record_id);
     }
 
     private static class ForeignKeys0 {
+        public static final ForeignKey<C_KESHIKOMI_RECORD, T_NYUKIN_RECORD> FK76494XLSJXCW1QWO8QLVW4HUI = Internal.createForeignKey(com.showka.table.public_.Keys.UK_L792YLAIHK8HQ7S2FG0EPWB70, C_KESHIKOMI.c_keshikomi, "FK76494XLSJXCW1QWO8QLVW4HUI", C_KESHIKOMI.c_keshikomi.nyukin_id);
+        public static final ForeignKey<C_KESHIKOMI_RECORD, T_URIKAKE_RECORD> FKTBCYL9MLX9OHE7CQEVIVISUF4 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_3RCPSMXXRKKRO42FWTDIPIAXB, C_KESHIKOMI.c_keshikomi, "FKTBCYL9MLX9OHE7CQEVIVISUF4", C_KESHIKOMI.c_keshikomi.urikake_id);
         public static final ForeignKey<C_URIAGE_RECORD, T_URIAGE_RECORD> FKEDPVU5W0BXSMRNXCHN19IA4KK = Internal.createForeignKey(com.showka.table.public_.Keys.UK_9F7L0VVJA040FK4UIR58IBQUN, C_URIAGE.c_uriage, "FKEDPVU5W0BXSMRNXCHN19IA4KK", C_URIAGE.c_uriage.uriage_id);
+        public static final ForeignKey<J_SEIKYU_URIKAKE_RECORD, T_URIKAKE_RECORD> FK637NJ3XRK9G26CTQOFIEC9SX0 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_3RCPSMXXRKKRO42FWTDIPIAXB, J_SEIKYU_URIKAKE.j_seikyu_urikake, "FK637NJ3XRK9G26CTQOFIEC9SX0", J_SEIKYU_URIKAKE.j_seikyu_urikake.urikake_id);
+        public static final ForeignKey<J_SEIKYU_URIKAKE_RECORD, T_SEIKYU_RECORD> FK2IVRU3BRR8933JBMDDLU35Y9S = Internal.createForeignKey(com.showka.table.public_.Keys.UK_4SCPAF4QMJRAM1VXMKUYJ269J, J_SEIKYU_URIKAKE.j_seikyu_urikake, "FK2IVRU3BRR8933JBMDDLU35Y9S", J_SEIKYU_URIKAKE.j_seikyu_urikake.seikyu_id);
         public static final ForeignKey<J_SHOHIN_IDO_URIAGE_RECORD, T_SHOHIN_IDO_RECORD> FK5DYE4WJDXP0GYE240FAHRWIYY = Internal.createForeignKey(com.showka.table.public_.Keys.UK_9HUM7RYAHI4JAIGE2V6TD9M13, J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage, "FK5DYE4WJDXP0GYE240FAHRWIYY", J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage.shohin_ido_id);
         public static final ForeignKey<J_SHOHIN_IDO_URIAGE_RECORD, T_URIAGE_RECORD> FKTFEGJY18RHN048QJ3D5GH9SRV = Internal.createForeignKey(com.showka.table.public_.Keys.UK_9F7L0VVJA040FK4UIR58IBQUN, J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage, "FKTFEGJY18RHN048QJ3D5GH9SRV", J_SHOHIN_IDO_URIAGE.j_shohin_ido_uriage.uriage_id);
+        public static final ForeignKey<M_BUSHO_BANK_ACCOUNT_RECORD, M_BUSHO_RECORD> FKQ9NLESW719PKWP7LFK7ALKQL7 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_5BY1GUP4TXK8FK16KGF8MPF38, M_BUSHO_BANK_ACCOUNT.m_busho_bank_account, "FKQ9NLESW719PKWP7LFK7ALKQL7", M_BUSHO_BANK_ACCOUNT.m_busho_bank_account.busho_id);
+        public static final ForeignKey<M_FURIKOMI_IRAININ_RECORD, M_KOKYAKU_RECORD> FKK6JOMMDT8V5VMFXWWVAE1VWBV = Internal.createForeignKey(com.showka.table.public_.Keys.UK_7UBB14KG5P5MBCYPBMRVYR7HO, M_FURIKOMI_IRAININ.m_furikomi_irainin, "FKK6JOMMDT8V5VMFXWWVAE1VWBV", M_FURIKOMI_IRAININ.m_furikomi_irainin.kokyaku_id);
         public static final ForeignKey<M_KOKYAKU_RECORD, M_BUSHO_RECORD> FKM9UAXXH78HO91ET19MDDUBHGL = Internal.createForeignKey(com.showka.table.public_.Keys.UK_5BY1GUP4TXK8FK16KGF8MPF38, M_KOKYAKU.m_kokyaku, "FKM9UAXXH78HO91ET19MDDUBHGL", M_KOKYAKU.m_kokyaku.shukan_busho_id);
         public static final ForeignKey<M_NYUKIN_KAKE_INFO_RECORD, M_KOKYAKU_RECORD> FK78QFGCRWR2OUM5CYOICF0ULU4 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_7UBB14KG5P5MBCYPBMRVYR7HO, M_NYUKIN_KAKE_INFO.m_nyukin_kake_info, "FK78QFGCRWR2OUM5CYOICF0ULU4", M_NYUKIN_KAKE_INFO.m_nyukin_kake_info.kokyaku_id);
         public static final ForeignKey<M_SHAIN_RECORD, M_BUSHO_RECORD> FK6EXWC57AN76H9BS794TJGTUGN = Internal.createForeignKey(com.showka.table.public_.Keys.UK_5BY1GUP4TXK8FK16KGF8MPF38, M_SHAIN.m_shain, "FK6EXWC57AN76H9BS794TJGTUGN", M_SHAIN.m_shain.shozoku_busho_id);
@@ -215,7 +303,12 @@ public class Keys {
         public static final ForeignKey<R_URIAGE_KEIJO_TEISEI_RECORD, R_URIAGE_RECORD> FKJ7YBAXR6IN6VUA1KLM2I10YEK = Internal.createForeignKey(com.showka.table.public_.Keys.UK_3PUXJQQMYDE93SCH3O89I3UV7, R_URIAGE_KEIJO_TEISEI.r_uriage_keijo_teisei, "FKJ7YBAXR6IN6VUA1KLM2I10YEK", R_URIAGE_KEIJO_TEISEI.r_uriage_keijo_teisei.uriage_rireki_id);
         public static final ForeignKey<R_URIAGE_MEISAI_RECORD, R_URIAGE_RECORD> FKBIIJRTBUHPP07F2W0VMMA3P8F = Internal.createForeignKey(com.showka.table.public_.Keys.UK_3PUXJQQMYDE93SCH3O89I3UV7, R_URIAGE_MEISAI.r_uriage_meisai, "FKBIIJRTBUHPP07F2W0VMMA3P8F", R_URIAGE_MEISAI.r_uriage_meisai.uriage_id);
         public static final ForeignKey<R_URIAGE_MEISAI_RECORD, M_SHOHIN_RECORD> FKMGXRSBS5HMJ32AOXEMX6UROQR = Internal.createForeignKey(com.showka.table.public_.Keys.UK_QQ0UP8I0X3HO6U8CL0QEMQ4QJ, R_URIAGE_MEISAI.r_uriage_meisai, "FKMGXRSBS5HMJ32AOXEMX6UROQR", R_URIAGE_MEISAI.r_uriage_meisai.shohin_id);
+        public static final ForeignKey<T_KESHIKOMI_RECORD, T_NYUKIN_RECORD> FKDDDHKUFDK40A00OBP9JYRXDWS = Internal.createForeignKey(com.showka.table.public_.Keys.UK_L792YLAIHK8HQ7S2FG0EPWB70, T_KESHIKOMI.t_keshikomi, "FKDDDHKUFDK40A00OBP9JYRXDWS", T_KESHIKOMI.t_keshikomi.nyukin_id);
+        public static final ForeignKey<T_KESHIKOMI_RECORD, T_URIKAKE_RECORD> FKLHQSQ859ORWM4HL275BXGEOYX = Internal.createForeignKey(com.showka.table.public_.Keys.UK_3RCPSMXXRKKRO42FWTDIPIAXB, T_KESHIKOMI.t_keshikomi, "FKLHQSQ859ORWM4HL275BXGEOYX", T_KESHIKOMI.t_keshikomi.urikake_id);
+        public static final ForeignKey<T_NYUKIN_RECORD, M_BUSHO_RECORD> FK373T5DKXS4W8AX6S8YKTKCYF1 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_5BY1GUP4TXK8FK16KGF8MPF38, T_NYUKIN.t_nyukin, "FK373T5DKXS4W8AX6S8YKTKCYF1", T_NYUKIN.t_nyukin.busho_id);
+        public static final ForeignKey<T_NYUKIN_RECORD, M_KOKYAKU_RECORD> FKEBDCJX6BN1VW9767JNL3HIFC3 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_7UBB14KG5P5MBCYPBMRVYR7HO, T_NYUKIN.t_nyukin, "FKEBDCJX6BN1VW9767JNL3HIFC3", T_NYUKIN.t_nyukin.kokyaku_id);
         public static final ForeignKey<T_SEIKYU_RECORD, M_KOKYAKU_RECORD> FKS8KT4C3Q2N4GLUH51SN6LLX73 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_7UBB14KG5P5MBCYPBMRVYR7HO, T_SEIKYU.t_seikyu, "FKS8KT4C3Q2N4GLUH51SN6LLX73", T_SEIKYU.t_seikyu.kokyaku_id);
+        public static final ForeignKey<T_SEIKYU_RECORD, M_BUSHO_RECORD> FKMYSDPL0APGLYANVFC65WIR2U = Internal.createForeignKey(com.showka.table.public_.Keys.UK_5BY1GUP4TXK8FK16KGF8MPF38, T_SEIKYU.t_seikyu, "FKMYSDPL0APGLYANVFC65WIR2U", T_SEIKYU.t_seikyu.tanto_busho_id);
         public static final ForeignKey<T_SEIKYU_MEISAI_RECORD, T_SEIKYU_RECORD> FKIJ280RY31WVS01KUE3MGM0XP0 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_4SCPAF4QMJRAM1VXMKUYJ269J, T_SEIKYU_MEISAI.t_seikyu_meisai, "FKIJ280RY31WVS01KUE3MGM0XP0", T_SEIKYU_MEISAI.t_seikyu_meisai.seikyu_id);
         public static final ForeignKey<T_SEIKYU_MEISAI_RECORD, T_URIKAKE_RECORD> FK9AXJO7K5P73YYEWXSIC6HT04W = Internal.createForeignKey(com.showka.table.public_.Keys.UK_3RCPSMXXRKKRO42FWTDIPIAXB, T_SEIKYU_MEISAI.t_seikyu_meisai, "FK9AXJO7K5P73YYEWXSIC6HT04W", T_SEIKYU_MEISAI.t_seikyu_meisai.urikake_id);
         public static final ForeignKey<T_SHOHIN_IDO_RECORD, M_BUSHO_RECORD> FKK5EMLYFTBF5PBADDC4QFNMGLH = Internal.createForeignKey(com.showka.table.public_.Keys.UK_5BY1GUP4TXK8FK16KGF8MPF38, T_SHOHIN_IDO.t_shohin_ido, "FKK5EMLYFTBF5PBADDC4QFNMGLH", T_SHOHIN_IDO.t_shohin_ido.busho_id);
@@ -227,5 +320,10 @@ public class Keys {
         public static final ForeignKey<T_URIAGE_MEISAI_RECORD, T_URIAGE_RECORD> FKEFJRU4SE98KKBOBDKHDJC8IIM = Internal.createForeignKey(com.showka.table.public_.Keys.UK_9F7L0VVJA040FK4UIR58IBQUN, T_URIAGE_MEISAI.t_uriage_meisai, "FKEFJRU4SE98KKBOBDKHDJC8IIM", T_URIAGE_MEISAI.t_uriage_meisai.uriage_id);
         public static final ForeignKey<T_URIAGE_MEISAI_RECORD, M_SHOHIN_RECORD> FKR12W6PQB2GNMH56OFRHY0LOSC = Internal.createForeignKey(com.showka.table.public_.Keys.UK_QQ0UP8I0X3HO6U8CL0QEMQ4QJ, T_URIAGE_MEISAI.t_uriage_meisai, "FKR12W6PQB2GNMH56OFRHY0LOSC", T_URIAGE_MEISAI.t_uriage_meisai.shohin_id);
         public static final ForeignKey<T_URIKAKE_RECORD, T_URIAGE_RECORD> FK5QEL4CGVEMJKPVIBO5647PES1 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_9F7L0VVJA040FK4UIR58IBQUN, T_URIKAKE.t_urikake, "FK5QEL4CGVEMJKPVIBO5647PES1", T_URIKAKE.t_urikake.uriage_id);
+        public static final ForeignKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD, T_FIRM_BANK_FURIKOMI_RECORD> FKGIKKFU7X4CJ37NU7JOSOB3OJB = Internal.createForeignKey(com.showka.table.public_.Keys.UK_SCNOHX9Y1NGRANOP6YEHAHYWV, W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching, "FKGIKKFU7X4CJ37NU7JOSOB3OJB", W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching.fb_furikomi_id);
+        public static final ForeignKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD, W_FIRM_BANK_FURIWAKE_RECORD> FK41MGAYK1QC7W2E1M1BJJRIGYA = Internal.createForeignKey(com.showka.table.public_.Keys.UK_O0NFTJ9KHBGOSYKRQ0M6MXIXN, W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching, "FK41MGAYK1QC7W2E1M1BJJRIGYA", W_FIRM_BANK_FURIKOMI_MATCHING.w_firm_bank_furikomi_matching.furiwake_id);
+        public static final ForeignKey<W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_RECORD, T_FIRM_BANK_FURIKOMI_RECORD> FKLVOYS9EDYUHVK71CA1HHLRKCX = Internal.createForeignKey(com.showka.table.public_.Keys.UK_SCNOHX9Y1NGRANOP6YEHAHYWV, W_FIRM_BANK_FURIKOMI_MATCHING_ERROR.w_firm_bank_furikomi_matching_error, "FKLVOYS9EDYUHVK71CA1HHLRKCX", W_FIRM_BANK_FURIKOMI_MATCHING_ERROR.w_firm_bank_furikomi_matching_error.fb_furikomi_id);
+        public static final ForeignKey<W_FIRM_BANK_FURIWAKE_RECORD, M_FURIKOMI_IRAININ_RECORD> FKEHHL7O3JECBBM9M62M0U7MKVV = Internal.createForeignKey(com.showka.table.public_.Keys.UK_T4BDS7XGTDERQPYFQ4BRFKN0V, W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake, "FKEHHL7O3JECBBM9M62M0U7MKVV", W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake.furikomi_irainin_id);
+        public static final ForeignKey<W_FIRM_BANK_FURIWAKE_RECORD, T_SEIKYU_RECORD> FKOPWLF5YSCBCMYSMND5VUG1DC3 = Internal.createForeignKey(com.showka.table.public_.Keys.UK_4SCPAF4QMJRAM1VXMKUYJ269J, W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake, "FKOPWLF5YSCBCMYSMND5VUG1DC3", W_FIRM_BANK_FURIWAKE.w_firm_bank_furiwake.seikyu_id);
     }
 }

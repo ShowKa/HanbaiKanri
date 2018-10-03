@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_SHOHIN_IDO extends TableImpl<T_SHOHIN_IDO_RECORD> {
 
-    private static final long serialVersionUID = 351941379;
+    private static final long serialVersionUID = 1341654333;
 
     /**
      * The reference instance of <code>PUBLIC.T_SHOHIN_IDO</code>
@@ -160,7 +160,7 @@ public class T_SHOHIN_IDO extends TableImpl<T_SHOHIN_IDO_RECORD> {
      */
     @Override
     public UniqueKey<T_SHOHIN_IDO_RECORD> getPrimaryKey() {
-        return Keys.CONSTRAINT_1;
+        return Keys.CONSTRAINT_1E;
     }
 
     /**
@@ -168,7 +168,7 @@ public class T_SHOHIN_IDO extends TableImpl<T_SHOHIN_IDO_RECORD> {
      */
     @Override
     public List<UniqueKey<T_SHOHIN_IDO_RECORD>> getKeys() {
-        return Arrays.<UniqueKey<T_SHOHIN_IDO_RECORD>>asList(Keys.CONSTRAINT_1, Keys.UK_9HUM7RYAHI4JAIGE2V6TD9M13);
+        return Arrays.<UniqueKey<T_SHOHIN_IDO_RECORD>>asList(Keys.CONSTRAINT_1E, Keys.UK_9HUM7RYAHI4JAIGE2V6TD9M13);
     }
 
     /**

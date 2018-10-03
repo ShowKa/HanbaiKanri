@@ -180,9 +180,11 @@ public class UriageRirekiMeisaiCrudServiceImplTest extends CrudServiceTestCase {
 		meisaiList.add(updated);
 		service.overrideList(uriageId, meisaiList);
 		// check
-		List<UriageMeisai> actual = service.getDomainList("r-KK01-00001-20170820");
-		assertEquals(1, actual.size());
-		assertEquals(new Integer(999), actual.get(0).getHanbaiNumber());
+		RUriageMeisai actual = repo.findByRecordId("r-KK01-00001-20170820-1");
+		assertNotNull(actual);
+		assertEquals(999, actual.getHanbaiNumber().intValue());
+		RUriageMeisai deleted = repo.findByRecordId("r-KK01-00001-20170820-2");
+		assertNull(deleted);
 	}
 
 	@Test

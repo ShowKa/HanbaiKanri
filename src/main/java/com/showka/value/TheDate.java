@@ -38,6 +38,10 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return java.util.Date.from(this.date.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
 
+	public LocalDateTime toLocalDateTime() {
+		return date.atTime(LocalTime.MIN);
+	}
+
 	public Calendar toCalendar() {
 		Calendar c = Calendar.getInstance();
 		c.set(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());

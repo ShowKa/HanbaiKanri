@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_URIKAKE extends TableImpl<T_URIKAKE_RECORD> {
 
-    private static final long serialVersionUID = -1705027381;
+    private static final long serialVersionUID = 1427100081;
 
     /**
      * The reference instance of <code>PUBLIC.T_URIKAKE</code>
@@ -99,14 +99,14 @@ public class T_URIKAKE extends TableImpl<T_URIKAKE_RECORD> {
     public final TableField<T_URIKAKE_RECORD, Integer> version = createField("VERSION", org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.field("1", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
     /**
+     * The column <code>PUBLIC.T_URIKAKE.KINGAKU</code>.
+     */
+    public final TableField<T_URIKAKE_RECORD, Integer> kingaku = createField("KINGAKU", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
+
+    /**
      * The column <code>PUBLIC.T_URIKAKE.NYUKIN_YOTEI_DATE</code>.
      */
     public final TableField<T_URIKAKE_RECORD, LocalDateTime> nyukin_yotei_date = createField("NYUKIN_YOTEI_DATE", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
-
-    /**
-     * The column <code>PUBLIC.T_URIKAKE.ZANDAKA</code>.
-     */
-    public final TableField<T_URIKAKE_RECORD, Integer> zandaka = createField("ZANDAKA", org.jooq.impl.SQLDataType.INTEGER.nullable(false), this, "");
 
     /**
      * Create a <code>PUBLIC.T_URIKAKE</code> table reference

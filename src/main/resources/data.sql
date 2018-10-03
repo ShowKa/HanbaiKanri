@@ -12,6 +12,14 @@ VALUES
 ('r-BS02', to_date('2017/08/20', 'yyyy/MM/dd'), 'r-BS02'),
 ;
 
+INSERT INTO m_busho_bank_account
+(busho_id, bank_code, account_number, record_id)
+VALUES
+('r-BS01', '0001', '1000001', 'r-BS01'),
+('r-BS02', '0002', '2000001', 'r-BS02'),
+;
+
+
 INSERT INTO m_kokyaku
 (code, name, address, hanbai_kubun, kokyaku_kubun, shukan_busho_id, record_id)
 VALUES
@@ -26,6 +34,14 @@ INSERT INTO m_nyukin_kake_info
 VALUES
 -- 入金方法=振込, 請求締日=20日, 入金=翌月30日
 ('r-KK02', '00', '10', '20', '30', 'r-KK02'),
+;
+
+INSERT INTO m_furikomi_irainin
+(kokyaku_id, furikomi_irainin_name, record_id)
+VALUES
+-- 顧客02
+('r-KK02', '顧客02振込依頼人1', 'r-KK02-1'),
+('r-KK02', '顧客02振込依頼人2', 'r-KK02-2'),
 ;
 
 INSERT INTO m_user

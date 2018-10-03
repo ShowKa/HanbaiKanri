@@ -2,20 +2,25 @@ package com.showka.service.crud.u07;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
+import com.showka.domain.Seikyu;
 import com.showka.domain.Urikake;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.builder.SeikyuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.repository.i.JSeikyuUrikakeRepository;
 import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
 import com.showka.service.search.u05.i.UrikakeSearchService;
+import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
@@ -45,6 +50,12 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
+
+	@Injectable
+	private SeikyuSearchService seikyuSearchService;
+
+	@Injectable
+	private JSeikyuUrikakeRepository repo;
 
 	/**
 	 * 請求.
@@ -179,6 +190,9 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 				result = shiharaiDate;
 				// 売掛の入金予定日更新
 				urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);
+				// 売掛の最新請求を登録
+				service.save((String) any, urikake.getRecordId());
+				times = 1;
 			}
 		};
 		// do
@@ -197,6 +211,154 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 				times = 1;
 				// 売掛の入金予定日更新
 				urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);
+				times = 1;
+			}
+		};
+	}
+
+	/**
+	 * 削除.
+	 * 
+	 * <pre>
+	 * レコードが既存の場合削除される。
+	 * </pre>
+	 */
+	@Test
+	public void test04_deleteIfExists() {
+		// input
+		String urikakeId = "r-001";
+		// expect
+		new Expectations() {
+			{
+				repo.existsById(urikakeId);
+				result = true;
+			}
+		};
+		// do
+		service.deleteIfExists(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				repo.existsById(urikakeId);
+				times = 1;
+				repo.deleteById(urikakeId);
+				times = 1;
+			}
+		};
+	}
+
+	/**
+	 * 削除.
+	 * 
+	 * <pre>
+	 * レコードがない場合処理終了。
+	 * </pre>
+	 */
+	@Test
+	public void test05_deleteIfExists() {
+		// input
+		String urikakeId = "r-001";
+		// expect
+		new Expectations() {
+			{
+				repo.existsById(urikakeId);
+				result = false;
+			}
+		};
+		// do
+		service.deleteIfExists(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				repo.existsById(urikakeId);
+				times = 1;
+				repo.deleteById(urikakeId);
+				times = 0;
+			}
+		};
+	}
+
+	/**
+	 * レコード既存の場合、復活処理は途中終了する。
+	 */
+	@Test
+	public void test06_Revert() throws Exception {
+		// input
+		String urikakeId = "r-001";
+		// expect
+		new Expectations() {
+			{
+				repo.existsById(urikakeId);
+				result = true;
+			}
+		};
+		service.revert(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				repo.existsById(urikakeId);
+				times = 1;
+				service.save(anyString, urikakeId);
+				times = 0;
+			}
+		};
+	}
+
+	@Test
+	public void test07_Revert() throws Exception {
+		// input
+		String urikakeId = "r-001";
+		// expect
+		new Expectations() {
+			{
+				repo.existsById(urikakeId);
+				result = false;
+				seikyuSearchService.getNewestOf(urikakeId);
+				result = Optional.empty();
+			}
+		};
+		service.revert(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				repo.existsById(urikakeId);
+				times = 1;
+				seikyuSearchService.getNewestOf(urikakeId);
+				times = 1;
+				service.save(anyString, urikakeId);
+				times = 0;
+			}
+		};
+	}
+
+	@Test
+	public void test08_Revert() throws Exception {
+		// input
+		String urikakeId = "r-001";
+		// mock
+		SeikyuBuilder sb = new SeikyuBuilder();
+		String seikyuId = "r-KK01-20170820";
+		sb.withRecordId(seikyuId);
+		Seikyu seikyu = sb.build();
+		// expect
+		new Expectations() {
+			{
+				repo.existsById(urikakeId);
+				result = false;
+				seikyuSearchService.getNewestOf(urikakeId);
+				result = Optional.of(seikyu);
+				service.save(seikyuId, urikakeId);
+			}
+		};
+		service.revert(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				repo.existsById(urikakeId);
+				times = 1;
+				seikyuSearchService.getNewestOf(urikakeId);
+				times = 1;
+				service.save(seikyuId, urikakeId);
 				times = 1;
 			}
 		};

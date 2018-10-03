@@ -30,6 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		// web => use form login
+		// batch(rest api) => use basic
 		http.headers()
 				.frameOptions()
 				.sameOrigin()
@@ -41,6 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll()
 				.anyRequest()
 				.authenticated()
+				.and()
+				.httpBasic()
 				.and()
 				.formLogin()
 				.loginPage("/u00g000")

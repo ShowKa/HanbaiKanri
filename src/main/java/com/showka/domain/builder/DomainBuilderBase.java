@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.showka.domain.DomainBase;
+import com.showka.domain.DomainCore;
 
 /**
  * {@link AbstractDomain}のインスタンスを生成するビルダー。
@@ -13,7 +14,7 @@ import com.showka.domain.DomainBase;
  * @param <S>
  *            このビルダークラスの型
  */
-public abstract class DomainBuilderBase<T extends DomainBase, S extends DomainBuilderBase<T, S>> {
+public abstract class DomainBuilderBase<T extends DomainCore, S extends DomainBuilderBase<T, S>> {
 
 	/**
 	 * Empty String
@@ -52,10 +53,12 @@ public abstract class DomainBuilderBase<T extends DomainBase, S extends DomainBu
 		for (BuilderConfigurator<S> configurator : configurators) {
 			configurator.configure(getThis());
 		}
-
 		T domain = createDomainObject();
-		if (domain.getRecordId() == null) {
-			domain.setRecordId("");
+		if (domain instanceof DomainBase) {
+			DomainBase _domain = (DomainBase) domain;
+			if (_domain.getRecordId() == null) {
+				_domain.setRecordId("");
+			}
 		}
 		domain.validate();
 		return domain;

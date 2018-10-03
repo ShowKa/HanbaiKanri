@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.Keshikomi;
+import com.showka.domain.MatchedFBFurikomi;
 import com.showka.domain.Nyukin;
 import com.showka.domain.NyukinKeshikomi;
 import com.showka.domain.Urikake;
@@ -14,6 +15,7 @@ import com.showka.service.crud.u05.i.UrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
+import com.showka.service.specification.u08.i.NyukinKeshikomiBuildService;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -28,6 +30,9 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 	@Autowired
 	private UrikakeCrudService urikakeCrudService;
 
+	@Autowired
+	private NyukinKeshikomiBuildService nyukinKeshikomiBuildService;
+
 	@Override
 	public void save(EigyoDate date, NyukinKeshikomi nyukinKeshikomi) {
 		// OCC
@@ -41,6 +46,17 @@ public class NyukinKeshikomiCrudServiceImpl implements NyukinKeshikomiCrudServic
 		// save 消込
 		Set<Keshikomi> keshikomiSet = nyukinKeshikomi.getKeshikomiSet();
 		keshikomiCrudService.override(nyukin.getRecordId(), date, keshikomiSet);
+	}
+
+	// 入金消込を構築して同サービス.保存(営業日,入金消込)を呼ぶ。
+	@Override
+	public void save(MatchedFBFurikomi matchedFBFurikomi) {
+		// 営業日=請求担当部署の営業日
+		EigyoDate eigyoDate = matchedFBFurikomi.getSeikyuTantoBushoEigyoDate();
+		// 入金消込
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiBuildService.build(matchedFBFurikomi);
+		// save
+		this.save(eigyoDate, nyukinKeshikomi);
 	}
 
 	@Override

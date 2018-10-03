@@ -12,8 +12,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-// TODO レコードID+バージョンが不要（SubDomainみたいな抽象クラスが必要）
-public class NyukinKeshikomi extends DomainBase {
+public class NyukinKeshikomi extends DomainAggregation {
 
 	/** 入金. */
 	private Nyukin nyukin;
@@ -64,8 +63,26 @@ public class NyukinKeshikomi extends DomainBase {
 	 * @param マージ対象
 	 * @return
 	 */
+	// FIXME すこし変。mergeは下記#mergeの考え方の方がスマート。
 	public void mergeKeshikomiSet(NyukinKeshikomi nyukinKeshikomi) {
 		this.keshikomiSet.addAll(nyukinKeshikomi.getKeshikomiSet());
+	}
+
+	/**
+	 * 消込セットマージ.
+	 * 
+	 * <pre>
+	 * 既存の消込がある場合は上書き。
+	 * </pre>
+	 * 
+	 * @param マージ対象消込セット
+	 * @return
+	 */
+	public void merge(Set<Keshikomi> _keshikomiSet) {
+		this.keshikomiSet.removeIf(k -> {
+			return _keshikomiSet.contains(k);
+		});
+		this.keshikomiSet.addAll(_keshikomiSet);
 	}
 
 	/**
@@ -141,13 +158,13 @@ public class NyukinKeshikomi extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
-		NyukinKeshikomi o = (NyukinKeshikomi) other;
-		return nyukin.equals(o.nyukin);
+	public int hashCode() {
+		return generateHashCode(this.nyukin);
 	}
 
 	@Override
-	public int hashCode() {
-		return generateHashCode(this.nyukin);
+	protected boolean equals(DomainAggregation other) {
+		NyukinKeshikomi o = (NyukinKeshikomi) other;
+		return nyukin.equals(o.nyukin);
 	}
 }

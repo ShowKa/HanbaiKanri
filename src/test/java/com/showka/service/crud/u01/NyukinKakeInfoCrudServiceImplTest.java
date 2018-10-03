@@ -24,7 +24,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 	private MNyukinKakeInfoRepository repo;
 
 	/** 入金掛売情報01. */
-	private static final Object[] VALUE01 = { "KK03", "00", "10", "20", "30", "KK03" };
+	private static final Object[] VALUE01 = { "KK03", "00", "10", "20", "30", "r-KK03" };
 
 	/**
 	 * Before
@@ -71,7 +71,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 	public void test_update() {
 
 		// insert data
-		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
+		super.deleteAndInsert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 
 		String id = "KK03";
 		Integer version = 0;
@@ -94,8 +94,8 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		service.save(domain);
 
 		// check
-		MNyukinKakeInfo actual = repo.findById(id).get();
-		assertEquals(record_id, actual.getRecordId());
+		MNyukinKakeInfo actual = repo.getOne(id);
+		assertEquals("r-KK03", actual.getRecordId());
 
 	}
 
@@ -166,7 +166,7 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 
 		// check
 		assertEquals("KK03", actual.getKokyakuId());
-		assertEquals("KK03", actual.getRecordId());
+		assertEquals("r-KK03", actual.getRecordId());
 		assertEquals(Integer.valueOf(30), actual.getNyukinDate());
 		assertEquals("00", actual.getNyukinHohoKubun().getCode());
 		assertEquals("10", actual.getNyukinTsukiKubun().getCode());

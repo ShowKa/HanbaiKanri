@@ -221,6 +221,17 @@ public class AmountOfMoney extends ValueBase {
 		return amount.intValue();
 	}
 
+	/**
+	 * 同値比較.
+	 * 
+	 * @param other
+	 *            比較対象
+	 * @return 金額と同じ数値ならtrue
+	 */
+	public boolean equals(long other) {
+		return this.amount.compareTo(new BigDecimal(other)) == 0;
+	}
+
 	// override
 	@Override
 	protected boolean equals(ValueBase other) {

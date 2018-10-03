@@ -2,6 +2,7 @@ package com.showka.domain;
 
 import java.util.List;
 
+import com.showka.kubun.NyukinHohoKubun;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -26,6 +27,12 @@ public class Seikyu extends DomainBase {
 
 	/** 支払期日. */
 	private EigyoDate shiharaiDate;
+
+	/** 入金方法区分（請求時点での顧客の入金方法） */
+	private NyukinHohoKubun nyukinHohoKubun;
+
+	/** 請求担当部署. */
+	private Busho tantoBusho;
 
 	/** 請求明細. */
 	private List<SeikyuMeisai> seikyuMeisai;

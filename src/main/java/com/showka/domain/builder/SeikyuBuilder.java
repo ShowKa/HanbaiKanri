@@ -2,9 +2,11 @@ package com.showka.domain.builder;
 
 import java.util.List;
 
+import com.showka.domain.Busho;
 import com.showka.domain.Kokyaku;
 import com.showka.domain.Seikyu;
 import com.showka.domain.SeikyuMeisai;
+import com.showka.kubun.NyukinHohoKubun;
 import com.showka.value.EigyoDate;
 
 public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<Seikyu, SeikyuBuilder> {
@@ -18,6 +20,12 @@ public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<S
 
 	/** shiharaiDate */
 	private EigyoDate shiharaiDate;
+
+	/** nyukinHohoKubun */
+	private NyukinHohoKubun nyukinHohoKubun;
+
+	/** busho */
+	private Busho busho;
 
 	/** seikyuMeisai */
 	private List<SeikyuMeisai> seikyuMeisai;
@@ -34,6 +42,8 @@ public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<S
 		builder.withKokyaku(domain.getKokyaku());
 		builder.withSeikyuDate(domain.getSeikyuDate());
 		builder.withShiharaiDate(domain.getShiharaiDate());
+		builder.withNyukinHohoKubun(domain.getNyukinHohoKubun());
+		builder.withTantoBusho(domain.getTantoBusho());
 		builder.withSeikyuMeisai(domain.getSeikyuMeisai());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());
@@ -41,7 +51,7 @@ public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<S
 
 	@Override
 	protected Seikyu createDomainObject() {
-		Seikyu domain = new Seikyu(kokyaku, seikyuDate, shiharaiDate, seikyuMeisai);
+		Seikyu domain = new Seikyu(kokyaku, seikyuDate, shiharaiDate, nyukinHohoKubun, busho, seikyuMeisai);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -104,6 +114,40 @@ public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<S
 			@Override
 			public void configure(SeikyuBuilder builder) {
 				builder.shiharaiDate = shiharaiDate;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link Seikyu}に与えるnyukinHohoKubunをこのビルダに設定する。
+	 *
+	 * @param nyukinHohoKubun
+	 *            nyukinHohoKubun
+	 * @return {@link SeikyuBuilder}
+	 */
+	public SeikyuBuilder withNyukinHohoKubun(final NyukinHohoKubun nyukinHohoKubun) {
+		addConfigurator(new BuilderConfigurator<SeikyuBuilder>() {
+			@Override
+			public void configure(SeikyuBuilder builder) {
+				builder.nyukinHohoKubun = nyukinHohoKubun;
+			}
+		});
+		return getThis();
+	}
+
+	/**
+	 * {@link Seikyu}に与えるbushoをこのビルダに設定する。
+	 *
+	 * @param busho
+	 *            busho
+	 * @return {@link SeikyuBuilder}
+	 */
+	public SeikyuBuilder withTantoBusho(final Busho busho) {
+		addConfigurator(new BuilderConfigurator<SeikyuBuilder>() {
+			@Override
+			public void configure(SeikyuBuilder builder) {
+				builder.busho = busho;
 			}
 		});
 		return getThis();
