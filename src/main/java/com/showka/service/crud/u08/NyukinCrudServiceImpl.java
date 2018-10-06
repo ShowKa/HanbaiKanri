@@ -6,10 +6,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Nyukin;
 import com.showka.domain.builder.NyukinBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u08.Nyukin;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.TNyukin;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.i.Kubun;

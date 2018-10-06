@@ -3,7 +3,7 @@ package com.showka.service.crud.u08.i;
 import java.util.Collection;
 import java.util.Set;
 
-import com.showka.domain.Keshikomi;
+import com.showka.domain.u08.Keshikomi;
 import com.showka.value.EigyoDate;
 
 public interface KeshikomiCrudService {

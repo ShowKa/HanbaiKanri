@@ -2,8 +2,8 @@ package com.showka.service.specification.u07.i;
 
 import java.util.List;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.SeikyuMeisai;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.value.EigyoDate;
 
 public interface SeikyuSpecification {

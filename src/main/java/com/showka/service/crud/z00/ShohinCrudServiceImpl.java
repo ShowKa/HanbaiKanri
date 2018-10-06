@@ -5,8 +5,8 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Shohin;
 import com.showka.domain.builder.ShohinBuilder;
+import com.showka.domain.z00.Shohin;
 import com.showka.entity.MShohin;
 import com.showka.repository.i.MShohinRepository;
 import com.showka.service.crud.z00.i.ShohinCrudService;

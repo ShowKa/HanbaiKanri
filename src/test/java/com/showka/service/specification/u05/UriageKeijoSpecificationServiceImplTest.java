@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageRepository;
 import com.showka.value.TheDate;

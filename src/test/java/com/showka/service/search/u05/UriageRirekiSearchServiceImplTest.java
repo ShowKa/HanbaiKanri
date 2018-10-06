@@ -8,8 +8,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
 import com.showka.domain.builder.BushoBuilder;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.repository.i.RUriageRepository;
 import com.showka.value.TheDate;

@@ -1,6 +1,6 @@
 package com.showka.service.crud.u06.i;
 
-import com.showka.domain.UrikakeKeshikomi;
+import com.showka.domain.u06.UrikakeKeshikomi;
 
 public interface UrikakeKeshikomiCrudService {
 

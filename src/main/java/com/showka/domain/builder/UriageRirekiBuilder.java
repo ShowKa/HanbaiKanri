@@ -3,8 +3,8 @@ package com.showka.domain.builder;
 import java.util.List;
 import java.util.Optional;
 
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageRireki;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageRireki;
 import com.showka.value.TheDate;
 
 public class UriageRirekiBuilder

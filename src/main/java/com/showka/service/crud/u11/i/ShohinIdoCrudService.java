@@ -2,9 +2,9 @@ package com.showka.service.crud.u11.i;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Shohin;
-import com.showka.domain.ShohinIdo;
+import com.showka.domain.u11.ShohinIdo;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shohin;
 import com.showka.service.crud.CrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.UnsatisfiedSpecificationException;

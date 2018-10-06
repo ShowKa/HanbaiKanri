@@ -2,7 +2,7 @@ package com.showka.domain.builder;
 
 import org.junit.Test;
 
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
 import com.showka.value.TheDate;
 
 import junit.framework.TestCase;

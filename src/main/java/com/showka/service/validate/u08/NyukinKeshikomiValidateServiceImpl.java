@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Keshikomi;
-import com.showka.domain.NyukinKeshikomi;
-import com.showka.domain.Urikake;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u08.Keshikomi;
+import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
 import com.showka.system.exception.ValidateException;

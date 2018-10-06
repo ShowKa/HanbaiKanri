@@ -2,7 +2,7 @@ package com.showka.service.search.u05;
 
 import java.util.Optional;
 
-import com.showka.domain.Kokyaku;
+import com.showka.domain.u01.Kokyaku;
 import com.showka.value.EigyoDate;
 
 import lombok.AllArgsConstructor;

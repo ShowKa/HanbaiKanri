@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageRireki;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageRireki;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriageKeijo;
 import com.showka.entity.RUriageKeijoTeisei;

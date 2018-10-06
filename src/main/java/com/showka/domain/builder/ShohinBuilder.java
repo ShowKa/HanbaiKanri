@@ -2,7 +2,7 @@ package com.showka.domain.builder;
 
 import java.math.BigDecimal;
 
-import com.showka.domain.Shohin;
+import com.showka.domain.z00.Shohin;
 
 public class ShohinBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<Shohin, ShohinBuilder> {

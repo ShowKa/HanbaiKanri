@@ -1,7 +1,7 @@
 package com.showka.service.search.u01.i;
 
-import com.showka.domain.FurikomiIraininSet;
-import com.showka.domain.Kokyaku;
+import com.showka.domain.u01.FurikomiIraininSet;
+import com.showka.domain.u01.Kokyaku;
 
 public interface FurikomiIraininSearchService {
 

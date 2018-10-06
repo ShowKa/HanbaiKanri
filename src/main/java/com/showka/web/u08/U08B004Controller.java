@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.MatchedFBFurikomi;
+import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.service.crud.u08.i.NyukinFBFurikomiCrudService;
 import com.showka.service.search.u08.i.MatchedFBFurikomiSearchService;
 import com.showka.value.TheDate;

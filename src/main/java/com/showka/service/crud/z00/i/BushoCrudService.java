@@ -2,7 +2,7 @@ package com.showka.service.crud.z00.i;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.MBusho;
 
 public interface BushoCrudService {

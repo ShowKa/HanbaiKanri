@@ -2,9 +2,9 @@ package com.showka.domain.builder;
 
 import java.util.Set;
 
-import com.showka.domain.Keshikomi;
-import com.showka.domain.Urikake;
-import com.showka.domain.UrikakeKeshikomi;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u06.UrikakeKeshikomi;
+import com.showka.domain.u08.Keshikomi;
 
 public class UrikakeKeshikomiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<UrikakeKeshikomi, UrikakeKeshikomiBuilder> {

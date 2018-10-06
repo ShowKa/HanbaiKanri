@@ -2,8 +2,8 @@ package com.showka.service.search.u08.i;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
-import com.showka.domain.FBFurikomiMatchingResult;
+import com.showka.domain.u08.FBFurikomiMatchingResult;
+import com.showka.domain.z00.Busho;
 import com.showka.value.TheDate;
 
 public interface FirmBankFurikomiSearchService {

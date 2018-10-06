@@ -6,9 +6,9 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.UriageCancel;
-import com.showka.domain.Uriage;
 import com.showka.domain.builder.UriageCancelBuilder;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageCancel;
 import com.showka.entity.CUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;

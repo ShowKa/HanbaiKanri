@@ -14,10 +14,10 @@ import org.jooq.Result;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.FBFurikomiMatchingResult;
-import com.showka.domain.FBFurikomiMatchingResult.MatchedPair;
 import com.showka.domain.builder.BushoBuilder;
+import com.showka.domain.u08.FBFurikomiMatchingResult;
+import com.showka.domain.u08.FBFurikomiMatchingResult.MatchedPair;
+import com.showka.domain.z00.Busho;
 import com.showka.table.public_.tables.T_FIRM_BANK_FURIKOMI;
 import com.showka.table.public_.tables.T_SEIKYU;
 import com.showka.table.public_.tables.W_FIRM_BANK_FURIWAKE;

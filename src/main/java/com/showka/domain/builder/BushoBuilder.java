@@ -1,6 +1,6 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.Busho;
+import com.showka.domain.z00.Busho;
 import com.showka.kubun.BushoKubun;
 import com.showka.kubun.JigyoKubun;
 import com.showka.value.EigyoDate;

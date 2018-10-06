@@ -6,12 +6,12 @@ import java.util.List;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.NyukinKakeInfo;
-import com.showka.domain.SeikyuMeisai;
-import com.showka.domain.Urikake;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u01.NyukinKakeInfo;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.Busho;
-import com.showka.domain.FBFurikomiMatchingResult;
+import com.showka.domain.u08.FBFurikomiMatchingResult;
+import com.showka.domain.z00.Busho;
 import com.showka.kubun.FurikomiMatchintErrorCause;
 import com.showka.service.crud.u08.i.FirmBankFurikomiMatchingCrudService;
 import com.showka.service.crud.u08.i.FirmBankFurikomiMatchingErrorCrudService;

@@ -3,7 +3,7 @@ package com.showka.service.specification.u05;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.repository.i.RUriageKeijoRepository;

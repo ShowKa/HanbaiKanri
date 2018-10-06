@@ -1,7 +1,7 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Shain;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shain;
 
 public class ShainBuilder extends com.showka.domain.builder.DomainBuilderBase<Shain, ShainBuilder> {
 

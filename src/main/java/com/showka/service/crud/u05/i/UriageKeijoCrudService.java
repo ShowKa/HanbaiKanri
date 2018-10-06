@@ -1,7 +1,7 @@
 package com.showka.service.crud.u05.i;
 
-import com.showka.domain.Busho;
-import com.showka.domain.BushoUriage;
+import com.showka.domain.u17.BushoUriage;
+import com.showka.domain.z00.Busho;
 import com.showka.value.TheDate;
 
 public interface UriageKeijoCrudService {

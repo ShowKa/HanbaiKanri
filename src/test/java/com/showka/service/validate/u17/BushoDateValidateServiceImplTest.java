@@ -3,8 +3,8 @@ package com.showka.service.validate.u17;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.Busho;
 import com.showka.domain.builder.BushoBuilder;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.system.exception.CanNotUpdateException;

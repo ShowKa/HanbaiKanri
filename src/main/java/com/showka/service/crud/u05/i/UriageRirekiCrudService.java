@@ -1,7 +1,7 @@
 package com.showka.service.crud.u05.i;
 
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageRireki;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageRireki;
 import com.showka.entity.RUriagePK;
 
 public interface UriageRirekiCrudService {

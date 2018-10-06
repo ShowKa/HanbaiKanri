@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.NyukinKakeInfo;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.NyukinKakeInfoBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u01.NyukinKakeInfo;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.kubun.HanbaiKubun;

@@ -6,9 +6,9 @@ import java.util.List;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
 import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;

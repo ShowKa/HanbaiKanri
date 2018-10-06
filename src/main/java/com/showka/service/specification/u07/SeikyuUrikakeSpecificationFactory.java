@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Urikake;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u06.Urikake;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
 

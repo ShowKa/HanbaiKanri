@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.FurikomiIrainin;
-import com.showka.domain.FurikomiIraininSet;
-import com.showka.domain.Kokyaku;
+import com.showka.domain.u01.FurikomiIrainin;
+import com.showka.domain.u01.FurikomiIraininSet;
+import com.showka.domain.u01.Kokyaku;
 import com.showka.entity.MFurikomiIrainin;
 import com.showka.entity.MFurikomiIraininPK;
 import com.showka.repository.i.MFurikomiIraininRepository;

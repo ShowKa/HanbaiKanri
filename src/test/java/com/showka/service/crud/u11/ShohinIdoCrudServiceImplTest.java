@@ -8,12 +8,12 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.Shohin;
-import com.showka.domain.ShohinIdo;
-import com.showka.domain.ShohinIdoMeisai;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.ShohinIdoBuilder;
+import com.showka.domain.u11.ShohinIdo;
+import com.showka.domain.u11.ShohinIdoMeisai;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shohin;
 import com.showka.entity.MBusho;
 import com.showka.entity.TShohinIdo;
 import com.showka.kubun.ShohinIdoKubun;

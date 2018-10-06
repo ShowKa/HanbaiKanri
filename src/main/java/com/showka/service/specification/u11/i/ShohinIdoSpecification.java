@@ -2,7 +2,7 @@ package com.showka.service.specification.u11.i;
 
 import java.util.List;
 
-import com.showka.domain.ShohinIdo;
+import com.showka.domain.u11.ShohinIdo;
 import com.showka.system.exception.UnsatisfiedSpecificationException;
 
 /**

@@ -2,7 +2,7 @@ package com.showka.service.crud.u08.i;
 
 import java.util.List;
 
-import com.showka.domain.Seikyu;
+import com.showka.domain.u07.Seikyu;
 
 /**
  * FB振分データのCrudService

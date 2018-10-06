@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageMeisai;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageMeisai;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;

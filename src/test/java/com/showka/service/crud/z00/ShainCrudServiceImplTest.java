@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.Shain;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shain;
 import com.showka.repository.i.MShainRepository;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.system.EmptyProxy;

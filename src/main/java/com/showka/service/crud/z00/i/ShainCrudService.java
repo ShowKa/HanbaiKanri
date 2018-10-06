@@ -1,6 +1,6 @@
 package com.showka.service.crud.z00.i;
 
-import com.showka.domain.Shain;
+import com.showka.domain.z00.Shain;
 
 /**
  * 社員CrudService

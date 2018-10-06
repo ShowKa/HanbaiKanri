@@ -10,9 +10,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageRireki;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageRireki;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriageKeijo;
 import com.showka.entity.RUriageKeijoTeisei;

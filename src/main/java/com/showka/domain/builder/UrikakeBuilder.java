@@ -1,7 +1,7 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.Uriage;
-import com.showka.domain.Urikake;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u06.Urikake;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 

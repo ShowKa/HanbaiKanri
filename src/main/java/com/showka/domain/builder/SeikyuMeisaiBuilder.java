@@ -1,7 +1,7 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.SeikyuMeisai;
-import com.showka.domain.Urikake;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.value.AmountOfMoney;
 
 public class SeikyuMeisaiBuilder

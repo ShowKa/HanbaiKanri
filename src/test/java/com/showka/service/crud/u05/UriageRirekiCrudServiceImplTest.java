@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageMeisai;
-import com.showka.domain.UriageRireki;
 import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageMeisai;
+import com.showka.domain.u05.UriageRireki;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;

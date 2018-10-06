@@ -2,8 +2,8 @@ package com.showka.service.crud.u11.i;
 
 import java.util.Optional;
 
-import com.showka.domain.ShohinIdo;
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u11.ShohinIdo;
 import com.showka.entity.TUriagePK;
 
 public interface ShohinIdoUriageCrudService {

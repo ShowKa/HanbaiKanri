@@ -6,8 +6,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.FurikomiIraininSet;
-import com.showka.domain.Kokyaku;
+import com.showka.domain.u01.FurikomiIraininSet;
+import com.showka.domain.u01.Kokyaku;
 import com.showka.entity.MFurikomiIrainin;
 
 import mockit.Expectations;

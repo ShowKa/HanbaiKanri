@@ -2,7 +2,7 @@ package com.showka.service.search.u08.i;
 
 import java.util.List;
 
-import com.showka.domain.MatchedFBFurikomi;
+import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.value.TheDate;
 
 /**

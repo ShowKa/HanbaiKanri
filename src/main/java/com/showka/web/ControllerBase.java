@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
-import com.showka.domain.Shain;
+import com.showka.domain.z00.Shain;
 import com.showka.service.crud.z00.i.ShainCrudService;
 
 /**

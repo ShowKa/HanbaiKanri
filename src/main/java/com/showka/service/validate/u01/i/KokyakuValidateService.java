@@ -1,6 +1,6 @@
 package com.showka.service.validate.u01.i;
 
-import com.showka.domain.Kokyaku;
+import com.showka.domain.u01.Kokyaku;
 import com.showka.system.exception.ValidateException;
 
 public interface KokyakuValidateService {

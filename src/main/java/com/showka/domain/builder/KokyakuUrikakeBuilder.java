@@ -2,9 +2,9 @@ package com.showka.domain.builder;
 
 import java.util.List;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.KokyakuUrikake;
-import com.showka.domain.Urikake;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u06.KokyakuUrikake;
+import com.showka.domain.u06.Urikake;
 
 public class KokyakuUrikakeBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<KokyakuUrikake, KokyakuUrikakeBuilder> {

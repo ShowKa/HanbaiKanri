@@ -3,9 +3,9 @@ package com.showka.service.search.u07.i;
 import java.util.List;
 import java.util.Optional;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Seikyu;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u07.Seikyu;
+import com.showka.domain.z00.Busho;
 
 public interface SeikyuSearchService {
 

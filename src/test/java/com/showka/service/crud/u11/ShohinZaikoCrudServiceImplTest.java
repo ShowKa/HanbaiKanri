@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.Shohin;
-import com.showka.domain.ShohinIdo;
-import com.showka.domain.ShohinZaiko;
-import com.showka.domain.ShohinZaiko.ShohinIdoOnDate;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.ShohinBuilder;
+import com.showka.domain.u11.ShohinIdo;
+import com.showka.domain.u11.ShohinZaiko;
+import com.showka.domain.u11.ShohinZaiko.ShohinIdoOnDate;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shohin;
 import com.showka.entity.MShohin;
 import com.showka.entity.TShohinZaiko;
 import com.showka.entity.TShohinZaikoPK;

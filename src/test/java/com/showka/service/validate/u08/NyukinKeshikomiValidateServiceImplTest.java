@@ -6,13 +6,13 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.Keshikomi;
-import com.showka.domain.Nyukin;
-import com.showka.domain.NyukinKeshikomi;
-import com.showka.domain.Urikake;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.builder.NyukinBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u08.Keshikomi;
+import com.showka.domain.u08.Nyukin;
+import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.AmountOfMoney;

@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.showka.domain.DomainBase;
-import com.showka.domain.UriageMeisai;
 import com.showka.domain.builder.DomainBuilderBase;
+import com.showka.domain.u05.UriageMeisai;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;

@@ -1,6 +1,6 @@
 package com.showka.service.validate.u05.i;
 
-import com.showka.domain.UriageMeisai;
+import com.showka.domain.u05.UriageMeisai;
 import com.showka.system.exception.ValidateException;
 
 public interface UriageMeisaiValidateService {

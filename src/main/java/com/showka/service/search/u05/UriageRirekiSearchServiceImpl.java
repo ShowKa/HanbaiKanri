@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;

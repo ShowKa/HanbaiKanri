@@ -1,7 +1,7 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.MatchedFBFurikomi;
-import com.showka.domain.Seikyu;
+import com.showka.domain.u07.Seikyu;
+import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.TheDate;
 

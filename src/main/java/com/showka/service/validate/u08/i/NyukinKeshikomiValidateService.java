@@ -1,6 +1,6 @@
 package com.showka.service.validate.u08.i;
 
-import com.showka.domain.NyukinKeshikomi;
+import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.system.exception.ValidateException;
 
 public interface NyukinKeshikomiValidateService {
