@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
 
 @Component
 public class ShohinIdoSpecificationFactory {

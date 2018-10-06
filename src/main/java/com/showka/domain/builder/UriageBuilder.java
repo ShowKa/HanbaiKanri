@@ -2,9 +2,9 @@ package com.showka.domain.builder;
 
 import java.util.List;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageMeisai;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageMeisai;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.value.TaxRate;
 import com.showka.value.TheDate;

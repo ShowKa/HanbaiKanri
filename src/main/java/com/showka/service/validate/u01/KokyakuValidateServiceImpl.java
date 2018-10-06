@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;

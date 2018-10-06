@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Seikyu;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u07.Seikyu;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.web.ControllerBase;

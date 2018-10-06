@@ -1,6 +1,6 @@
 package com.showka.service.specification.u05.i;
 
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
 
 /**
  * 売上の計上の仕様.

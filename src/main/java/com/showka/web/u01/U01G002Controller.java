@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.NyukinKakeInfo;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.NyukinKakeInfoBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u01.NyukinKakeInfo;
+import com.showka.domain.z00.Busho;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.kubun.NyukinHohoKubun;

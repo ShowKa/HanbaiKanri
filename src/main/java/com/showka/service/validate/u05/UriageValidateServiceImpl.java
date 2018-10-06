@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageMeisai;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageMeisai;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;

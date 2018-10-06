@@ -11,9 +11,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudByJooqServiceTestCase;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
 import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriagePK;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.table.public_.tables.records.T_URIAGE_RECORD;

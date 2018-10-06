@@ -1,7 +1,7 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.UriageCancel;
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageCancel;
 
 public class UriageCancelBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<UriageCancel, UriageCancelBuilder> {

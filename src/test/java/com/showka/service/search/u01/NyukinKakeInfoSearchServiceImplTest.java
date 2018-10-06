@@ -6,9 +6,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
 import com.showka.domain.builder.BushoBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 
 public class NyukinKakeInfoSearchServiceImplTest extends CrudServiceTestCase {

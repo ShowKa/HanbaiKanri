@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.showka.domain.NyukinKakeInfo;
 import com.showka.domain.builder.NyukinKakeInfoBuilder;
+import com.showka.domain.u01.NyukinKakeInfo;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;

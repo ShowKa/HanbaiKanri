@@ -11,15 +11,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Shohin;
-import com.showka.domain.ShohinIdo;
-import com.showka.domain.ShohinIdoMeisai;
-import com.showka.domain.ShohinZaiko;
-import com.showka.domain.Uriage;
-import com.showka.domain.UriageMeisai;
 import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u05.UriageMeisai;
+import com.showka.domain.u11.ShohinIdo;
+import com.showka.domain.u11.ShohinIdoMeisai;
+import com.showka.domain.u11.ShohinZaiko;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;

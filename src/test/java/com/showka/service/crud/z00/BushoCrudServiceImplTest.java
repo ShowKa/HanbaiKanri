@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Busho;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.MBusho;
 import com.showka.value.EigyoDate;
 

@@ -1,7 +1,7 @@
 package com.showka.service.specification.u06.i;
 
-import com.showka.domain.Keshikomi;
-import com.showka.domain.Urikake;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u08.Keshikomi;
 import com.showka.value.AmountOfMoney;
 
 public interface UrikakeKeshikomiSpecificationService {

@@ -1,6 +1,6 @@
 package com.showka.service.validate.u17.i;
 
-import com.showka.domain.Busho;
+import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 
 public interface BushoDateValidateService {

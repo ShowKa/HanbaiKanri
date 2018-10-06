@@ -2,9 +2,9 @@ package com.showka.service.crud.u08.i;
 
 import java.util.Set;
 
-import com.showka.domain.MatchedFBFurikomi;
-import com.showka.domain.Nyukin;
-import com.showka.domain.NyukinKeshikomi;
+import com.showka.domain.u08.MatchedFBFurikomi;
+import com.showka.domain.u08.Nyukin;
+import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.value.EigyoDate;
 
 public interface NyukinKeshikomiCrudService {

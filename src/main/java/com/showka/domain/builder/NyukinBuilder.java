@@ -1,8 +1,8 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Nyukin;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u08.Nyukin;
+import com.showka.domain.z00.Busho;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;

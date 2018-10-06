@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.thymeleaf.util.StringUtils;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.search.u05.UriageSearchCriteria;
 import com.showka.service.search.u05.i.UriageSearchService;

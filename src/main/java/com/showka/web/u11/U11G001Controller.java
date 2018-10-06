@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Shohin;
-import com.showka.domain.ShohinZaiko;
+import com.showka.domain.u11.ShohinZaiko;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shohin;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;

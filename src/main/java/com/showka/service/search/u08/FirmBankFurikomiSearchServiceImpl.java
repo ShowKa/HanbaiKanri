@@ -19,9 +19,9 @@ import org.jooq.SelectConditionStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
-import com.showka.domain.FBFurikomiMatchingResult;
-import com.showka.domain.FBFurikomiMatchingResult.MatchedPair;
+import com.showka.domain.u08.FBFurikomiMatchingResult;
+import com.showka.domain.u08.FBFurikomiMatchingResult.MatchedPair;
+import com.showka.domain.z00.Busho;
 import com.showka.service.search.u08.i.FirmBankFurikomiSearchService;
 import com.showka.table.public_.tables.M_BUSHO_BANK_ACCOUNT;
 import com.showka.table.public_.tables.M_FURIKOMI_IRAININ;

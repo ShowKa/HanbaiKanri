@@ -8,11 +8,11 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.FurikomiIrainin;
-import com.showka.domain.FurikomiIraininSet;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Seikyu;
 import com.showka.domain.builder.KokyakuBuilder;
+import com.showka.domain.u01.FurikomiIrainin;
+import com.showka.domain.u01.FurikomiIraininSet;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u07.Seikyu;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;
 import com.showka.service.search.u01.i.FurikomiIraininSearchService;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;

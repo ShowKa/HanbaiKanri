@@ -1,6 +1,6 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.u01.NyukinKakeInfo;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 

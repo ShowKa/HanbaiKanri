@@ -1,6 +1,6 @@
 package com.showka.service.validate.u01.i;
 
-import com.showka.domain.NyukinKakeInfo;
+import com.showka.domain.u01.NyukinKakeInfo;
 import com.showka.system.exception.ValidateException;
 
 public interface NyukinKakeInfoValidateService {

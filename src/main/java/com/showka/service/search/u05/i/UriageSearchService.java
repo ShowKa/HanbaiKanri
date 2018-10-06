@@ -2,7 +2,7 @@ package com.showka.service.search.u05.i;
 
 import java.util.List;
 
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
 import com.showka.service.search.u05.UriageSearchCriteria;
 
 public interface UriageSearchService {

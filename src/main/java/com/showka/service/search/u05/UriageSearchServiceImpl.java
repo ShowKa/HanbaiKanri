@@ -15,8 +15,8 @@ import org.jooq.SelectSelectStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Uriage;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriagePK;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.search.u05.i.UriageSearchService;

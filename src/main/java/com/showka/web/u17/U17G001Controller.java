@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.Busho;
-import com.showka.domain.BushoUriage;
+import com.showka.domain.u17.BushoUriage;
+import com.showka.domain.z00.Busho;
 import com.showka.service.crud.u05.i.UriageKeijoCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;

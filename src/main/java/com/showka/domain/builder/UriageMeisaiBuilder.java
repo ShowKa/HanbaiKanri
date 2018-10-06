@@ -2,8 +2,8 @@ package com.showka.domain.builder;
 
 import java.math.BigDecimal;
 
-import com.showka.domain.Shohin;
-import com.showka.domain.UriageMeisai;
+import com.showka.domain.u05.UriageMeisai;
+import com.showka.domain.z00.Shohin;
 
 public class UriageMeisaiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<UriageMeisai, UriageMeisaiBuilder> {

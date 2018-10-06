@@ -2,9 +2,9 @@ package com.showka.domain.builder;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
-import com.showka.domain.ShohinIdo;
-import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.u11.ShohinIdo;
+import com.showka.domain.u11.ShohinIdoMeisai;
+import com.showka.domain.z00.Busho;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;

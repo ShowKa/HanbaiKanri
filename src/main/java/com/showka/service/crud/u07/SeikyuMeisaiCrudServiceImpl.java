@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.SeikyuMeisai;
-import com.showka.domain.Urikake;
 import com.showka.domain.builder.SeikyuMeisaiBuilder;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.entity.TSeikyuMeisai;
 import com.showka.entity.TSeikyuMeisaiPK;
 import com.showka.repository.i.TSeikyuMeisaiRepository;
-import com.showka.service.crud.u05.i.UrikakeCrudService;
+import com.showka.service.crud.u06.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuMeisaiCrudService;
 import com.showka.value.AmountOfMoney;
 

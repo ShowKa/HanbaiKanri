@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
 import com.showka.domain.builder.BushoBuilder;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.MBusho;
 import com.showka.entity.MBushoDate;
 import com.showka.kubun.BushoKubun;

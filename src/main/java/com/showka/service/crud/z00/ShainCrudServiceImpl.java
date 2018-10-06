@@ -3,9 +3,9 @@ package com.showka.service.crud.z00;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Shain;
 import com.showka.domain.builder.ShainBuilder;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shain;
 import com.showka.entity.MShain;
 import com.showka.repository.i.MShainRepository;
 import com.showka.service.crud.z00.i.BushoCrudService;

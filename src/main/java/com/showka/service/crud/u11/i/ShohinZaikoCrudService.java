@@ -2,9 +2,9 @@ package com.showka.service.crud.u11.i;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Shohin;
-import com.showka.domain.ShohinZaiko;
+import com.showka.domain.u11.ShohinZaiko;
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shohin;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 

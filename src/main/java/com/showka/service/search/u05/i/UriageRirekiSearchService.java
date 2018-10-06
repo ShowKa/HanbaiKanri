@@ -2,7 +2,7 @@ package com.showka.service.search.u05.i;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.value.TheDate;
 

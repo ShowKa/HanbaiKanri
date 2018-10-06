@@ -2,9 +2,9 @@ package com.showka.domain.builder;
 
 import java.util.Set;
 
-import com.showka.domain.Keshikomi;
-import com.showka.domain.Nyukin;
-import com.showka.domain.NyukinKeshikomi;
+import com.showka.domain.u08.Keshikomi;
+import com.showka.domain.u08.Nyukin;
+import com.showka.domain.u08.NyukinKeshikomi;
 
 public class NyukinKeshikomiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<NyukinKeshikomi, NyukinKeshikomiBuilder> {

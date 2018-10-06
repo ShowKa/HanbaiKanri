@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.ShohinIdo;
-import com.showka.domain.Uriage;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u11.ShohinIdo;
 import com.showka.entity.JShohinIdoUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.JShohinIdoUriageRepository;

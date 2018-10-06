@@ -2,7 +2,7 @@ package com.showka.system.exception;
 
 import java.util.List;
 
-import com.showka.domain.Shohin;
+import com.showka.domain.z00.Shohin;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.showka.domain.Kokyaku;
-import com.showka.domain.NyukinKakeInfo;
-import com.showka.domain.Seikyu;
-import com.showka.domain.SeikyuMeisai;
-import com.showka.domain.Uriage;
-import com.showka.domain.Urikake;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u01.NyukinKakeInfo;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u07.Seikyu;
+import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.entity.TSeikyuPK;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.service.crud.u01.i.KokyakuCrudService;

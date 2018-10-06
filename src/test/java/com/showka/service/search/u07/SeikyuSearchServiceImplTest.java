@@ -8,11 +8,11 @@ import org.jooq.DSLContext;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Seikyu;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.SeikyuBuilder;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u07.Seikyu;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.TSeikyu;
 import com.showka.entity.TSeikyuMeisai;
 import com.showka.entity.TSeikyuMeisaiPK;

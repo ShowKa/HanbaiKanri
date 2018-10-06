@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.UriageMeisai;
+import com.showka.domain.u05.UriageMeisai;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.system.exception.NotAllowedNumberException;
 import com.showka.system.exception.ValidateException;

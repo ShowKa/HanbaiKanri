@@ -2,10 +2,10 @@ package com.showka.domain.builder;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Seikyu;
-import com.showka.domain.SeikyuMeisai;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u07.Seikyu;
+import com.showka.domain.u07.SeikyuMeisai;
+import com.showka.domain.z00.Busho;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.value.EigyoDate;
 

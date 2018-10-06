@@ -6,10 +6,10 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.FurikomiIrainin;
-import com.showka.domain.FurikomiIraininSet;
-import com.showka.domain.Seikyu;
-import com.showka.domain.Urikake;
+import com.showka.domain.u01.FurikomiIrainin;
+import com.showka.domain.u01.FurikomiIraininSet;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u07.Seikyu;
 import com.showka.entity.WFirmBankFuriwake;
 import com.showka.entity.WFirmBankFuriwakePK;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;

@@ -2,8 +2,8 @@ package com.showka.service.search.u01.i;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 
 public interface NyukinKakeInfoSearchService {

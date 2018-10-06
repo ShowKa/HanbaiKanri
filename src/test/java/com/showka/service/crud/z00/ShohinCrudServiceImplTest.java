@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.common.CrudServiceTestCase;
-import com.showka.domain.Shohin;
+import com.showka.domain.z00.Shohin;
 
 public class ShohinCrudServiceImplTest extends CrudServiceTestCase {
 

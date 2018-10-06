@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Shohin;
-import com.showka.domain.UriageMeisai;
 import com.showka.domain.builder.UriageMeisaiBuilder;
+import com.showka.domain.u05.UriageMeisai;
+import com.showka.domain.z00.Shohin;
 import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.repository.i.TUriageMeisaiRepository;

@@ -3,7 +3,7 @@ package com.showka.service.validate.u17;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Busho;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.validate.u17.i.BushoDateValidateService;

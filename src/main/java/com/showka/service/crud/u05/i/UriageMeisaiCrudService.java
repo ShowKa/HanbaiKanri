@@ -1,6 +1,6 @@
 package com.showka.service.crud.u05.i;
 
-import com.showka.domain.UriageMeisai;
+import com.showka.domain.u05.UriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.service.crud.MeisaiCrudService;
 

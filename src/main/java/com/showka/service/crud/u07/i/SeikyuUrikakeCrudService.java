@@ -2,9 +2,9 @@ package com.showka.service.crud.u07.i;
 
 import java.util.List;
 
-import com.showka.domain.Busho;
-import com.showka.domain.Kokyaku;
-import com.showka.domain.Urikake;
+import com.showka.domain.u01.Kokyaku;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 
 public interface SeikyuUrikakeCrudService {

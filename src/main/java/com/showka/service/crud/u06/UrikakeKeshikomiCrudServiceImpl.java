@@ -5,11 +5,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.Keshikomi;
-import com.showka.domain.Urikake;
-import com.showka.domain.UrikakeKeshikomi;
 import com.showka.domain.builder.UrikakeKeshikomiBuilder;
-import com.showka.service.crud.u05.i.UrikakeCrudService;
+import com.showka.domain.u06.Urikake;
+import com.showka.domain.u06.UrikakeKeshikomi;
+import com.showka.domain.u08.Keshikomi;
+import com.showka.service.crud.u06.i.UrikakeCrudService;
 import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 

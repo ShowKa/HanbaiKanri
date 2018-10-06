@@ -1,7 +1,7 @@
 package com.showka.domain.builder;
 
-import com.showka.domain.Shohin;
-import com.showka.domain.ShohinIdoMeisai;
+import com.showka.domain.u11.ShohinIdoMeisai;
+import com.showka.domain.z00.Shohin;
 
 public class ShohinIdoMeisaiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<ShohinIdoMeisai, ShohinIdoMeisaiBuilder> {
