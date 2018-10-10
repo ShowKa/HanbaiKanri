@@ -19,6 +19,7 @@ import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.service.crud.u05.i.UriageKeijoCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
+import com.showka.service.crud.u08.i.NyukinKeijoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
@@ -49,6 +50,9 @@ public class U17G001Controller extends ControllerBase {
 
 	@Autowired
 	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
+
+	// @Autowired
+	private NyukinKeijoCrudService nyukinKeijoCrudService;
 
 	/**
 	 * 参照.
@@ -108,6 +112,8 @@ public class U17G001Controller extends ControllerBase {
 		bushoDateValidateService.validateForClosing(busho, eigyoDate);
 		// 売上計上
 		uriageKeijoCrudService.keijo(busho, eigyoDate);
+		// 入金計上
+		nyukinKeijoCrudService.keijo(busho, eigyoDate);
 		// 在庫繰越
 		shohinZaikoCrudService.kurikoshi(busho, eigyoDate);
 		// 請求

@@ -21,7 +21,7 @@ public class Nyukin extends DomainBase {
 	/** 部署 */
 	private Busho busho;
 
-	/** 入金日. */
+	/** 入金日（入金された営業日、計上日ではない。）. */
 	private EigyoDate date;
 
 	/** 入金方法区分. */

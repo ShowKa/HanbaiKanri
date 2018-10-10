@@ -34,7 +34,7 @@ public class TNyukin extends EntityUsingRecordIdAsId implements Serializable {
 	@Column(name = "busho_id", nullable = false, length = 255)
 	private String bushoId;
 
-	/** 入金日. */
+	/** 入金日（入金された営業日、計上日ではない。）. */
 	@Column(name = "date", unique = false, nullable = false)
 	private Date date;
 
