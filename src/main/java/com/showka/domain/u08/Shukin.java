@@ -47,4 +47,13 @@ public class Shukin extends Nyukin {
 	public String getTantoShainId() {
 		return tantoShain.getRecordId();
 	}
+
+	/**
+	 * 入金ID(集金.レコードID）を取得。
+	 * 
+	 * @return 入金ID
+	 */
+	public String getNyukinId() {
+		return getRecordId();
+	}
 }
