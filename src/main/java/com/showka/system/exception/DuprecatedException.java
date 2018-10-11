@@ -14,7 +14,6 @@ public class DuprecatedException extends ValidateException {
 	 * 重複するデータが存在します。重複条件: targets...
 	 */
 	public DuprecatedException(String... targets) {
-		super("重複するデータが存在します。重複条件:" + targets);
+		super("重複するデータが存在します。重複条件:" + arrayFormat(targets));
 	}
-
 }

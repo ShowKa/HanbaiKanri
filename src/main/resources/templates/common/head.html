@@ -35,6 +35,20 @@
 		var errorCallback = function(response) {
 			_.showErroeMessage(response.data.message);
 		};
+		// post and redirect
+		this.postAndRedirect = function(url, params, redirectUrl) {
+			var callback = function(model) {
+				var $form = $("<form>");
+				$form.hide();
+				if (model.form && model.form.successMessage) {
+					$form.appendInput("successMessage", model.form.successMessage);
+				}
+				$form.attr("action", redirectUrl);
+				$form.attr("method", "get");
+				$form.submit();
+			};
+			this.post(url, params, callback);
+		};
 		// post
 		this.post = function(url, params, successCallback) {
 			// FIXME test code for -> List<U08G003FormMeisai> meisai;
@@ -85,7 +99,16 @@
 		};
 		$scope.isUpdateMode = function() {
 			return "update" === $scope.mode;
-		}
+		};
+		this.toRead = function() {
+			$scope.mode = "read";
+		};
+		this.toRegister = function() {
+			$scope.mode = "register";
+		};
+		this.toUpdate = function() {
+			$scope.mode = "update";
+		};
 	} ]);
 	
 	ngModules.service('meisai', [ '$rootScope', '$filter',

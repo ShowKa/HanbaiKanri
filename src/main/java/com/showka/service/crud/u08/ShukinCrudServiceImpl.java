@@ -54,6 +54,8 @@ public class ShukinCrudServiceImpl implements ShukinCrudService {
 		e.setRecordId(id);
 		// 担当者
 		e.setTantoShainId(shukin.getTantoShainId());
+		// 伝票番号
+		e.setDenpyoNumber(shukin.getDenpyoNumber());
 		// save
 		repo.save(e);
 	}
@@ -72,10 +74,10 @@ public class ShukinCrudServiceImpl implements ShukinCrudService {
 	 */
 	@Override
 	public void delete(String id, Integer nyukinVersion) {
-		// delete 入金
-		nyukinCrudService.delete(id, nyukinVersion);
 		// delete 集金
 		repo.deleteById(id);
+		// delete 入金
+		nyukinCrudService.delete(id, nyukinVersion);
 	}
 
 	@Override

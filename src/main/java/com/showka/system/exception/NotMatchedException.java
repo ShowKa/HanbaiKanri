@@ -18,7 +18,7 @@ public class NotMatchedException extends ValidateException {
 	 *            対象項目
 	 */
 	public NotMatchedException(String... targets) {
-		super(targets.toString() + "を一致させる必要があります。");
+		super(arrayFormat(targets) + "を一致させる必要があります。");
 	}
 
 }
