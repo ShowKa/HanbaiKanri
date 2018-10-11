@@ -37,12 +37,14 @@ public class TShukin extends EntityBase implements Serializable {
 
 	/** 伝票番号 */
 	@Column(name = "denpyo_number", unique = false, nullable = false, length = 5)
+	@Setter
 	private String denpyoNumber;
 
 	// fetch
 	/** 入金. */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "nyukin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
+	@Setter
 	private TNyukin nyukin;
 
 	/** 集金.担当社員. */
