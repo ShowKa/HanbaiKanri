@@ -9,6 +9,8 @@ public interface BushoCrudService {
 
 	public Busho getDomain(String pk);
 
+	public boolean exists(String pk);
+
 	public List<Busho> getDomains();
 
 	@Deprecated
