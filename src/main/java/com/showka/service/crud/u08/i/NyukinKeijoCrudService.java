@@ -12,14 +12,14 @@ public interface NyukinKeijoCrudService {
 	 * <pre>
 	 * 下記条件を満たす入金を入金計上テーブルに登録する。
 	 * - 部署=引数.部署
-	 * - 入金日<= 引数.日付
+	 * - 入金日<= 引数.計上日
 	 * - 未計上
 	 * </pre>
 	 * 
 	 * @param busho
 	 *            部署
-	 * @param date
-	 *            日付
+	 * @param keijoDate
+	 *            計上日
 	 */
 	public void keijo(Busho busho, EigyoDate keijoDate);
 
@@ -28,9 +28,9 @@ public interface NyukinKeijoCrudService {
 	 * 
 	 * @param busho
 	 *            部署
-	 * @param date
+	 * @param keijoDate
 	 *            計上日
-	 * @return
+	 * @return 部署の入金
 	 */
 	public BushoNyukin getBushoNyukin(Busho busho, EigyoDate keijoDate);
 }

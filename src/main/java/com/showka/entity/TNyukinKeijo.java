@@ -17,7 +17,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_nyukin_keijo")
 @Getter
-@Setter
 public class TNyukinKeijo extends EntityBase implements Serializable {
 
 	/** SID. */
@@ -26,14 +25,17 @@ public class TNyukinKeijo extends EntityBase implements Serializable {
 	/** 入金ID. */
 	@Id
 	@Column(name = "nyukin_id", nullable = false, length = 255)
+	@Setter
 	private String nyukinId;
 
 	/** 計上部署ID. */
 	@Column(name = "busho_id", nullable = false, length = 255)
+	@Setter
 	private String bushoId;
 
 	/** 計上日. */
 	@Column(name = "date", nullable = false)
+	@Setter
 	private Date date;
 
 	// fetch
