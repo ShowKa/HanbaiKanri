@@ -57,8 +57,16 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return this.date.isAfter(other.date);
 	}
 
+	public boolean isAfterOrEq(TheDate other) {
+		return !this.isBefore(other);
+	}
+
 	public boolean isBefore(TheDate other) {
 		return this.date.isBefore(other.date);
+	}
+
+	public boolean isBeforeOrEq(TheDate other) {
+		return !this.isAfter(other);
 	}
 
 	public boolean isEqual(TheDate other) {

@@ -36,12 +36,50 @@ public class NyukinKeshikomi extends DomainAggregation {
 	}
 
 	/**
+	 * 
+	 * 基準日以前の消込金額の合計取得.
+	 * 
+	 * <pre>
+	 * 対象の消込：
+	 * 消込.日付　<= 引数.基準日
+	 * </pre>
+	 * 
+	 * @param kijunDate
+	 *            基準日
+	 * @return 消込.金額合計
+	 */
+	public AmountOfMoney getKeshikomiKingakuGokei(EigyoDate kijunDate) {
+		int amount = keshikomiSet.parallelStream().filter(k -> {
+			return k.getDate().isBeforeOrEq(kijunDate);
+		}).mapToInt(k -> {
+			return k.getKingaku().intValue();
+		}).sum();
+		return new AmountOfMoney(amount);
+	}
+
+	/**
 	 * 未込額取得.
 	 * 
 	 * @return 入金.金額 - 消込.金額の合計
 	 */
 	public AmountOfMoney getMikeshikomi() {
 		return nyukin.getKingaku().subtract(this.getKeshikomiKingakuGokei());
+	}
+
+	/**
+	 * 未込額取得.
+	 * 
+	 * <pre>
+	 * 対象の消込：
+	 * 消込.日付　<= 引数.基準日
+	 * </pre>
+	 * 
+	 * @param kijunDate
+	 *            基準日
+	 * @return 入金.金額 - 計上日以前の消込.金額の合計
+	 */
+	public AmountOfMoney getMikeshikomi(EigyoDate kijunDate) {
+		return nyukin.getKingaku().subtract(this.getKeshikomiKingakuGokei(kijunDate));
 	}
 
 	/**
