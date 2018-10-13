@@ -2,6 +2,7 @@ package com.showka.domain.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.showka.domain.DomainBase;
 import com.showka.domain.DomainCore;
@@ -57,7 +58,7 @@ public abstract class DomainBuilderBase<T extends DomainCore, S extends DomainBu
 		if (domain instanceof DomainBase) {
 			DomainBase _domain = (DomainBase) domain;
 			if (_domain.getRecordId() == null) {
-				_domain.setRecordId("");
+				_domain.setRecordId(UUID.randomUUID().toString());
 			}
 		}
 		domain.validate();

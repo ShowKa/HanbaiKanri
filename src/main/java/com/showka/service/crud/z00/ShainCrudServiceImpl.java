@@ -45,4 +45,9 @@ public class ShainCrudServiceImpl implements ShainCrudService {
 		return b.build();
 	}
 
+	@Override
+	public boolean exists(String shainCode) {
+		return repo.existsById(shainCode);
+	}
+
 }

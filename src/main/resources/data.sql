@@ -139,6 +139,14 @@ INSERT INTO t_nyukin
 VALUES
 ('r-001', 'r-KK02', 'r-BS02', to_date('2017/08/20', 'yyyy/MM/dd'), '10', 21610, 'r-001'),
 ('r-002', 'r-KK02', 'r-BS02', to_date('2017/08/20', 'yyyy/MM/dd'), '10', 10800, 'r-002'),
+('r-003', 'r-KK01', 'r-BS01', to_date('2017/08/20', 'yyyy/MM/dd'), '00', 10800, 'r-003'),
+;
+
+-- 集金
+INSERT INTO t_shukin
+(nyukin_id, tanto_shain_id, denpyo_number, record_id)
+VALUES
+('r-003', 'r-user01', '00001', 'r-003'),
 ;
 
 -- 消込

@@ -19,4 +19,13 @@ public interface ShainCrudService {
 	 */
 	Shain getDomain(String code);
 
+	/**
+	 * 社員存在チェック.
+	 * 
+	 * @param shainCode
+	 *            社員コード
+	 * @return 存在する場合true
+	 */
+	boolean exists(String shainCode);
+
 }

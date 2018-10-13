@@ -62,4 +62,9 @@ public class BushoCrudServiceImpl implements BushoCrudService {
 		return repo.findAll();
 
 	}
+
+	@Override
+	public boolean exists(String pk) {
+		return repo.existsById(pk);
+	}
 }
