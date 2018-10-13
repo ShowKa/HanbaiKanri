@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class M_SHAIN extends TableImpl<M_SHAIN_RECORD> {
 
-    private static final long serialVersionUID = 340009600;
+    private static final long serialVersionUID = 1587552766;
 
     /**
      * The reference instance of <code>PUBLIC.M_SHAIN</code>
@@ -150,7 +150,7 @@ public class M_SHAIN extends TableImpl<M_SHAIN_RECORD> {
      */
     @Override
     public UniqueKey<M_SHAIN_RECORD> getPrimaryKey() {
-        return Keys.CONSTRAINT_9;
+        return Keys.CONSTRAINT_90;
     }
 
     /**
@@ -158,7 +158,7 @@ public class M_SHAIN extends TableImpl<M_SHAIN_RECORD> {
      */
     @Override
     public List<UniqueKey<M_SHAIN_RECORD>> getKeys() {
-        return Arrays.<UniqueKey<M_SHAIN_RECORD>>asList(Keys.CONSTRAINT_9, Keys.UK_81PKBX9M7PBAFUMTCUKHTOOBH);
+        return Arrays.<UniqueKey<M_SHAIN_RECORD>>asList(Keys.CONSTRAINT_90, Keys.UK_81PKBX9M7PBAFUMTCUKHTOOBH);
     }
 
     /**
