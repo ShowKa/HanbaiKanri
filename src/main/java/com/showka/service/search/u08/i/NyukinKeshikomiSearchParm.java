@@ -1,5 +1,7 @@
 package com.showka.service.search.u08.i;
 
+import java.util.List;
+
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
@@ -26,7 +28,7 @@ public class NyukinKeshikomiSearchParm {
 	/** 金額. */
 	private AmountOfMoney maxKingaku;
 	/** 入金方法区分. */
-	private NyukinHohoKubun nyukinHoho;
+	private List<NyukinHohoKubun> nyukinHoho;
 	/** 消込完了. */
 	private boolean includeKeshikomiDone;
 	/** 担当社員コード. */

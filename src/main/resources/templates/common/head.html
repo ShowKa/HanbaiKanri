@@ -53,17 +53,34 @@
 		this.post = function(url, params, successCallback) {
 			// FIXME test code for -> List<U08G003FormMeisai> meisai;
 			var _params = {};
-			jQuery.extend(_params, params);
-			for(var key in _params) {
-				var value = _params[key];
+			for(var key in params) {
+				var value = params[key];
 				if(Array.isArray(value)) {
+					_params[key] = [];
+					var count = 0;
 					for (var i = 0; i < value.length; i++){
 						var v = value[i];
-						for (var p in v) {
-							_params[key +　"[" + i + "]." + p] = v[p];
-						} 
+						if (v == undefined) {
+							continue;
+						}
+						var type = typeof v;
+						switch(type) {
+						case "undefined":
+							continue;
+						case "number":
+						case "string":
+							_params[key][count++] = v;
+							break;
+						default:
+							for (var p in v) {
+								_params[key +　"[" + i + "]." + p] = v[p];
+							} 
+							delete _params[key];
+							break;
+						}
 					}
-					delete _params[key];
+				} else {
+					_params[key] = params[key];
 				}
 			}
 			$http({

@@ -15,12 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.u01.Kokyaku;
-import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.NyukinHohoKubun;
-import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchService;
@@ -37,9 +35,6 @@ public class NyukinKeshikomiSearchServiceImpl implements NyukinKeshikomiSearchSe
 	private DSLContext create;
 
 	@Autowired
-	private NyukinCrudService nyukinCrudService;
-
-	@Autowired
 	private NyukinKeshikomiCrudService nyukinKeshikomiCrudService;
 
 	// alias
@@ -50,13 +45,9 @@ public class NyukinKeshikomiSearchServiceImpl implements NyukinKeshikomiSearchSe
 	@Override
 	public List<NyukinKeshikomi> search(NyukinKeshikomiSearchParm param) {
 		List<T_NYUKIN_RECORD> results = this.searchRecords(param);
-		// 入金
-		List<Nyukin> nyukinList = results.parallelStream().map(r -> {
-			Nyukin nyukin = nyukinCrudService.getDomain(r.get(nk.record_id));
-			return nyukin;
-		}).collect(Collectors.toList());
 		// 入金消込取得
-		List<NyukinKeshikomi> keshikomiList = nyukinList.parallelStream().map(n -> {
+		// XXX paralellStream使うと Hibernate でバグる。lazy fetch はマルチスレッドで使えない。
+		List<NyukinKeshikomi> keshikomiList = results.stream().map(n -> {
 			NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(n.getRecordId());
 			return nyukinKeshikomi;
 		}).filter(nyukinKeshikomi -> {
@@ -75,8 +66,8 @@ public class NyukinKeshikomiSearchServiceImpl implements NyukinKeshikomiSearchSe
 		SelectJoinStep<Record> from = create.select().from(nk);
 		// 集金の場合、担当社員も検索条件に加える。
 		Shain tantoShain = param.getTantoShain();
-		NyukinHohoKubun hoho = param.getNyukinHoho();
-		if (NyukinHohoKubun.集金.equals(hoho) && tantoShain != null) {
+		List<NyukinHohoKubun> hohoList = param.getNyukinHoho();
+		if (hohoList.contains(NyukinHohoKubun.集金) && tantoShain != null) {
 			from = from.innerJoin(sk)
 					.on(nk.record_id.eq(sk.nyukin_id))
 					.and(sk.tanto_shain_id.eq(tantoShain.getRecordId()));
@@ -111,8 +102,11 @@ public class NyukinKeshikomiSearchServiceImpl implements NyukinKeshikomiSearchSe
 			where = where.and(nk.kingaku.lessOrEqual(maxKingaku.intValue()));
 		}
 		// 入金方法区分
-		if (hoho != null) {
-			where = where.and(nk.nyukin_hoho_kubun.eq(hoho.getCode()));
+		if (hohoList.size() > 0) {
+			List<String> codeList = hohoList.parallelStream()
+					.map(NyukinHohoKubun::getCode)
+					.collect(Collectors.toList());
+			where = where.and(nk.nyukin_hoho_kubun.in(codeList));
 		}
 		// 検索
 		Result<T_NYUKIN_RECORD> results = where.fetchInto(t_nyukin);
