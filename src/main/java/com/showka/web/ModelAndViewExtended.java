@@ -1,5 +1,10 @@
 package com.showka.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.showka.kubun.i.Kubun;
+
 import lombok.Getter;
 
 /**
@@ -33,6 +38,23 @@ public class ModelAndViewExtended extends org.springframework.web.servlet.ModelA
 	 */
 	public void setMode(Mode mode) {
 		this.addObject("mode", mode.getCode());
+	}
+
+	/**
+	 * 区分 追加.
+	 * 
+	 * @param 区分
+	 */
+	public void addKubun(String name, Kubun<?>... values) {
+		List<Kubun<?>> list = new ArrayList<>();
+		for (Kubun<?> k : values) {
+			// ignore empty
+			if (k.eq("")) {
+				continue;
+			}
+			list.add(k);
+		}
+		this.addObject(name, list);
 	}
 
 }
