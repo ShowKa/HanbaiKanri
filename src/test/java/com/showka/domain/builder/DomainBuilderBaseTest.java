@@ -22,11 +22,4 @@ public class DomainBuilderBaseTest extends TestCase {
 		assertEquals(new TheDate(2000, 1, 1), u2.getKeijoDate());
 	}
 
-	// record is null -> empty string
-	@Test
-	public void test02_Apply_id() throws Exception {
-		UriageBuilder ub = new UriageBuilder();
-		Uriage actual = ub.build();
-		assertEquals("", actual.getRecordId());
-	}
 }

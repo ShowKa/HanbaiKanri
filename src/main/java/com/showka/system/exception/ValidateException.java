@@ -20,4 +20,15 @@ public class ValidateException extends ApplicationException {
 		super(message);
 	}
 
+	protected static String arrayFormat(String... targets) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (String target : targets) {
+			sb.append(target);
+			sb.append(", ");
+		}
+		sb.delete(sb.length() - 2, sb.length());
+		sb.append("]");
+		return sb.toString();
+	}
 }

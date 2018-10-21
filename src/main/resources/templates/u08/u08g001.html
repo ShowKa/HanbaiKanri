@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<link th:replace="common/head :: common_link" />
+<script
+	th:inmeisai="javascript"
+	src="/u08/u08g001.js"></script>
+</head>
+<body ng-app="App">
+	<div th:replace="common/header :: common_header"></div>
+	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
+	<div class="bootstrap-iso">
+		<div
+			class="container"
+			ng-controller="MainController">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<form
+						id="searchForm"
+						class="form-horizontal">
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="kokyakuCode">顧客</label>
+							<div class="col-sm-10">
+								<input
+									class="form-control"
+									id="kokyakuCode"
+									name="kokyakuCode"
+									type="text"
+									placeholder="KK00"
+									th:value="${form.kokyakuCode}"
+									ng-init-from-value
+									ng-model="kokyakuCode"
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="bushoCode">部署</label>
+							<div class="col-sm-10">
+								<input
+									class="form-control"
+									id="bushoCode"
+									name="bushoCode"
+									type="text"
+									placeholder="BS00"
+									th:value="${form.bushoCode}"
+									ng-init-from-value
+									ng-model="bushoCode"
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="minNyukinDate">入金日</label>
+							<div class="col-sm-5">
+								<input
+									class="form-control"
+									id="minNyukinDate"
+									name="minNyukinDate"
+									type="text"
+									placeholder="from"
+									th:value="${{form.minNyukinDate}}"
+									ng-model="minNyukinDate"
+									ng-init-from-value
+									required />
+							</div>
+							<div class="col-sm-5">
+								<input
+									class="form-control"
+									id="maxNyukinDate"
+									name="maxNyukinDate"
+									type="text"
+									placeholder="to"
+									th:value="${{form.maxNyukinDate}}"
+									ng-model="maxNyukinDate"
+									ng-init-from-value
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="minKingaku">金額</label>
+							<div class="col-sm-5">
+								<input
+									class="form-control"
+									id="minKingaku"
+									name="minKingaku"
+									type="number"
+									placeholder="from"
+									th:value="${{form.minKingaku}}"
+									ng-model="minKingaku"
+									ng-init-from-value
+									required />
+							</div>
+							<div class="col-sm-5">
+								<input
+									class="form-control"
+									id="maxKingaku"
+									name="maxKingaku"
+									type="number"
+									placeholder="to"
+									th:value="${{form.maxKingaku}}"
+									ng-model="maxKingaku"
+									ng-init-from-value
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="nyukinHoho">入金方法</label>
+							<div
+								class="col-sm-2"
+								th:each="hoho,iterator : ${HanbaiHohoList}">
+								<label
+									class="control-label"
+									th:for="'nyukinHoho.' + ${hoho.code}"
+									th:text="${hoho}"></label>
+								<input
+									class=""
+									name="nyukinHoho"
+									type="checkbox"
+									placeholder=""
+									th:id="'nyukinHoho.' + ${hoho.code}"
+									th:value="${{hoho.code}}"
+									th:ng-model="'nyukinHoho[' + ${iterator.index} + ']'"
+									th:ng-true-value="'\'' + ${hoho.code} + '\''"
+									ng-click="selectNyukinHoho()"
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="tantoShainCode">担当社員</label>
+							<div class="col-sm-10">
+								<input
+									class="form-control"
+									id="tantoShainCode"
+									name="tantoShainCode"
+									type="text"
+									placeholder="SH00"
+									th:value="${form.tantoShainCode}"
+									ng-init-from-value
+									ng-model="tantoShainCode"
+									ng-disabled="!selectShukin"
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="includeKeshikomiDone">消込完了</label>
+							<div class="col-sm-10">
+								<label
+									class="control-label"
+									for="includeKeshikomiDone">含む</label>
+								<input
+									class=""
+									id="includeKeshikomiDone"
+									name="includeKeshikomiDone"
+									type="checkbox"
+									th:value="${form.includeKeshikomiDone}"
+									ng-model="includeKeshikomiDone"
+									ng-init-from-value
+									required />
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-10 col-sm-offset-2">
+								<input
+									id="searchBtn"
+									type="button"
+									class="btn btn-primary btn-sm"
+									value="検索"
+									ng-click="search();" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-md-7 col-sm-7 col-xs-12">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>入金日</th>
+							<th>顧客名</th>
+							<th>部署名</th>
+							<th>入金方法</th>
+							<th>金額</th>
+							<th>消込額</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="nyukinList">
+						<tr ng-repeat="nyukin in nyukinList">
+							<td class="col-sm-1">
+								<span
+									class="glyphicon glyphicon-list-alt"
+									style="padding-right: 5px; cursor: pointer;"
+									ng-click="get(nyukin.nyukinId);"> </span>{{nyukin.nyukinDate}}
+							</td>
+							<td class="col-sm-1">{{nyukin.kokyakuName}}</td>
+							<td class="col-sm-1">{{nyukin.bushoName}}</td>
+							<td class="col-sm-1">{{nyukin.nyukinHoho}}</td>
+							<td class="col-sm-1">{{nyukin.nyukinKingaku}}</td>
+							<td class="col-sm-1">
+								<a ng-click="keshikomi(nyukin.nyukinId);">{{nyukin.keshikomiKingaku}}</a>
+							</td>
+							<td class="col-sm-1">{{nyukin.keshikomiDone == true ? '済': '未'}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div th:replace="common/footer :: common_footer"></div>
+</body>
+</html>
