@@ -74,7 +74,7 @@ public class NyukinKeijoSearchServiceImpl implements NyukinKeijoSearchService {
 		nk.setDate(keijoDate.toDate());
 		Example<TNyukinKeijo> example = Example.of(nk);
 		List<TNyukinKeijo> results = repo.findAll(example);
-		return results.parallelStream().map(r -> {
+		return results.stream().map(r -> {
 			return nyukinCrudService.getDomain(r.getNyukinId());
 		}).collect(Collectors.toList());
 	}

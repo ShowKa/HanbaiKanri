@@ -37,6 +37,8 @@ public class NyukinKeijoCrudServiceImpl implements NyukinKeijoCrudService {
 			e.setBushoId(nyukin.getBushoId());
 			e.setDate(nyukin.getDate().toDate());
 			e.setNyukinId(nyukin.getRecordId());
+			// idは同じ
+			e.setRecordId(nyukin.getRecordId());
 			repo.save(e);
 		});
 	}
@@ -44,7 +46,7 @@ public class NyukinKeijoCrudServiceImpl implements NyukinKeijoCrudService {
 	@Override
 	public BushoNyukin getBushoNyukin(Busho busho, EigyoDate keijoDate) {
 		List<Nyukin> nyukinList = nyukinKeijoSearchService.seach(busho, keijoDate);
-		List<NyukinKeshikomi> nyukinKeshikomiList = nyukinList.parallelStream().map(nyukin -> {
+		List<NyukinKeshikomi> nyukinKeshikomiList = nyukinList.stream().map(nyukin -> {
 			String nyukinId = nyukin.getRecordId();
 			return nyukinKeshikomiCrudService.getDomain(nyukinId);
 		}).collect(Collectors.toList());
