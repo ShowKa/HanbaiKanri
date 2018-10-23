@@ -13,7 +13,7 @@
 		<div
 			class="container"
 			ng-controller="MainController">
-			<div class="col-md-6 col-sm-6 col-xs-12">
+			<div class="col-md-10 col-sm-10 col-xs-12">
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -22,6 +22,10 @@
 							<th>営業日</th>
 							<th>前日売上計</th>
 							<th>同訂正計</th>
+							<th>振込消込</th>
+							<th>振込未処理</th>
+							<th>現金消込</th>
+							<th>現金未処理</th>
 						</tr>
 					</thead>
 					<tbody id="bushoList">
@@ -36,6 +40,10 @@
 							<td class="col-sm-1">{{busho.eigyoDate}}</td>
 							<td class="col-sm-1">{{busho.uriageKeijo}}</td>
 							<td class="col-sm-1">{{busho.uriageKeijoTeisei}}</td>
+							<td class="col-sm-1">{{busho.keshikomiFurikomi}}</td>
+							<td class="col-sm-1">{{busho.mishoriFurikomi}}</td>
+							<td class="col-sm-1">{{busho.keshikomiGenkin}}</td>
+							<td class="col-sm-1">{{busho.mishoriGenkin}}</td>
 						</tr>
 					</tbody>
 				</table>

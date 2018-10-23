@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class W_FIRM_BANK_FURIKOMI_MATCHING extends TableImpl<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD> {
 
-    private static final long serialVersionUID = -1435417123;
+    private static final long serialVersionUID = -1132226881;
 
     /**
      * The reference instance of <code>PUBLIC.W_FIRM_BANK_FURIKOMI_MATCHING</code>
@@ -145,7 +145,7 @@ public class W_FIRM_BANK_FURIKOMI_MATCHING extends TableImpl<W_FIRM_BANK_FURIKOM
      */
     @Override
     public UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD> getPrimaryKey() {
-        return Keys.CONSTRAINT_A;
+        return Keys.CONSTRAINT_AF;
     }
 
     /**
@@ -153,7 +153,7 @@ public class W_FIRM_BANK_FURIKOMI_MATCHING extends TableImpl<W_FIRM_BANK_FURIKOM
      */
     @Override
     public List<UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD>> getKeys() {
-        return Arrays.<UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD>>asList(Keys.CONSTRAINT_A, Keys.UK_F87YWKD2K029GHSGU9B9YF8P8);
+        return Arrays.<UniqueKey<W_FIRM_BANK_FURIKOMI_MATCHING_RECORD>>asList(Keys.CONSTRAINT_AF, Keys.UK_F87YWKD2K029GHSGU9B9YF8P8);
     }
 
     /**

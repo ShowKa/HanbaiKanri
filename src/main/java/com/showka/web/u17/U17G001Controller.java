@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.showka.domain.u17.BushoNyukin;
 import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.service.crud.u05.i.UriageKeijoCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
+import com.showka.service.crud.u08.i.NyukinKeijoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
@@ -50,6 +52,9 @@ public class U17G001Controller extends ControllerBase {
 	@Autowired
 	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
 
+	@Autowired
+	private NyukinKeijoCrudService nyukinKeijoCrudService;
+
 	/**
 	 * 参照.
 	 *
@@ -80,9 +85,16 @@ public class U17G001Controller extends ControllerBase {
 			EigyoDate eigyoDate = b.getEigyoDate();
 			ret.put("eigyoDate", eigyoDate.toString());
 			// FIXME 前日の売上計上を取得
-			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, eigyoDate.plusDays(-1));
+			EigyoDate keijoDate = new EigyoDate(eigyoDate.plusDays(-1));
+			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, keijoDate);
 			ret.put("uriageKeijo", bushoKeijo.getKeijoKingaku());
 			ret.put("uriageKeijoTeisei", bushoKeijo.getTeiseiKingaku());
+			// 入金の計上を取得
+			BushoNyukin nyukinKeijo = nyukinKeijoCrudService.getBushoNyukin(b, keijoDate);
+			ret.put("keshikomiFurikomi", nyukinKeijo.getKeshikomiKingaku_Furikomi().intValue());
+			ret.put("mishoriFurikomi", nyukinKeijo.getMishoriKingaku_Furikomi().intValue());
+			ret.put("keshikomiGenkin", nyukinKeijo.getKeshikomiKingaku_Genkin().intValue());
+			ret.put("mishoriGenkin", nyukinKeijo.getMishoriKingaku_Genkin().intValue());
 			return ret;
 		}).collect(Collectors.toList());
 		// set model
@@ -108,6 +120,8 @@ public class U17G001Controller extends ControllerBase {
 		bushoDateValidateService.validateForClosing(busho, eigyoDate);
 		// 売上計上
 		uriageKeijoCrudService.keijo(busho, eigyoDate);
+		// 入金計上
+		nyukinKeijoCrudService.keijo(busho, eigyoDate);
 		// 在庫繰越
 		shohinZaikoCrudService.kurikoshi(busho, eigyoDate);
 		// 請求
