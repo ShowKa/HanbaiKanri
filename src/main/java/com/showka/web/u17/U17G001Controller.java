@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.showka.domain.u17.BushoNyukin;
 import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.service.crud.u05.i.UriageKeijoCrudService;
@@ -51,7 +52,7 @@ public class U17G001Controller extends ControllerBase {
 	@Autowired
 	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
 
-	// @Autowired
+	@Autowired
 	private NyukinKeijoCrudService nyukinKeijoCrudService;
 
 	/**
@@ -84,9 +85,16 @@ public class U17G001Controller extends ControllerBase {
 			EigyoDate eigyoDate = b.getEigyoDate();
 			ret.put("eigyoDate", eigyoDate.toString());
 			// FIXME 前日の売上計上を取得
-			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, eigyoDate.plusDays(-1));
+			EigyoDate keijoDate = new EigyoDate(eigyoDate.plusDays(-1));
+			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, keijoDate);
 			ret.put("uriageKeijo", bushoKeijo.getKeijoKingaku());
 			ret.put("uriageKeijoTeisei", bushoKeijo.getTeiseiKingaku());
+			// 入金の計上を取得
+			BushoNyukin nyukinKeijo = nyukinKeijoCrudService.getBushoNyukin(b, keijoDate);
+			ret.put("keshikomiFurikomi", nyukinKeijo.getKeshikomiKingaku_Furikomi().intValue());
+			ret.put("mishoriFurikomi", nyukinKeijo.getMishoriKingaku_Furikomi().intValue());
+			ret.put("keshikomiGenkin", nyukinKeijo.getKeshikomiKingaku_Genkin().intValue());
+			ret.put("mishoriGenkin", nyukinKeijo.getMishoriKingaku_Genkin().intValue());
 			return ret;
 		}).collect(Collectors.toList());
 		// set model
