@@ -174,7 +174,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		// get 入金
 		Nyukin nyukin = nyukinCrudService.getDomain(e.getNyukinId());
 		// get 売掛
-		Urikake urikake = urikakeCrudService.getDomain(e.getUrikakeId());
+		Urikake urikake = urikakeCrudService.getDomainById(e.getUrikakeId());
 		// set builder
 		KeshikomiBuilder b = new KeshikomiBuilder();
 		b.withNyukin(nyukin);

@@ -1,7 +1,6 @@
 package com.showka.service.search.u06;
 
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.*;
 
 import java.util.Date;
 import java.util.List;
@@ -14,7 +13,6 @@ import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.domain.u06.Urikake;
 import com.showka.repository.i.TUrikakeRepository;
 import com.showka.service.crud.u06.i.UrikakeCrudService;
-import com.showka.service.search.u06.UrikakeSearchServiceImpl;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.value.AmountOfMoney;
 
@@ -86,9 +84,9 @@ public class UrikakeSearchServiceImplTest extends CrudServiceTestCase {
 		// expect
 		new Expectations() {
 			{
-				urikakeCrudService.getDomain(urikakeId1);
+				urikakeCrudService.getDomainById(urikakeId1);
 				result = u1;
-				urikakeCrudService.getDomain(urikakeId2);
+				urikakeCrudService.getDomainById(urikakeId2);
 				result = u2;
 				urikakeKeshikomiSpecificationService.getZandakaOf(u1);
 				result = new AmountOfMoney(0);

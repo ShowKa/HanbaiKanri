@@ -39,7 +39,7 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 		List<TUrikake> result = tUrikakeRepository.findAll(spec);
 		// build domain
 		return result.stream().map(_urikake -> {
-			return urikakeCrudService.getDomain(_urikake.getRecordId());
+			return urikakeCrudService.getDomainById(_urikake.getRecordId());
 		}).filter(u -> {
 			return urikakeKeshikomiSpecificationService.getZandakaOf(u).intValue() > 0;
 		}).collect(Collectors.toList());

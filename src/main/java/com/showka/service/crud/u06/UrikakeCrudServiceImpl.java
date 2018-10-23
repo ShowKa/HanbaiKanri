@@ -123,4 +123,10 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 		Urikake updated = b.apply(urikake);
 		this.save(updated);
 	}
+
+	@Override
+	public Urikake getDomainById(String urikakeId) {
+		TUrikake _u = repo.findByRecordId(urikakeId);
+		return this.getDomain(_u.getUriageId());
+	}
 }

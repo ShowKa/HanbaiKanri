@@ -259,7 +259,7 @@ public class U08G003Controller extends ControllerBase {
 		Set<Keshikomi> keshikomiSet = form.getMeisai().stream().map(m -> {
 			// 売掛
 			String urikakeId = m.getUrikakeId();
-			Urikake urikake = urikakeCrudService.getDomain(urikakeId);
+			Urikake urikake = urikakeCrudService.getDomainById(urikakeId);
 			// FIXME
 			String id = m.getKeshikomiId();
 			String keshikomiId = !StringUtils.isEmpty(id) ? id : "dummy_" + UUID.randomUUID().toString();

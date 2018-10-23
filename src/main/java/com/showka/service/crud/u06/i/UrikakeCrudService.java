@@ -7,6 +7,20 @@ import com.showka.value.EigyoDate;
 public interface UrikakeCrudService extends CrudService<Urikake, String> {
 
 	/**
+	 * 売上IDで売掛を取得.
+	 * 
+	 * <pre>
+	 * 売<b style="color:red">掛</b>IDではないので要注意
+	 * </pre>
+	 * 
+	 * @param uriageId
+	 *            売上ID
+	 * @return 売掛
+	 */
+	@Override
+	Urikake getDomain(String uriageId);
+
+	/**
 	 * 売掛が存在する場合のみ削除する。
 	 * 
 	 * <pre>
@@ -44,4 +58,13 @@ public interface UrikakeCrudService extends CrudService<Urikake, String> {
 	 *            更新後入金予定日
 	 */
 	void updateNyukinYoteiDate(Urikake urikake, EigyoDate updatedNyukinYoteiDate);
+
+	/**
+	 * 売掛IDで売掛を取得.
+	 * 
+	 * @param urikakeId
+	 *            売掛ID
+	 * @return 売掛
+	 */
+	Urikake getDomainById(String urikakeId);
 }

@@ -25,7 +25,7 @@ public class UrikakeKeshikomiCrudServiceImpl implements UrikakeKeshikomiCrudServ
 	@Override
 	public UrikakeKeshikomi getDomain(String urikakeId) {
 		// get 売掛
-		Urikake urikake = urikakeCrudService.getDomain(urikakeId);
+		Urikake urikake = urikakeCrudService.getDomainById(urikakeId);
 		// get 消込リスト
 		Set<Keshikomi> keshikomiList = keshikomiCrudService.getKeshikomiSetOfUrikake(urikakeId);
 		// build 売掛消込

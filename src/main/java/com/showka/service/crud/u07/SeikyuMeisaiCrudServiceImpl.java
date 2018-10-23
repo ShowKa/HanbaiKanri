@@ -63,7 +63,7 @@ public class SeikyuMeisaiCrudServiceImpl implements SeikyuMeisaiCrudService {
 		// entitu
 		TSeikyuMeisai e = repo.getOne(pk);
 		// 売掛
-		Urikake urikake = urikakeCrudService.getDomain(e.getUrikakeId());
+		Urikake urikake = urikakeCrudService.getDomainById(e.getUrikakeId());
 		// build
 		SeikyuMeisaiBuilder b = new SeikyuMeisaiBuilder();
 		b.withKingaku(new AmountOfMoney(e.getKingaku()));
