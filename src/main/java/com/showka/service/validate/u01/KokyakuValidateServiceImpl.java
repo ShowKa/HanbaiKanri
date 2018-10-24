@@ -13,7 +13,7 @@ import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.system.exception.AlreadyExistsException;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.IncorrectKubunException;
 import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
@@ -66,7 +66,7 @@ public class KokyakuValidateServiceImpl implements KokyakuValidateService {
 	public void validateForDelete(String kokyakuCode) throws ValidateException {
 		List<Uriage> uriageList = uriageCrudService.getUriageOfKokyaku(kokyakuCode);
 		if (!uriageList.isEmpty()) {
-			throw new CanNotUpdateException("売上が登録済み");
+			throw new CanNotUpdateOrDeleteException("売上が登録済み");
 		}
 	}
 }

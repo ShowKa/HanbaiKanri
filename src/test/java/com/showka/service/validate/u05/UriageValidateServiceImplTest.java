@@ -21,7 +21,7 @@ import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.system.exception.AlreadyExistsException;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.EmptyException;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.TaxRate;
@@ -172,7 +172,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = CanNotUpdateException.class)
+	@Test(expected = CanNotUpdateOrDeleteException.class)
 	public void test_validateForUpdate01() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";
@@ -227,7 +227,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = CanNotUpdateException.class)
+	@Test(expected = CanNotUpdateOrDeleteException.class)
 	public void test_validateForDelete01() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";
@@ -254,7 +254,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = CanNotUpdateException.class)
+	@Test(expected = CanNotUpdateOrDeleteException.class)
 	public void test_validateForDelete02() throws Exception {
 		// input
 		String uriageId = "r-KK01-00001";

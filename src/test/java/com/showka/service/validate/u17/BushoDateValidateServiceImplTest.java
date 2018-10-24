@@ -7,7 +7,7 @@ import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
@@ -63,7 +63,7 @@ public class BushoDateValidateServiceImplTest extends SimpleTestCase {
 	 * 
 	 * @throws Exception
 	 */
-	@Test(expected = CanNotUpdateException.class)
+	@Test(expected = CanNotUpdateOrDeleteException.class)
 	public void test02_validateForClosing() throws Exception {
 		// data
 		EigyoDate today = new EigyoDate(2017, 1, 1);

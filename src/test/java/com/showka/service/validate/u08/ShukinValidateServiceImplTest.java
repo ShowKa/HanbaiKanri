@@ -12,9 +12,9 @@ import com.showka.domain.u08.Shukin;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.service.crud.u08.i.ShukinCrudService;
+import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
 import com.showka.service.specification.u08.i.NyukinKeshikomiSpecificationService;
-import com.showka.system.exception.CanNotDeleteException;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.DuprecatedException;
 import com.showka.system.exception.NotAllowedNumberException;
 import com.showka.system.exception.NotMatchedException;
@@ -31,6 +31,9 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 	@Tested
 	@Injectable
 	private ShukinValidateServiceImpl service;
+
+	@Injectable
+	private NyukinKeijoBusinessService nyukinKeijoBusinessService;
 
 	@Injectable
 	private ShukinCrudService shukinCrudService;
@@ -234,7 +237,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 	/**
 	 * 消込ありの場合、OK
 	 */
-	@Test(expected = CanNotDeleteException.class)
+	@Test(expected = CanNotUpdateOrDeleteException.class)
 	public void test_ValidateForDelete_02() throws Exception {
 		// input
 		// 入金ID
@@ -305,7 +308,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 	/**
 	 * 社員が変わらず、消込ありの場合、エラー
 	 */
-	@Test(expected = CanNotUpdateException.class)
+	@Test(expected = CanNotUpdateOrDeleteException.class)
 	public void test_ValidateForUpdate_02() throws Exception {
 		// input
 		// 入金ID
@@ -336,5 +339,58 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 		};
 		// do
 		service.validateForUpdate(shukin1);
+	}
+
+	/**
+	 * 未計上の場合、OK
+	 */
+	@Test
+	public void test_ValidateKeijo_01() throws Exception {
+		// input
+		// 入金ID
+		String nyukinId = "r-001";
+		// 集金
+		ShukinBuilder shb1 = new ShukinBuilder();
+		shb1.withRecordId(nyukinId);
+		Shukin shukin1 = shb1.build();
+		// expect
+		new Expectations() {
+			{
+				nyukinKeijoBusinessService.keijoDone(nyukinId);
+				result = false;
+			}
+		};
+		// do
+		service.validateKeijo(shukin1);
+		// verify
+		new Verifications() {
+			{
+				nyukinKeijoBusinessService.keijoDone(nyukinId);
+				times = 1;
+			}
+		};
+	}
+
+	/**
+	 * 計上済みの場合、エラー
+	 */
+	@Test(expected = CanNotUpdateOrDeleteException.class)
+	public void test_ValidateKeijo_02() throws Exception {
+		// input
+		// 入金ID
+		String nyukinId = "r-001";
+		// 集金
+		ShukinBuilder shb1 = new ShukinBuilder();
+		shb1.withRecordId(nyukinId);
+		Shukin shukin1 = shb1.build();
+		// expect
+		new Expectations() {
+			{
+				nyukinKeijoBusinessService.keijoDone(nyukinId);
+				result = true;
+			}
+		};
+		// do
+		service.validateKeijo(shukin1);
 	}
 }

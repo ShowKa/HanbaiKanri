@@ -7,7 +7,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.validate.u17.i.BushoDateValidateService;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
@@ -22,7 +22,7 @@ public class BushoDateValidateServiceImpl implements BushoDateValidateService {
 		MBushoDate dateEntity = repo.getOne(busho.getRecordId());
 		TheDate trueDate = new TheDate(dateEntity.getEigyoDate());
 		if (!trueDate.isEqual(today)) {
-			throw new CanNotUpdateException("すでに営業日が更新されている可能性があります（現在の営業日 : " + trueDate + "）");
+			throw new CanNotUpdateOrDeleteException("すでに営業日が更新されている可能性があります（現在の営業日 : " + trueDate + "）");
 		}
 	}
 }

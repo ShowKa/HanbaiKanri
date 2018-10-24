@@ -3,7 +3,7 @@ package com.showka.system.exception;
 import lombok.Getter;
 
 @Getter
-public class CanNotUpdateException extends ValidateException {
+public class CanNotUpdateOrDeleteException extends ValidateException {
 
 	/**
 	 * SID.
@@ -16,14 +16,14 @@ public class CanNotUpdateException extends ValidateException {
 	 * コンストラクタ.
 	 * 
 	 * <pre>
-	 * 更新できません。（理由：reason）
+	 * 更新・削除できません。（理由：reason）
 	 * </pre>
 	 * 
 	 * @param reson
 	 *            更新不可理由
 	 */
-	public CanNotUpdateException(String reason) {
-		super("更新できません（理由：" + reason + "）");
+	public CanNotUpdateOrDeleteException(String reason) {
+		super("更新・削除はできません（理由：" + reason + "）");
 		this.reason = reason;
 	}
 }

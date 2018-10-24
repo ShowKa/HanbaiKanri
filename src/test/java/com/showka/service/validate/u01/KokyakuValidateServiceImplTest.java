@@ -13,7 +13,7 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
 
@@ -248,7 +248,7 @@ public class KokyakuValidateServiceImplTest extends SimpleTestCase {
 		};
 	}
 
-	@Test(expected = CanNotUpdateException.class)
+	@Test(expected = CanNotUpdateOrDeleteException.class)
 	public void test_validateForDelete1() throws Exception {
 		// expect
 		List<Uriage> uriageList = new ArrayList<Uriage>();

@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u08.Shukin;
 import com.showka.service.crud.u08.i.ShukinCrudService;
+import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
 import com.showka.service.specification.u08.i.NyukinKeshikomiSpecificationService;
 import com.showka.service.validate.u08.i.ShukinValidateService;
-import com.showka.system.exception.CanNotDeleteException;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.DuprecatedException;
 import com.showka.system.exception.NotAllowedNumberException;
 import com.showka.system.exception.NotMatchedException;
@@ -19,6 +19,9 @@ import com.showka.value.EigyoDate;
 
 @Service
 public class ShukinValidateServiceImpl implements ShukinValidateService {
+
+	@Autowired
+	private NyukinKeijoBusinessService nyukinKeijoBusinessService;
 
 	@Autowired
 	private ShukinCrudService shukinCrudService;
@@ -49,28 +52,57 @@ public class ShukinValidateServiceImpl implements ShukinValidateService {
 	}
 
 	@Override
-	public void validateForUpdate(Shukin shukin) throws NotMatchedException, CanNotUpdateException {
+	public void validateForUpdate(Shukin shukin) throws NotMatchedException, CanNotUpdateOrDeleteException {
 		// 担当社員の所属を検証
 		// ただし担当社員が更新された場合のみ
-		Shukin old = shukinCrudService.getDomain(shukin.getRecordId());
+		String nyukinId = shukin.getNyukinId();
+		Shukin old = shukinCrudService.getDomain(nyukinId);
 		if (!old.getTantoShain().equals(shukin.getTantoShain())) {
 			this.validateTantoShainShozokuBusho(shukin);
 		}
+		// 計上済みの場合エラー
+		this.validateKeijo(shukin);
 		// 消込を実施済みの場合、エラー
-		String nyukinId = shukin.getNyukinId();
-		boolean hasKeshikomi = nyukinKeshikomiSpecificationService.hasKeshikomi(nyukinId);
-		if (hasKeshikomi) {
-			throw new CanNotUpdateException("消込済みのため");
-		}
+		this.validateKeshikomi(shukin);
 	}
 
 	@Override
-	public void validateForDelete(Shukin shukin) throws CanNotDeleteException {
+	public void validateForDelete(Shukin shukin) throws CanNotUpdateOrDeleteException {
+		// 計上済みの場合エラー
+		this.validateKeijo(shukin);
 		// 消込を実施済みの場合、エラー
+		this.validateKeshikomi(shukin);
+	}
+
+	/**
+	 * 計上済み検証.
+	 * 
+	 * @param shukin
+	 *            集金
+	 * @throws CanNotUpdateOrDeleteException
+	 *             計上済みの場合、更新・削除不可
+	 */
+	void validateKeijo(Shukin shukin) throws CanNotUpdateOrDeleteException {
+		String nyukinId = shukin.getNyukinId();
+		boolean keijoDone = nyukinKeijoBusinessService.keijoDone(nyukinId);
+		if (keijoDone) {
+			throw new CanNotUpdateOrDeleteException("計上済みのため");
+		}
+	}
+
+	/**
+	 * 消込済み検証.
+	 * 
+	 * @param shukin
+	 *            集金
+	 * @throws CanNotUpdateOrDeleteException
+	 *             更新削除不可例外
+	 */
+	void validateKeshikomi(Shukin shukin) throws CanNotUpdateOrDeleteException {
 		String nyukinId = shukin.getNyukinId();
 		boolean hasKeshikomi = nyukinKeshikomiSpecificationService.hasKeshikomi(nyukinId);
 		if (hasKeshikomi) {
-			throw new CanNotDeleteException("消込済みのため");
+			throw new CanNotUpdateOrDeleteException("消込済みのため");
 		}
 	}
 

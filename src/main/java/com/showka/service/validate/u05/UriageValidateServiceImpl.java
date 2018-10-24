@@ -16,7 +16,7 @@ import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.AlreadyExistsException;
-import com.showka.system.exception.CanNotUpdateException;
+import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.EmptyException;
 import com.showka.system.exception.ValidateException;
 
@@ -66,7 +66,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	public void validateForUpdate(Uriage domain) throws ValidateException {
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
-			throw new CanNotUpdateException("キャンセル済の売上のため");
+			throw new CanNotUpdateOrDeleteException("キャンセル済の売上のため");
 		}
 	}
 
@@ -75,11 +75,11 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 		Uriage domain = uriageCrudService.getDomain(pk);
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
-			throw new CanNotUpdateException("キャンセル済の売上のため");
+			throw new CanNotUpdateOrDeleteException("キャンセル済の売上のため");
 		}
 		boolean keijoZumi = uriageKeijoSpecificationService.isKeijoZumi(domain);
 		if (keijoZumi) {
-			throw new CanNotUpdateException("計上済の売上のため");
+			throw new CanNotUpdateOrDeleteException("計上済の売上のため");
 		}
 
 	}
