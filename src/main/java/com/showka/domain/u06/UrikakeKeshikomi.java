@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainAggregation;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.system.exception.SystemException;
@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UrikakeKeshikomi extends DomainBase {
+public class UrikakeKeshikomi extends DomainAggregation {
 
 	/** 売掛. */
 	private Urikake urikake;
@@ -100,7 +100,7 @@ public class UrikakeKeshikomi extends DomainBase {
 	 * @return 同じ売掛ならtrue
 	 */
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainAggregation other) {
 		UrikakeKeshikomi o = (UrikakeKeshikomi) other;
 		return urikake.equals(o.urikake);
 	}

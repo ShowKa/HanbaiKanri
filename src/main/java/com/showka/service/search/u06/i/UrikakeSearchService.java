@@ -9,13 +9,13 @@ public interface UrikakeSearchService {
 	 * 顧客の売掛を取得.
 	 * 
 	 * <pre>
-	 * 残高>0の売掛を全て取得する。
+	 * 消込未完了の売掛を全て取得する。
 	 * 
 	 * <pre>
 	 * 
-	 * @param kokyakuCode
-	 *            顧客コード
-	 * @return 売掛 list
+	 * @param kokyakuId
+	 *            顧客ID
+	 * @return 売掛リスト
 	 */
-	public List<Urikake> getUrikakeOfKokyaku(String kokyakuCode);
+	public List<Urikake> getUrikakeOfKokyaku(String kokyakuId);
 }
