@@ -8,8 +8,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.value.TheDate;
 
-public class ShohinZaikoBuilder
-		extends com.showka.domain.builder.DomainBuilderBase<ShohinZaiko, ShohinZaikoBuilder> {
+public class ShohinZaikoBuilder extends com.showka.domain.builder.DomainBuilderBase<ShohinZaiko, ShohinZaikoBuilder> {
 
 	// private member
 	/** busho */
@@ -39,7 +38,7 @@ public class ShohinZaikoBuilder
 		builder.withBusho(domain.getBusho());
 		builder.withDate(domain.getDate());
 		builder.withShohin(domain.getShohin());
-		builder.withKurikoshiNumber(domain.getNumber());
+		builder.withKurikoshiNumber(domain.getKurikoshiNumber());
 		builder.withShohinIdoList(domain.getShohinIdoList());
 		builder.withRecordId(domain.getRecordId());
 		builder.withVersion(domain.getVersion());

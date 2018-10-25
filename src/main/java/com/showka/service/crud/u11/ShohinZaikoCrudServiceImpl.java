@@ -106,6 +106,8 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 			// 営業日を更新して登録
 			ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 			b.withDate(nextEigyoDate);
+			b.withKurikoshiNumber(zaiko.getNumber());
+			b.withShohinIdoList(new ArrayList<>());
 			ShohinZaiko kurikosiZaiko = b.apply(zaiko);
 			this.save(kurikosiZaiko);
 		});
