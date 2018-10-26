@@ -9,10 +9,8 @@ import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
-import com.showka.service.specification.u06.UrikakeSpecificationServiceImpl;
 import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -98,7 +96,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 				result = Optional.empty();
 				// 計上日取得
 				uriage.getKeijoDate();
-				result = new TheDate(2017, 1, 1);
+				result = new EigyoDate(2017, 1, 1);
 				// 売上合計金額取得
 				uriage.getUriageGokeiKakaku();
 				result = new Kakaku(100, 0.08);

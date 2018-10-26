@@ -18,8 +18,8 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.system.EmptyProxy;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -49,8 +49,8 @@ public class UriageCancelCrudServiceImplTest extends CrudServiceTestCase {
 		kokyaku.setRecordId("dummy");
 		uriage01 = b.withKokyaku(kokyaku)
 				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withUriageDate(new EigyoDate(2017, 8, 20))
+				.withKeijoDate(new EigyoDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)

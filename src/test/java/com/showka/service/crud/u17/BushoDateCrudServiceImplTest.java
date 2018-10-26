@@ -63,8 +63,8 @@ public class BushoDateCrudServiceImplTest extends CrudServiceTestCase {
 	@Test
 	public void test02_getNextBushoEigyoDate(@Injectable Busho busho) throws Exception {
 		// input
-		EigyoDate eigyoDate = new EigyoDate(2017, 1, 1);
+		EigyoDate eigyoDate = new EigyoDate(2018, 10, 26);
 		EigyoDate actual = bushoDateCrudServiceImpl.getNext(busho, eigyoDate);
-		assertEquals(new EigyoDate(2017, 1, 2), actual);
+		assertEquals(new EigyoDate(2018, 10, 29), actual);
 	}
 }

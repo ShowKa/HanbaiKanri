@@ -16,9 +16,9 @@ import com.showka.domain.z00.Shohin;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.SystemException;
+import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
 public class UriageRirekiTest extends SimpleTestCase {
 
@@ -43,8 +43,8 @@ public class UriageRirekiTest extends SimpleTestCase {
 		meisai.add(uriageMeisai01);
 		uriageRireki01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withUriageDate(new EigyoDate(2017, 8, 20))
+				.withKeijoDate(new EigyoDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
@@ -59,8 +59,8 @@ public class UriageRirekiTest extends SimpleTestCase {
 		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		uriageRireki02 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 21))
+				.withUriageDate(new EigyoDate(2017, 8, 20))
+				.withKeijoDate(new EigyoDate(2017, 8, 21))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
@@ -79,7 +79,7 @@ public class UriageRirekiTest extends SimpleTestCase {
 		UriageRireki uriageRirekiList02 = b.build();
 		// test
 		Uriage actual = uriageRirekiList02.getNewest();
-		assertEquals(new TheDate(2017, 8, 21), actual.getKeijoDate());
+		assertEquals(new EigyoDate(2017, 8, 21), actual.getKeijoDate());
 	}
 
 	@Test(expected = SystemException.class)
@@ -105,8 +105,8 @@ public class UriageRirekiTest extends SimpleTestCase {
 		b.withList(uriageRireki);
 		UriageRireki uriageRirekiList02 = b.build();
 		// test
-		Optional<Uriage> actual = uriageRirekiList02.getTeiseiUriage(new TheDate(2017, 8, 21));
-		assertEquals(new TheDate(2017, 8, 21), actual.get().getKeijoDate());
+		Optional<Uriage> actual = uriageRirekiList02.getTeiseiUriage(new EigyoDate(2017, 8, 21));
+		assertEquals(new EigyoDate(2017, 8, 21), actual.get().getKeijoDate());
 		assertEquals(-5, actual.get().getUriageMeisai().get(0).getHanbaiNumber().intValue());
 	}
 
@@ -121,11 +121,11 @@ public class UriageRirekiTest extends SimpleTestCase {
 		UriageRireki uriageRirekiList = b.build();
 		List<Uriage> actual = uriageRirekiList.getAllWithTeiseiDenpyo();
 
-		assertEquals(new TheDate(2017, 8, 21), actual.get(0).getKeijoDate());
+		assertEquals(new EigyoDate(2017, 8, 21), actual.get(0).getKeijoDate());
 		assertEquals(new Kakaku(0, 0.08), actual.get(0).getUriageGokeiKakaku());
-		assertEquals(new TheDate(2017, 8, 21), actual.get(1).getKeijoDate());
+		assertEquals(new EigyoDate(2017, 8, 21), actual.get(1).getKeijoDate());
 		assertEquals(new Kakaku(-5000, 0.08), actual.get(1).getUriageGokeiKakaku());
-		assertEquals(new TheDate(2017, 8, 20), actual.get(2).getKeijoDate());
+		assertEquals(new EigyoDate(2017, 8, 20), actual.get(2).getKeijoDate());
 		assertEquals(new Kakaku(5000, 0.08), actual.get(2).getUriageGokeiKakaku());
 	}
 
@@ -148,8 +148,8 @@ public class UriageRirekiTest extends SimpleTestCase {
 		b.withList(uriageRireki);
 		UriageRireki uriageRirekiList = b.build();
 		// test
-		Optional<Uriage> actual = uriageRirekiList.getUriageOf(new TheDate(2017, 8, 21));
-		assertEquals(new TheDate(2017, 8, 21), actual.get().getKeijoDate());
+		Optional<Uriage> actual = uriageRirekiList.getUriageOf(new EigyoDate(2017, 8, 21));
+		assertEquals(new EigyoDate(2017, 8, 21), actual.get().getKeijoDate());
 	}
 
 	/**
@@ -171,7 +171,7 @@ public class UriageRirekiTest extends SimpleTestCase {
 		b.withList(uriageRireki);
 		UriageRireki uriageRirekiList = b.build();
 		// test
-		Optional<Uriage> actual = uriageRirekiList.getUriageOf(new TheDate(2099, 8, 21));
+		Optional<Uriage> actual = uriageRirekiList.getUriageOf(new EigyoDate(2099, 8, 21));
 		assertFalse(actual.isPresent());
 	}
 }

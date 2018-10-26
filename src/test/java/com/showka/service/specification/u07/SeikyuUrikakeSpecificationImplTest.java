@@ -14,6 +14,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -51,7 +52,7 @@ public class SeikyuUrikakeSpecificationImplTest extends SimpleTestCase {
 		// do
 		SeikyuUrikakeSpecificationImpl spec = new SeikyuUrikakeSpecificationImpl(kokyaku, seikyuDate,
 				new ArrayList<Urikake>());
-		EigyoDate actual = spec.getShiharaiDate();
+		TheDate actual = spec.getShiharaiDate();
 		// verify
 		new Verifications() {
 			{

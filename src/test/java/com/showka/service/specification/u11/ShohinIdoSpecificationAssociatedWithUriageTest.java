@@ -30,7 +30,6 @@ import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -83,7 +82,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		UriageBuilder b = new UriageBuilder();
 		b.withKokyaku(EmptyProxy.domain(Kokyaku.class));
 		b.withDenpyoNumber("00001");
-		b.withKeijoDate(new TheDate(2017, 8, 20));
+		b.withKeijoDate(new EigyoDate(2017, 8, 20));
 		b.withUriageMeisai(_meisai);
 		b.withRecordId("KK01-00001");
 		Uriage uriage01 = b.build();
@@ -147,7 +146,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		UriageBuilder b = new UriageBuilder();
 		b.withKokyaku(kokyaku);
 		b.withDenpyoNumber("00001");
-		b.withKeijoDate(new TheDate(2017, 8, 20));
+		b.withKeijoDate(new EigyoDate(2017, 8, 20));
 		b.withUriageMeisai(_meisai);
 		b.withRecordId("KK01-00001");
 		Uriage uriage01 = b.build();
@@ -158,7 +157,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		meisai.add(simb.build());
 		// 過去商品移動
 		ShohinIdoBuilder sib = new ShohinIdoBuilder();
-		sib.withDate(new TheDate(2017, 8, 19));
+		sib.withDate(new EigyoDate(2017, 8, 19));
 		sib.withMeisai(meisai);
 		ShohinIdo shohinIdo01 = sib.build();
 		// expect
@@ -351,7 +350,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 				result = Optional.of(pastShohinIdo);
 				// 当日営業日に移動した
 				pastShohinIdo.getDate();
-				result = new TheDate(2017, 8, 20);
+				result = new EigyoDate(2017, 8, 20);
 				// 対象商品商品。1つ移動した（部署->顧客）
 				pastShohinIdo.getShohinSet();
 				result = shohinSet;

@@ -5,9 +5,8 @@ import org.junit.Test;
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.ShohinIdoBuilder;
-import com.showka.domain.u11.ShohinIdo;
 import com.showka.domain.z00.Busho;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 public class ShohinIdoTest extends SimpleTestCase {
@@ -39,7 +38,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 1
 		ShohinIdoBuilder b1 = new ShohinIdoBuilder();
 		b1.withBusho(busho01);
-		b1.withDate(new TheDate(2017, 1, 1));
+		b1.withDate(new EigyoDate(2017, 1, 1));
 		b1.withTimestamp(stamp);
 
 		ShohinIdo ido1 = b1.build();
@@ -47,7 +46,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 2
 		ShohinIdoBuilder b2 = new ShohinIdoBuilder();
 		b2.withBusho(busho01);
-		b2.withDate(new TheDate(2017, 1, 1));
+		b2.withDate(new EigyoDate(2017, 1, 1));
 		b2.withTimestamp(stamp);
 		ShohinIdo ido2 = b2.build();
 
@@ -67,7 +66,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 1
 		ShohinIdoBuilder b1 = new ShohinIdoBuilder();
 		b1.withBusho(busho01);
-		b1.withDate(new TheDate(2017, 1, 1));
+		b1.withDate(new EigyoDate(2017, 1, 1));
 		b1.withTimestamp(new TheTimestamp(2017, 1, 1, 0, 0, 0, 0));
 
 		ShohinIdo ido1 = b1.build();
@@ -75,7 +74,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 2
 		ShohinIdoBuilder b2 = new ShohinIdoBuilder();
 		b2.withBusho(busho01);
-		b2.withDate(new TheDate(2017, 1, 1));
+		b2.withDate(new EigyoDate(2017, 1, 1));
 		b2.withTimestamp(new TheTimestamp(2017, 1, 1, 0, 0, 0, 1));
 		ShohinIdo ido2 = b2.build();
 
@@ -97,7 +96,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 1
 		ShohinIdoBuilder b1 = new ShohinIdoBuilder();
 		b1.withBusho(busho01);
-		b1.withDate(new TheDate(2017, 1, 1));
+		b1.withDate(new EigyoDate(2017, 1, 1));
 		b1.withTimestamp(stamp);
 
 		ShohinIdo ido1 = b1.build();
@@ -105,7 +104,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 2
 		ShohinIdoBuilder b2 = new ShohinIdoBuilder();
 		b2.withBusho(busho01);
-		b2.withDate(new TheDate(2017, 1, 2));
+		b2.withDate(new EigyoDate(2017, 1, 2));
 		b2.withTimestamp(stamp);
 		ShohinIdo ido2 = b2.build();
 
@@ -127,7 +126,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 1
 		ShohinIdoBuilder b1 = new ShohinIdoBuilder();
 		b1.withBusho(busho01);
-		b1.withDate(new TheDate(2017, 1, 1));
+		b1.withDate(new EigyoDate(2017, 1, 1));
 		b1.withTimestamp(stamp);
 
 		ShohinIdo ido1 = b1.build();
@@ -135,7 +134,7 @@ public class ShohinIdoTest extends SimpleTestCase {
 		// 2
 		ShohinIdoBuilder b2 = new ShohinIdoBuilder();
 		b2.withBusho(busho02);
-		b2.withDate(new TheDate(2017, 1, 1));
+		b2.withDate(new EigyoDate(2017, 1, 1));
 		b2.withTimestamp(stamp);
 		ShohinIdo ido2 = b2.build();
 

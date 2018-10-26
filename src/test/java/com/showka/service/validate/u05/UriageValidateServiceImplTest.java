@@ -24,8 +24,8 @@ import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.EmptyException;
 import com.showka.system.exception.ValidateException;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -84,7 +84,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		meisai.add(uriageMeisai01);
 		uriage01 = b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
+				.withUriageDate(new EigyoDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)

@@ -20,8 +20,8 @@ import com.showka.repository.i.RUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrudService;
 import com.showka.system.EmptyProxy;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -51,8 +51,8 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		rUriage01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withUriageDate(new EigyoDate(2017, 8, 20))
+				.withKeijoDate(new EigyoDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
@@ -67,8 +67,8 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 		ArrayList<UriageMeisai> meisai = new ArrayList<UriageMeisai>();
 		tUriage01 = b.withKokyaku(EmptyProxy.domain(Kokyaku.class))
 				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
-				.withKeijoDate(new TheDate(2017, 8, 20))
+				.withUriageDate(new EigyoDate(2017, 8, 20))
+				.withKeijoDate(new EigyoDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
@@ -123,7 +123,7 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 		// get saved
 		RUriagePK pk = new RUriagePK();
 		pk.setUriageId("r-KK01-00001");
-		pk.setKeijoDate(new TheDate(2017, 8, 20).toDate());
+		pk.setKeijoDate(new EigyoDate(2017, 8, 20).toDate());
 		RUriage actual = repo.getOne(pk);
 
 		// verify
@@ -136,7 +136,7 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 
 		// check
 		assertEquals("r-KK01-00001", actual.getPk().getUriageId());
-		assertEquals(new TheDate(2017, 8, 20).toDate(), actual.getPk().getKeijoDate());
+		assertEquals(new EigyoDate(2017, 8, 20).toDate(), actual.getPk().getKeijoDate());
 	}
 
 	@Test
@@ -151,6 +151,6 @@ public class UriageRirekiCrudServiceImplTest extends CrudServiceTestCase {
 
 		// check
 		assertEquals(2, actual.getList().size());
-		assertEquals(new TheDate(2017, 8, 20), actual.getNewest().getKeijoDate());
+		assertEquals(new EigyoDate(2017, 8, 20), actual.getNewest().getKeijoDate());
 	}
 }
