@@ -1,2 +1,7 @@
-<footer th:fragment="common_footer">
+<footer
+	th:fragment="common_footer"
+	style="position: absolute; bottom: 0; width: 100%">
+	<div th:if="${loginUserName != null}"
+		th:text="${loginUserName} + ' ' + ${loginUserBushoName} + ' ' + ${loginUserBushoEigyoDate}"
+		style="float: right; color: gray"></div>
 </footer>

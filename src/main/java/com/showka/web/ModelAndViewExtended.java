@@ -3,7 +3,10 @@ package com.showka.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.showka.domain.z00.Busho;
+import com.showka.domain.z00.Shain;
 import com.showka.kubun.i.Kubun;
+import com.showka.value.EigyoDate;
 
 import lombok.Getter;
 
@@ -57,4 +60,17 @@ public class ModelAndViewExtended extends org.springframework.web.servlet.ModelA
 		this.addObject(name, list);
 	}
 
+	/**
+	 * ログインユーザー情報の設定.
+	 * 
+	 * @param shain
+	 *            社員
+	 */
+	public void setUserInfo(Shain shain) {
+		this.addObject("loginUserName", shain.getName());
+		Busho shozoku = shain.getShozokuBusho();
+		EigyoDate eigyoDate = shozoku.getEigyoDate();
+		this.addObject("loginUserBushoName", shozoku.getName());
+		this.addObject("loginUserBushoEigyoDate", eigyoDate.toString() + " (" + eigyoDate.getDayOfWeek() + ")");
+	}
 }
