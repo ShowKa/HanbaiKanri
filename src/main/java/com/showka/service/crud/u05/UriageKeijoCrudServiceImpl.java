@@ -21,7 +21,7 @@ import com.showka.service.crud.u05.i.UriageKeijoCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.search.u05.i.UriageKeijoSearchService;
 import com.showka.service.search.u05.i.UriageRirekiSearchService;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 @Service
 public class UriageKeijoCrudServiceImpl implements UriageKeijoCrudService {
@@ -42,7 +42,7 @@ public class UriageKeijoCrudServiceImpl implements UriageKeijoCrudService {
 	private UriageKeijoSearchService uriageKeijoSearchService;
 
 	@Override
-	public void keijo(Busho busho, TheDate date) {
+	public void keijo(Busho busho, EigyoDate date) {
 		// search 計上対象売上
 		List<RUriage> uriageRirekiList = uriageRirekiSearchService.search(busho, date);
 		// 売上計上
@@ -82,7 +82,7 @@ public class UriageKeijoCrudServiceImpl implements UriageKeijoCrudService {
 	}
 
 	@Override
-	public BushoUriage getBushoUriage(Busho busho, TheDate date) {
+	public BushoUriage getBushoUriage(Busho busho, EigyoDate date) {
 		// 売上計上金額集計（訂正除く）
 		int keijoKingaku = uriageKeijoSearchService.getKeijoKingaku(busho, date);
 		int teiseiKingaku = uriageKeijoSearchService.getTeiseiKingaku(busho, date);

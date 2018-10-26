@@ -9,7 +9,6 @@ import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.validate.u17.i.BushoDateValidateService;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 
 @Service
 public class BushoDateValidateServiceImpl implements BushoDateValidateService {
@@ -20,7 +19,7 @@ public class BushoDateValidateServiceImpl implements BushoDateValidateService {
 	@Override
 	public void validateForClosing(Busho busho, EigyoDate today) {
 		MBushoDate dateEntity = repo.getOne(busho.getRecordId());
-		TheDate trueDate = new TheDate(dateEntity.getEigyoDate());
+		EigyoDate trueDate = new EigyoDate(dateEntity.getEigyoDate());
 		if (!trueDate.isEqual(today)) {
 			throw new CanNotUpdateOrDeleteException("すでに営業日が更新されている可能性があります（現在の営業日 : " + trueDate + "）");
 		}

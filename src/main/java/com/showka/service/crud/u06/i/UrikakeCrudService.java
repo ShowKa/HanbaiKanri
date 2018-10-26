@@ -2,7 +2,7 @@ package com.showka.service.crud.u06.i;
 
 import com.showka.domain.u06.Urikake;
 import com.showka.service.crud.CrudService;
-import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 public interface UrikakeCrudService extends CrudService<Urikake, String> {
 
@@ -57,7 +57,7 @@ public interface UrikakeCrudService extends CrudService<Urikake, String> {
 	 * @param updatedNyukinYoteiDate
 	 *            更新後入金予定日
 	 */
-	void updateNyukinYoteiDate(Urikake urikake, EigyoDate updatedNyukinYoteiDate);
+	void updateNyukinYoteiDate(Urikake urikake, TheDate updatedNyukinYoteiDate);
 
 	/**
 	 * 売掛IDで売掛を取得.

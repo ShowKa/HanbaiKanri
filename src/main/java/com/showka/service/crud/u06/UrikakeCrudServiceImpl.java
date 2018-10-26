@@ -19,6 +19,7 @@ import com.showka.service.crud.u06.i.UrikakeCrudService;
 import com.showka.service.specification.u06.i.UrikakeSpecificationService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 @Service
 public class UrikakeCrudServiceImpl implements UrikakeCrudService {
@@ -117,7 +118,7 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	}
 
 	@Override
-	public void updateNyukinYoteiDate(Urikake urikake, EigyoDate updatedNyukinYoteiDate) {
+	public void updateNyukinYoteiDate(Urikake urikake, TheDate updatedNyukinYoteiDate) {
 		UrikakeBuilder b = new UrikakeBuilder();
 		b.withNyukinYoteiDate(updatedNyukinYoteiDate);
 		Urikake updated = b.apply(urikake);

@@ -27,6 +27,7 @@ import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.UnsatisfiedSpecificationException;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 import com.showka.value.TheTimestamp;
 
@@ -53,7 +54,7 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		// 部署
 		Busho busho = domain.getBusho();
 		// 移動の営業日
-		TheDate date = domain.getDate();
+		EigyoDate date = domain.getDate();
 		// 移動明細
 		List<ShohinIdoMeisai> meisai = domain.getMeisai();
 		// domain -> entity
@@ -103,7 +104,7 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		// build domain
 		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withBusho(busho);
-		b.withDate(new TheDate(entity.getDate()));
+		b.withDate(new EigyoDate(entity.getDate()));
 		b.withKubun(Kubun.get(ShohinIdoKubun.class, entity.getKubun()));
 		b.withMeisai(meisai);
 		b.withRecordId(entity.getRecordId());

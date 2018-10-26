@@ -3,7 +3,7 @@ package com.showka.domain.builder;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.value.AmountOfMoney;
-import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<Urikake, UrikakeBuilder> {
 
@@ -15,7 +15,7 @@ public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<
 	private AmountOfMoney kingaku;
 
 	/** nyukinYoteiDate */
-	private EigyoDate nyukinYoteiDate;
+	private TheDate nyukinYoteiDate;
 
 	/** recordId */
 	private String recordId;
@@ -110,7 +110,7 @@ public class UrikakeBuilder extends com.showka.domain.builder.DomainBuilderBase<
 	 *            nyukinYoteiDate
 	 * @return {@link UrikakeBuilder}
 	 */
-	public UrikakeBuilder withNyukinYoteiDate(final EigyoDate nyukinYoteiDate) {
+	public UrikakeBuilder withNyukinYoteiDate(final TheDate nyukinYoteiDate) {
 		addConfigurator(new BuilderConfigurator<UrikakeBuilder>() {
 			@Override
 			public void configure(UrikakeBuilder builder) {

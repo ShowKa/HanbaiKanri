@@ -24,7 +24,6 @@ import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 
 @Service
 public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
@@ -44,7 +43,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 
 	// public methods
 	@Override
-	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin) {
+	public ShohinZaiko getShohinZaiko(Busho busho, EigyoDate date, Shohin shohin) {
 		// 在庫データ取得
 		TShohinZaikoPK pk = new TShohinZaikoPK();
 		pk.setBushoId(busho.getRecordId());
@@ -82,7 +81,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	}
 
 	@Override
-	public List<ShohinZaiko> getShohinZaiko(Busho busho, TheDate date) {
+	public List<ShohinZaiko> getShohinZaiko(Busho busho, EigyoDate date) {
 		TShohinZaiko entity = new TShohinZaiko();
 		TShohinZaikoPK pk = new TShohinZaikoPK();
 		pk.setBushoId(busho.getRecordId());
@@ -114,7 +113,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	}
 
 	@Override
-	public void saveZeroIfEmpty(Busho busho, TheDate date, Shohin shohin) {
+	public void saveZeroIfEmpty(Busho busho, EigyoDate date, Shohin shohin) {
 		// pk
 		TShohinZaikoPK id = new TShohinZaikoPK();
 		id.setBushoId(busho.getRecordId());

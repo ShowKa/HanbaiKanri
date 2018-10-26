@@ -8,6 +8,7 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,7 +48,7 @@ public class KokyakuUrikake extends DomainBase {
 	public List<Urikake> getUrikakeListNyukinRequiredBy(EigyoDate date) {
 		return urikakeList.parallelStream().filter(urikake -> {
 			// 入金予定日<=指定日付のものを抽出
-			EigyoDate nyukinYoteiDate = urikake.getNyukinYoteiDate();
+			TheDate nyukinYoteiDate = urikake.getNyukinYoteiDate();
 			return nyukinYoteiDate.isBefore(date) || nyukinYoteiDate.equals(date);
 		}).collect(Collectors.toList());
 	}

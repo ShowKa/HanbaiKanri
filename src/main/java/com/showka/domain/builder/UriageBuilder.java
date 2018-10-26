@@ -6,11 +6,10 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageMeisai;
 import com.showka.kubun.HanbaiKubun;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
-public class UriageBuilder
-		extends com.showka.domain.builder.DomainBuilderBase<Uriage, UriageBuilder> {
+public class UriageBuilder extends com.showka.domain.builder.DomainBuilderBase<Uriage, UriageBuilder> {
 
 	// private member
 	/** kokyaku */
@@ -20,10 +19,10 @@ public class UriageBuilder
 	private String denpyoNumber;
 
 	/** uriageDate */
-	private TheDate uriageDate;
+	private EigyoDate uriageDate;
 
 	/** keijoDate */
-	private TheDate keijoDate;
+	private EigyoDate keijoDate;
 
 	/** hanbaiKubun */
 	private HanbaiKubun hanbaiKubun;
@@ -115,7 +114,7 @@ public class UriageBuilder
 	 *            uriageDate
 	 * @return {@link UriageBuilder}
 	 */
-	public UriageBuilder withUriageDate(final TheDate uriageDate) {
+	public UriageBuilder withUriageDate(final EigyoDate uriageDate) {
 		addConfigurator(new BuilderConfigurator<UriageBuilder>() {
 			@Override
 			public void configure(UriageBuilder builder) {
@@ -132,7 +131,7 @@ public class UriageBuilder
 	 *            keijoDate
 	 * @return {@link UriageBuilder}
 	 */
-	public UriageBuilder withKeijoDate(final TheDate keijoDate) {
+	public UriageBuilder withKeijoDate(final EigyoDate keijoDate) {
 		addConfigurator(new BuilderConfigurator<UriageBuilder>() {
 			@Override
 			public void configure(UriageBuilder builder) {

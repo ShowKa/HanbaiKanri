@@ -40,8 +40,8 @@ import com.showka.service.specification.u06.i.UrikakeSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
 import com.showka.service.validate.u05.i.UriageValidateService;
 import com.showka.system.exception.NotExistException;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
@@ -236,10 +236,8 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai()
-				.stream()
-				.filter(m -> m.getMeisaiNumber() == null)
-				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+				m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -349,7 +347,7 @@ public class U05G002Controller extends ControllerBase {
 		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 
 		// 営業日取得
-		TheDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
+		EigyoDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
 
 		// 売上
 		UriageBuilder ub = new UriageBuilder();
@@ -358,7 +356,7 @@ public class U05G002Controller extends ControllerBase {
 		ub.withHanbaiKubun(Kubun.get(HanbaiKubun.class, form.getHanbaiKubun()));
 		ub.withRecordId(form.getRecordId());
 		ub.withShohizeiritsu(ZEIRITSU);
-		ub.withUriageDate(new TheDate(form.getUriageDate()));
+		ub.withUriageDate(new EigyoDate(form.getUriageDate()));
 		ub.withKeijoDate(eigyoDate);
 		ub.withVersion(form.getVersion());
 		ub.withKokyaku(kokyaku);

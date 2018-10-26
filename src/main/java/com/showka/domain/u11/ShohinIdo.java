@@ -9,7 +9,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.system.exception.SystemException;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ public class ShohinIdo extends DomainBase implements Comparable<ShohinIdo> {
 	private Busho busho;
 
 	/** 商品移動日(営業日が割り当てられる). */
-	private TheDate date;
+	private EigyoDate date;
 
 	/** 商品移動区分. */
 	private ShohinIdoKubun kubun;

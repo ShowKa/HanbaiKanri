@@ -8,6 +8,7 @@ import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 @Service
 public class BushoDateCrudServiceImpl implements BushoDateCrudService {
@@ -33,11 +34,19 @@ public class BushoDateCrudServiceImpl implements BushoDateCrudService {
 	/**
 	 * 次営業日取得.
 	 * 
+	 * <pre>
+	 * 次営業日 = 次の平日
+	 * </pre>
+	 * 
 	 * @param date
 	 *            営業日
 	 * @return その次の営業日
 	 */
 	private EigyoDate getNext(EigyoDate date) {
-		return new EigyoDate(date.plusDays(1));
+		TheDate next = date.plusDays(1);
+		while (next.isWeekend()) {
+			next = next.plusDays(1);
+		}
+		return new EigyoDate(next);
 	}
 }

@@ -29,10 +29,10 @@ public class Uriage extends DomainBase {
 	private String denpyoNumber;
 
 	/** 売上日. */
-	private TheDate uriageDate;
+	private EigyoDate uriageDate;
 
 	/** 計上日. */
-	private TheDate keijoDate;
+	private EigyoDate keijoDate;
 
 	/** 販売区分. */
 	private HanbaiKubun hanbaiKubun;
@@ -67,7 +67,7 @@ public class Uriage extends DomainBase {
 	 * 
 	 * @return 入金予定日
 	 */
-	public Optional<EigyoDate> getDefaultNyukinYoteiDate() {
+	public Optional<TheDate> getDefaultNyukinYoteiDate() {
 		if (hanbaiKubun == HanbaiKubun.現金) {
 			return Optional.of(new EigyoDate(keijoDate));
 		}

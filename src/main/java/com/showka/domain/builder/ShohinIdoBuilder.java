@@ -6,18 +6,17 @@ import com.showka.domain.u11.ShohinIdo;
 import com.showka.domain.u11.ShohinIdoMeisai;
 import com.showka.domain.z00.Busho;
 import com.showka.kubun.ShohinIdoKubun;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
-public class ShohinIdoBuilder
-		extends com.showka.domain.builder.DomainBuilderBase<ShohinIdo, ShohinIdoBuilder> {
+public class ShohinIdoBuilder extends com.showka.domain.builder.DomainBuilderBase<ShohinIdo, ShohinIdoBuilder> {
 
 	// private member
 	/** busho */
 	private Busho busho;
 
 	/** date */
-	private TheDate date;
+	private EigyoDate date;
 
 	/** kubun */
 	private ShohinIdoKubun kubun;
@@ -89,7 +88,7 @@ public class ShohinIdoBuilder
 	 *            date
 	 * @return {@link ShohinIdoBuilder}
 	 */
-	public ShohinIdoBuilder withDate(final TheDate date) {
+	public ShohinIdoBuilder withDate(final EigyoDate date) {
 		addConfigurator(new BuilderConfigurator<ShohinIdoBuilder>() {
 			@Override
 			public void configure(ShohinIdoBuilder builder) {

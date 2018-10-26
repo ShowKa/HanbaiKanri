@@ -7,7 +7,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.system.exception.SystemException;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class ShohinZaiko extends DomainBase {
 	private Busho busho;
 
 	/** 営業日. */
-	private TheDate date;
+	private EigyoDate date;
 
 	/** 商品. */
 	private Shohin shohin;

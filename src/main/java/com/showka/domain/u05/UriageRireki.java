@@ -11,7 +11,7 @@ import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.domain.u05.Uriage.UriageComparatorByKejoDate;
 import com.showka.system.exception.SystemException;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,7 +27,7 @@ public class UriageRireki extends DomainBase {
 	private List<Uriage> list;
 
 	/** キャンセル計上日 */
-	private Optional<TheDate> cancelKeijoDate;
+	private Optional<EigyoDate> cancelKeijoDate;
 
 	/**
 	 * 引数に指定した計上日の売上を取得します。
@@ -36,7 +36,7 @@ public class UriageRireki extends DomainBase {
 	 *            計上日
 	 * @return 売上
 	 */
-	public Optional<Uriage> getUriageOf(TheDate keijoDate) {
+	public Optional<Uriage> getUriageOf(EigyoDate keijoDate) {
 		Optional<Uriage> uriage = list.stream().filter(l -> {
 			return l.getKeijoDate().equals(keijoDate);
 		}).findFirst();
@@ -53,7 +53,7 @@ public class UriageRireki extends DomainBase {
 	 *            訂正した計上日
 	 * @return 訂正した伝票
 	 */
-	public Optional<Uriage> getTeiseiUriage(TheDate keijoDate) {
+	public Optional<Uriage> getTeiseiUriage(EigyoDate keijoDate) {
 
 		list.sort(new UriageComparatorByKejoDate());
 		Collections.reverse(list);

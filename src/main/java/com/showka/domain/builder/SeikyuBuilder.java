@@ -8,6 +8,7 @@ import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.domain.z00.Busho;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<Seikyu, SeikyuBuilder> {
 
@@ -19,7 +20,7 @@ public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<S
 	private EigyoDate seikyuDate;
 
 	/** shiharaiDate */
-	private EigyoDate shiharaiDate;
+	private TheDate shiharaiDate;
 
 	/** nyukinHohoKubun */
 	private NyukinHohoKubun nyukinHohoKubun;
@@ -109,7 +110,7 @@ public class SeikyuBuilder extends com.showka.domain.builder.DomainBuilderBase<S
 	 *            shiharaiDate
 	 * @return {@link SeikyuBuilder}
 	 */
-	public SeikyuBuilder withShiharaiDate(final EigyoDate shiharaiDate) {
+	public SeikyuBuilder withShiharaiDate(final TheDate shiharaiDate) {
 		addConfigurator(new BuilderConfigurator<SeikyuBuilder>() {
 			@Override
 			public void configure(SeikyuBuilder builder) {

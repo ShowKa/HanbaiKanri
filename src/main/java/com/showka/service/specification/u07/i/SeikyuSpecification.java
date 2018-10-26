@@ -5,6 +5,7 @@ import java.util.List;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 public interface SeikyuSpecification {
 	/**
@@ -26,7 +27,7 @@ public interface SeikyuSpecification {
 	 * 
 	 * @return 支払日
 	 */
-	public EigyoDate getShiharaiDate();
+	public TheDate getShiharaiDate();
 
 	/**
 	 * 請求明細取得.
