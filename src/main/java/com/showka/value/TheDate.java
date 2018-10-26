@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -148,6 +149,12 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 	public String toString(String pattern) {
 		DateTimeFormatter f = DateTimeFormatter.ofPattern(pattern);
 		return date.format(f);
+	}
+
+	public String getDayOfWeek() {
+		Locale locale = Locale.getDefault();
+		DateTimeFormatter formatterOutput = DateTimeFormatter.ofPattern("E").withLocale(locale);
+		return formatterOutput.format(this.date);
 	}
 
 	// override

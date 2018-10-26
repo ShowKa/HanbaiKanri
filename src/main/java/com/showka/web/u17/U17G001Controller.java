@@ -84,6 +84,7 @@ public class U17G001Controller extends ControllerBase {
 			ret.put("name", b.getName());
 			EigyoDate eigyoDate = b.getEigyoDate();
 			ret.put("eigyoDate", eigyoDate.toString());
+			ret.put("dayOfWeek", eigyoDate.getDayOfWeek());
 			// FIXME 前日の売上計上を取得
 			EigyoDate keijoDate = new EigyoDate(eigyoDate.plusDays(-1));
 			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, keijoDate);
