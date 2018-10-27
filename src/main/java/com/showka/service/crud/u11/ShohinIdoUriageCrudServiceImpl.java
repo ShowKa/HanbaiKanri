@@ -19,7 +19,7 @@ import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
 import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
 import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 @Service
 public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudService {
@@ -88,7 +88,7 @@ public class ShohinIdoUriageCrudServiceImpl implements ShohinIdoUriageCrudServic
 		List<JShohinIdoUriage> shohinIdoList = repo.findAll(example);
 		shohinIdoList.stream().filter(ido -> {
 			// 営業日の移動のみ抽出
-			TheDate shohinIdoDate = new TheDate(ido.getShohinIdo().getDate());
+			EigyoDate shohinIdoDate = new EigyoDate(ido.getShohinIdo().getDate());
 			return shohinIdoDate.equals(uriage.getKokyaku().getShukanBusho().getEigyoDate());
 		}).forEach(ido -> {
 			// delete records

@@ -23,8 +23,8 @@ import com.showka.repository.i.RUriageRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrudService;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
 @Service
 public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
@@ -64,8 +64,8 @@ public class UriageRirekiCrudServiceImpl implements UriageRirekiCrudService {
 			b.withHanbaiKubun(Kubun.get(HanbaiKubun.class, e.getHanbaiKubun()));
 			b.withRecordId(e.getRecordId());
 			b.withShohizeiritsu(new TaxRate(e.getShohizeiritsu()));
-			b.withUriageDate(new TheDate(e.getUriageDate()));
-			b.withKeijoDate(new TheDate(e.getPk().getKeijoDate()));
+			b.withUriageDate(new EigyoDate(e.getUriageDate()));
+			b.withKeijoDate(new EigyoDate(e.getPk().getKeijoDate()));
 			b.withVersion(e.getVersion());
 
 			// meisai

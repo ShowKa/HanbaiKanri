@@ -26,7 +26,7 @@ import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.system.exception.MinusZaikoException.MinusZaiko;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 import mockit.Expectations;
@@ -63,7 +63,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 	private static final Object[] T_SHOHIN_IDO_V1 = {
 			"r-001",
 			"r-BS01",
-			new TheDate(2017, 8, 20).toDate(),
+			new EigyoDate(2017, 8, 20).toDate(),
 			"10",
 			new Date(),
 			"r-001" };
@@ -72,7 +72,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 	private static final Object[] T_SHOHIN_IDO_V2 = {
 			"r-002",
 			"r-BS01",
-			new TheDate(2017, 8, 20).toDate(),
+			new EigyoDate(2017, 8, 20).toDate(),
 			"11",
 			new Date(),
 			"r-002" };
@@ -81,7 +81,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 	private static final Object[] T_SHOHIN_IDO_V3 = {
 			"r-003",
 			"r-BS01",
-			new TheDate(2017, 8, 21).toDate(),
+			new EigyoDate(2017, 8, 21).toDate(),
 			"10",
 			new Date(),
 			"r-003" };
@@ -108,7 +108,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		bb.withRecordId("r-BS01");
 		Busho busho = bb.build();
 		b.withBusho(busho);
-		b.withDate(new TheDate(2017, 1, 1));
+		b.withDate(new EigyoDate(2017, 1, 1));
 		ido01 = b;
 	}
 
@@ -252,7 +252,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 			}
 		};
 		// do
-		List<ShohinIdo> actual = service.getShohinIdoListInDate(busho, new TheDate(2017, 8, 20), shohin);
+		List<ShohinIdo> actual = service.getShohinIdoListInDate(busho, new EigyoDate(2017, 8, 20), shohin);
 		// verify
 		new Verifications() {
 			{
@@ -379,7 +379,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 			{
 				meisai.getShohinDomain();
 				result = shohin;
-				shohinZaikoCrudService.saveZeroIfEmpty((Busho) any, (TheDate) any, shohin);
+				shohinZaikoCrudService.saveZeroIfEmpty((Busho) any, (EigyoDate) any, shohin);
 			}
 		};
 		// do
@@ -387,7 +387,7 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				shohinZaikoCrudService.saveZeroIfEmpty((Busho) any, (TheDate) any, shohin);
+				shohinZaikoCrudService.saveZeroIfEmpty((Busho) any, (EigyoDate) any, shohin);
 				times = 1;
 			}
 		};

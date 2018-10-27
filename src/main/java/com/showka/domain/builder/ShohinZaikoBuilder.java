@@ -6,7 +6,7 @@ import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.u11.ShohinZaiko.ShohinIdoOnDate;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 public class ShohinZaikoBuilder extends com.showka.domain.builder.DomainBuilderBase<ShohinZaiko, ShohinZaikoBuilder> {
 
@@ -15,7 +15,7 @@ public class ShohinZaikoBuilder extends com.showka.domain.builder.DomainBuilderB
 	private Busho busho;
 
 	/** date */
-	private TheDate date;
+	private EigyoDate date;
 
 	/** shohin */
 	private Shohin shohin;
@@ -87,7 +87,7 @@ public class ShohinZaikoBuilder extends com.showka.domain.builder.DomainBuilderB
 	 *            date
 	 * @return {@link ShohinZaikoBuilder}
 	 */
-	public ShohinZaikoBuilder withDate(final TheDate date) {
+	public ShohinZaikoBuilder withDate(final EigyoDate date) {
 		addConfigurator(new BuilderConfigurator<ShohinZaikoBuilder>() {
 			@Override
 			public void configure(ShohinZaikoBuilder builder) {

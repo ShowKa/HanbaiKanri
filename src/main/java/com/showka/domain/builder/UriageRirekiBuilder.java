@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 public class UriageRirekiBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<UriageRireki, UriageRirekiBuilder> {
@@ -18,7 +18,7 @@ public class UriageRirekiBuilder
 	private List<Uriage> list;
 
 	/** cancelKeijoDate */
-	private Optional<TheDate> cancelKeijoDate;
+	private Optional<EigyoDate> cancelKeijoDate;
 
 	/** recordId */
 	private String recordId;
@@ -96,7 +96,7 @@ public class UriageRirekiBuilder
 	 *            cancelKeijoDate
 	 * @return {@link UriageRirekiBuilder}
 	 */
-	public UriageRirekiBuilder withCancelKeijoDate(final Optional<TheDate> cancelKeijoDate) {
+	public UriageRirekiBuilder withCancelKeijoDate(final Optional<EigyoDate> cancelKeijoDate) {
 		addConfigurator(new BuilderConfigurator<UriageRirekiBuilder>() {
 			@Override
 			public void configure(UriageRirekiBuilder builder) {

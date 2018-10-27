@@ -21,8 +21,8 @@ import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.search.u05.i.UriageRirekiSearchService;
 import com.showka.system.EmptyProxy;
+import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -74,7 +74,7 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(R_URIAGE_KEIJO, R_URIAGE_KEIJO_COLUMN, R_URIAGE_KEIJO_V01, R_URIAGE_KEIJO_V02);
 		// input
 		Busho busho = EmptyProxy.domain(Busho.class);
-		TheDate date = new TheDate();
+		EigyoDate date = new EigyoDate();
 		// uriage rireki entity list
 		List<RUriage> rUriageList = new ArrayList<RUriage>();
 		RUriage e1 = new RUriage();
@@ -112,9 +112,9 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 	 * 
 	 */
 	@Test
-	public void test02_getKeijoKingaku(@Injectable Busho busho, @Injectable TheDate date, @Injectable RUriageKeijo ke1,
-			@Injectable RUriageKeijo ke2, @Injectable UriageRireki rireki1, @Injectable UriageRireki rireki2,
-			@Injectable Uriage uriage1, @Injectable Uriage uriage2) throws Exception {
+	public void test02_getKeijoKingaku(@Injectable Busho busho, @Injectable EigyoDate date,
+			@Injectable RUriageKeijo ke1, @Injectable RUriageKeijo ke2, @Injectable UriageRireki rireki1,
+			@Injectable UriageRireki rireki2, @Injectable Uriage uriage1, @Injectable Uriage uriage2) throws Exception {
 		// input
 		List<RUriageKeijo> keijoEntities = new ArrayList<RUriageKeijo>();
 		keijoEntities.add(ke1);
@@ -197,9 +197,9 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 	 * </pre>
 	 */
 	@Test
-	public void test03_getTeiseiKingaku(@Injectable Busho busho, @Injectable TheDate date, @Injectable RUriageKeijo ke,
-			@Injectable RUriageKeijoTeisei teisei, @Injectable UriageRireki rireki, @Injectable Uriage uriage)
-			throws Exception {
+	public void test03_getTeiseiKingaku(@Injectable Busho busho, @Injectable EigyoDate date,
+			@Injectable RUriageKeijo ke, @Injectable RUriageKeijoTeisei teisei, @Injectable UriageRireki rireki,
+			@Injectable Uriage uriage) throws Exception {
 		// input
 		// 売上計上 entity
 		List<RUriageKeijo> keijoEntities = new ArrayList<RUriageKeijo>();
@@ -238,7 +238,7 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				teisei.getTeiseiUriageRirekiKeijoDate();
 				result = pastKeijoDate;
 				// get 売上
-				rireki.getUriageOf(new TheDate(pastKeijoDate));
+				rireki.getUriageOf(new EigyoDate(pastKeijoDate));
 				result = Optional.of(uriage);
 				// get 価格
 				uriage.getUriageGokeiKakaku();
@@ -269,7 +269,7 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				teisei.getTeiseiUriageRirekiKeijoDate();
 				times = 1;
 				// get 売上
-				rireki.getUriageOf(new TheDate(pastKeijoDate));
+				rireki.getUriageOf(new EigyoDate(pastKeijoDate));
 				times = 1;
 				// get 価格
 				uriage.getUriageGokeiKakaku();

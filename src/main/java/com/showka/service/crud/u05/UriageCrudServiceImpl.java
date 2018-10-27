@@ -29,8 +29,8 @@ import com.showka.service.crud.u05.i.UriageCancelCrudService;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
 @Service
 public class UriageCrudServiceImpl implements UriageCrudService {
@@ -101,7 +101,7 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		// update 計上日
 		Uriage _d = this.getDomainFromEntity(e);
 		UriageBuilder b = new UriageBuilder();
-		TheDate eigyoDate = _d.getKokyaku().getShukanBusho().getEigyoDate();
+		EigyoDate eigyoDate = _d.getKokyaku().getShukanBusho().getEigyoDate();
 		b.withKeijoDate(eigyoDate);
 		// empty 売上明細
 		b.withUriageMeisai(new ArrayList<>());
@@ -193,8 +193,8 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		b.withKokyaku(kokyaku);
 		b.withRecordId(e.getRecordId());
 		b.withShohizeiritsu(new TaxRate(e.getShohizeiritsu()));
-		b.withUriageDate(new TheDate(e.getUriageDate()));
-		b.withKeijoDate(new TheDate(e.getKeijoDate()));
+		b.withUriageDate(new EigyoDate(e.getUriageDate()));
+		b.withKeijoDate(new EigyoDate(e.getKeijoDate()));
 		b.withUriageMeisai(uriageMeisai);
 		b.withVersion(e.getVersion());
 		return b.build();

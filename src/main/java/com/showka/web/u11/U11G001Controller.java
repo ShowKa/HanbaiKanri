@@ -19,7 +19,7 @@ import com.showka.domain.z00.Shohin;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
 import com.showka.service.crud.z00.i.BushoCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
@@ -62,7 +62,7 @@ public class U11G001Controller extends ControllerBase {
 	public ResponseEntity<?> getAll(@ModelAttribute U11G001Form form, ModelAndViewExtended model) {
 		// get 商品在庫
 		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
-		List<ShohinZaiko> _zaikoList = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()));
+		List<ShohinZaiko> _zaikoList = shohinZaikoCrudService.getShohinZaiko(busho, new EigyoDate(form.getDate()));
 		// to map
 		List<Map<String, Object>> zaikoList = _zaikoList.stream().map(z -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -88,7 +88,7 @@ public class U11G001Controller extends ControllerBase {
 		// get 商品在庫
 		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
 		Shohin shohin = mShohinCrudService.getDomain(form.getShohinCode());
-		ShohinZaiko _zaiko = shohinZaikoCrudService.getShohinZaiko(busho, new TheDate(form.getDate()), shohin);
+		ShohinZaiko _zaiko = shohinZaikoCrudService.getShohinZaiko(busho, new EigyoDate(form.getDate()), shohin);
 		// to map
 		List<Map<String, Object>> shohinIdoList = _zaiko.getShohinIdoList().stream().map(z -> {
 			Map<String, Object> ret = new HashMap<String, Object>();

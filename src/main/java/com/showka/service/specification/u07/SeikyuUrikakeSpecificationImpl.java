@@ -10,6 +10,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -29,11 +30,11 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 	private List<Urikake> urikakeList;
 
 	@Override
-	public EigyoDate getShiharaiDate() {
+	public TheDate getShiharaiDate() {
 		// 支払日=顧客の入金掛売情報から入金予定日を算出
 		// TODO 販売区分=現金の顧客
 		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo().get();
-		EigyoDate shiharaiDate = nyukinKakeInfo.getNyukinYoteiDate(seikyuDate);
+		TheDate shiharaiDate = nyukinKakeInfo.getNyukinYoteiDate(seikyuDate);
 		return shiharaiDate;
 	}
 

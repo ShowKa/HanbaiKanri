@@ -2,7 +2,7 @@ package com.showka.service.crud.u05.i;
 
 import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 public interface UriageKeijoCrudService {
 	/**
@@ -20,7 +20,7 @@ public interface UriageKeijoCrudService {
 	 * @param date
 	 *            計上日
 	 */
-	public void keijo(Busho busho, TheDate date);
+	public void keijo(Busho busho, EigyoDate date);
 
 	/**
 	 * 部署売上の集計を取得する.
@@ -31,5 +31,5 @@ public interface UriageKeijoCrudService {
 	 *            計上日
 	 * @return 部署売上
 	 */
-	public BushoUriage getBushoUriage(Busho busho, TheDate date);
+	public BushoUriage getBushoUriage(Busho busho, EigyoDate date);
 }

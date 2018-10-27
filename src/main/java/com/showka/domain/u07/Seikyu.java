@@ -9,6 +9,7 @@ import com.showka.kubun.NyukinHohoKubun;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class Seikyu extends DomainBase {
 	private EigyoDate seikyuDate;
 
 	/** 支払期日. */
-	private EigyoDate shiharaiDate;
+	private TheDate shiharaiDate;
 
 	/** 入金方法区分（請求時点での顧客の入金方法） */
 	private NyukinHohoKubun nyukinHohoKubun;

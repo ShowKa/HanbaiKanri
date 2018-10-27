@@ -19,8 +19,8 @@ import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.search.u05.i.UriageKeijoSearchService;
 import com.showka.service.search.u05.i.UriageRirekiSearchService;
+import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
-import com.showka.value.TheDate;
 
 @Service
 public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
@@ -38,7 +38,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 	private UriageRirekiSearchService uriageRirekiSearchService;
 
 	@Override
-	public List<RUriageKeijo> search(Busho busho, TheDate date) {
+	public List<RUriageKeijo> search(Busho busho, EigyoDate date) {
 		// search 計上対象売上
 		List<RUriage> uriageRirekiList = uriageRirekiSearchService.search(busho, date);
 		// 売上履歴 record id
@@ -50,7 +50,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 	}
 
 	@Override
-	public int getKeijoKingaku(Busho busho, TheDate date) {
+	public int getKeijoKingaku(Busho busho, EigyoDate date) {
 		// 売上計上 entities
 		List<RUriageKeijo> keijoEntities = this.search(busho, date);
 		// 売上計上金額集計
@@ -66,7 +66,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 	}
 
 	@Override
-	public int getTeiseiKingaku(Busho busho, TheDate date) {
+	public int getTeiseiKingaku(Busho busho, EigyoDate date) {
 		// 売上計上 entities
 		List<RUriageKeijo> keijoEntities = this.search(busho, date);
 		// 売上計上訂正分金額集計
@@ -76,7 +76,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 			String uriageId = teisei.getUriageId();
 			UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(uriageId);
 			Date pastKeijoDate = teisei.getTeiseiUriageRirekiKeijoDate();
-			Optional<Uriage> uriage = rireki.getUriageOf(new TheDate(pastKeijoDate));
+			Optional<Uriage> uriage = rireki.getUriageOf(new EigyoDate(pastKeijoDate));
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い
 			Kakaku uriageGokeiKingaku = uriage.get().getUriageGokeiKakaku();
 			// 訂正分は負数として集計

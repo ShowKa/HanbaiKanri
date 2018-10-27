@@ -6,7 +6,6 @@ import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 
 public interface ShohinZaikoCrudService {
 	/**
@@ -21,7 +20,7 @@ public interface ShohinZaikoCrudService {
 	 *            商品
 	 * @return 商品在庫
 	 */
-	public ShohinZaiko getShohinZaiko(Busho busho, TheDate date, Shohin shohin);
+	public ShohinZaiko getShohinZaiko(Busho busho, EigyoDate date, Shohin shohin);
 
 	/**
 	 * 
@@ -33,7 +32,7 @@ public interface ShohinZaikoCrudService {
 	 *            商品移動日付
 	 * @return 商品在庫
 	 */
-	public List<ShohinZaiko> getShohinZaiko(Busho busho, TheDate date);
+	public List<ShohinZaiko> getShohinZaiko(Busho busho, EigyoDate date);
 
 	/**
 	 * 商品在庫繰越.
@@ -64,5 +63,5 @@ public interface ShohinZaikoCrudService {
 	 * @param shohin
 	 *            商品
 	 */
-	public void saveZeroIfEmpty(Busho busho, TheDate date, Shohin shohin);
+	public void saveZeroIfEmpty(Busho busho, EigyoDate date, Shohin shohin);
 }

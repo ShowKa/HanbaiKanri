@@ -12,7 +12,7 @@ import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.repository.i.RUriageRepository;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 import mockit.Injectable;
 import mockit.Tested;
@@ -59,7 +59,7 @@ public class UriageRirekiSearchServiceImplTest extends CrudServiceTestCase {
 		bb.withRecordId("r-BS01");
 		Busho busho = bb.build();
 		// 計上日
-		TheDate date = new TheDate(2017, 1, 1);
+		EigyoDate date = new EigyoDate(2017, 1, 1);
 		// do
 		List<RUriage> actual = service.search(busho, date);
 		// check

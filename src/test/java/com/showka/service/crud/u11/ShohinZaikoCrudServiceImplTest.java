@@ -20,11 +20,10 @@ import com.showka.entity.TShohinZaiko;
 import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
-import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
+import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -49,7 +48,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 	private ShohinCrudService shohinCrudService;
 
 	@Injectable
-	private BushoDateCrudService bushoDateCrudService;
+	private BushoDateBusinessService bushoDateBusinessService;
 
 	/** 商品. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "r-SH01" };
@@ -57,7 +56,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 	/** 商品在庫01. */
 	private static final Object[] T_SHOHIN_ZAIKO_V01 = {
 			"r-BS01",
-			new TheDate(2017, 1, 1).toDate(),
+			new EigyoDate(2017, 1, 1).toDate(),
 			"r-SH01",
 			100,
 			"r-BS01-20170101-SH01" };
@@ -65,7 +64,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 	/** 商品在庫02(ゼロ在庫). */
 	private static final Object[] T_SHOHIN_ZAIKO_V02 = {
 			"r-BS01",
-			new TheDate(2017, 1, 1).toDate(),
+			new EigyoDate(2017, 1, 1).toDate(),
 			"r-SH01",
 			0,
 			"r-BS01-20170101-SH01" };
@@ -81,7 +80,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// 日付
-		TheDate date = new TheDate(2017, 1, 1);
+		EigyoDate date = new EigyoDate(2017, 1, 1);
 		// 商品
 		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
@@ -90,7 +89,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// check
 		assertEquals("r-BS01", actual.getBusho().getRecordId());
 		assertEquals("r-SH01", actual.getShohin().getRecordId());
-		assertEquals(new TheDate(2017, 1, 1), actual.getDate());
+		assertEquals(new EigyoDate(2017, 1, 1), actual.getDate());
 		assertEquals(0, actual.getNumber().intValue());
 	}
 
@@ -105,7 +104,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// 日付
-		TheDate date = new TheDate(2017, 1, 1);
+		EigyoDate date = new EigyoDate(2017, 1, 1);
 		// 商品
 		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
@@ -140,7 +139,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// check
 		assertEquals("r-BS01", actual.getBusho().getRecordId());
 		assertEquals("r-SH01", actual.getShohin().getRecordId());
-		assertEquals(new TheDate(2017, 1, 1), actual.getDate());
+		assertEquals(new EigyoDate(2017, 1, 1), actual.getDate());
 		assertEquals(100, actual.getKurikoshiNumber().intValue());
 	}
 
@@ -153,7 +152,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Busho busho = EmptyProxy.domain(Busho.class);
 		busho.setRecordId("r-BS01");
 		// 日付
-		TheDate date = new TheDate(2017, 1, 1);
+		EigyoDate date = new EigyoDate(2017, 1, 1);
 		// 商品
 		Shohin shohin = EmptyProxy.domain(Shohin.class);
 		shohin.setRecordId("r-SH01");
@@ -201,7 +200,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		assertEquals(1, actual.size());
 		assertEquals("r-BS01", actual.get(0).getBusho().getRecordId());
 		assertEquals("r-SH01", actual.get(0).getShohin().getRecordId());
-		assertEquals(new TheDate(2017, 1, 1), actual.get(0).getDate());
+		assertEquals(new EigyoDate(2017, 1, 1), actual.get(0).getDate());
 		assertEquals(100, actual.get(0).getKurikoshiNumber().intValue());
 	}
 
@@ -235,7 +234,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Shohin shohin = sb.build();
 		new Expectations() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				result = nextEigyoDate;
 				shohinCrudService.getDomain("SH01");
 				result = shohin;
@@ -246,7 +245,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				times = 1;
 				shohinCrudService.getDomain("SH01");
 				times = 1;
@@ -294,7 +293,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Shohin shohin = sb.build();
 		new Expectations() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				result = nextEigyoDate;
 				shohinCrudService.getDomain("SH01");
 				result = shohin;
@@ -305,7 +304,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				times = 1;
 				shohinCrudService.getDomain("SH01");
 				times = 1;
@@ -340,7 +339,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Busho busho = new BushoBuilder().build();
 		busho.setRecordId("r-BS01");
 		// 日付
-		TheDate date = new TheDate(2017, 1, 1);
+		EigyoDate date = new EigyoDate(2017, 1, 1);
 		// 商品
 		Shohin shohin = new ShohinBuilder().build();
 		shohin.setRecordId("r-SH01");
@@ -373,7 +372,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Busho busho = new BushoBuilder().build();
 		busho.setRecordId("r-BS01");
 		// 日付
-		TheDate date = new TheDate(2017, 1, 1);
+		EigyoDate date = new EigyoDate(2017, 1, 1);
 		// 商品
 		Shohin shohin = new ShohinBuilder().build();
 		shohin.setRecordId("r-SH01");

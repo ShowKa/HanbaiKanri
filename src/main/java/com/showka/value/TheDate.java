@@ -1,12 +1,14 @@
 package com.showka.value;
 
 import java.sql.Timestamp;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
+import java.util.Locale;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,8 +19,10 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TheDate extends ValueBase implements Comparable<TheDate> {
 
+	// member
 	private LocalDate date = LocalDate.now();
 
+	// constructor
 	public TheDate(java.util.Date date) {
 		this.date = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 	}
@@ -34,6 +38,7 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		this.date = LocalDate.of(year, month, dayOfMonth);
 	}
 
+	// cast to other type
 	public java.util.Date toDate() {
 		return java.util.Date.from(this.date.atStartOfDay(ZoneId.systemDefault()).toInstant());
 	}
@@ -53,6 +58,16 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return Timestamp.valueOf(localDateTime);
 	}
 
+	// cast to LocalDateTime
+	public LocalDateTime atTime(int hour, int minute, int second) {
+		return this.date.atTime(hour, minute, second);
+	}
+
+	public LocalDateTime atStartOfDay() {
+		return this.date.atStartOfDay();
+	}
+
+	// compare
 	public boolean isAfter(TheDate other) {
 		return this.date.isAfter(other.date);
 	}
@@ -73,24 +88,55 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return this.date.isEqual(other.date);
 	}
 
+	// roll days
 	public TheDate plusDays(long daysToAdd) {
-		return new TheDate(this.date.plusDays(daysToAdd));
+		return new TheDate(this._plusDays(daysToAdd));
 	}
 
 	public TheDate plusMonths(long monthsToAdd) {
-		return new TheDate(this.date.plusMonths(monthsToAdd));
+		return new TheDate(this._plusMonths(monthsToAdd));
 	}
 
 	public TheDate withDayOfMonth(int dayOfMonth) {
-		return new TheDate(this.date.withDayOfMonth(dayOfMonth));
+		return new TheDate(this._withDayOfMonth(dayOfMonth));
 	}
 
-	public LocalDateTime atTime(int hour, int minute, int second) {
-		return this.date.atTime(hour, minute, second);
+	public TheDate getLastDateOfMonth() {
+		return new TheDate(this._getLastDateOfMonth());
 	}
 
-	public LocalDateTime atStartOfDay() {
-		return this.date.atStartOfDay();
+	public TheDate getFirstDateOfMonth() {
+		return new TheDate(this._getFirstDateOfMonth());
+	}
+
+	protected LocalDate _plusDays(long daysToAdd) {
+		return this.date.plusDays(daysToAdd);
+	}
+
+	protected LocalDate _plusMonths(long monthsToAdd) {
+		return this.date.plusMonths(monthsToAdd);
+	}
+
+	protected LocalDate _withDayOfMonth(int dayOfMonth) {
+		return this.date.withDayOfMonth(dayOfMonth);
+	}
+
+	protected LocalDate _getFirstDateOfMonth() {
+		return this._withDayOfMonth(1);
+	}
+
+	protected LocalDate _getLastDateOfMonth() {
+		return this._withDayOfMonth(date.lengthOfMonth());
+	}
+
+	// other utility
+	public boolean isWeekDay() {
+		return !this.isWeekend();
+	}
+
+	public boolean isWeekend() {
+		DayOfWeek dow = this.date.getDayOfWeek();
+		return dow == DayOfWeek.SATURDAY || dow == DayOfWeek.SUNDAY;
 	}
 
 	/**
@@ -105,6 +151,13 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return date.format(f);
 	}
 
+	public String getDayOfWeek() {
+		Locale locale = Locale.getDefault();
+		DateTimeFormatter formatterOutput = DateTimeFormatter.ofPattern("E").withLocale(locale);
+		return formatterOutput.format(this.date);
+	}
+
+	// override
 	@Override
 	public boolean isEmpty() {
 		if (this.date == null) {

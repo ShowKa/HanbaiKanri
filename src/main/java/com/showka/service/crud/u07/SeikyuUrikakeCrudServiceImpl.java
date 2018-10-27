@@ -22,6 +22,7 @@ import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 @Service
 public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
@@ -78,7 +79,7 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 		urikakeList.forEach(urikake -> {
 			// 売掛の入金予定日更新
 			// TODO OCC?
-			EigyoDate shiharaiDate = spec.getShiharaiDate();
+			TheDate shiharaiDate = spec.getShiharaiDate();
 			urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);
 			// 売掛の最新請求を登録
 			this.save(seikyu.getRecordId(), urikake.getRecordId());

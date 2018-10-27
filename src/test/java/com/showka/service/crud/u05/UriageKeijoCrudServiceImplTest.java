@@ -21,7 +21,7 @@ import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
 import com.showka.service.search.u05.i.UriageKeijoSearchService;
 import com.showka.service.search.u05.i.UriageRirekiSearchService;
-import com.showka.value.TheDate;
+import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -60,7 +60,7 @@ public class UriageKeijoCrudServiceImplTest extends CrudServiceTestCase {
 	 * </pre>
 	 */
 	@Test
-	public void test01_keijo(@Injectable Busho busho, @Injectable TheDate date) throws Exception {
+	public void test01_keijo(@Injectable Busho busho, @Injectable EigyoDate date) throws Exception {
 		// database
 		super.deleteAll(R_URIAGE_KEIJO);
 		// input
@@ -107,7 +107,7 @@ public class UriageKeijoCrudServiceImplTest extends CrudServiceTestCase {
 	 * </pre>
 	 */
 	@Test
-	public void test02_keijo(@Injectable Busho busho, @Injectable TheDate date, @Injectable UriageRireki rirekiDomain)
+	public void test02_keijo(@Injectable Busho busho, @Injectable EigyoDate date, @Injectable UriageRireki rirekiDomain)
 			throws Exception {
 		// database
 		super.deleteAll(R_URIAGE_KEIJO);
@@ -166,7 +166,7 @@ public class UriageKeijoCrudServiceImplTest extends CrudServiceTestCase {
 	 * </pre>
 	 */
 	@Test
-	public void test03_keijo(@Injectable Busho busho, @Injectable TheDate date, @Injectable UriageRireki rirekiDomain,
+	public void test03_keijo(@Injectable Busho busho, @Injectable EigyoDate date, @Injectable UriageRireki rirekiDomain,
 			@Injectable Uriage teiseiUriage) throws Exception {
 		// database
 		super.deleteAll(R_URIAGE_KEIJO);
@@ -229,7 +229,7 @@ public class UriageKeijoCrudServiceImplTest extends CrudServiceTestCase {
 	 * 売上計上金額集計
 	 */
 	@Test
-	public void test04_getBushoUriage(@Injectable Busho busho, @Injectable TheDate date) throws Exception {
+	public void test04_getBushoUriage(@Injectable Busho busho, @Injectable EigyoDate date) throws Exception {
 		// expect
 		new Expectations() {
 			{

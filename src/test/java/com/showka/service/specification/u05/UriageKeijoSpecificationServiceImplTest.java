@@ -9,6 +9,7 @@ import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.u05.Uriage;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageRepository;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
 import mockit.Expectations;
@@ -60,7 +61,7 @@ public class UriageKeijoSpecificationServiceImplTest extends CrudServiceTestCase
 		super.deleteAndInsert(R_URIAGE_KEIJO, R_URIAGE_KEIJO_COLUMN, R_URIAGE_KEIJO_01);
 		// input
 		// 計上日
-		TheDate keijoDate = new TheDate(2017, 1, 1);
+		TheDate keijoDate = new EigyoDate(2017, 1, 1);
 		// 売上ID
 		String uriageId = "r-KK01-00001";
 		// expect
@@ -103,7 +104,7 @@ public class UriageKeijoSpecificationServiceImplTest extends CrudServiceTestCase
 		super.deleteAll(R_URIAGE_KEIJO);
 		// input
 		// 計上日
-		TheDate keijoDate = new TheDate(2017, 1, 1);
+		TheDate keijoDate = new EigyoDate(2017, 1, 1);
 		// 売上ID
 		String uriageId = "r-KK01-00001";
 		// expect

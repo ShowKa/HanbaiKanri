@@ -4,7 +4,7 @@ import com.showka.domain.DomainBase;
 import com.showka.domain.u05.Uriage;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
-import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +24,8 @@ public class Urikake extends DomainBase {
 	/** 金額（消込後の残高ではない！）. */
 	private AmountOfMoney kingaku;
 
-	/** 入金予定日. */
-	private EigyoDate nyukinYoteiDate;
+	/** 入金予定日（営業日である必要はない）. */
+	private TheDate nyukinYoteiDate;
 
 	// public methods
 	/**

@@ -12,6 +12,7 @@ import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageMeisai;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
@@ -19,13 +20,15 @@ import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
+import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
 import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.EmptyException;
+import com.showka.system.exception.NotEigyoDateException;
 import com.showka.system.exception.ValidateException;
+import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -36,6 +39,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 
 	// tested
 	@Tested
+	@Injectable
 	private UriageValidateServiceImpl service;
 
 	@Injectable
@@ -52,6 +56,9 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
+
+	@Injectable
+	private BushoDateBusinessService bushoDateBusinessService;
 
 	// data
 	/** 顧客01. */
@@ -84,7 +91,7 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		meisai.add(uriageMeisai01);
 		uriage01 = b.withKokyaku(kokyaku01)
 				.withDenpyoNumber("00001")
-				.withUriageDate(new TheDate(2017, 8, 20))
+				.withUriageDate(new EigyoDate(2017, 8, 20))
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.08))
 				.withUriageMeisai(meisai)
@@ -95,8 +102,10 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 	// test
 	@Test(expected = EmptyException.class)
 	public void test_validate01() {
+		// input
 		UriageBuilder b = new UriageBuilder();
 		Uriage d = b.build();
+		// do
 		service.validate(d);
 	}
 
@@ -108,10 +117,8 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 				meisaiService.validate(uriageMeisai01);
 			}
 		};
-
 		// do
 		service.validate(uriage01);
-
 		// verification
 		new Verifications() {
 			{
@@ -123,44 +130,41 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 
 	@Test(expected = AlreadyExistsException.class)
 	public void test_validateForRegister01() {
-
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(uriage01.getKokyaku().getRecordId());
 		pk.setDenpyoNumber(uriage01.getDenpyoNumber());
-
 		// expectation
 		new Expectations() {
 			{
+				service.validateUriageDate(uriage01);
 				uriageRepo.existsById(pk);
 				result = true;
 			}
 		};
-
 		// do
 		service.validateForRegister(uriage01);
 	}
 
 	@Test
 	public void test_validateForRegister02() {
-
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(uriage01.getKokyaku().getRecordId());
 		pk.setDenpyoNumber(uriage01.getDenpyoNumber());
-
 		// expectation
 		new Expectations() {
 			{
+				service.validateUriageDate(uriage01);
 				uriageRepo.existsById(pk);
 				result = false;
 			}
 		};
-
 		// do
 		service.validateForRegister(uriage01);
-
 		// verification
 		new Verifications() {
 			{
+				service.validateUriageDate(uriage01);
+				times = 1;
 				uriageRepo.existsById(pk);
 				times = 1;
 			}
@@ -355,6 +359,41 @@ public class UriageValidateServiceImplTest extends SimpleTestCase {
 		// do
 		service.validateForCancel(pk);
 		assertTrue(true);
+	}
+
+	@Test
+	public void test_ValidateUriageDate_01() throws Exception {
+		// expect
+		new Expectations() {
+			{
+				bushoDateBusinessService.isEigyoDate((Busho) any, uriage01.getUriageDate());
+				result = true;
+			}
+		};
+		// do
+		service.validateUriageDate(uriage01);
+		// verify
+		new Verifications() {
+			{
+				bushoDateBusinessService.isEigyoDate((Busho) any, uriage01.getUriageDate());
+				times = 1;
+			}
+		};
+		// check
+		assertTrue(true);
+	}
+
+	@Test(expected = NotEigyoDateException.class)
+	public void test_ValidateUriageDate_02() throws Exception {
+		// expect
+		new Expectations() {
+			{
+				bushoDateBusinessService.isEigyoDate((Busho) any, uriage01.getUriageDate());
+				result = false;
+			}
+		};
+		// do
+		service.validateUriageDate(uriage01);
 	}
 
 }

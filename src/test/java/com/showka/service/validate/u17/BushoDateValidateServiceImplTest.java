@@ -9,7 +9,6 @@ import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -38,7 +37,7 @@ public class BushoDateValidateServiceImplTest extends SimpleTestCase {
 		Busho busho = b.build();
 		// expect
 		MBushoDate dateExpected = new MBushoDate();
-		dateExpected.setEigyoDate(new TheDate(2017, 1, 1).toDate());
+		dateExpected.setEigyoDate(new EigyoDate(2017, 1, 1).toDate());
 		new Expectations() {
 			{
 				repo.getOne("r-BS01");
@@ -72,7 +71,7 @@ public class BushoDateValidateServiceImplTest extends SimpleTestCase {
 		Busho busho = b.build();
 		// expect
 		MBushoDate dateExpected = new MBushoDate();
-		dateExpected.setEigyoDate(new TheDate(2017, 1, 2).toDate());
+		dateExpected.setEigyoDate(new EigyoDate(2017, 1, 2).toDate());
 		new Expectations() {
 			{
 				repo.getOne("r-BS01");
