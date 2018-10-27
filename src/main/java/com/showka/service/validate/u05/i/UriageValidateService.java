@@ -19,10 +19,6 @@ public interface UriageValidateService {
 	/**
 	 * 初回登録時整合性検証.
 	 * 
-	 * <pre>
-	 * FIXME 売上日=営業日の検証が必要。
-	 * </pre>
-	 * 
 	 * @param domain
 	 *            売上ドメイン
 	 * @throws ValidateException
