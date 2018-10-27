@@ -20,8 +20,8 @@ import com.showka.entity.TShohinZaiko;
 import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
-import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
+import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
 
@@ -48,7 +48,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 	private ShohinCrudService shohinCrudService;
 
 	@Injectable
-	private BushoDateCrudService bushoDateCrudService;
+	private BushoDateBusinessService bushoDateBusinessService;
 
 	/** 商品. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "r-SH01" };
@@ -234,7 +234,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Shohin shohin = sb.build();
 		new Expectations() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				result = nextEigyoDate;
 				shohinCrudService.getDomain("SH01");
 				result = shohin;
@@ -245,7 +245,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				times = 1;
 				shohinCrudService.getDomain("SH01");
 				times = 1;
@@ -293,7 +293,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		Shohin shohin = sb.build();
 		new Expectations() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				result = nextEigyoDate;
 				shohinCrudService.getDomain("SH01");
 				result = shohin;
@@ -304,7 +304,7 @@ public class ShohinZaikoCrudServiceImplTest extends CrudServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				bushoDateCrudService.getNext(busho, eigyoDate);
+				bushoDateBusinessService.getNext(busho, eigyoDate);
 				times = 1;
 				shohinCrudService.getDomain("SH01");
 				times = 1;

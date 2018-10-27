@@ -21,8 +21,8 @@ import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrudService;
 import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
-import com.showka.service.crud.u17.i.BushoDateCrudService;
 import com.showka.service.crud.z00.i.ShohinCrudService;
+import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -39,7 +39,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	private ShohinCrudService shohinCrudService;
 
 	@Autowired
-	private BushoDateCrudService bushoDateCrudService;
+	private BushoDateBusinessService bushoDateBusinessService;
 
 	// public methods
 	@Override
@@ -97,7 +97,7 @@ public class ShohinZaikoCrudServiceImpl implements ShohinZaikoCrudService {
 	@Override
 	public void kurikoshi(Busho busho, EigyoDate eigyoDate) {
 		List<ShohinZaiko> zaikoList = this.getShohinZaiko(busho, eigyoDate);
-		EigyoDate nextEigyoDate = bushoDateCrudService.getNext(busho, eigyoDate);
+		EigyoDate nextEigyoDate = bushoDateBusinessService.getNext(busho, eigyoDate);
 		zaikoList.stream().filter(zaiko -> {
 			// 在庫数0以外のみ抽出
 			return zaiko.getNumber().longValue() != 0;
