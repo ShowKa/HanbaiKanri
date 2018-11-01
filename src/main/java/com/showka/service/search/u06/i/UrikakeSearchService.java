@@ -5,17 +5,24 @@ import java.util.List;
 import com.showka.domain.u06.Urikake;
 
 public interface UrikakeSearchService {
+
 	/**
-	 * 顧客の売掛を取得.
+	 * 売掛Tableから$顧客の請求対象の$売掛リスト取得.
 	 * 
 	 * <pre>
-	 * 消込未完了の売掛を全て取得する。
-	 * 
-	 * <pre>
+	 * - $顧客の売掛である
+	 *     - 売掛:-売上:-顧客 = $顧客
+	 * - 未請求
+	 *     - 請求中売掛Tableにレコードが存在しない
+	 *     - 消込未完了
+	 * - 請求中 & 入金延滞している
+	 *    - 請求中売掛Tableにレコードが存在
+	 *    - 請求中売掛:-請求.支払日 <= $営業日
+	 * </pre>
 	 * 
 	 * @param kokyakuId
 	 *            顧客ID
 	 * @return 売掛リスト
 	 */
-	public List<Urikake> getUrikakeOfKokyaku(String kokyakuId);
+	public List<Urikake> getUrikakeForSeikyu(String kokyakuId);
 }

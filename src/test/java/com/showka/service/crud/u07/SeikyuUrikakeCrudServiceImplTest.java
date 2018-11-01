@@ -24,6 +24,7 @@ import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
+import com.showka.value.ShimeDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -75,7 +76,8 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 		bb.withCode("BS01");
 		Busho busho = bb.build();
 		// 締日
-		EigyoDate shimeDate = new EigyoDate(2017, 1, 1);
+		EigyoDate eigyoDate = new EigyoDate(2017, 1, 1);
+		ShimeDate shimeDate = new ShimeDate(1);
 		// 顧客リスト
 		KokyakuBuilder kb = new KokyakuBuilder();
 		kb.withCode("KK01");
@@ -89,12 +91,12 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 				nyukinKakeInfoSearchService.getKokyakuOnShimeDate(busho, shimeDate);
 				result = kokyakuList;
 				// 内部呼出
-				service.seikyu(kokyaku, shimeDate);
+				service.seikyu(kokyaku, eigyoDate);
 				times = 1;
 			}
 		};
 		// do
-		service.seikyu(busho, shimeDate);
+		service.seikyu(busho, eigyoDate);
 		// verify
 		new Verifications() {
 			{
@@ -132,7 +134,7 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				// 売掛リスト
-				urikakeSearchService.getUrikakeOfKokyaku(kokyakuId);
+				urikakeSearchService.getUrikakeForSeikyu(kokyakuId);
 				result = urikakeList;
 				// 請求
 				service.seikyu(kokyaku, shimeDate, urikakeList);
@@ -145,7 +147,7 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 		new Verifications() {
 			{
 				// 売掛リスト
-				urikakeSearchService.getUrikakeOfKokyaku(kokyakuId);
+				urikakeSearchService.getUrikakeForSeikyu(kokyakuId);
 				times = 1;
 			}
 		};

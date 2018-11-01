@@ -25,7 +25,7 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
 
 	@Override
-	public List<Urikake> getUrikakeOfKokyaku(String kokyakuId) {
+	public List<Urikake> getUrikakeForSeikyu(String kokyakuId) {
 		// find entity
 		List<TUrikake> result = this.getUrikakeOfKokyakuRecord(kokyakuId);
 		// build domain

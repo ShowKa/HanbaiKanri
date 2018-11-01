@@ -2,6 +2,7 @@ package com.showka.service.crud.u07;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ import com.showka.service.search.u06.i.UrikakeSearchService;
 import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
+import com.showka.service.specification.u07.i.ShimeDateBusinessService;
 import com.showka.value.EigyoDate;
+import com.showka.value.ShimeDate;
 import com.showka.value.TheDate;
 
 @Service
@@ -48,41 +51,45 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 	@Autowired
 	private SeikyuSearchService seikyuSearchService;
 
+	// @Autowired
+	private ShimeDateBusinessService shimeDateBusinessService;
+
 	@Override
-	public void seikyu(Busho busho, EigyoDate shimeDate) {
+	public void seikyu(Busho busho, EigyoDate eigyoDate) {
+		// 締日リスト
+		Set<ShimeDate> shimeDateSet = shimeDateBusinessService.getShimeDate(busho, eigyoDate);
 		// 締日の顧客リスト
-		List<Kokyaku> kokyakuList = nyukinKakeInfoSearchService.getKokyakuOnShimeDate(busho, shimeDate);
+		List<Kokyaku> kokyakuList = nyukinKakeInfoSearchService.getKokyakuOnShimeDate(busho, shimeDateSet);
 		kokyakuList.forEach(kokyaku -> {
 			// 請求
-			this.seikyu(kokyaku, shimeDate);
+			this.seikyu(kokyaku, eigyoDate);
 		});
 	}
 
 	@Override
-	public void seikyu(Kokyaku kokyaku, EigyoDate shimeDate) {
+	public void seikyu(Kokyaku kokyaku, EigyoDate eigyoDate) {
 		// 売掛リスト取得
 		String kokyakuId = kokyaku.getRecordId();
-		// TODO 「未請求分」あるいは「請求済みで入金日が過ぎている」もののみを対象とするべき
-		List<Urikake> urikakeList = urikakeSearchService.getUrikakeOfKokyaku(kokyakuId);
+		List<Urikake> urikakeList = urikakeSearchService.getUrikakeForSeikyu(kokyakuId);
 		// 請求
-		this.seikyu(kokyaku, shimeDate, urikakeList);
+		this.seikyu(kokyaku, eigyoDate, urikakeList);
 	}
 
 	@Override
-	public void seikyu(Kokyaku kokyaku, EigyoDate shimeDate, List<Urikake> urikakeList) {
+	// TODO 売掛の入金予定を更新しているが排他制御できていない。 ==> 締処理中は画面更新不可とする制御が必要。
+	public void seikyu(Kokyaku kokyaku, EigyoDate eigyoDate, List<Urikake> urikakeList) {
 		// 請求仕様
-		SeikyuSpecification spec = seikyuUrikakeSpecificationFactory.create(kokyaku, shimeDate, urikakeList);
-		// save
+		SeikyuSpecification spec = seikyuUrikakeSpecificationFactory.create(kokyaku, eigyoDate, urikakeList);
+		// save 請求
 		seikyuCrudService.save(spec);
-		// get saved
+		// get 登録請求
 		Seikyu seikyu = seikyuCrudService.getDomain(spec);
 		urikakeList.forEach(urikake -> {
-			// 売掛の入金予定日更新
-			// TODO OCC?
+			// 請求中売掛登録
+			this.save(seikyu.getRecordId(), urikake.getRecordId());
+			// 売掛の入金予定日更新 = 請求.支払日
 			TheDate shiharaiDate = spec.getShiharaiDate();
 			urikakeCrudService.updateNyukinYoteiDate(urikake, shiharaiDate);
-			// 売掛の最新請求を登録
-			this.save(seikyu.getRecordId(), urikake.getRecordId());
 		});
 	}
 

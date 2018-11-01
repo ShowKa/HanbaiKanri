@@ -80,7 +80,7 @@ public class UrikakeSearchServiceImplTest2 extends SimpleTestCase {
 			}
 		};
 		// do
-		List<Urikake> actual = service.getUrikakeOfKokyaku(kokyakuId);
+		List<Urikake> actual = service.getUrikakeForSeikyu(kokyakuId);
 		// verify
 		new Verifications() {
 			{

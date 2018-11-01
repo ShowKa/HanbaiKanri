@@ -64,11 +64,13 @@ public class NyukinKakeInfo extends DomainBase {
 	 */
 	public TheDate getNextSeikyuSimeDate(TheDate date) {
 		LocalDate _d = date.getDate();
+		// FIXME 月末日31→30(or28)調整をしないと、エラー
 		LocalDate shimeDateOfThisMonth = _d.withDayOfMonth(shimeDate);
 		if (shimeDateOfThisMonth.getDayOfMonth() >= shimeDate) {
 			return new TheDate(shimeDateOfThisMonth);
 		}
 		// 今月締日が過ぎているので来月の締日を返却する。
+		// FIXME 月末日の考慮が必要。
 		return new TheDate(shimeDateOfThisMonth.plusMonths(1));
 	}
 
@@ -82,7 +84,9 @@ public class NyukinKakeInfo extends DomainBase {
 	 */
 	public TheDate getNyukinYoteiDate(TheDate date) {
 		TheDate nextShimeDate = getNextSeikyuSimeDate(date);
+		// FIXME 月末日の考慮が必要。
 		LocalDate nyukinMonth = nextShimeDate.getDate().plusMonths(nyukinTsukiKubun.getMonthSpan());
+		// FIXME 月末日31→30(or28)調整をしないと、エラー
 		return new TheDate(nyukinMonth.withDayOfMonth(nyukinDate));
 	}
 

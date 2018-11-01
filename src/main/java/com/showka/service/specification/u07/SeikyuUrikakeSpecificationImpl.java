@@ -32,7 +32,7 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 	@Override
 	public TheDate getShiharaiDate() {
 		// 支払日=顧客の入金掛売情報から入金予定日を算出
-		// TODO 販売区分=現金の顧客
+		// TODO 販売区分=現金の顧客の場合、請求日の翌月末日。顧客クラスにmethodを作るべき。
 		NyukinKakeInfo nyukinKakeInfo = kokyaku.getNyukinKakeInfo().get();
 		TheDate shiharaiDate = nyukinKakeInfo.getNyukinYoteiDate(seikyuDate);
 		return shiharaiDate;
