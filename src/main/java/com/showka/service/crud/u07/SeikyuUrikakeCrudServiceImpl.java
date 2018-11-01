@@ -12,8 +12,8 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.z00.Busho;
-import com.showka.entity.JSeikyuUrikake;
-import com.showka.repository.i.JSeikyuUrikakeRepository;
+import com.showka.entity.TUrikakeSeikyu;
+import com.showka.repository.i.TUrikakeSeikyuRepository;
 import com.showka.service.crud.u06.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
@@ -46,7 +46,7 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
 
 	@Autowired
-	private JSeikyuUrikakeRepository repo;
+	private TUrikakeSeikyuRepository repo;
 
 	@Autowired
 	private SeikyuSearchService seikyuSearchService;
@@ -106,8 +106,8 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 	 *            売掛ID
 	 */
 	void save(String seikyuId, String urikakeId) {
-		Optional<JSeikyuUrikake> _e = repo.findById(urikakeId);
-		JSeikyuUrikake e = _e.orElse(new JSeikyuUrikake());
+		Optional<TUrikakeSeikyu> _e = repo.findById(urikakeId);
+		TUrikakeSeikyu e = _e.orElse(new TUrikakeSeikyu());
 		e.setSeikyuId(seikyuId);
 		e.setUrikakeId(urikakeId);
 		// record id

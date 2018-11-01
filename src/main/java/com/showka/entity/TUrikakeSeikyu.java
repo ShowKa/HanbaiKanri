@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 請求中売掛（請求と売掛の関係テーブル）.
+ * 請求中の売掛.
  * 
  * <pre>
  * 売掛を請求と紐付ける。
@@ -25,10 +25,10 @@ import lombok.Setter;
  *
  */
 @Entity
-@Table(name = "j_seikyu_urikake")
+@Table(name = "t_urikake_seikyu")
 @Getter
 @Setter
-public class JSeikyuUrikake extends EntityBase implements Serializable {
+public class TUrikakeSeikyu extends EntityBase implements Serializable {
 
 	/** SID. */
 	private static final long serialVersionUID = 2961157593426511712L;
