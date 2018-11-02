@@ -14,24 +14,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 請求中の売掛.
- * 
- * <pre>
- * 売掛を請求と紐付ける。
- * ・有効な請求のみレコードとして存在する。
- * ・再請求したら、請求IDを更新
- * ・入金や貸倒で消込されたら、レコードが消える
- * </pre>
+ * 未請求状態の売掛.
  *
  */
 @Entity
-@Table(name = "t_urikake_seikyu")
+@Table(name = "s_urikake_seikyu_not_yet")
 @Getter
 @Setter
-public class TUrikakeSeikyu extends EntityBase implements Serializable {
+public class SUrikakeSeikyuNotYet extends EntityBase implements Serializable {
 
 	/** SID. */
-	private static final long serialVersionUID = 2961157593426511712L;
+	private static final long serialVersionUID = -592877635344460786L;
 
 	// column
 	/** 売掛ID. */
@@ -39,18 +32,9 @@ public class TUrikakeSeikyu extends EntityBase implements Serializable {
 	@Column(name = "urikake_id", unique = false, nullable = false, length = 255)
 	private String urikakeId;
 
-	/** 請求ID. */
-	@Column(name = "seikyu_id", unique = false, nullable = false, length = 255)
-	private String seikyuId;
-
 	// join
 	/** 売掛. */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "urikake_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TUrikake urikake;
-
-	/** 請求. */
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "seikyu_id", referencedColumnName = "record_id", insertable = false, updatable = false)
-	private TSeikyu seikyu;
 }

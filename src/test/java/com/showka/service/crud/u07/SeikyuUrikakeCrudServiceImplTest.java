@@ -15,7 +15,7 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.z00.Busho;
-import com.showka.repository.i.TUrikakeSeikyuRepository;
+import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
 import com.showka.service.crud.u06.i.UrikakeCrudService;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
@@ -56,7 +56,7 @@ public class SeikyuUrikakeCrudServiceImplTest extends SimpleTestCase {
 	private SeikyuSearchService seikyuSearchService;
 
 	@Injectable
-	private TUrikakeSeikyuRepository repo;
+	private SUrikakeSeikyuDoneRepository repo;
 
 	/**
 	 * 請求.
