@@ -21,20 +21,6 @@ public interface UrikakeCrudService extends CrudService<Urikake, String> {
 	Urikake getDomain(String uriageId);
 
 	/**
-	 * 売掛が存在する場合のみ削除する。
-	 * 
-	 * <pre>
-	 * 存在しない場合はなにもしない。
-	 * </pre>
-	 * 
-	 * @param uriageId
-	 *            売上ID
-	 * @param version
-	 *            排他制御用バージョン番号
-	 */
-	void deleteIfExists(String uriageId, Integer version);
-
-	/**
 	 * 売掛を前回の計上状態の値に差し戻す。
 	 * 
 	 * <pre>

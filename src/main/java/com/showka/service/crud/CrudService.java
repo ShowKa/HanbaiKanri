@@ -39,4 +39,17 @@ public interface CrudService<T extends DomainBase, P> {
 	 */
 	boolean exsists(P pk);
 
+	/**
+	 * 存在する場合、削除する.
+	 * 
+	 * @param pk
+	 *            主キー
+	 * @param version
+	 *            バージョン
+	 */
+	default void deleteIfExists(P pk, Integer version) {
+		if (exsists(pk)) {
+			delete(pk, version);
+		}
+	}
 }
