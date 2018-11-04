@@ -155,8 +155,8 @@ public abstract class TestCaseBase extends TestCase {
 	protected static final String[] T_SEIKYU_MEISAI_COLUMN = { "seikyu_id", "urikake_id", "kingaku", "record_id" };
 
 	// 請求売掛
-	protected static final String J_SEIKYU_URIKAKE = "S_URIKAKE_SEIKYU_DONE";
-	protected static final String[] J_SEIKYU_URIKAKE_COLUMN = { "urikake_id", "seikyu_id", "record_id" };
+	protected static final String S_URIKAKE_SEIKYU_DONE = "S_URIKAKE_SEIKYU_DONE";
+	protected static final String[] S_URIKAKE_SEIKYU_DONE_COLUMN = { "urikake_id", "seikyu_id", "record_id" };
 
 	// 消込
 	protected static final String T_KESHIKOMI = "T_KESHIKOMI";
