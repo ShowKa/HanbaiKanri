@@ -7,6 +7,17 @@ import com.showka.value.TheDate;
 public interface UrikakeCrudService extends CrudService<Urikake, String> {
 
 	/**
+	 * 売掛を登録する。
+	 * 
+	 * <pre>
+	 * 初回登録時のみ、未請求状態として登録する。
+	 * 以降は、状態更新しない。
+	 * </pre>
+	 */
+	@Override
+	void save(Urikake urikake);
+
+	/**
 	 * 売上IDで売掛を取得.
 	 * 
 	 * <pre>
