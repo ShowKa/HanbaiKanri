@@ -125,6 +125,7 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 		repo.deleteById(urikakeId);
 	}
 
+	// TODO Refactoring StatusCrudServiceに移行する。
 	@Override
 	public void revert(String urikakeId) {
 		// レコード存在チェック
@@ -144,4 +145,5 @@ public class SeikyuUrikakeCrudServiceImpl implements SeikyuUrikakeCrudService {
 		// save
 		this.save(seikyu.getRecordId(), urikakeId);
 	}
+
 }
