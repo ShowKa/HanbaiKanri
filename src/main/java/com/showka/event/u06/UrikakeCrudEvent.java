@@ -1,7 +1,7 @@
-package com.showka.service.event.u06;
+package com.showka.event.u06;
 
 import com.showka.domain.u06.Urikake;
-import com.showka.service.event.CrudEvent;
+import com.showka.event.CrudEvent;
 
 @SuppressWarnings("serial")
 public class UrikakeCrudEvent extends CrudEvent<Urikake> {

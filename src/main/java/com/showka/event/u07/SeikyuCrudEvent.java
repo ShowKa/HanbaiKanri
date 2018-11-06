@@ -1,7 +1,7 @@
-package com.showka.service.event.u06;
+package com.showka.event.u07;
 
 import com.showka.domain.u07.Seikyu;
-import com.showka.service.event.CrudEvent;
+import com.showka.event.CrudEvent;
 
 @SuppressWarnings("serial")
 public class SeikyuCrudEvent extends CrudEvent<Seikyu> {

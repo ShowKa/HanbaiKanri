@@ -9,10 +9,8 @@ import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
 import com.showka.domain.u06.Urikake;
-import com.showka.entity.SUrikakeSeikyuNotYet;
 import com.showka.entity.TUriagePK;
 import com.showka.entity.TUrikake;
-import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
 import com.showka.repository.i.TUrikakeRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
@@ -27,9 +25,6 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 
 	@Autowired
 	private TUrikakeRepository repo;
-
-	@Autowired
-	private SUrikakeSeikyuNotYetRepository urikakeSeikyurepo;
 
 	@Autowired
 	private UriageCrudService uriageCrudService;
@@ -59,15 +54,6 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 		domain.setRecordId(e.getRecordId());
 		// save 売掛
 		repo.save(e);
-		// save as 売掛未請求
-		if (!_e.isPresent()) {
-			SUrikakeSeikyuNotYet status = new SUrikakeSeikyuNotYet();
-			// 売掛未請求I = 売掛ID = 売上ID
-			String recordId = e.getRecordId();
-			status.setUrikakeId(recordId);
-			status.setRecordId(recordId);
-			urikakeSeikyurepo.save(status);
-		}
 	}
 
 	@Override
