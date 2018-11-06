@@ -42,14 +42,31 @@ public interface CrudService<T extends DomainBase, P> {
 	/**
 	 * 存在する場合、削除する.
 	 * 
+	 * <pre>
+	 * 排他制御対象外.
+	 * </pre>
+	 * 
 	 * @param pk
 	 *            主キー
-	 * @param version
-	 *            バージョン
+	 */
+	default void deleteIfExists(P pk) {
+		if (exsists(pk)) {
+			T domain = getDomain(pk);
+			delete(domain);
+		}
+	}
+
+	/**
+	 * 存在する場合、削除する.
+	 * 
+	 * @param pk
+	 *            主キー
 	 */
 	default void deleteIfExists(P pk, Integer version) {
 		if (exsists(pk)) {
-			delete(pk, version);
+			T domain = getDomain(pk);
+			domain.setVersion(version);
+			delete(domain);
 		}
 	}
 }
