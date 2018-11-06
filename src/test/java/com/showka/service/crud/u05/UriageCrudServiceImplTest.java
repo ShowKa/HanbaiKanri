@@ -214,11 +214,20 @@ public class UriageCrudServiceImplTest extends CrudServiceTestCase {
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
 		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_01);
 		assertEquals(1, repo.findAll().size());
+		// input
+		// 顧客
+		KokyakuBuilder kb = new KokyakuBuilder();
+		kb.withRecordId("r-KK01");
+		Kokyaku kokyaku = kb.build();
+		// 売上
+		UriageBuilder ub = new UriageBuilder();
+		ub.withKokyaku(kokyaku);
+		ub.withDenpyoNumber("00001");
+		ub.withVersion(0);
+		ub.withUriageMeisai(new ArrayList<>());
+		Uriage uriage = ub.build();
 		// do
-		TUriagePK pk = new TUriagePK();
-		pk.setKokyakuId("r-KK01");
-		pk.setDenpyoNumber("00001");
-		service.delete(pk, 0);
+		service.delete(uriage);
 		// check
 		assertEquals(0, repo.findAll().size());
 	}

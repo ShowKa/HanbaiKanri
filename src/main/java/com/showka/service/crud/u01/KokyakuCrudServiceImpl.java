@@ -77,10 +77,8 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 
 	@Override
 	public void delete(Kokyaku domain) {
-		this.delete(domain.getCode(), domain.getVersion());
-	}
-
-	void delete(String code, Integer version) {
+		String code = domain.getCode();
+		Integer version = domain.getVersion();
 		// entity
 		MKokyaku targetKokyaku = repo.getOne(code);
 		// 入金掛情報delete

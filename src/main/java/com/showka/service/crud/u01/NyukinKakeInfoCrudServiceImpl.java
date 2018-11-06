@@ -51,10 +51,8 @@ public class NyukinKakeInfoCrudServiceImpl implements NyukinKakeInfoCrudService 
 
 	@Override
 	public void delete(NyukinKakeInfo domain) {
-		this.delete(domain.getKokyakuId(), domain.getVersion());
-	}
-
-	void delete(String kokyakuId, Integer version) {
+		String kokyakuId = domain.getKokyakuId();
+		Integer version = domain.getVersion();
 		MNyukinKakeInfo target = repo.getOne(kokyakuId);
 		target.setKokyakuId(kokyakuId);
 		target.setVersion(version);

@@ -73,10 +73,7 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 		TSeikyuPK pk = new TSeikyuPK();
 		pk.setKokyakuId(domain.getKokyakuId());
 		pk.setSeikyuDate(domain.getSeikyuDate().toDate());
-		this.delete(pk, domain.getVersion());
-	}
-
-	void delete(TSeikyuPK pk, Integer version) {
+		Integer version = domain.getVersion();
 		// entity
 		TSeikyu e = repo.getOne(pk);
 		// OCC

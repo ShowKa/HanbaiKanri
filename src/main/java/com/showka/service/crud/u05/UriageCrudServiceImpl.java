@@ -79,16 +79,12 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(domain.getDenpyoNumber());
 		pk.setKokyakuId(domain.getKokyaku().getRecordId());
-		this.delete(pk, domain.getVersion());
-	}
-
-	void delete(TUriagePK pk, Integer version) {
+		Integer version = domain.getVersion();
 		// OCC
 		TUriage entity = repo.getOne(pk);
 		entity.setVersion(version);
 		// 売上履歴削除
 		uriageRirekiCrudService.delete(new RUriagePK(entity.getRecordId(), entity.getKeijoDate()));
-		Uriage domain = getDomainFromEntity(entity);
 		String uriageId = domain.getRecordId();
 		domain.getUriageMeisai().forEach(meisai -> {
 			TUriageMeisaiPK mpk = new TUriageMeisaiPK();

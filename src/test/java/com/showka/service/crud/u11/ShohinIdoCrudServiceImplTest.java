@@ -177,7 +177,11 @@ public class ShohinIdoCrudServiceImplTest extends CrudServiceTestCase {
 		// table
 		super.deleteAndInsert(T_SHOHIN_IDO, T_SHOHIN_IDO_COLUMN, T_SHOHIN_IDO_V1);
 		// do
-		service.delete("r-001", 0);
+		ShohinIdoBuilder sb = new ShohinIdoBuilder();
+		sb.withRecordId("r-001");
+		sb.withVersion(0);
+		ShohinIdo shohinIdo = sb.build();
+		service.delete(shohinIdo);
 		// check
 		assertFalse(repo.existsById("r-001"));
 	}

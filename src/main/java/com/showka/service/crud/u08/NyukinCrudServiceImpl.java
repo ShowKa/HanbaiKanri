@@ -55,10 +55,8 @@ public class NyukinCrudServiceImpl implements NyukinCrudService {
 
 	@Override
 	public void delete(Nyukin domain) {
-		this.delete(domain.getRecordId(), domain.getVersion());
-	}
-
-	void delete(String nyukinId, Integer version) {
+		String nyukinId = domain.getRecordId();
+		Integer version = domain.getVersion();
 		// entity
 		TNyukin e = repo.getOne(nyukinId);
 		// OCC

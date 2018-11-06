@@ -59,10 +59,8 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 
 	@Override
 	public void delete(Urikake domain) {
-		this.delete(domain.getUriageId(), domain.getVersion());
-	}
-
-	void delete(String uriageId, Integer version) {
+		String uriageId = domain.getUriageId();
+		Integer version = domain.getVersion();
 		// get entity
 		TUrikake e = repo.getOne(uriageId);
 		// occ
@@ -96,7 +94,10 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	@Override
 	public void deleteIfExists(String uriageId, Integer version) {
 		if (this.exsists(uriageId)) {
-			this.delete(uriageId, version);
+			Urikake domain = this.getDomain(uriageId);
+			// OCC
+			domain.setVersion(version);
+			this.delete(domain);
 		}
 	}
 

@@ -230,7 +230,13 @@ public class KokyakuCrudServiceImplTest extends CrudServiceTestCase {
 		final String id = "KK03";
 		Integer version = 0;
 		final String record_id = "KK03";
-		service.delete(id, version);
+
+		KokyakuBuilder kb = new KokyakuBuilder();
+		kb.withCode(id);
+		kb.withVersion(version);
+		kb.withRecordId(record_id);
+		Kokyaku kokyaku = kb.build();
+		service.delete(kokyaku);
 
 		// assert
 		Optional<MKokyaku> result = repo.findById(id);

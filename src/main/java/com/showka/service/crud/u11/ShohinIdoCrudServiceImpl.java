@@ -86,10 +86,7 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	@Override
 	public void delete(ShohinIdo domain) {
 		String pk = domain.getRecordId();
-		this.delete(pk, domain.getVersion());
-	}
-
-	void delete(String pk, Integer version) {
+		Integer version = domain.getVersion();
 		// delete meisai
 		shohinIdoMeisaiCrudService.deleteAll(pk);
 		// occ
@@ -151,7 +148,7 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 		specification.ascertainSatisfaction();
 		// 削除対象の商品移動を削除
 		List<ShohinIdo> idoListForDelete = specification.getShohinIdoForDelete();
-		idoListForDelete.forEach(d -> this.delete(d.getRecordId(), d.getVersion()));
+		idoListForDelete.forEach(d -> this.delete(d));
 		// 新たに商品移動を登録
 		List<ShohinIdo> idoList = specification.getShohinIdo();
 		idoList.forEach(this::save);
@@ -161,15 +158,15 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	public void shohinIdoForcibly(ShohinIdoSpecification specification) {
 		// 削除対象の商品移動を削除
 		List<ShohinIdo> idoListForDelete = specification.getShohinIdoForDelete();
-		idoListForDelete.forEach(d -> this.delete(d.getRecordId(), d.getVersion()));
+		idoListForDelete.forEach(d -> this.delete(d));
 		// 新たに商品移動を登録
 		List<ShohinIdo> idoList = specification.getShohinIdo();
 		idoList.forEach(this::save);
 	}
 
 	@Override
-	public void deleteForcibly(String recordId) {
-		TShohinIdo record = repo.getOne(recordId);
-		this.delete(recordId, record.getVersion());
+	public void deleteForcibly(String id) {
+		ShohinIdo domain = this.getDomain(id);
+		this.delete(domain);
 	}
 }
