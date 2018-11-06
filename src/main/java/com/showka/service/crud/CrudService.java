@@ -20,7 +20,7 @@ public interface CrudService<T extends DomainBase, P> {
 	 * @param version
 	 *            バージョン
 	 */
-	void delete(P pk, Integer version);
+	void delete(T domain);
 
 	/**
 	 * ドメイン取得

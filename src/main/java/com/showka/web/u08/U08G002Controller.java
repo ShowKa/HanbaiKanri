@@ -155,12 +155,13 @@ public class U08G002Controller extends ControllerBase {
 	public ResponseEntity<?> delete(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
 		// 集金の取得
 		Shukin shukin = shukinCrudService.getDomain(form.getNyukinId());
+		shukin.setVersion(form.getVersion());
 		// ユーザー権限チェック
 		this.validateAuth(shukin);
 		// 集金の更新整合性検証
 		shukinValidateService.validateForDelete(shukin);
 		// 集金の保存
-		shukinCrudService.delete(form.getNyukinId(), form.getVersion());
+		shukinCrudService.delete(shukin);
 		// return
 		form.setSuccessMessage("集金を削除しました。");
 		model.addForm(form);
