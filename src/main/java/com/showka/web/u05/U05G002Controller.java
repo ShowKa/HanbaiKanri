@@ -283,6 +283,10 @@ public class U05G002Controller extends ControllerBase {
 		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
 		pk.setKokyakuId(kokyaku.getRecordId());
 
+		// 売上
+		Uriage uriage = uriageCrudService.getDomain(pk);
+		uriage.setVersion(form.getVersion());
+
 		// validate
 		uriageValidateService.validateForDelete(pk);
 
@@ -295,7 +299,7 @@ public class U05G002Controller extends ControllerBase {
 		if (rireki.getList().size() == 1) {
 			// delete
 			urikakeCrudService.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
-			uriageCrudService.delete(pk, form.getVersion());
+			uriageCrudService.delete(uriage);
 		} else {
 			// revert
 			urikakeCrudService.revert(form.getRecordId(), form.getUrikakeVersion());

@@ -69,7 +69,11 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 	}
 
 	@Override
-	public void delete(TSeikyuPK pk, Integer version) {
+	public void delete(Seikyu domain) {
+		TSeikyuPK pk = new TSeikyuPK();
+		pk.setKokyakuId(domain.getKokyakuId());
+		pk.setSeikyuDate(domain.getSeikyuDate().toDate());
+		Integer version = domain.getVersion();
 		// entity
 		TSeikyu e = repo.getOne(pk);
 		// OCC
@@ -150,5 +154,4 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 		Seikyu seikyu = b.build();
 		this.save(seikyu);
 	}
-
 }

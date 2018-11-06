@@ -54,7 +54,9 @@ public class NyukinCrudServiceImpl implements NyukinCrudService {
 	}
 
 	@Override
-	public void delete(String nyukinId, Integer version) {
+	public void delete(Nyukin domain) {
+		String nyukinId = domain.getRecordId();
+		Integer version = domain.getVersion();
 		// entity
 		TNyukin e = repo.getOne(nyukinId);
 		// OCC
@@ -87,4 +89,5 @@ public class NyukinCrudServiceImpl implements NyukinCrudService {
 	public boolean exsists(String nyukinId) {
 		return repo.existsById(nyukinId);
 	}
+
 }
