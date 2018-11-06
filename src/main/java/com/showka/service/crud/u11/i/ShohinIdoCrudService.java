@@ -51,7 +51,8 @@ public interface ShohinIdoCrudService extends CrudService<ShohinIdo, String> {
 	/**
 	 * 強制削除.
 	 * 
-	 * @param recordId
+	 * @param id
+	 *            商品移動ID
 	 */
-	public void deleteForcibly(String recordId);
+	public void deleteForcibly(String id);
 }

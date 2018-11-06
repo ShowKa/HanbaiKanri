@@ -75,13 +75,16 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 	}
 
 	@Override
-	public void delete(TUriagePK pk, Integer version) {
+	public void delete(Uriage domain) {
+		TUriagePK pk = new TUriagePK();
+		pk.setDenpyoNumber(domain.getDenpyoNumber());
+		pk.setKokyakuId(domain.getKokyaku().getRecordId());
+		Integer version = domain.getVersion();
 		// OCC
 		TUriage entity = repo.getOne(pk);
 		entity.setVersion(version);
 		// 売上履歴削除
 		uriageRirekiCrudService.delete(new RUriagePK(entity.getRecordId(), entity.getKeijoDate()));
-		Uriage domain = getDomainFromEntity(entity);
 		String uriageId = domain.getRecordId();
 		domain.getUriageMeisai().forEach(meisai -> {
 			TUriageMeisaiPK mpk = new TUriageMeisaiPK();
@@ -212,4 +215,5 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		List<TUriage> uriage = repo.findAll(example);
 		return uriage.stream().map(u -> this.getDomain(u.getPk())).collect(Collectors.toList());
 	}
+
 }

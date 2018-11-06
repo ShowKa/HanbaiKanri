@@ -144,9 +144,14 @@ public class NyukinKakeInfoCrudServiceImplTest extends CrudServiceTestCase {
 		String id = "KK03";
 		Integer version = 0;
 
+		NyukinKakeInfoBuilder nb = new NyukinKakeInfoBuilder();
+		nb.withKokyakuId(id);
+		nb.withVersion(version);
+		NyukinKakeInfo nyukinKakeInfo = nb.build();
+
 		// delete
 		assertTrue(repo.existsById(id));
-		service.delete(id, version);
+		service.delete(nyukinKakeInfo);
 
 		// check
 		assertFalse(repo.existsById(id));

@@ -73,11 +73,11 @@ public class ShukinCrudServiceImpl implements ShukinCrudService {
 	 *            入金バージョン
 	 */
 	@Override
-	public void delete(String id, Integer nyukinVersion) {
+	public void delete(Shukin domain) {
 		// delete 集金
-		repo.deleteById(id);
+		repo.deleteById(domain.getRecordId());
 		// delete 入金
-		nyukinCrudService.delete(id, nyukinVersion);
+		nyukinCrudService.delete(domain);
 	}
 
 	@Override
