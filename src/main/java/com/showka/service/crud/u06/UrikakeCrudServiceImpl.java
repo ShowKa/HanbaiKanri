@@ -58,7 +58,11 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	}
 
 	@Override
-	public void delete(String uriageId, Integer version) {
+	public void delete(Urikake domain) {
+		this.delete(domain.getUriageId(), domain.getVersion());
+	}
+
+	void delete(String uriageId, Integer version) {
 		// get entity
 		TUrikake e = repo.getOne(uriageId);
 		// occ

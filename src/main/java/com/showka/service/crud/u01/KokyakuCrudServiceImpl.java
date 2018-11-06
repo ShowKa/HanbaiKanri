@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.u01.Kokyaku;
@@ -77,8 +76,11 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	}
 
 	@Override
-	@Transactional
-	public void delete(String code, Integer version) {
+	public void delete(Kokyaku domain) {
+		this.delete(domain.getCode(), domain.getVersion());
+	}
+
+	void delete(String code, Integer version) {
 		// entity
 		MKokyaku targetKokyaku = repo.getOne(code);
 		// 入金掛情報delete
@@ -119,5 +121,4 @@ public class KokyakuCrudServiceImpl implements KokyakuCrudService {
 	public boolean exsists(String pk) {
 		return repo.existsById(pk);
 	}
-
 }

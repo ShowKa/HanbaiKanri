@@ -84,7 +84,12 @@ public class ShohinIdoCrudServiceImpl implements ShohinIdoCrudService {
 	}
 
 	@Override
-	public void delete(String pk, Integer version) {
+	public void delete(ShohinIdo domain) {
+		String pk = domain.getRecordId();
+		this.delete(pk, domain.getVersion());
+	}
+
+	void delete(String pk, Integer version) {
 		// delete meisai
 		shohinIdoMeisaiCrudService.deleteAll(pk);
 		// occ
