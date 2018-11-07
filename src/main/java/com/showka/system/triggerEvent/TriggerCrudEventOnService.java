@@ -27,10 +27,40 @@ public class TriggerCrudEventOnService {
 			throws Throwable {
 		// register or update
 		boolean doRegister = domain.getVersion() == null ? true : false;
+		EventType _regOrUpdate = doRegister ? EventType.newRegister : EventType.update;
 		// do
 		Object ret = pjp.proceed();
 		// get constructor for event
 		Class<?> eventClass = triggerCrudEvent.event();
+		Constructor<?> constructor = this.getConstructor(eventClass);
+		// get event instance
+		Object target = pjp.getTarget();
+		CrudEvent<?> saveEvent = this.getEventInstance(constructor, target, EventType.save, domain);
+		CrudEvent<?> regOrUpdateEvent = this.getEventInstance(constructor, target, _regOrUpdate, domain);
+		// publish event
+		applicationEventPublisher.publishEvent(saveEvent);
+		applicationEventPublisher.publishEvent(regOrUpdateEvent);
+		// return
+		return ret;
+	}
+
+	@Around("execution(* com.showka.service.crud.CrudService+.delete(..)) && @annotation(triggerCrudEvent) && args(domain)")
+	public Object triggerDeleteEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent, DomainBase domain)
+			throws Throwable {
+		// do
+		Object ret = pjp.proceed();
+		// get constructor for event
+		Class<?> eventClass = triggerCrudEvent.event();
+		Constructor<?> constructor = this.getConstructor(eventClass);
+		// get event instance
+		CrudEvent<?> deleteEvent = this.getEventInstance(constructor, pjp.getTarget(), EventType.delete, domain);
+		// publish event
+		applicationEventPublisher.publishEvent(deleteEvent);
+		// return
+		return ret;
+	}
+
+	private Constructor<?> getConstructor(Class<?> eventClass) {
 		if (!CrudEvent.class.isAssignableFrom(eventClass)) {
 			throw new SystemException("@TriggerCrudEventにはCrudEventのサブクラスを設定してください。 : " + eventClass);
 		}
@@ -40,22 +70,18 @@ public class TriggerCrudEventOnService {
 		} else if (constuctor.length > 1) {
 			throw new SystemException("CrudEventにコンストラクタは1つだけ許可されています。 : " + eventClass);
 		}
-		// get event instance
-		CrudEvent<?> saveEvent;
-		CrudEvent<?> regOrUpdateEvent;
-		try {
-			saveEvent = (CrudEvent<?>) constuctor[0].newInstance(pjp.getTarget(), EventType.save, domain);
-			EventType _regOrUpdate = doRegister ? EventType.newRegister : EventType.update;
-			regOrUpdateEvent = (CrudEvent<?>) constuctor[0].newInstance(pjp.getTarget(), _regOrUpdate, domain);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			throw new SystemException("CrudEventにコンストラクタの設定が誤っています。 : " + eventClass);
-		}
-		// publish event
-		applicationEventPublisher.publishEvent(saveEvent);
-		applicationEventPublisher.publishEvent(regOrUpdateEvent);
-		// return
-		return ret;
+		return constuctor[0];
 	}
 
+	private CrudEvent<?> getEventInstance(Constructor<?> constructor, Object target, EventType type,
+			DomainBase domain) {
+		CrudEvent<?> event;
+		try {
+			event = (CrudEvent<?>) constructor.newInstance(target, type, domain);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			throw new SystemException("CrudEventにコンストラクタの設定が誤っています。 ", e);
+		}
+		return event;
+	}
 }
