@@ -4,6 +4,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.CrudServiceTestCase;
+import com.showka.domain.builder.UriageBuilder;
+import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.domain.u05.Uriage;
+import com.showka.domain.u06.Urikake;
 import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
 import com.showka.service.crud.u06.UrikakeCrudServiceImpl;
 
@@ -27,9 +31,19 @@ public class SUrikakeSeikyuNotYetTest extends CrudServiceTestCase {
 		// database
 		super.deleteAndInsert(S_URIKAKE_SEIKYU_NOT_YET, S_URIKAKE_SEIKYU_NOT_YET_COLUMN, V1);
 		super.deleteAndInsert(T_URIKAKE, T_URIKAKE_COLUMN, V2);
+		// input
+		// 売上
+		UriageBuilder uab = new UriageBuilder();
+		uab.withRecordId("r-001");
+		Uriage uriage = uab.build();
+		// 売掛
+		UrikakeBuilder ub = new UrikakeBuilder();
+		ub.withVersion(0);
+		ub.withUriage(uriage);
+		Urikake urikake = ub.build();
 		// do
 		assertTrue(urikakeSeikyurepo.existsById("r-001"));
-		service.delete("r-001", 0);
+		service.delete(urikake);
 		assertFalse(urikakeSeikyurepo.existsById("r-001"));
 	}
 }
