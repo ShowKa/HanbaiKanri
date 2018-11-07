@@ -6,38 +6,38 @@ import com.showka.domain.DomainBase;
 import com.showka.event.CrudEvent;
 import com.showka.event.CrudEvent.EventType;
 
-public abstract class CrudEventListener<T extends DomainBase> implements ApplicationListener<CrudEvent<T>> {
+public interface CrudEventListener<T extends DomainBase> extends ApplicationListener<CrudEvent<T>> {
 
 	@Override
-	public final void onApplicationEvent(CrudEvent<T> event) {
+	default void onApplicationEvent(CrudEvent<T> event) {
 		EventType type = event.getType();
 		switch (type) {
 		case save:
-			onSave(event.getDomain());
+			afterSave(event.getDomain());
 			break;
 		case delete:
-			onDelete(event.getDomain());
+			afterDelete(event.getDomain());
 			break;
 		case newRegister:
-			onNewRegister(event.getDomain());
+			afterNewRegister(event.getDomain());
 			break;
 		case update:
-			onUpdate(event.getDomain());
+			afterUpdate(event.getDomain());
 			break;
 		default:
 			break;
 		}
 	}
 
-	public void onSave(T domain) {
+	default void afterSave(T domain) {
 	}
 
-	public void onDelete(T domain) {
+	default void afterDelete(T domain) {
 	}
 
-	public void onNewRegister(T domain) {
+	default void afterNewRegister(T domain) {
 	}
 
-	public void onUpdate(T domain) {
+	default void afterUpdate(T domain) {
 	}
 }
