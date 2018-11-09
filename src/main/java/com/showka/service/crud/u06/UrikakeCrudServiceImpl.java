@@ -3,6 +3,7 @@ package com.showka.service.crud.u06;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.builder.UrikakeBuilder;
@@ -11,6 +12,8 @@ import com.showka.domain.u05.UriageRireki;
 import com.showka.domain.u06.Urikake;
 import com.showka.entity.TUriagePK;
 import com.showka.entity.TUrikake;
+import com.showka.event.CrudEvent.EventType;
+import com.showka.event.u06.UrikakeCrudEvent;
 import com.showka.repository.i.TUrikakeRepository;
 import com.showka.service.crud.u05.i.UriageCrudService;
 import com.showka.service.crud.u05.i.UriageRirekiCrudService;
@@ -35,6 +38,9 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 	@Autowired
 	private UrikakeSpecificationService urikakeSpecificationService;
 
+	@Autowired
+	private ApplicationEventPublisher applicationEventPublisher;
+
 	@Override
 	public void save(Urikake domain) {
 		String uriageId = domain.getUriageId();
@@ -54,6 +60,11 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 		domain.setRecordId(e.getRecordId());
 		// save 売掛
 		repo.save(e);
+		// trigger event
+		if (!_e.isPresent()) {
+			UrikakeCrudEvent event = new UrikakeCrudEvent(this, EventType.newRegister, domain);
+			applicationEventPublisher.publishEvent(event);
+		}
 	}
 
 	@Override
