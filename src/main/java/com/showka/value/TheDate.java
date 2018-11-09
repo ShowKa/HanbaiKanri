@@ -5,6 +5,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -129,7 +130,30 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return this._withDayOfMonth(date.lengthOfMonth());
 	}
 
-	// other utility
+	// getter
+	public String getDayOfWeek() {
+		Locale locale = Locale.getDefault();
+		DateTimeFormatter formatterOutput = DateTimeFormatter.ofPattern("E").withLocale(locale);
+		return formatterOutput.format(this.date);
+	}
+
+	public int getDayOfMonth() {
+		return date.getDayOfMonth();
+	}
+
+	public Month getMonth() {
+		return date.getMonth();
+	}
+
+	// validate
+	public boolean isFirstDateOfMonth() {
+		return this.date.getDayOfMonth() == 1;
+	}
+
+	public boolean isLastDateOfMonth() {
+		return this.date.getDayOfMonth() == this.getLastDateOfMonth().date.getDayOfMonth();
+	}
+
 	public boolean isWeekDay() {
 		return !this.isWeekend();
 	}
@@ -149,12 +173,6 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 	public String toString(String pattern) {
 		DateTimeFormatter f = DateTimeFormatter.ofPattern(pattern);
 		return date.format(f);
-	}
-
-	public String getDayOfWeek() {
-		Locale locale = Locale.getDefault();
-		DateTimeFormatter formatterOutput = DateTimeFormatter.ofPattern("E").withLocale(locale);
-		return formatterOutput.format(this.date);
 	}
 
 	// override
