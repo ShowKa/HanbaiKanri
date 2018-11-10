@@ -41,6 +41,5 @@ public interface NyukinKakeInfoSearchService {
 	 *            締日
 	 * @return 顧客 list
 	 */
-	// TODO 不要
 	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, ShimeDate shimeDate);
 }

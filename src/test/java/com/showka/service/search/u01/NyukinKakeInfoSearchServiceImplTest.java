@@ -1,5 +1,6 @@
 package com.showka.service.search.u01;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -39,8 +40,9 @@ public class NyukinKakeInfoSearchServiceImplTest extends CrudServiceTestCase {
 		Busho busho = bb.build();
 		// 締日
 		ShimeDate shimeDate = new ShimeDate(20);
+		List<ShimeDate> shimeDates = Arrays.asList(shimeDate);
 		// do
-		List<Kokyaku> actual = service.getKokyakuOnShimeDate(busho, shimeDate);
+		List<Kokyaku> actual = service.getKokyakuOnShimeDate(busho, shimeDates);
 		// check
 		assertEquals(1, actual.size());
 		assertEquals("r-KK01", actual.get(0).getRecordId());

@@ -27,6 +27,13 @@ public class NyukinKakeInfoSearchServiceImpl implements NyukinKakeInfoSearchServ
 	private KokyakuCrudService kokyakuCrudService;
 
 	@Override
+	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates) {
+		return shimeDates.stream().map(shimeDate -> {
+			return this.getKokyakuOnShimeDate(busho, shimeDate);
+		}).flatMap(List::stream).collect(Collectors.toList());
+	}
+
+	@Override
 	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, ShimeDate shimeDate) {
 		// 顧客条件
 		MKokyaku k = new MKokyaku();
@@ -43,11 +50,5 @@ public class NyukinKakeInfoSearchServiceImpl implements NyukinKakeInfoSearchServ
 		return result.stream().map(_n -> {
 			return kokyakuCrudService.getDomain(_n.getKokyaku().getCode());
 		}).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
