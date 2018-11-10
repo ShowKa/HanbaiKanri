@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -34,7 +34,7 @@ public class SUrikakeSeikyuNotYet extends EntityBase implements Serializable {
 
 	// join
 	/** 売掛. */
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "urikake_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TUrikake urikake;
 }

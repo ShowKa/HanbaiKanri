@@ -9,7 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -46,7 +45,4 @@ public class TUrikake extends EntityBase implements Serializable {
 	@JoinColumn(name = "uriage_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TUriage uriage;
 
-	/** 売掛未請求状態 */
-	@OneToOne(fetch = FetchType.EAGER, mappedBy = "urikake", orphanRemoval = true)
-	private SUrikakeSeikyuNotYet notYet;
 }
