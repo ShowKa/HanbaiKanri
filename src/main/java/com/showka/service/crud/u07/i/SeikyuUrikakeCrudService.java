@@ -64,27 +64,4 @@ public interface SeikyuUrikakeCrudService {
 	 *            売掛 list
 	 */
 	public void seikyu(Kokyaku kokyaku, EigyoDate eigyoDate, List<Urikake> urikakeList);
-
-	/**
-	 * 対象レコードが存在した場合のみ、請求・売掛を削除する。
-	 * 
-	 * @param urikakeId
-	 *            売掛ID
-	 */
-	public void deleteIfExists(String urikakeId);
-
-	/**
-	 * 請求・売掛を復活させる。
-	 * 
-	 * <pre>
-	 * 消込完了等で削除対象となったレコードを復活させる。
-	 * 売掛の最新請求を検索し、その請求を対象とする。
-	 * ただし、対象レコードが既存の場合は何もせず処理終了。
-	 * また、請求済みでない場合も何もせず処理終了。
-	 * </pre>
-	 * 
-	 * @param urikakeId
-	 */
-	public void revert(String urikakeId);
-
 }
