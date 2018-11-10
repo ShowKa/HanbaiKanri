@@ -1,21 +1,21 @@
 package com.showka.service.search.u06;
 
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
+import com.showka.domain.builder.BushoBuilder;
+import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
-import com.showka.domain.builder.UrikakeKeshikomiBuilder;
+import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u06.Urikake;
-import com.showka.domain.u06.UrikakeKeshikomi;
+import com.showka.domain.z00.Busho;
 import com.showka.entity.TUrikake;
-import com.showka.repository.i.TUrikakeRepository;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
+import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
+import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
+import com.showka.service.crud.u06.i.UrikakeCrudService;
+import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -29,71 +29,121 @@ public class UrikakeSearchServiceImplTest2 extends SimpleTestCase {
 	private UrikakeSearchServiceImpl service;
 
 	@Injectable
-	private TUrikakeRepository tUrikakeRepository;
+	private SUrikakeSeikyuNotYetRepository sUrikakeSeikyuNotYetRepository;
 
 	@Injectable
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private SUrikakeSeikyuDoneRepository sUrikakeSeikyuDoneRepository;
+
+	@Injectable
+	private UrikakeCrudService urikakeCrudService;
 
 	@Test
-	public void test01_getUrikakeOfKokyaku() throws Exception {
+	public void teset_getUrikakeForSeikyu_01() {
 		// input
-		String kokyakuId = "r-KK01";
+		// 営業日
+		EigyoDate date = new EigyoDate(2018, 8, 20);
+		// 部署
+		BushoBuilder bb = new BushoBuilder();
+		bb.withEigyoDate(date);
+		Busho busho = bb.build();
+		// 顧客
+		KokyakuBuilder kb = new KokyakuBuilder();
+		kb.withShukanBusho(busho);
+		Kokyaku kokyaku = kb.build();
 		// mock
-		// 売掛リスト
-		List<TUrikake> urikakeList = new ArrayList<>();
-		// 売掛1 record
-		TUrikake _urikake1 = new TUrikake();
-		_urikake1.setRecordId("r-KK01-00001");
-		urikakeList.add(_urikake1);
-		// 売掛1 domain
+		// 売掛レコード1
+		TUrikake u1 = new TUrikake();
+		u1.setUriageId("r-001");
+		// 売掛レコード2
+		TUrikake u2 = new TUrikake();
+		u2.setUriageId("r-002");
+		// 売掛1
 		UrikakeBuilder ub1 = new UrikakeBuilder();
 		Urikake urikake1 = ub1.build();
-		// 売掛消込1
-		UrikakeKeshikomiBuilder ukb1 = new UrikakeKeshikomiBuilder();
-		ukb1.withUrikake(urikake1);
-		ukb1.withKeshikomiSet(new HashSet<>());
-		UrikakeKeshikomi urikakeKeshikomi1 = spy(ukb1.build());
 		// 売掛2
-		TUrikake _urikake2 = new TUrikake();
-		_urikake2.setRecordId("r-KK01-00002");
-		urikakeList.add(_urikake2);
-		// 売掛2 domain
 		UrikakeBuilder ub2 = new UrikakeBuilder();
 		Urikake urikake2 = ub2.build();
-		// 売掛消込2
-		UrikakeKeshikomiBuilder ukb2 = new UrikakeKeshikomiBuilder();
-		ukb2.withUrikake(urikake2);
-		ukb2.withKeshikomiSet(new HashSet<>());
-		UrikakeKeshikomi urikakeKeshikomi2 = spy(ukb2.build());
-		// spy
-		doReturn(false).when(urikakeKeshikomi1).done();
-		doReturn(true).when(urikakeKeshikomi2).done();
 		// expect
 		new Expectations() {
 			{
-				service.getUrikakeOfKokyakuRecord(kokyakuId);
-				result = urikakeList;
-				urikakeKeshikomiCrudService.getDomain(_urikake1.getRecordId());
-				result = urikakeKeshikomi1;
-				urikakeKeshikomiCrudService.getDomain(_urikake2.getRecordId());
-				result = urikakeKeshikomi2;
+				service.getSeikyuNotYetEntity(kokyaku);
+				result = u1;
+				service.getSeikyuDoneButDelayedEntity(kokyaku, date);
+				result = u2;
+				urikakeCrudService.getDomain(u1.getUriageId());
+				result = urikake1;
+				urikakeCrudService.getDomain(u2.getUriageId());
+				result = urikake2;
 			}
 		};
 		// do
-		List<Urikake> actual = service.getUrikakeForSeikyu(kokyakuId);
+		List<Urikake> actual = service.getUrikakeForSeikyu(kokyaku);
 		// verify
 		new Verifications() {
 			{
-				service.getUrikakeOfKokyakuRecord(kokyakuId);
+				service.getSeikyuNotYetEntity(kokyaku);
 				times = 1;
-				urikakeKeshikomiCrudService.getDomain(_urikake1.getRecordId());
+				service.getSeikyuDoneButDelayedEntity(kokyaku, date);
 				times = 1;
-				urikakeKeshikomiCrudService.getDomain(_urikake2.getRecordId());
+				urikakeCrudService.getDomain(u1.getUriageId());
+				times = 1;
+				urikakeCrudService.getDomain(u2.getUriageId());
 				times = 1;
 			}
 		};
 		// check
-		assertEquals(1, actual.size());
-		assertEquals(urikake1, actual.get(0));
+		assertEquals(2, actual.size());
 	}
+
+	@Test
+	public void teset_getUrikakeNotSettled_01() {
+		// input
+		// 顧客
+		KokyakuBuilder kb = new KokyakuBuilder();
+		Kokyaku kokyaku = kb.build();
+		// mock
+		// 売掛レコード1
+		TUrikake u1 = new TUrikake();
+		u1.setUriageId("r-001");
+		// 売掛レコード2
+		TUrikake u2 = new TUrikake();
+		u2.setUriageId("r-002");
+		// 売掛1
+		UrikakeBuilder ub1 = new UrikakeBuilder();
+		Urikake urikake1 = ub1.build();
+		// 売掛2
+		UrikakeBuilder ub2 = new UrikakeBuilder();
+		Urikake urikake2 = ub2.build();
+		// expect
+		new Expectations() {
+			{
+				service.getSeikyuNotYetEntity(kokyaku);
+				result = u1;
+				service.getSeikyuDoneEntity(kokyaku);
+				result = u2;
+				urikakeCrudService.getDomain(u1.getUriageId());
+				result = urikake1;
+				urikakeCrudService.getDomain(u2.getUriageId());
+				result = urikake2;
+			}
+		};
+		// do
+		List<Urikake> actual = service.getUrikakeNotSettled(kokyaku);
+		// verify
+		new Verifications() {
+			{
+				service.getSeikyuNotYetEntity(kokyaku);
+				times = 1;
+				service.getSeikyuDoneEntity(kokyaku);
+				times = 1;
+				urikakeCrudService.getDomain(u1.getUriageId());
+				times = 1;
+				urikakeCrudService.getDomain(u2.getUriageId());
+				times = 1;
+			}
+		};
+		// check
+		assertEquals(2, actual.size());
+	}
+
 }
