@@ -27,10 +27,8 @@ public class ShimeDateBusinessServiceImpl implements ShimeDateBusinessService {
 		// set
 		Set<ShimeDate> shimeDates = new HashSet<>();
 		// 営業日かつ31ではない -> 対象
-		if (dateService.isEigyoDate(busho, eigyoDate)) {
-			if (eigyoDate.getDayOfMonth() != _31) {
-				shimeDates.add(new ShimeDate(eigyoDate));
-			}
+		if (eigyoDate.getDayOfMonth() != _31) {
+			shimeDates.add(new ShimeDate(eigyoDate));
 		}
 		// 翌日が非営業日 -> 対象
 		TheDate target1 = eigyoDate.plusDays(1);
@@ -42,10 +40,10 @@ public class ShimeDateBusinessServiceImpl implements ShimeDateBusinessService {
 		}
 		// 2月の考慮 -> 29, 30を強制的に含める。
 		if (eigyoDate.isLastDateOfMonth() && eigyoDate.getDayOfMonth() < _30) {
-			TheDate target2 = eigyoDate.plusDays(1);
-			while (target2.getDayOfMonth() < _31) {
+			int target2 = eigyoDate.getDayOfMonth() + 1;
+			while (target2 < _31) {
 				shimeDates.add(new ShimeDate(target2));
-				target2 = target2.plusDays(1);
+				target2 += 1;
 			}
 		}
 		return shimeDates;

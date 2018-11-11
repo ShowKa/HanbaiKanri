@@ -36,7 +36,7 @@ public class ShimeDate extends ValueBase implements Comparable<ShimeDate> {
 	 * 整合性検証.
 	 */
 	private void validate() {
-		if (this.dateValue < 0 || this.dateValue > 30) {
+		if (this.dateValue.intValue() < 0 || this.dateValue.intValue() > 30) {
 			throw new SystemException("不正の締日が指定されました: " + dateValue);
 		}
 	}
@@ -45,6 +45,11 @@ public class ShimeDate extends ValueBase implements Comparable<ShimeDate> {
 	protected boolean equals(ValueBase other) {
 		ShimeDate o = (ShimeDate) other;
 		return this.dateValue.equals(o.dateValue);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.dateValue.hashCode();
 	}
 
 	@Override

@@ -147,11 +147,11 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 
 	// validate
 	public boolean isFirstDateOfMonth() {
-		return this.date.getDayOfMonth() == 1;
+		return this.getDayOfMonth() == 1;
 	}
 
 	public boolean isLastDateOfMonth() {
-		return this.date.getDayOfMonth() == this.getLastDateOfMonth().date.getDayOfMonth();
+		return this.getDayOfMonth() == this.getLastDateOfMonth().getDayOfMonth();
 	}
 
 	public boolean isWeekDay() {
