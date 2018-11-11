@@ -133,6 +133,14 @@ VALUES
 ('r-KK02-00002', 10800, to_date('2018/10/30', 'yyyy/MM/dd') ,'r-KK02-00002'),
 ;
 
+-- 売掛未請求状態
+INSERT INTO s_urikake_seikyu_not_yet
+(urikake_id, record_id)
+VALUES
+('r-KK02-00001', 'r-KK02-00001'),
+('r-KK02-00002', 'r-KK02-00002'),
+;
+
 -- 入金
 INSERT INTO t_nyukin
 (id, kokyaku_id, busho_id, date, nyukin_hoho_kubun, kingaku, record_id)
