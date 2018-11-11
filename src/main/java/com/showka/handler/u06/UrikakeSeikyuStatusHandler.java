@@ -71,6 +71,8 @@ public class UrikakeSeikyuStatusHandler {
 			UrikakeKeshikomi urikakeKeshikomoi = urikakeKeshikomiCrudService.getDomain(urikakeId);
 			if (urikakeKeshikomoi.done()) {
 				urikakeSeikyuStatusCrudService.toSettled(urikakeId);
+			} else {
+				urikakeSeikyuStatusCrudService.revertToDone(urikakeId);
 			}
 		}
 
