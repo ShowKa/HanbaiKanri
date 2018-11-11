@@ -1,7 +1,5 @@
 package com.showka.domain.u01;
 
-import java.time.LocalDate;
-
 import com.showka.domain.DomainBase;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
@@ -63,15 +61,12 @@ public class NyukinKakeInfo extends DomainBase {
 	 * @return 次の請求締日
 	 */
 	public TheDate getNextSeikyuSimeDate(TheDate date) {
-		LocalDate _d = date.getDate();
-		// FIXME 月末日31→30(or28)調整をしないと、エラー
-		LocalDate shimeDateOfThisMonth = _d.withDayOfMonth(shimeDate);
-		if (shimeDateOfThisMonth.getDayOfMonth() >= shimeDate) {
-			return new TheDate(shimeDateOfThisMonth);
+		TheDate shimeDateOfThisMonth = date.withDayOfMonth(shimeDate);
+		if (shimeDateOfThisMonth.isAfterOrEq(date)) {
+			return shimeDateOfThisMonth;
 		}
 		// 今月締日が過ぎているので来月の締日を返却する。
-		// FIXME 月末日の考慮が必要。
-		return new TheDate(shimeDateOfThisMonth.plusMonths(1));
+		return shimeDateOfThisMonth.plusMonths(1);
 	}
 
 	/**
@@ -83,11 +78,11 @@ public class NyukinKakeInfo extends DomainBase {
 	 * @return 入金予定日
 	 */
 	public TheDate getNyukinYoteiDate(TheDate date) {
+		// 基準日より直近の締日を取得
 		TheDate nextShimeDate = getNextSeikyuSimeDate(date);
-		// FIXME 月末日の考慮が必要。
-		LocalDate nyukinMonth = nextShimeDate.getDate().plusMonths(nyukinTsukiKubun.getMonthSpan());
-		// FIXME 月末日31→30(or28)調整をしないと、エラー
-		return new TheDate(nyukinMonth.withDayOfMonth(nyukinDate));
+		// 入金月区分だけ月数を加算
+		TheDate nyukinMonth = nextShimeDate.plusMonths(nyukinTsukiKubun.getMonthSpan());
+		return nyukinMonth.withDayOfMonth(nyukinDate);
 	}
 
 	/**
