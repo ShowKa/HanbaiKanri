@@ -3,8 +3,11 @@ package com.showka.service.crud.u08;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationEventPublisher;
 
 import com.showka.common.CrudServiceTestCase;
 import com.showka.domain.builder.KeshikomiBuilder;
@@ -17,19 +20,19 @@ import com.showka.entity.TKeshikomi;
 import com.showka.repository.i.CKeshikomiRepository;
 import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u06.i.UrikakeCrudService;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
-import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
+import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
 
+// FIXME Service Refactoring後、テスト再構築
 public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 
-	@Autowired
 	@Tested
+	@Injectable
 	private KeshikomiCrudServiceImpl service;
 
 	@Autowired
@@ -40,20 +43,28 @@ public class KeshikomiCrudServiceImplTest extends CrudServiceTestCase {
 	@Injectable
 	private CKeshikomiRepository cancelRepo;
 
+	@Autowired
 	@Injectable
 	private NyukinCrudService nyukinCrudService;
 
+	@Autowired
 	@Injectable
 	private UrikakeCrudService urikakeCrudService;
 
 	@Injectable
-	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
-
-	@Injectable
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	private static final Object[] T_KESHIKOMI_01 = { "r-001", d("20170101"), 1000, "r-001", "r-KK01-00001", "r-001" };
 	private static final Object[] T_KESHIKOMI_02 = { "r-002", d("20170101"), 2000, "r-001", "r-KK01-00002", "r-002" };
+
+	@Before
+	public void supressPublisher() {
+		new Expectations() {
+			{
+				applicationEventPublisher.publishEvent((ApplicationEvent) any);
+			}
+		};
+	}
 
 	/**
 	 * 新規登録.

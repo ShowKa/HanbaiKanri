@@ -137,15 +137,6 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	/**
 	 * 削除.
 	 * 
-	 * @param keshikomi
-	 */
-	void delete(Keshikomi keshikomi) {
-		this.delete(keshikomi.getRecordId(), keshikomi.getVersion());
-	}
-
-	/**
-	 * 削除.
-	 * 
 	 * @param keshikomiId
 	 *            消込ID
 	 * @param version
