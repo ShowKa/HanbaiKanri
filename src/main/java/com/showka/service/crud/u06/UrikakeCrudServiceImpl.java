@@ -69,6 +69,9 @@ public class UrikakeCrudServiceImpl implements UrikakeCrudService {
 
 	@Override
 	public void delete(Urikake domain) {
+		// trigger
+		UrikakeCrudEvent event = new UrikakeCrudEvent(this, EventType.beforeDelete, domain);
+		applicationEventPublisher.publishEvent(event);
 		String uriageId = domain.getUriageId();
 		Integer version = domain.getVersion();
 		// get entity

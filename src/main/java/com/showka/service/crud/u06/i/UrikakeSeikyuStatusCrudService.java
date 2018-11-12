@@ -47,4 +47,12 @@ public interface UrikakeSeikyuStatusCrudService {
 	 *            売掛ID
 	 */
 	void toSettled(String urikakeId);
+
+	/**
+	 * 削除（売掛削除等に伴う状態の削除).
+	 * 
+	 * @param urikakeId
+	 *            売掛ID
+	 */
+	void delete(String urikakeId);
 }

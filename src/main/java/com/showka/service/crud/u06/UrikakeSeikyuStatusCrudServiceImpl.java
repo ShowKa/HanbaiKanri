@@ -81,6 +81,12 @@ public class UrikakeSeikyuStatusCrudServiceImpl implements UrikakeSeikyuStatusCr
 		this.deleteDoneIfExists(urikakeId);
 	}
 
+	@Override
+	public void delete(String urikakeId) {
+		this.deleteNotYetIfExists(urikakeId);
+		this.deleteDoneIfExists(urikakeId);
+	}
+
 	/**
 	 * 未請求状態テーブルのレコードを削除（存在すれば）
 	 * 

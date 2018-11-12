@@ -33,6 +33,14 @@ public class UrikakeSeikyuStatusHandler {
 		public void afterNewRegister(Urikake urikake) {
 			urikakeSeikyuStatusCrudService.toNotYet(urikake.getUriageId());
 		}
+
+		/**
+		 * 売掛削除時、請求状態をすべて削除する。
+		 */
+		@Override
+		public void beforeDelete(Urikake urikake) {
+			urikakeSeikyuStatusCrudService.delete(urikake.getUriageId());
+		}
 	}
 
 	@Component

@@ -256,6 +256,7 @@ public class UrikakeSeikyuStatusCrudServiceImplTest extends CrudServiceTestCase 
 		service.deleteDoneIfExists(urikakeId);
 	}
 
+	// 完済
 	@Test
 	public void test_ToSettled_01() throws Exception {
 		// input
@@ -269,6 +270,31 @@ public class UrikakeSeikyuStatusCrudServiceImplTest extends CrudServiceTestCase 
 		};
 		// do
 		service.toSettled(urikakeId);
+		// verify
+		new Verifications() {
+			{
+				service.deleteNotYetIfExists(urikakeId);
+				times = 1;
+				service.deleteDoneIfExists(urikakeId);
+				times = 1;
+			}
+		};
+	}
+
+	// 削除
+	@Test
+	public void test_delete_01() throws Exception {
+		// input
+		String urikakeId = "r-001";
+		// expect
+		new Expectations() {
+			{
+				service.deleteNotYetIfExists(urikakeId);
+				service.deleteDoneIfExists(urikakeId);
+			}
+		};
+		// do
+		service.delete(urikakeId);
 		// verify
 		new Verifications() {
 			{
