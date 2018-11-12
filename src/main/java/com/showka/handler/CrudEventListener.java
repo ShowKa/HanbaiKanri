@@ -12,6 +12,18 @@ public interface CrudEventListener<T extends DomainBase> extends ApplicationList
 	default void onApplicationEvent(CrudEvent<T> event) {
 		EventType type = event.getType();
 		switch (type) {
+		case beforeSave:
+			beforeSave(event.getDomain());
+			break;
+		case beforeDelete:
+			beforeDelete(event.getDomain());
+			break;
+		case beforeNewRegister:
+			beforeNewRegister(event.getDomain());
+			break;
+		case beforeUpdate:
+			beforeUpdate(event.getDomain());
+			break;
 		case save:
 			afterSave(event.getDomain());
 			break;
@@ -27,6 +39,18 @@ public interface CrudEventListener<T extends DomainBase> extends ApplicationList
 		default:
 			break;
 		}
+	}
+
+	default void beforeSave(T domain) {
+	}
+
+	default void beforeDelete(T domain) {
+	}
+
+	default void beforeNewRegister(T domain) {
+	}
+
+	default void beforeUpdate(T domain) {
 	}
 
 	default void afterSave(T domain) {

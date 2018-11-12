@@ -10,7 +10,7 @@ import lombok.Getter;
 public abstract class CrudEvent<T extends DomainBase> extends ApplicationEvent {
 
 	public enum EventType {
-		save, delete, newRegister, update
+		save, delete, newRegister, update, beforeSave, beforeDelete, beforeNewRegister, beforeUpdate
 	}
 
 	/** domain */
