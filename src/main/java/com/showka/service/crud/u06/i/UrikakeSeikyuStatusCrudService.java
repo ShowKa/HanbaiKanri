@@ -24,13 +24,13 @@ public interface UrikakeSeikyuStatusCrudService {
 	void toDone(String urikakeId, String seikyuId);
 
 	/**
-	 * 売掛を settled(精算完了) -> 請求済 に戻す。
+	 * 売掛を settled(精算完了) -> 請求済or未請求状態 に戻す。
 	 * 
 	 * <pre>
 	 * 消込完了等で削除対象となったレコードを復活させる。
 	 * 売掛の最新請求を検索し、その請求を対象とする。
 	 * ただし、対象レコードが既存の場合は何もせず処理終了。
-	 * また、請求済みでない場合も何もせず処理終了。
+	 * また、請求済みでない場合は未請求状態とする。
 	 * </pre>
 	 * 
 	 * @param urikakeId
@@ -38,7 +38,7 @@ public interface UrikakeSeikyuStatusCrudService {
 	 * @param seikyuId
 	 *            請求ID
 	 */
-	void revertToDone(String urikakeId);
+	void revert(String urikakeId);
 
 	/**
 	 * 売掛を settled（精算完了） とする。

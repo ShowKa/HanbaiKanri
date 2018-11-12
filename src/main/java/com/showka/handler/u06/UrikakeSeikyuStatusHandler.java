@@ -72,7 +72,7 @@ public class UrikakeSeikyuStatusHandler {
 			if (urikakeKeshikomoi.done()) {
 				urikakeSeikyuStatusCrudService.toSettled(urikakeId);
 			} else {
-				urikakeSeikyuStatusCrudService.revertToDone(urikakeId);
+				urikakeSeikyuStatusCrudService.revert(urikakeId);
 			}
 		}
 
@@ -82,7 +82,7 @@ public class UrikakeSeikyuStatusHandler {
 		@Override
 		public void afterDelete(Keshikomi keshikomi) {
 			String urikakeId = keshikomi.getUrikakeId();
-			urikakeSeikyuStatusCrudService.revertToDone(urikakeId);
+			urikakeSeikyuStatusCrudService.revert(urikakeId);
 		}
 	}
 }

@@ -155,13 +155,13 @@ public class UrikakeSeikyuStatusCrudServiceImplTest extends CrudServiceTestCase 
 
 	// すでに請求済状態の場合、復活処理は途中終了する。
 	@Test
-	public void test_RevertToDone_01() throws Exception {
+	public void test_Revert_01() throws Exception {
 		// database
 		super.deleteAndInsert(S_URIKAKE_SEIKYU_DONE, S_URIKAKE_SEIKYU_DONE_COLUMN, V2);
 		// input
 		String urikakeId = "r-001";
 		// do
-		service.revertToDone(urikakeId);
+		service.revert(urikakeId);
 		// verify
 		new Verifications() {
 			{
@@ -171,9 +171,9 @@ public class UrikakeSeikyuStatusCrudServiceImplTest extends CrudServiceTestCase 
 		};
 	}
 
-	// 請求済状態ではない&請求の履歴が存在しない場合、復活処理は途中終了する。
+	// 請求済状態ではない&請求の履歴が存在しない場合、未請求状態となる。
 	@Test
-	public void test_RevertToDone_02() throws Exception {
+	public void test_Revert_02() throws Exception {
 		// database
 		super.deleteAll(S_URIKAKE_SEIKYU_DONE);
 		// input
@@ -183,24 +183,24 @@ public class UrikakeSeikyuStatusCrudServiceImplTest extends CrudServiceTestCase 
 			{
 				seikyuSearchService.getNewestOf(urikakeId);
 				result = Optional.empty();
+				service.toNotYet(urikakeId);
+				times = 1;
 			}
 		};
 		// do
-		service.revertToDone(urikakeId);
+		service.revert(urikakeId);
 		// verify
 		new Verifications() {
 			{
 				seikyuSearchService.getNewestOf(urikakeId);
 				times = 1;
-				service.toDone(anyString, anyString);
-				times = 0;
 			}
 		};
 	}
 
 	// 請求済状態への復帰処理が実施される。
 	@Test
-	public void test_RevertToDone_03() throws Exception {
+	public void test_Revert_03() throws Exception {
 		// database
 		super.deleteAll(S_URIKAKE_SEIKYU_DONE);
 		// input
@@ -219,7 +219,7 @@ public class UrikakeSeikyuStatusCrudServiceImplTest extends CrudServiceTestCase 
 			}
 		};
 		// do
-		service.revertToDone(urikakeId);
+		service.revert(urikakeId);
 		// verify
 		new Verifications() {
 			{

@@ -55,7 +55,7 @@ public class UrikakeSeikyuStatusCrudServiceImpl implements UrikakeSeikyuStatusCr
 	}
 
 	@Override
-	public void revertToDone(String urikakeId) {
+	public void revert(String urikakeId) {
 		// レコード存在チェック
 		// 既存の場合は何もせず処理終了。
 		boolean exists = seikyuDoneRepo.existsById(urikakeId);
@@ -63,13 +63,14 @@ public class UrikakeSeikyuStatusCrudServiceImpl implements UrikakeSeikyuStatusCr
 			return;
 		}
 		// 最新請求を取得。
-		// 未請求の場合、処理終了。
-		Optional<Seikyu> _newest = seikyuSearchService.getNewestOf(urikakeId);
-		if (!_newest.isPresent()) {
+		// 未請求の場合、未請求状態とする。
+		Optional<Seikyu> _newestSeikyu = seikyuSearchService.getNewestOf(urikakeId);
+		if (!_newestSeikyu.isPresent()) {
+			this.toNotYet(urikakeId);
 			return;
 		}
 		// 最新請求
-		Seikyu seikyu = _newest.get();
+		Seikyu seikyu = _newestSeikyu.get();
 		// save
 		this.toDone(urikakeId, seikyu.getRecordId());
 	}
