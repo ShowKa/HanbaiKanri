@@ -1,7 +1,5 @@
 package com.showka.service.crud.u05.i;
 
-import java.util.List;
-
 import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriagePK;
 import com.showka.service.crud.CrudService;
@@ -42,15 +40,5 @@ public interface UriageCrudService extends CrudService<Uriage, TUriagePK> {
 	 * @return 売上
 	 */
 	public Uriage getDomain(String kokyakuCode, String denpyoNumber);
-
-	/**
-	 * 顧客の売上リストを取得する.
-	 * 
-	 * @param kokyakuCode
-	 *            顧客コード
-	 * @return 売上リスト
-	 */
-	// TODO move to SearchService
-	public List<Uriage> getUriageOfKokyaku(String kokyakuCode);
 
 }

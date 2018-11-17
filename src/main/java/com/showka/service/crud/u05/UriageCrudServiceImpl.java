@@ -5,10 +5,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.builder.UriageBuilder;
@@ -202,18 +200,4 @@ public class UriageCrudServiceImpl implements UriageCrudService {
 		b.withVersion(e.getVersion());
 		return b.build();
 	}
-
-	@Override
-	public List<Uriage> getUriageOfKokyaku(String kokyakuCode) {
-		// 顧客
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(kokyakuCode);
-		TUriage e = new TUriage();
-		TUriagePK pk = new TUriagePK();
-		pk.setKokyakuId(kokyaku.getRecordId());
-		e.setPk(pk);
-		Example<TUriage> example = Example.of(e);
-		List<TUriage> uriage = repo.findAll(example);
-		return uriage.stream().map(u -> this.getDomain(u.getPk())).collect(Collectors.toList());
-	}
-
 }

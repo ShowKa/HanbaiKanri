@@ -74,6 +74,7 @@ public class SeikyuUrikakeSpecificationImplTest extends SimpleTestCase {
 	 * </pre>
 	 */
 	@Test
+	// FIXME テストバグってる
 	public void test02_getSeikyuMeisai() throws Exception {
 		// input
 		// 顧客

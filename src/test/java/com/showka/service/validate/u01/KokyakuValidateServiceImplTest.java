@@ -12,7 +12,7 @@ import com.showka.domain.u05.Uriage;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
-import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.query.u05.i.UriageQuery;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.NotExistException;
 import com.showka.system.exception.ValidateException;
@@ -40,7 +40,7 @@ public class KokyakuValidateServiceImplTest extends SimpleTestCase {
 	private NyukinKakeInfoValidateServiceImpl nyukinKakeInfoValidateService;
 
 	@Injectable
-	private UriageCrudService uriageCrudService;
+	private UriageQuery uriageQuery;
 
 	@Test(expected = NotExistException.class)
 	public void test_validateForRefer1() {
@@ -255,7 +255,7 @@ public class KokyakuValidateServiceImplTest extends SimpleTestCase {
 		uriageList.add(new UriageBuilder().build());
 		new Expectations() {
 			{
-				uriageCrudService.getUriageOfKokyaku("KK01");
+				uriageQuery.getUriageOfKokyaku("KK01");
 				result = uriageList;
 			}
 		};
@@ -269,7 +269,7 @@ public class KokyakuValidateServiceImplTest extends SimpleTestCase {
 		List<Uriage> uriageList = new ArrayList<Uriage>();
 		new Expectations() {
 			{
-				uriageCrudService.getUriageOfKokyaku("KK01");
+				uriageQuery.getUriageOfKokyaku("KK01");
 				result = uriageList;
 			}
 		};
