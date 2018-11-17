@@ -21,8 +21,8 @@ import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.entity.TSeikyuPK;
 import com.showka.kubun.NyukinHohoKubun;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
-import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.value.Kakaku;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -33,10 +33,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U07G002Controller extends ControllerBase {
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuPersistence kokyakuPersistence;
 
 	@Autowired
-	private SeikyuCrudService seikyuCrudService;
+	private SeikyuPersistence seikyuPersistence;
 
 	/**
 	 * 参照.
@@ -60,13 +60,13 @@ public class U07G002Controller extends ControllerBase {
 	 */
 	private void setSeikyu(@ModelAttribute U07G002Form form, ModelAndViewExtended model) {
 		// get 顧客
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
 		// 請求PK
 		TSeikyuPK pk = new TSeikyuPK();
 		pk.setKokyakuId(kokyaku.getRecordId());
 		pk.setSeikyuDate(form.getSeikyuDate());
 		// get 請求
-		Seikyu seikyu = seikyuCrudService.getDomain(pk);
+		Seikyu seikyu = seikyuPersistence.getDomain(pk);
 		// set model
 		model.addObject("kokyakuCode", kokyaku.getCode());
 		model.addObject("kokyakuName", kokyaku.getName());

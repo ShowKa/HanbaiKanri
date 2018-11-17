@@ -19,7 +19,7 @@ import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.NyukinHohoKubun;
-import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
+import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchService;
 import com.showka.table.public_.tables.T_NYUKIN;
@@ -35,7 +35,7 @@ public class NyukinKeshikomiSearchServiceImpl implements NyukinKeshikomiSearchSe
 	private DSLContext create;
 
 	@Autowired
-	private NyukinKeshikomiCrudService nyukinKeshikomiCrudService;
+	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	// alias
 	private static final T_NYUKIN nk = t_nyukin.as("nk");
@@ -48,7 +48,7 @@ public class NyukinKeshikomiSearchServiceImpl implements NyukinKeshikomiSearchSe
 		// 入金消込取得
 		// XXX paralellStream使うと Hibernate でバグる。lazy fetch はマルチスレッドで使えない。
 		List<NyukinKeshikomi> keshikomiList = results.stream().map(n -> {
-			NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(n.getRecordId());
+			NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiPersistence.getDomain(n.getRecordId());
 			return nyukinKeshikomi;
 		}).filter(nyukinKeshikomi -> {
 			if (param.isIncludeKeshikomiDone()) {

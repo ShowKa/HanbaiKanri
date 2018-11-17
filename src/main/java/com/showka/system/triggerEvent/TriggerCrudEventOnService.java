@@ -22,7 +22,7 @@ public class TriggerCrudEventOnService {
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
 
-	@Around("execution(* com.showka.service.crud.CrudService+.save(..)) && @annotation(triggerCrudEvent) && args(domain)")
+	@Around("execution(* com.showka.service.persistence.Persistence+.save(..)) && @annotation(triggerCrudEvent) && args(domain)")
 	public Object triggerSaveEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent, DomainBase domain)
 			throws Throwable {
 		// register or update
@@ -51,7 +51,7 @@ public class TriggerCrudEventOnService {
 		return ret;
 	}
 
-	@Around("execution(* com.showka.service.crud.CrudService+.delete(..)) && @annotation(triggerCrudEvent) && args(domain)")
+	@Around("execution(* com.showka.service.persistence.Persistence+.delete(..)) && @annotation(triggerCrudEvent) && args(domain)")
 	public Object triggerDeleteEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent, DomainBase domain)
 			throws Throwable {
 		// get constructor for event

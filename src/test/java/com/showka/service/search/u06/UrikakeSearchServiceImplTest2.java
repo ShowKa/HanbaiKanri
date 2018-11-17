@@ -14,7 +14,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.TUrikake;
 import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
 import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
-import com.showka.service.crud.u06.i.UrikakeCrudService;
+import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -35,7 +35,7 @@ public class UrikakeSearchServiceImplTest2 extends SimpleTestCase {
 	private SUrikakeSeikyuDoneRepository sUrikakeSeikyuDoneRepository;
 
 	@Injectable
-	private UrikakeCrudService urikakeCrudService;
+	private UrikakePersistence urikakePersistence;
 
 	@Test
 	public void teset_getUrikakeForSeikyu_01() {
@@ -70,9 +70,9 @@ public class UrikakeSearchServiceImplTest2 extends SimpleTestCase {
 				result = u1;
 				service.getSeikyuDoneButDelayedEntity(kokyaku, date);
 				result = u2;
-				urikakeCrudService.getDomain(u1.getUriageId());
+				urikakePersistence.getDomain(u1.getUriageId());
 				result = urikake1;
-				urikakeCrudService.getDomain(u2.getUriageId());
+				urikakePersistence.getDomain(u2.getUriageId());
 				result = urikake2;
 			}
 		};
@@ -85,9 +85,9 @@ public class UrikakeSearchServiceImplTest2 extends SimpleTestCase {
 				times = 1;
 				service.getSeikyuDoneButDelayedEntity(kokyaku, date);
 				times = 1;
-				urikakeCrudService.getDomain(u1.getUriageId());
+				urikakePersistence.getDomain(u1.getUriageId());
 				times = 1;
-				urikakeCrudService.getDomain(u2.getUriageId());
+				urikakePersistence.getDomain(u2.getUriageId());
 				times = 1;
 			}
 		};
@@ -121,9 +121,9 @@ public class UrikakeSearchServiceImplTest2 extends SimpleTestCase {
 				result = u1;
 				service.getSeikyuDoneEntity(kokyaku);
 				result = u2;
-				urikakeCrudService.getDomain(u1.getUriageId());
+				urikakePersistence.getDomain(u1.getUriageId());
 				result = urikake1;
-				urikakeCrudService.getDomain(u2.getUriageId());
+				urikakePersistence.getDomain(u2.getUriageId());
 				result = urikake2;
 			}
 		};
@@ -136,9 +136,9 @@ public class UrikakeSearchServiceImplTest2 extends SimpleTestCase {
 				times = 1;
 				service.getSeikyuDoneEntity(kokyaku);
 				times = 1;
-				urikakeCrudService.getDomain(u1.getUriageId());
+				urikakePersistence.getDomain(u1.getUriageId());
 				times = 1;
-				urikakeCrudService.getDomain(u2.getUriageId());
+				urikakePersistence.getDomain(u2.getUriageId());
 				times = 1;
 			}
 		};

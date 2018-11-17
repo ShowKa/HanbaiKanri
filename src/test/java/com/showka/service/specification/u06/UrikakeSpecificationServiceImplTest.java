@@ -8,7 +8,7 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.kubun.HanbaiKubun;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
 
@@ -23,7 +23,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 	private UrikakeSpecificationServiceImpl service;
 
 	@Injectable
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	/**
 	 * 売掛ビルド.

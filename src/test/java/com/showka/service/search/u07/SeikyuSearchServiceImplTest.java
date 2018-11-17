@@ -19,7 +19,7 @@ import com.showka.entity.TSeikyuMeisaiPK;
 import com.showka.entity.TSeikyuPK;
 import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.repository.i.TSeikyuRepository;
-import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.table.public_.tables.records.T_SEIKYU_RECORD;
 import com.showka.value.EigyoDate;
 
@@ -49,7 +49,7 @@ public class SeikyuSearchServiceImplTest extends SimpleTestCase {
 	private TSeikyuMeisaiRepository meisaiRepo;
 
 	@Injectable
-	private SeikyuCrudService seikyuCrudService;
+	private SeikyuPersistence seikyuPersistence;
 
 	@Injectable
 	private DSLContext create;
@@ -83,7 +83,7 @@ public class SeikyuSearchServiceImplTest extends SimpleTestCase {
 			{
 				service.getAllEntitiesOf(kokyaku);
 				result = seikyuList;
-				seikyuCrudService.getDomain(pk);
+				seikyuPersistence.getDomain(pk);
 				result = seikyuDomain;
 			}
 		};
@@ -92,7 +92,7 @@ public class SeikyuSearchServiceImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				seikyuCrudService.getDomain(pk);
+				seikyuPersistence.getDomain(pk);
 				times = 1;
 			}
 		};
@@ -114,7 +114,7 @@ public class SeikyuSearchServiceImplTest extends SimpleTestCase {
 				result = records;
 				seikyuRecord.getRecordId();
 				result = "r-001";
-				seikyuCrudService.getDomain("r-001");
+				seikyuPersistence.getDomain("r-001");
 				result = seikyu;
 			}
 		};
@@ -149,7 +149,7 @@ public class SeikyuSearchServiceImplTest extends SimpleTestCase {
 			{
 				service.getHistoryEntitiesOf(urikakeId);
 				result = entities;
-				seikyuCrudService.getDomain(seikyuId);
+				seikyuPersistence.getDomain(seikyuId);
 				result = seikyuList;
 			}
 		};
@@ -160,7 +160,7 @@ public class SeikyuSearchServiceImplTest extends SimpleTestCase {
 			{
 				service.getHistoryEntitiesOf(urikakeId);
 				times = 1;
-				seikyuCrudService.getDomain(seikyuId);
+				seikyuPersistence.getDomain(seikyuId);
 				times = 1;
 			}
 		};

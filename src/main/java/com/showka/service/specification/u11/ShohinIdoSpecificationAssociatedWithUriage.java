@@ -21,8 +21,8 @@ import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
-import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
-import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
+import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
+import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.system.exception.MinusZaikoException.MinusZaiko;
@@ -42,10 +42,10 @@ import lombok.NoArgsConstructor;
 public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpecification {
 
 	@Autowired
-	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
+	private ShohinIdoUriagePersistence shohinIdoUriagePersistence;
 
 	@Autowired
-	private ShohinZaikoCrudService shohinZaikoCrudService;
+	private ShohinZaikoPersistence shohinZaikoPersistence;
 
 	/**
 	 * 商品移動.
@@ -73,7 +73,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		// 売上による商品移動
 		this.shohinIdo.add(buildShohinIdoFromUriageDomain(uriage));
 		// 売上訂正による商品移動
-		Optional<ShohinIdo> pastIdo = shohinIdoUriageCrudService.getNewestShohinIdo(uriage.getRecordId());
+		Optional<ShohinIdo> pastIdo = shohinIdoUriagePersistence.getNewestShohinIdo(uriage.getRecordId());
 		if (pastIdo.isPresent()) {
 			// get past
 			ShohinIdo p = pastIdo.get();
@@ -139,7 +139,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdo, false);
 		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdoForDelete, true);
 		shohinIdoNumberMap.forEach((s, n) -> {
-			ShohinZaiko zaiko = shohinZaikoCrudService.getShohinZaiko(this.busho, this.busho.getEigyoDate(), s);
+			ShohinZaiko zaiko = shohinZaikoPersistence.getShohinZaiko(this.busho, this.busho.getEigyoDate(), s);
 			Integer present = zaiko.getNumber();
 			Integer after = present + n;
 			if (after < 0) {

@@ -18,7 +18,7 @@ import org.thymeleaf.util.StringUtils;
 
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
+import com.showka.service.persistence.u01.i.KokyakuPersistence;
 import com.showka.service.search.u05.UriageSearchCriteria;
 import com.showka.service.search.u05.i.UriageSearchService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
@@ -35,7 +35,7 @@ public class U05G001Controller extends ControllerBase {
 	private UriageSearchService uriageSearchService;
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuPersistence kokyakuPersistence;
 
 	@Autowired
 	private KokyakuValidateService kokyakuValidateService;
@@ -73,7 +73,7 @@ public class U05G001Controller extends ControllerBase {
 			criteria.setKokyaku(Optional.empty());
 		} else {
 			kokyakuValidateService.validateForRefer(form.getKokyakuCode());
-			Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+			Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
 			criteria.setKokyaku(Optional.of(kokyaku));
 		}
 		// set 売上日from

@@ -6,10 +6,10 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.CrudServiceTestCase;
+import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u05.Uriage;
 
-public class UriageQueryImplTest extends CrudServiceTestCase {
+public class UriageQueryImplTest extends PersistenceTestCase {
 
 	@Autowired
 	private UriageQueryImpl service;

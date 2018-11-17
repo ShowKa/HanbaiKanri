@@ -12,8 +12,8 @@ import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.TUriageRepository;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
-import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.persistence.u05.i.UriagePersistence;
 
 // TODO 売上PersistenceでgetDomain(Example exampleつくる？）
 @Service
@@ -23,10 +23,10 @@ public class UriageQueryImpl implements UriageQuery {
 	private TUriageRepository repo;
 
 	@Autowired
-	private KokyakuCrudService kokyakuPersistence;
+	private KokyakuPersistence kokyakuPersistence;
 
 	@Autowired
-	private UriageCrudService uriagePersistence;
+	private UriagePersistence uriagePersistence;
 
 	@Override
 	public List<Uriage> getUriageOfKokyaku(String kokyakuCode) {

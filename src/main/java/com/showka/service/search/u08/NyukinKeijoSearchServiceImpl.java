@@ -19,7 +19,7 @@ import com.showka.domain.u08.Nyukin;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.TNyukinKeijo;
 import com.showka.repository.i.TNyukinKeijoRepository;
-import com.showka.service.crud.u08.i.NyukinCrudService;
+import com.showka.service.persistence.u08.i.NyukinPersistence;
 import com.showka.service.search.u08.i.NyukinKeijoSearchService;
 import com.showka.table.public_.tables.T_NYUKIN;
 import com.showka.table.public_.tables.T_NYUKIN_KEIJO;
@@ -36,7 +36,7 @@ public class NyukinKeijoSearchServiceImpl implements NyukinKeijoSearchService {
 	private TNyukinKeijoRepository repo;
 
 	@Autowired
-	private NyukinCrudService nyukinCrudService;
+	private NyukinPersistence nyukinPersistence;
 
 	// alias
 	private static final T_NYUKIN nk = t_nyukin.as("nk");
@@ -46,7 +46,7 @@ public class NyukinKeijoSearchServiceImpl implements NyukinKeijoSearchService {
 	public List<Nyukin> searchNotDone(Busho busho, EigyoDate kijunDate) {
 		Result<T_NYUKIN_RECORD> results = this._searchNotDone(busho, kijunDate);
 		return results.stream().map(r -> {
-			return nyukinCrudService.getDomain(r.getRecordId());
+			return nyukinPersistence.getDomain(r.getRecordId());
 		}).collect(Collectors.toList());
 	}
 
@@ -75,7 +75,7 @@ public class NyukinKeijoSearchServiceImpl implements NyukinKeijoSearchService {
 		Example<TNyukinKeijo> example = Example.of(nk);
 		List<TNyukinKeijo> results = repo.findAll(example);
 		return results.stream().map(r -> {
-			return nyukinCrudService.getDomain(r.getNyukinId());
+			return nyukinPersistence.getDomain(r.getNyukinId());
 		}).collect(Collectors.toList());
 	}
 }

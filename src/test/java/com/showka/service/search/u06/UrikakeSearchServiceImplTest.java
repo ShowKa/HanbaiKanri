@@ -6,13 +6,13 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.CrudServiceTestCase;
+import com.showka.common.PersistenceTestCase;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.entity.TUrikake;
 import com.showka.value.EigyoDate;
 
-public class UrikakeSearchServiceImplTest extends CrudServiceTestCase {
+public class UrikakeSearchServiceImplTest extends PersistenceTestCase {
 
 	@Autowired
 	private UrikakeSearchServiceImpl service;

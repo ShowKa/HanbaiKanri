@@ -6,13 +6,13 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.CrudServiceTestCase;
+import com.showka.common.PersistenceTestCase;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.z00.Busho;
 import com.showka.value.ShimeDate;
 
-public class NyukinKakeInfoSearchServiceImplTest extends CrudServiceTestCase {
+public class NyukinKakeInfoSearchServiceImplTest extends PersistenceTestCase {
 
 	@Autowired
 	private NyukinKakeInfoSearchServiceImpl service;

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.builder.MatchedFBFurikomiBuilder;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u08.MatchedFBFurikomi;
-import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.search.u08.i.MatchedFBFurikomiSearchService;
 import com.showka.table.public_.tables.T_FIRM_BANK_FURIKOMI;
 import com.showka.table.public_.tables.W_FIRM_BANK_FURIKOMI_MATCHING;
@@ -31,7 +31,7 @@ public class MatchedFBFurikomiSearchServiceImpl implements MatchedFBFurikomiSear
 	private DSLContext create;
 
 	@Autowired
-	private SeikyuCrudService seikyuCrudService;
+	private SeikyuPersistence seikyuPersistence;
 
 	// alias
 	/** T_FIRM_BANK_FURIKOMI */
@@ -56,7 +56,7 @@ public class MatchedFBFurikomiSearchServiceImpl implements MatchedFBFurikomiSear
 			b.withKingaku(kingaku);
 			// 請求
 			String seikyuId = r.get(fw.seikyu_id);
-			Seikyu seikyu = seikyuCrudService.getDomain(seikyuId);
+			Seikyu seikyu = seikyuPersistence.getDomain(seikyuId);
 			b.withSeikyu(seikyu);
 			// 伝送日付
 			b.withTransmissionDate(transmissionDate);

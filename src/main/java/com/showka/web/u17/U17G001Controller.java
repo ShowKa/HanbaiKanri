@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.u17.BushoNyukin;
 import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
-import com.showka.service.crud.u05.i.UriageKeijoCrudService;
-import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
-import com.showka.service.crud.u08.i.NyukinKeijoCrudService;
-import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
-import com.showka.service.crud.u17.i.BushoDateCrudService;
-import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.service.persistence.u05.i.UriageKeijoPersistence;
+import com.showka.service.persistence.u07.i.SeikyuUrikakePersistence;
+import com.showka.service.persistence.u08.i.NyukinKeijoPersistence;
+import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
+import com.showka.service.persistence.u17.i.BushoDatePersistence;
+import com.showka.service.persistence.z00.i.BushoPersistence;
 import com.showka.service.validate.u17.i.BushoDateValidateService;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
@@ -35,25 +35,25 @@ import com.showka.web.ModelAndViewExtended;
 public class U17G001Controller extends ControllerBase {
 
 	@Autowired
-	private BushoCrudService bushoCrudService;
+	private BushoPersistence bushoPersistence;
 
 	@Autowired
 	private BushoDateValidateService bushoDateValidateService;
 
 	@Autowired
-	private BushoDateCrudService bushoDateCrudService;
+	private BushoDatePersistence bushoDatePersistence;
 
 	@Autowired
-	private ShohinZaikoCrudService shohinZaikoCrudService;
+	private ShohinZaikoPersistence shohinZaikoPersistence;
 
 	@Autowired
-	private UriageKeijoCrudService uriageKeijoCrudService;
+	private UriageKeijoPersistence uriageKeijoPersistence;
 
 	@Autowired
-	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
+	private SeikyuUrikakePersistence seikyuUrikakePersistence;
 
 	@Autowired
-	private NyukinKeijoCrudService nyukinKeijoCrudService;
+	private NyukinKeijoPersistence nyukinKeijoPersistence;
 
 	/**
 	 * 参照.
@@ -76,7 +76,7 @@ public class U17G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u17g001/getBushoList", method = RequestMethod.POST)
 	public ResponseEntity<?> getBushoList(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// get 部署リスト
-		List<Busho> _bushoList = bushoCrudService.getDomains();
+		List<Busho> _bushoList = bushoPersistence.getDomains();
 		// to map
 		List<Map<String, Object>> bushoList = _bushoList.stream().map(b -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -87,11 +87,11 @@ public class U17G001Controller extends ControllerBase {
 			ret.put("dayOfWeek", eigyoDate.getDayOfWeek());
 			// FIXME 前日の売上計上を取得
 			EigyoDate keijoDate = new EigyoDate(eigyoDate.plusDays(-1));
-			BushoUriage bushoKeijo = uriageKeijoCrudService.getBushoUriage(b, keijoDate);
+			BushoUriage bushoKeijo = uriageKeijoPersistence.getBushoUriage(b, keijoDate);
 			ret.put("uriageKeijo", bushoKeijo.getKeijoKingaku());
 			ret.put("uriageKeijoTeisei", bushoKeijo.getTeiseiKingaku());
 			// 入金の計上を取得
-			BushoNyukin nyukinKeijo = nyukinKeijoCrudService.getBushoNyukin(b, keijoDate);
+			BushoNyukin nyukinKeijo = nyukinKeijoPersistence.getBushoNyukin(b, keijoDate);
 			ret.put("keshikomiFurikomi", nyukinKeijo.getKeshikomiKingaku_Furikomi().intValue());
 			ret.put("mishoriFurikomi", nyukinKeijo.getMishoriKingaku_Furikomi().intValue());
 			ret.put("keshikomiGenkin", nyukinKeijo.getKeshikomiKingaku_Genkin().intValue());
@@ -115,20 +115,20 @@ public class U17G001Controller extends ControllerBase {
 	public ResponseEntity<?> close(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// input
 		String bushoCode = form.getBushoCode();
-		Busho busho = bushoCrudService.getDomain(bushoCode);
+		Busho busho = bushoPersistence.getDomain(bushoCode);
 		EigyoDate eigyoDate = new EigyoDate(form.getEigyoDate());
 		// validate
 		bushoDateValidateService.validateForClosing(busho, eigyoDate);
 		// 売上計上
-		uriageKeijoCrudService.keijo(busho, eigyoDate);
+		uriageKeijoPersistence.keijo(busho, eigyoDate);
 		// 入金計上
-		nyukinKeijoCrudService.keijo(busho, eigyoDate);
+		nyukinKeijoPersistence.keijo(busho, eigyoDate);
 		// 在庫繰越
-		shohinZaikoCrudService.kurikoshi(busho, eigyoDate);
+		shohinZaikoPersistence.kurikoshi(busho, eigyoDate);
 		// 請求
-		seikyuUrikakeCrudService.seikyu(busho, eigyoDate);
+		seikyuUrikakePersistence.seikyu(busho, eigyoDate);
 		// close
-		bushoDateCrudService.toNextEigyoDate(busho);
+		bushoDatePersistence.toNextEigyoDate(busho);
 		// set model
 		form.setSuccessMessage("締め完了（部署コード : " + bushoCode + ", 営業日 : " + eigyoDate + "）");
 		model.addForm(form);

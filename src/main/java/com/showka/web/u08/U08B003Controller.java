@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.u08.FBFurikomiMatchingResult;
 import com.showka.domain.z00.Busho;
 import com.showka.kubun.FurikomiMatchintErrorCause;
-import com.showka.service.crud.u08.i.FirmBankFurikomiMatchingCrudService;
-import com.showka.service.crud.u08.i.FirmBankFurikomiMatchingErrorCrudService;
-import com.showka.service.crud.z00.i.BushoCrudService;
+import com.showka.service.persistence.u08.i.FirmBankFurikomiMatchingErrorPersistence;
+import com.showka.service.persistence.u08.i.FirmBankFurikomiMatchingPersistence;
+import com.showka.service.persistence.z00.i.BushoPersistence;
 import com.showka.service.search.u08.i.FirmBankFurikomiSearchService;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
@@ -29,16 +29,16 @@ import com.showka.web.ModelAndViewExtended;
 public class U08B003Controller extends ControllerBase {
 
 	@Autowired
-	private FirmBankFurikomiMatchingCrudService crudService;
+	private FirmBankFurikomiMatchingPersistence Persistence;
 
 	@Autowired
 	private FirmBankFurikomiSearchService searchService;
 
 	@Autowired
-	private FirmBankFurikomiMatchingErrorCrudService errorService;
+	private FirmBankFurikomiMatchingErrorPersistence errorService;
 
 	@Autowired
-	private BushoCrudService bushoCrudService;
+	private BushoPersistence bushoPersistence;
 
 	// transaction制御のため自クラスをinject
 	@Autowired
@@ -62,9 +62,9 @@ public class U08B003Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> matchAll(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// delete
-		crudService.deleteAll();
+		Persistence.deleteAll();
 		// 部署リスト
-		List<Busho> bushoList = bushoCrudService.getDomains();
+		List<Busho> bushoList = bushoPersistence.getDomains();
 		// 伝送日付
 		Date date = form.getDate();
 		// 部署毎にマッチング処理
@@ -109,14 +109,14 @@ public class U08B003Controller extends ControllerBase {
 	@Transactional(TxType.REQUIRES_NEW)
 	public ResponseEntity<?> match(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// 部署
-		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
+		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
 		// matching error
 		TheDate date = new TheDate(form.getDate());
 		// マッチングデータ抽出
 		FBFurikomiMatchingResult result = searchService.searchMatched(busho, date);
 		// マッチング成功
 		result.getMatchedNormally().parallelStream().forEach(m -> {
-			crudService.save(m.getFbFurikomiId(), m.getFuriwakeId());
+			Persistence.save(m.getFbFurikomiId(), m.getFuriwakeId());
 		});
 		// マッチングエラー
 		result.getMultipleMathed().stream().forEach(fbFurikomiId -> {

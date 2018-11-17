@@ -18,7 +18,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.entity.TUrikake;
 import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
 import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
-import com.showka.service.crud.u06.i.UrikakeCrudService;
+import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.search.u06.i.UrikakeSearchService;
 import com.showka.value.EigyoDate;
 
@@ -32,7 +32,7 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 	private SUrikakeSeikyuDoneRepository sUrikakeSeikyuDoneRepository;
 
 	@Autowired
-	private UrikakeCrudService urikakeCrudService;
+	private UrikakePersistence urikakePersistence;
 
 	@Override
 	public List<Urikake> getUrikakeForSeikyu(Kokyaku kokyaku) {
@@ -47,7 +47,7 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 		result.addAll(result2);
 		// build domain
 		return result.stream().map(r -> {
-			return urikakeCrudService.getDomain(r.getUriageId());
+			return urikakePersistence.getDomain(r.getUriageId());
 		}).collect(Collectors.toList());
 	}
 
@@ -62,7 +62,7 @@ public class UrikakeSearchServiceImpl implements UrikakeSearchService {
 		result.addAll(result2);
 		// build domain
 		return result.stream().map(r -> {
-			return urikakeCrudService.getDomain(r.getUriageId());
+			return urikakePersistence.getDomain(r.getUriageId());
 		}).collect(Collectors.toList());
 	}
 

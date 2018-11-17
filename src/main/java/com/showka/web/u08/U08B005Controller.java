@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.u08.MatchedFBFurikomi;
-import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
+import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.search.u08.i.MatchedFBFurikomiSearchService;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
@@ -26,7 +26,7 @@ public class U08B005Controller extends ControllerBase {
 	private MatchedFBFurikomiSearchService searchService;
 
 	@Autowired
-	private NyukinKeshikomiCrudService keshikomiCrudService;
+	private NyukinKeshikomiPersistence keshikomiPersistence;
 
 	/**
 	 * FB振込による入金で売掛の消込を行う。
@@ -44,7 +44,7 @@ public class U08B005Controller extends ControllerBase {
 		TheDate transmissionDate = new TheDate(form.getDate());
 		List<MatchedFBFurikomi> matchedFbFurikomiList = searchService.search(transmissionDate);
 		// 消込テーブル登録
-		matchedFbFurikomiList.forEach(keshikomiCrudService::save);
+		matchedFbFurikomiList.forEach(keshikomiPersistence::save);
 		// return
 		form.setSuccessMessage("マッチング済FB振込消込登録処理成功");
 		model.addForm(form);

@@ -13,7 +13,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
+import com.showka.service.persistence.u01.i.KokyakuPersistence;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
 import com.showka.value.ShimeDate;
 
@@ -24,7 +24,7 @@ public class NyukinKakeInfoSearchServiceImpl implements NyukinKakeInfoSearchServ
 	private MNyukinKakeInfoRepository mNyukinKakeInfoRepository;
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuPersistence kokyakuPersistence;
 
 	@Override
 	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates) {
@@ -48,7 +48,7 @@ public class NyukinKakeInfoSearchServiceImpl implements NyukinKakeInfoSearchServ
 		List<MNyukinKakeInfo> result = mNyukinKakeInfoRepository.findAll(example);
 		// get domain list
 		return result.stream().map(_n -> {
-			return kokyakuCrudService.getDomain(_n.getKokyaku().getCode());
+			return kokyakuPersistence.getDomain(_n.getKokyaku().getCode());
 		}).collect(Collectors.toList());
 	}
 }

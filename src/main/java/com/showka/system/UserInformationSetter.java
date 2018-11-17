@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.showka.domain.z00.Shain;
-import com.showka.service.crud.z00.i.ShainCrudService;
+import com.showka.service.persistence.z00.i.ShainPersistence;
 import com.showka.web.ModelAndViewExtended;
 
 /**
@@ -23,7 +23,7 @@ import com.showka.web.ModelAndViewExtended;
 public class UserInformationSetter {
 
 	@Autowired
-	private ShainCrudService shainCrudService;
+	private ShainPersistence shainPersistence;
 
 	/**
 	 * ユーザー情報の設定.
@@ -38,7 +38,7 @@ public class UserInformationSetter {
 			if (arg instanceof ModelAndViewExtended) {
 				ModelAndViewExtended model = (ModelAndViewExtended) arg;
 				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-				Shain shain = shainCrudService.getDomain(auth.getName());
+				Shain shain = shainPersistence.getDomain(auth.getName());
 				model.setUserInfo(shain);
 			}
 		}

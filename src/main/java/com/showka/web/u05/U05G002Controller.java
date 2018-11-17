@@ -28,13 +28,13 @@ import com.showka.domain.u06.Urikake;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
-import com.showka.service.crud.u05.i.UriageCrudService;
-import com.showka.service.crud.u05.i.UriageMeisaiCrudService;
-import com.showka.service.crud.u05.i.UriageRirekiCrudService;
-import com.showka.service.crud.u06.i.UrikakeCrudService;
-import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
-import com.showka.service.crud.z00.i.ShohinCrudService;
+import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.persistence.u05.i.UriageMeisaiPersistence;
+import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
+import com.showka.service.persistence.u06.i.UrikakePersistence;
+import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
+import com.showka.service.persistence.z00.i.ShohinPersistence;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.specification.u06.i.UrikakeSpecificationService;
 import com.showka.service.validate.u01.i.KokyakuValidateService;
@@ -51,13 +51,13 @@ import com.showka.web.ModelAndViewExtended;
 public class U05G002Controller extends ControllerBase {
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuPersistence kokyakuPersistence;
 
 	@Autowired
 	private KokyakuValidateService kokyakuValidateService;
 
 	@Autowired
-	private UriageCrudService uriageCrudService;
+	private UriagePersistence uriagePersistence;
 
 	@Autowired
 	private UriageValidateService uriageValidateService;
@@ -66,22 +66,22 @@ public class U05G002Controller extends ControllerBase {
 	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
 
 	@Autowired
-	private ShohinCrudService shohinCrudService;
+	private ShohinPersistence shohinPersistence;
 
 	@Autowired
-	private UriageMeisaiCrudService uriageMeisaiCrudService;
+	private UriageMeisaiPersistence uriageMeisaiPersistence;
 
 	@Autowired
-	private UriageRirekiCrudService uriageRirekiCrudService;
+	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Autowired
-	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
+	private ShohinIdoUriagePersistence shohinIdoUriagePersistence;
 
 	@Autowired
 	private UrikakeSpecificationService urikakeSpecificationService;
 
 	@Autowired
-	private UrikakeCrudService urikakeCrudService;
+	private UrikakePersistence urikakePersistence;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -138,13 +138,13 @@ public class U05G002Controller extends ControllerBase {
 	public ModelAndViewExtended refer(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// 顧客取得
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
 
 		// 売上取得
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		pk.setKokyakuId(kokyaku.getRecordId());
-		Uriage u = uriageCrudService.getDomain(pk);
+		Uriage u = uriagePersistence.getDomain(pk);
 
 		// 売上ID
 		String uriageId = u.getRecordId();
@@ -170,9 +170,9 @@ public class U05G002Controller extends ControllerBase {
 		form.setMeisai(meisaiList);
 
 		// set 売掛
-		boolean exists = urikakeCrudService.exsists(uriageId);
+		boolean exists = urikakePersistence.exsists(uriageId);
 		if (exists) {
-			Urikake urikake = urikakeCrudService.getDomain(uriageId);
+			Urikake urikake = urikakePersistence.getDomain(uriageId);
 			form.setUrikakeVersion(urikake.getVersion());
 		}
 
@@ -208,16 +208,16 @@ public class U05G002Controller extends ControllerBase {
 		uriageValidateService.validate(uriage);
 
 		// save
-		uriageCrudService.save(uriage);
+		uriagePersistence.save(uriage);
 
 		// 掛売
 		Optional<Urikake> urikake = urikakeSpecificationService.buildUrikakeBy(uriage);
 		urikake.ifPresent(u -> {
-			urikakeCrudService.save(u);
+			urikakePersistence.save(u);
 		});
 
 		// 商品移動
-		shohinIdoUriageCrudService.save(uriage);
+		shohinIdoUriagePersistence.save(uriage);
 
 		// jump refer
 		form.setSuccessMessage("登録成功");
@@ -234,7 +234,7 @@ public class U05G002Controller extends ControllerBase {
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// 新しい売上明細に明細番号付番
-		Integer maxMeisaiNumber = uriageMeisaiCrudService.getMaxMeisaiNumber(form.getRecordId());
+		Integer maxMeisaiNumber = uriageMeisaiPersistence.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
 		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
 				m -> m.setMeisaiNumber(i.getAndIncrement()));
@@ -247,18 +247,18 @@ public class U05G002Controller extends ControllerBase {
 		uriageValidateService.validate(uriage);
 
 		// save
-		uriageCrudService.save(uriage);
+		uriagePersistence.save(uriage);
 
 		// 掛売
 		Optional<Urikake> urikake = urikakeSpecificationService.buildUrikakeBy(uriage);
 		urikake.ifPresent(u -> {
 			// OCC
 			u.setVersion(form.getUrikakeVersion());
-			urikakeCrudService.save(u);
+			urikakePersistence.save(u);
 		});
 
 		// 商品移動
-		shohinIdoUriageCrudService.save(uriage);
+		shohinIdoUriagePersistence.save(uriage);
 
 		// message
 		form.setSuccessMessage("更新成功");
@@ -280,30 +280,30 @@ public class U05G002Controller extends ControllerBase {
 		// 売上PK
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
 		pk.setKokyakuId(kokyaku.getRecordId());
 
 		// 売上
-		Uriage uriage = uriageCrudService.getDomain(pk);
+		Uriage uriage = uriagePersistence.getDomain(pk);
 		uriage.setVersion(form.getVersion());
 
 		// validate
 		uriageValidateService.validateForDelete(pk);
 
 		// delete 商品移動
-		shohinIdoUriageCrudService.delete(pk);
+		shohinIdoUriagePersistence.delete(pk);
 
 		// 売上履歴=1件 -> 一度も計上されていないで売上・売掛を削除。
 		// 売上履歴>1件 -> 前回計上状態に差し戻す。
-		UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(form.getRecordId());
+		UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(form.getRecordId());
 		if (rireki.getList().size() == 1) {
 			// delete
-			urikakeCrudService.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
-			uriageCrudService.delete(uriage);
+			urikakePersistence.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
+			uriagePersistence.delete(uriage);
 		} else {
 			// revert
-			urikakeCrudService.revert(form.getRecordId(), form.getUrikakeVersion());
-			uriageCrudService.revert(pk, form.getVersion());
+			urikakePersistence.revert(form.getRecordId(), form.getUrikakeVersion());
+			uriagePersistence.revert(pk, form.getVersion());
 		}
 
 		// message
@@ -339,7 +339,7 @@ public class U05G002Controller extends ControllerBase {
 			mb.withHanbaiTanka(BigDecimal.valueOf(mf.getHanbaiTanka()));
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
 			mb.withRecordId(mf.getRecordId());
-			mb.withShohinDomain(shohinCrudService.getDomain(mf.getShohinCode()));
+			mb.withShohinDomain(shohinPersistence.getDomain(mf.getShohinCode()));
 			mb.withVersion(mf.getVersion());
 			UriageMeisai md = mb.build();
 
@@ -348,7 +348,7 @@ public class U05G002Controller extends ControllerBase {
 		}
 
 		// 顧客
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
 
 		// 営業日取得
 		EigyoDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
@@ -394,7 +394,7 @@ public class U05G002Controller extends ControllerBase {
 		meisaiList.forEach(m -> {
 			String shohinCode = m.getShohinCode();
 			try {
-				shohinCrudService.getDomain(shohinCode);
+				shohinPersistence.getDomain(shohinCode);
 			} catch (Exception e) {
 				throw new NotExistException("商品", shohinCode);
 			}
@@ -411,15 +411,15 @@ public class U05G002Controller extends ControllerBase {
 	public ResponseEntity<?> cancel(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// domain
 		TUriagePK pk = new TUriagePK();
-		pk.setKokyakuId(kokyakuCrudService.getDomain(form.getKokyakuCode()).getRecordId());
+		pk.setKokyakuId(kokyakuPersistence.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		// delete 商品移動
-		shohinIdoUriageCrudService.delete(pk);
+		shohinIdoUriagePersistence.delete(pk);
 		// delete 売掛
-		urikakeCrudService.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
+		urikakePersistence.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
 		// cancel
 		uriageValidateService.validateForCancel(pk);
-		uriageCrudService.cancel(pk, form.getVersion());
+		uriagePersistence.cancel(pk, form.getVersion());
 		// message
 		form.setSuccessMessage("売上伝票をキャンセルしました.");
 		// set model
@@ -430,7 +430,7 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/getRireki", method = RequestMethod.POST)
 	public ResponseEntity<?> getRireki(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// 履歴取得
-		UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(form.getRecordId());
+		UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(form.getRecordId());
 
 		// 画面に必要な履歴情報をmapに入れる。
 		List<Map<String, Object>> rirekiList = new ArrayList<Map<String, Object>>();

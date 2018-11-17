@@ -9,7 +9,7 @@ import java.util.Optional;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.CrudServiceTestCase;
+import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
 import com.showka.domain.z00.Busho;
@@ -18,7 +18,7 @@ import com.showka.entity.RUriageKeijo;
 import com.showka.entity.RUriageKeijoTeisei;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
-import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.search.u05.i.UriageRirekiSearchService;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
@@ -29,7 +29,7 @@ import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
+public class UriageKeijoSearchServiceImplTest extends PersistenceTestCase {
 
 	@Tested
 	@Injectable
@@ -43,7 +43,7 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 	private RUriageKeijoTeiseiRepository repoTeisei;
 
 	@Injectable
-	private UriageRirekiCrudService uriageRirekiCrudService;
+	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Injectable
 	private UriageRirekiSearchService uriageRirekiSearchService;
@@ -137,9 +137,9 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				ke2.getUriageId();
 				result = uriageId2;
 				// get 売上履歴
-				uriageRirekiCrudService.getUriageRirekiList(uriageId1);
+				uriageRirekiPersistence.getUriageRirekiList(uriageId1);
 				result = rireki1;
-				uriageRirekiCrudService.getUriageRirekiList(uriageId2);
+				uriageRirekiPersistence.getUriageRirekiList(uriageId2);
 				result = rireki2;
 				// get 売上
 				rireki1.getUriageOf(date);
@@ -167,9 +167,9 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				ke2.getUriageId();
 				times = 1;
 				// get 売上履歴
-				uriageRirekiCrudService.getUriageRirekiList(uriageId1);
+				uriageRirekiPersistence.getUriageRirekiList(uriageId1);
 				times = 1;
-				uriageRirekiCrudService.getUriageRirekiList(uriageId2);
+				uriageRirekiPersistence.getUriageRirekiList(uriageId2);
 				times = 1;
 				// get 売上
 				rireki1.getUriageOf(date);
@@ -232,7 +232,7 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				teisei.getUriageId();
 				result = uriageId;
 				// get 売上履歴
-				uriageRirekiCrudService.getUriageRirekiList(uriageId);
+				uriageRirekiPersistence.getUriageRirekiList(uriageId);
 				result = rireki;
 				// get 過去計上日
 				teisei.getTeiseiUriageRirekiKeijoDate();
@@ -263,7 +263,7 @@ public class UriageKeijoSearchServiceImplTest extends CrudServiceTestCase {
 				teisei.getUriageId();
 				times = 1;
 				// get 売上履歴
-				uriageRirekiCrudService.getUriageRirekiList(uriageId);
+				uriageRirekiPersistence.getUriageRirekiList(uriageId);
 				times = 1;
 				// get 過去計上日
 				teisei.getTeiseiUriageRirekiKeijoDate();

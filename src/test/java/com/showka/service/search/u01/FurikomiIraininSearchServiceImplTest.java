@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.CrudServiceTestCase;
+import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u01.FurikomiIraininSet;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.entity.MFurikomiIrainin;
@@ -13,7 +13,7 @@ import com.showka.entity.MFurikomiIrainin;
 import mockit.Expectations;
 import mockit.Mocked;
 
-public class FurikomiIraininSearchServiceImplTest extends CrudServiceTestCase {
+public class FurikomiIraininSearchServiceImplTest extends PersistenceTestCase {
 
 	@Autowired
 	private FurikomiIraininSearchServiceImpl service;

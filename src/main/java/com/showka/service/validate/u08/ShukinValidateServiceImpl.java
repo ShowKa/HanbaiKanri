@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u08.Shukin;
-import com.showka.service.crud.u08.i.ShukinCrudService;
+import com.showka.service.persistence.u08.i.ShukinPersistence;
 import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
 import com.showka.service.specification.u08.i.NyukinKeshikomiSpecificationService;
 import com.showka.service.validate.u08.i.ShukinValidateService;
@@ -24,7 +24,7 @@ public class ShukinValidateServiceImpl implements ShukinValidateService {
 	private NyukinKeijoBusinessService nyukinKeijoBusinessService;
 
 	@Autowired
-	private ShukinCrudService shukinCrudService;
+	private ShukinPersistence shukinPersistence;
 
 	@Autowired
 	private NyukinKeshikomiSpecificationService nyukinKeshikomiSpecificationService;
@@ -45,7 +45,7 @@ public class ShukinValidateServiceImpl implements ShukinValidateService {
 		Kokyaku kokyaku = shukin.getKokyaku();
 		EigyoDate nyukinDate = shukin.getDate();
 		String denpyoNumber = shukin.getDenpyoNumber();
-		boolean exists = shukinCrudService.exists(kokyaku, nyukinDate, denpyoNumber);
+		boolean exists = shukinPersistence.exists(kokyaku, nyukinDate, denpyoNumber);
 		if (exists) {
 			throw new DuprecatedException("顧客", "入金日", "伝票番号");
 		}
@@ -56,7 +56,7 @@ public class ShukinValidateServiceImpl implements ShukinValidateService {
 		// 担当社員の所属を検証
 		// ただし担当社員が更新された場合のみ
 		String nyukinId = shukin.getNyukinId();
-		Shukin old = shukinCrudService.getDomain(nyukinId);
+		Shukin old = shukinPersistence.getDomain(nyukinId);
 		if (!old.getTantoShain().equals(shukin.getTantoShain())) {
 			this.validateTantoShainShozokuBusho(shukin);
 		}

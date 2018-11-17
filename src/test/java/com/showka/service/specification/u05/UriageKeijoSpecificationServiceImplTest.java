@@ -5,7 +5,7 @@ import java.util.Date;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.CrudServiceTestCase;
+import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u05.Uriage;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageRepository;
@@ -17,7 +17,7 @@ import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class UriageKeijoSpecificationServiceImplTest extends CrudServiceTestCase {
+public class UriageKeijoSpecificationServiceImplTest extends PersistenceTestCase {
 
 	@Tested
 	private UriageKeijoSpecificationServiceImpl service;

@@ -24,8 +24,8 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
-import com.showka.service.crud.u08.i.NyukinFBFurikomiCrudService;
-import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
+import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
+import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -42,10 +42,10 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 	private NyukinKeshikomiBuildServiceImpl service;
 
 	@Injectable
-	private NyukinKeshikomiCrudService nyukinKeshikomiCrudService;
+	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	@Injectable
-	private NyukinFBFurikomiCrudService nyukinFBFurikomiCrudService;
+	private NyukinFBFurikomiPersistence nyukinFBFurikomiPersistence;
 
 	@Injectable
 	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
@@ -134,11 +134,11 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinFBFurikomiCrudService.getNyukin(fbFurikomiId);
+				nyukinFBFurikomiPersistence.getNyukin(fbFurikomiId);
 				result = nyukin;
 				service.buildKeshikomiSet(nyukin, matchedFBFurikomi);
 				result = keshikomiSet;
-				nyukinKeshikomiCrudService.getDomain(nyukinId);
+				nyukinKeshikomiPersistence.getDomain(nyukinId);
 				result = nyukinKeshikomi;
 			}
 		};

@@ -12,7 +12,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
-import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.persistence.u05.i.UriagePersistence;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.service.validate.u05.i.UriageMeisaiValidateService;
@@ -31,7 +31,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 	private TUriageRepository uriageRepo;
 
 	@Autowired
-	private UriageCrudService uriageCrudService;
+	private UriagePersistence uriagePersistence;
 
 	@Autowired
 	private UriageMeisaiValidateService uriageMeisaiValidate;
@@ -82,7 +82,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 
 	@Override
 	public void validateForDelete(TUriagePK pk) throws ValidateException {
-		Uriage domain = uriageCrudService.getDomain(pk);
+		Uriage domain = uriagePersistence.getDomain(pk);
 		// キャンセル済み検証
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
@@ -97,7 +97,7 @@ public class UriageValidateServiceImpl implements UriageValidateService {
 
 	@Override
 	public void validateForCancel(TUriagePK pk) throws ValidateException {
-		Uriage domain = uriageCrudService.getDomain(pk);
+		Uriage domain = uriagePersistence.getDomain(pk);
 		validateForUpdate(domain);
 	}
 

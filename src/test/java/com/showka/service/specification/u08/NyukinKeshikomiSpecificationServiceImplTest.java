@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.u08.Keshikomi;
-import com.showka.service.crud.u08.i.KeshikomiCrudService;
+import com.showka.service.persistence.u08.i.KeshikomiPersistence;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -21,7 +21,7 @@ public class NyukinKeshikomiSpecificationServiceImplTest extends SimpleTestCase 
 	private NyukinKeshikomiSpecificationServiceImpl service;
 
 	@Injectable
-	private KeshikomiCrudService keshikomiCrudService;
+	private KeshikomiPersistence keshikomiPersistence;
 
 	@Test
 	public void test_HasKeshikomi_01() throws Exception {
@@ -32,7 +32,7 @@ public class NyukinKeshikomiSpecificationServiceImplTest extends SimpleTestCase 
 		// expect
 		new Expectations() {
 			{
-				keshikomiCrudService.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiPersistence.getKeshikomiSetOfNyukin(nyukinId);
 				result = kesikomiSet;
 			}
 		};
@@ -41,7 +41,7 @@ public class NyukinKeshikomiSpecificationServiceImplTest extends SimpleTestCase 
 		// verify
 		new Verifications() {
 			{
-				keshikomiCrudService.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiPersistence.getKeshikomiSetOfNyukin(nyukinId);
 				times = 1;
 			}
 		};
@@ -59,7 +59,7 @@ public class NyukinKeshikomiSpecificationServiceImplTest extends SimpleTestCase 
 		// expect
 		new Expectations() {
 			{
-				keshikomiCrudService.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiPersistence.getKeshikomiSetOfNyukin(nyukinId);
 				result = kesikomiSet;
 			}
 		};
@@ -68,7 +68,7 @@ public class NyukinKeshikomiSpecificationServiceImplTest extends SimpleTestCase 
 		// verify
 		new Verifications() {
 			{
-				keshikomiCrudService.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiPersistence.getKeshikomiSetOfNyukin(nyukinId);
 				times = 1;
 			}
 		};

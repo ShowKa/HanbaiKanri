@@ -16,7 +16,7 @@ import com.showka.entity.RUriageKeijo;
 import com.showka.entity.RUriageKeijoTeisei;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
-import com.showka.service.crud.u05.i.UriageRirekiCrudService;
+import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.search.u05.i.UriageKeijoSearchService;
 import com.showka.service.search.u05.i.UriageRirekiSearchService;
 import com.showka.value.EigyoDate;
@@ -32,7 +32,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 	private RUriageKeijoTeiseiRepository repoTeisei;
 
 	@Autowired
-	private UriageRirekiCrudService uriageRirekiCrudService;
+	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Autowired
 	private UriageRirekiSearchService uriageRirekiSearchService;
@@ -56,7 +56,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 		// 売上計上金額集計
 		int keijoKingaku = keijoEntities.stream().mapToInt(ke -> {
 			String uriageId = ke.getUriageId();
-			UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(uriageId);
+			UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(uriageId);
 			Optional<Uriage> uriage = rireki.getUriageOf(date);
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い
 			Kakaku uriageGokeiKingaku = uriage.get().getUriageGokeiKakaku();
@@ -74,7 +74,7 @@ public class UriageKeijoSearchServiceImpl implements UriageKeijoSearchService {
 		List<RUriageKeijoTeisei> teiseiEntities = repoTeisei.findAllById(keijoIds);
 		int teiseiKingaku = teiseiEntities.stream().mapToInt(teisei -> {
 			String uriageId = teisei.getUriageId();
-			UriageRireki rireki = uriageRirekiCrudService.getUriageRirekiList(uriageId);
+			UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(uriageId);
 			Date pastKeijoDate = teisei.getTeiseiUriageRirekiKeijoDate();
 			Optional<Uriage> uriage = rireki.getUriageOf(new EigyoDate(pastKeijoDate));
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class OptimisticConcurrencyControl {
 
-	@AfterThrowing(pointcut = "execution(* com.showka.service.crud.CrudService+.delete(..))", throwing = "ex")
+	@AfterThrowing(pointcut = "execution(* com.showka.service.persistence.Persistence+.delete(..))", throwing = "ex")
 	public void optimisticConcurrencyControl(EntityNotFoundException ex) throws Throwable {
 		throw new OptimisticLockException("OptimisticLockException!! Entity was already deleted.", ex);
 	}

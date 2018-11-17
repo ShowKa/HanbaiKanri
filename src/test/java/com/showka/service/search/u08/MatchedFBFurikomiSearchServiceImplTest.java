@@ -17,7 +17,7 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.SeikyuBuilder;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u08.MatchedFBFurikomi;
-import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.table.public_.tables.T_FIRM_BANK_FURIKOMI;
 import com.showka.table.public_.tables.W_FIRM_BANK_FURIKOMI_MATCHING;
 import com.showka.table.public_.tables.W_FIRM_BANK_FURIWAKE;
@@ -39,7 +39,7 @@ public class MatchedFBFurikomiSearchServiceImplTest extends SimpleTestCase {
 	private DSLContext create;
 
 	@Injectable
-	private SeikyuCrudService seikyuCrudService;
+	private SeikyuPersistence seikyuPersistence;
 
 	// alias
 	/** T_FIRM_BANK_FURIKOMI */
@@ -70,7 +70,7 @@ public class MatchedFBFurikomiSearchServiceImplTest extends SimpleTestCase {
 			{
 				service.query(transmissionDate);
 				result = records;
-				seikyuCrudService.getDomain("r-KK01-20170101");
+				seikyuPersistence.getDomain("r-KK01-20170101");
 				result = seikyu;
 			}
 		};
@@ -81,7 +81,7 @@ public class MatchedFBFurikomiSearchServiceImplTest extends SimpleTestCase {
 			{
 				service.query(transmissionDate);
 				times = 1;
-				seikyuCrudService.getDomain("r-KK01-20170101");
+				seikyuPersistence.getDomain("r-KK01-20170101");
 				times = 1;
 			}
 		};

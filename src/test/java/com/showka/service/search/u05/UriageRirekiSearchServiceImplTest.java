@@ -7,7 +7,7 @@ import javax.transaction.Transactional;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.showka.common.CrudServiceTestCase;
+import com.showka.common.PersistenceTestCase;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
@@ -17,7 +17,7 @@ import com.showka.value.EigyoDate;
 import mockit.Injectable;
 import mockit.Tested;
 
-public class UriageRirekiSearchServiceImplTest extends CrudServiceTestCase {
+public class UriageRirekiSearchServiceImplTest extends PersistenceTestCase {
 
 	@Tested
 	private UriageRirekiSearchServiceImpl service;

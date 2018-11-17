@@ -15,7 +15,7 @@ import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriagePK;
-import com.showka.service.crud.u05.i.UriageCrudService;
+import com.showka.service.persistence.u05.i.UriagePersistence;
 import com.showka.table.public_.tables.records.T_URIAGE_RECORD;
 import com.showka.value.EigyoDate;
 
@@ -35,7 +35,7 @@ public class UriageSearchServiceImplTest extends CrudByJooqServiceTestCase {
 	private DSLContext create;
 
 	@Injectable
-	private UriageCrudService uriageCrudService;
+	private UriagePersistence uriagePersistence;
 
 	/** 売上01 */
 	private static final Object[] T_URIAGE_01 = {
@@ -191,7 +191,7 @@ public class UriageSearchServiceImplTest extends CrudByJooqServiceTestCase {
 		// except
 		new Expectations() {
 			{
-				uriageCrudService.getDomain(pk);
+				uriagePersistence.getDomain(pk);
 				result = uriage;
 			}
 		};
@@ -200,7 +200,7 @@ public class UriageSearchServiceImplTest extends CrudByJooqServiceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageCrudService.getDomain(pk);
+				uriagePersistence.getDomain(pk);
 				times = 1;
 			}
 		};

@@ -11,7 +11,7 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u08.Shukin;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
-import com.showka.service.crud.u08.i.ShukinCrudService;
+import com.showka.service.persistence.u08.i.ShukinPersistence;
 import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
 import com.showka.service.specification.u08.i.NyukinKeshikomiSpecificationService;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
@@ -36,7 +36,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 	private NyukinKeijoBusinessService nyukinKeijoBusinessService;
 
 	@Injectable
-	private ShukinCrudService shukinCrudService;
+	private ShukinPersistence shukinPersistence;
 
 	@Injectable
 	private NyukinKeshikomiSpecificationService nyukinKeshikomiSpecificationService;
@@ -147,7 +147,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				service.validateTantoShainShozokuBusho(shukin);
-				shukinCrudService.exists(kokyaku, nyukinDate, denpyoNumber);
+				shukinPersistence.exists(kokyaku, nyukinDate, denpyoNumber);
 				result = false;
 			}
 		};
@@ -158,7 +158,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 			{
 				service.validateTantoShainShozokuBusho(shukin);
 				times = 1;
-				shukinCrudService.exists(kokyaku, nyukinDate, denpyoNumber);
+				shukinPersistence.exists(kokyaku, nyukinDate, denpyoNumber);
 				times = 1;
 			}
 		};
@@ -188,7 +188,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				service.validateTantoShainShozokuBusho(shukin);
-				shukinCrudService.exists(kokyaku, nyukinDate, denpyoNumber);
+				shukinPersistence.exists(kokyaku, nyukinDate, denpyoNumber);
 				result = true;
 			}
 		};
@@ -199,7 +199,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 			{
 				service.validateTantoShainShozokuBusho(shukin);
 				times = 1;
-				shukinCrudService.exists(kokyaku, nyukinDate, denpyoNumber);
+				shukinPersistence.exists(kokyaku, nyukinDate, denpyoNumber);
 				times = 1;
 			}
 		};
@@ -287,7 +287,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				shukinCrudService.getDomain(nyukinId);
+				shukinPersistence.getDomain(nyukinId);
 				result = old;
 				service.validateTantoShainShozokuBusho(shukin1);
 			}
@@ -297,7 +297,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				shukinCrudService.getDomain(nyukinId);
+				shukinPersistence.getDomain(nyukinId);
 				times = 1;
 				service.validateTantoShainShozokuBusho(shukin1);
 				times = 1;
@@ -331,7 +331,7 @@ public class ShukinValidateServiceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				shukinCrudService.getDomain(nyukinId);
+				shukinPersistence.getDomain(nyukinId);
 				result = old;
 				nyukinKeshikomiSpecificationService.hasKeshikomi(nyukinId);
 				result = true;

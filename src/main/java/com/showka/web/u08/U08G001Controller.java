@@ -19,9 +19,9 @@ import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
-import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.crud.z00.i.ShainCrudService;
+import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.persistence.z00.i.BushoPersistence;
+import com.showka.service.persistence.z00.i.ShainPersistence;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchService;
 import com.showka.value.AmountOfMoney;
@@ -38,13 +38,13 @@ public class U08G001Controller extends ControllerBase {
 	private NyukinKeshikomiSearchService nyukinSearchService;
 
 	@Autowired
-	private BushoCrudService bushoCrudService;
+	private BushoPersistence bushoPersistence;
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuPersistence kokyakuPersistence;
 
 	@Autowired
-	private ShainCrudService shainCrudService;
+	private ShainPersistence shainPersistence;
 
 	@RequestMapping(value = "/u08g001/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G001Form form, ModelAndViewExtended model) {
@@ -69,25 +69,25 @@ public class U08G001Controller extends ControllerBase {
 		// 部署
 		String bushoCode = form.getBushoCode();
 		if (bushoCode != null) {
-			boolean exists = bushoCrudService.exists(bushoCode);
+			boolean exists = bushoPersistence.exists(bushoCode);
 			if (exists) {
-				param.setBusho(bushoCrudService.getDomain(bushoCode));
+				param.setBusho(bushoPersistence.getDomain(bushoCode));
 			}
 		}
 		// 顧客
 		String kokyakuCode = form.getKokyakuCode();
 		if (kokyakuCode != null) {
-			boolean exists = kokyakuCrudService.exsists(kokyakuCode);
+			boolean exists = kokyakuPersistence.exsists(kokyakuCode);
 			if (exists) {
-				param.setKokyaku(kokyakuCrudService.getDomain(kokyakuCode));
+				param.setKokyaku(kokyakuPersistence.getDomain(kokyakuCode));
 			}
 		}
 		// 担当社員
 		String shainCode = form.getTantoShainCode();
 		if (shainCode != null) {
-			boolean exists = shainCrudService.exists(shainCode);
+			boolean exists = shainPersistence.exists(shainCode);
 			if (exists) {
-				param.setTantoShain(shainCrudService.getDomain(shainCode));
+				param.setTantoShain(shainPersistence.getDomain(shainCode));
 			}
 		}
 		// 入金方法

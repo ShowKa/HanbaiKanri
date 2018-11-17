@@ -26,7 +26,7 @@ import com.showka.entity.TSeikyuMeisaiPK;
 import com.showka.entity.TSeikyuPK;
 import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.repository.i.TSeikyuRepository;
-import com.showka.service.crud.u07.i.SeikyuCrudService;
+import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.search.u07.i.SeikyuSearchService;
 import com.showka.table.public_.tables.S_URIKAKE_SEIKYU_DONE;
 import com.showka.table.public_.tables.T_SEIKYU;
@@ -42,7 +42,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 	private TSeikyuMeisaiRepository meisaiRepo;
 
 	@Autowired
-	private SeikyuCrudService seikyuCrudService;
+	private SeikyuPersistence seikyuPersistence;
 
 	@Autowired
 	private DSLContext create;
@@ -54,7 +54,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 	public List<Seikyu> getAllOf(Busho busho) {
 		List<T_SEIKYU_RECORD> seikyuRecords = this.getAllRecordsOf(busho);
 		return seikyuRecords.stream().map(r -> {
-			return seikyuCrudService.getDomain(r.getRecordId());
+			return seikyuPersistence.getDomain(r.getRecordId());
 		}).collect(Collectors.toList());
 	}
 
@@ -64,7 +64,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 		List<TSeikyu> seikyuList = this.getAllEntitiesOf(kokyaku);
 		// entity -> domain
 		return seikyuList.stream().map(seikyu -> {
-			return seikyuCrudService.getDomain(seikyu.getPk());
+			return seikyuPersistence.getDomain(seikyu.getPk());
 		}).collect(Collectors.toList());
 	}
 
@@ -121,7 +121,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 		}).collect(Collectors.toSet());
 		// 請求リスト
 		List<Seikyu> seikyuList = seikyuIdSet.parallelStream().map(id -> {
-			return seikyuCrudService.getDomain(id);
+			return seikyuPersistence.getDomain(id);
 		}).collect(Collectors.toList());
 		return seikyuList;
 	}

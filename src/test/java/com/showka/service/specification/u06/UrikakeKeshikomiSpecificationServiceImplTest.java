@@ -12,7 +12,7 @@ import com.showka.domain.builder.UrikakeKeshikomiBuilder;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u08.Keshikomi;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.TheTimestamp;
 
@@ -27,7 +27,7 @@ public class UrikakeKeshikomiSpecificationServiceImplTest extends SimpleTestCase
 	private UrikakeKeshikomiSpecificationServiceImpl service;
 
 	@Injectable
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	/**
 	 * 残高取得.
@@ -66,7 +66,7 @@ public class UrikakeKeshikomiSpecificationServiceImplTest extends SimpleTestCase
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				urikakeKeshikomiPersistence.getDomain(urikakeId);
 				result = urikakeKeshikomi;
 			}
 		};
@@ -75,7 +75,7 @@ public class UrikakeKeshikomiSpecificationServiceImplTest extends SimpleTestCase
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				urikakeKeshikomiPersistence.getDomain(urikakeId);
 				times = 1;
 			}
 		};
@@ -134,7 +134,7 @@ public class UrikakeKeshikomiSpecificationServiceImplTest extends SimpleTestCase
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				urikakeKeshikomiPersistence.getDomain(urikakeId);
 				result = urikakeKeshikomi;
 			}
 		};
@@ -143,7 +143,7 @@ public class UrikakeKeshikomiSpecificationServiceImplTest extends SimpleTestCase
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiCrudService.getDomain(urikakeId);
+				urikakeKeshikomiPersistence.getDomain(urikakeId);
 				times = 1;
 			}
 		};

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u08.Keshikomi;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.value.AmountOfMoney;
 
@@ -16,13 +16,13 @@ import com.showka.value.AmountOfMoney;
 public class UrikakeKeshikomiSpecificationServiceImpl implements UrikakeKeshikomiSpecificationService {
 
 	@Autowired
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	@Override
 	public AmountOfMoney getZandakaOf(Urikake urikake) {
 		// 売掛の消込リスト取得
 		String urikakeId = urikake.getRecordId();
-		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(urikakeId);
+		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.getDomain(urikakeId);
 		return urikakeKeshikomi.getZandaka();
 	}
 
@@ -30,7 +30,7 @@ public class UrikakeKeshikomiSpecificationServiceImpl implements UrikakeKeshikom
 	public AmountOfMoney getZandakaAsOfKeshikomi(Urikake urikake, Keshikomi keshikomi) {
 		// 売掛の消込リスト取得
 		String urikakeId = urikake.getRecordId();
-		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(urikakeId);
+		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.getDomain(urikakeId);
 		// 引数.消込と同様の消込を除去
 		Set<Keshikomi> keshikomiSet = urikakeKeshikomi.getKeshikomiSet();
 		keshikomiSet.removeIf(k -> {
