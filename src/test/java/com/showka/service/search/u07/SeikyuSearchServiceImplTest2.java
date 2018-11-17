@@ -55,7 +55,7 @@ public class SeikyuSearchServiceImplTest2 extends CrudByJooqServiceTestCase {
 	public void test_getAllRecordsOf_01() {
 		// database
 		super.deleteAndInsert(T_SEIKYU, T_SEIKYU_COLUMN, T_SEIKYU_01, T_SEIKYU_02, T_SEIKYU_03);
-		super.deleteAndInsert(J_SEIKYU_URIKAKE, J_SEIKYU_URIKAKE_COLUMN, J_SEIKYU_URIKAKE_01, J_SEIKYU_URIKAKE_03);
+		super.deleteAndInsert(S_URIKAKE_SEIKYU_DONE, S_URIKAKE_SEIKYU_DONE_COLUMN, J_SEIKYU_URIKAKE_01, J_SEIKYU_URIKAKE_03);
 		// input
 		BushoBuilder bb = new BushoBuilder();
 		bb.withRecordId("r-BS01");

@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_NYUKIN_KEIJO extends TableImpl<T_NYUKIN_KEIJO_RECORD> {
 
-    private static final long serialVersionUID = -1622845032;
+    private static final long serialVersionUID = -1945590318;
 
     /**
      * The reference instance of <code>PUBLIC.T_NYUKIN_KEIJO</code>
@@ -150,7 +150,7 @@ public class T_NYUKIN_KEIJO extends TableImpl<T_NYUKIN_KEIJO_RECORD> {
      */
     @Override
     public UniqueKey<T_NYUKIN_KEIJO_RECORD> getPrimaryKey() {
-        return Keys.CONSTRAINT_A;
+        return Keys.CONSTRAINT_AB;
     }
 
     /**
@@ -158,7 +158,7 @@ public class T_NYUKIN_KEIJO extends TableImpl<T_NYUKIN_KEIJO_RECORD> {
      */
     @Override
     public List<UniqueKey<T_NYUKIN_KEIJO_RECORD>> getKeys() {
-        return Arrays.<UniqueKey<T_NYUKIN_KEIJO_RECORD>>asList(Keys.CONSTRAINT_A, Keys.UK_7FTKDIPN53A5HD1RJSIXU46CX);
+        return Arrays.<UniqueKey<T_NYUKIN_KEIJO_RECORD>>asList(Keys.CONSTRAINT_AB, Keys.UK_7FTKDIPN53A5HD1RJSIXU46CX);
     }
 
     /**

@@ -20,6 +20,7 @@ import org.thymeleaf.util.StringUtils;
 
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.builder.NyukinKeshikomiBuilder;
+import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.u06.UrikakeKeshikomi;
@@ -130,8 +131,8 @@ public class U08G003Controller extends ControllerBase {
 				.map(Keshikomi::getUrikakeId)
 				.collect(Collectors.toSet());
 		// get 売掛
-		String kokyakuId = nyukinKeshikomi.getNyukin().getKokyakuId();
-		List<Urikake> urikake = urikakeSearchService.getUrikakeOfKokyaku(kokyakuId);
+		Kokyaku kokyaku = nyukinKeshikomi.getNyukin().getKokyaku();
+		List<Urikake> urikake = urikakeSearchService.getUrikakeNotSettled(kokyaku);
 		// この入金によって消込まれた売掛は除去
 		urikake.removeIf(u -> {
 			String thisUrikakeId = u.getRecordId();

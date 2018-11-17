@@ -8,21 +8,21 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.u06.Urikake;
-import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.entity.CKeshikomi;
 import com.showka.entity.TKeshikomi;
+import com.showka.event.CrudEvent.EventType;
+import com.showka.event.u08.KeshikomiCrudEvent;
 import com.showka.repository.i.CKeshikomiRepository;
 import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u06.i.UrikakeCrudService;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
-import com.showka.service.crud.u07.i.SeikyuUrikakeCrudService;
 import com.showka.service.crud.u08.i.KeshikomiCrudService;
 import com.showka.service.crud.u08.i.NyukinCrudService;
 import com.showka.value.AmountOfMoney;
@@ -45,10 +45,7 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	private UrikakeCrudService urikakeCrudService;
 
 	@Autowired
-	private SeikyuUrikakeCrudService seikyuUrikakeCrudService;
-
-	@Autowired
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Override
 	public void save(Keshikomi keshikomi) {
@@ -70,14 +67,9 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 		keshikomi.setRecordId(recordId);
 		// save
 		repo.save(e);
-		// 消込完了の場合、JSeikyuUrikakeからレコードを削除する
-		// 消込未完の場合、JSeikyuUrikakeのレコードを戻す。
-		UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(urikakeId);
-		if (urikakeKeshikomi.done()) {
-			seikyuUrikakeCrudService.deleteIfExists(urikakeId);
-		} else {
-			seikyuUrikakeCrudService.revert(urikakeId);
-		}
+		// trigger event
+		KeshikomiCrudEvent event = new KeshikomiCrudEvent(this, EventType.save, keshikomi);
+		applicationEventPublisher.publishEvent(event);
 	}
 
 	@Override
@@ -151,14 +143,17 @@ public class KeshikomiCrudServiceImpl implements KeshikomiCrudService {
 	 *            バージョン
 	 */
 	void delete(String keshikomiId, Integer version) {
+		// 消込
+		Keshikomi keshikomi = this.getDomain(keshikomiId);
 		// entity
 		TKeshikomi e = repo.getOne(keshikomiId);
 		// OCC
 		e.setVersion(version);
 		// delete
 		repo.delete(e);
-		// 消込データが削除された場合、請求売掛関係テーブルのレコード復帰処理が必要。
-		seikyuUrikakeCrudService.revert(e.getUrikakeId());
+		// trigger event
+		KeshikomiCrudEvent event = new KeshikomiCrudEvent(this, EventType.delete, keshikomi);
+		applicationEventPublisher.publishEvent(event);
 	}
 
 	/**

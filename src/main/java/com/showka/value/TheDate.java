@@ -5,6 +5,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -97,7 +99,20 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return new TheDate(this._plusMonths(monthsToAdd));
 	}
 
+	/**
+	 * 引数の値で「日」を調整する。ただし、月末調整を行う。
+	 */
 	public TheDate withDayOfMonth(int dayOfMonth) {
+		if (dayOfMonth > this.getLengthOfMonth()) {
+			return this.getLastDateOfMonth();
+		}
+		return new TheDate(this._withDayOfMonth(dayOfMonth));
+	}
+
+	/**
+	 * 引数の値で「日」を調整する。月末調整は行わないので、ありえない日となった場合、エラー.
+	 */
+	public TheDate withDayOfMonthStrictly(int dayOfMonth) {
 		return new TheDate(this._withDayOfMonth(dayOfMonth));
 	}
 
@@ -129,7 +144,41 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 		return this._withDayOfMonth(date.lengthOfMonth());
 	}
 
-	// other utility
+	// getter
+	public String getDayOfWeek() {
+		Locale locale = Locale.getDefault();
+		DateTimeFormatter formatterOutput = DateTimeFormatter.ofPattern("E").withLocale(locale);
+		return formatterOutput.format(this.date);
+	}
+
+	/**
+	 * yyyy/MM/dd の ddを返却.
+	 */
+	public int getDayOfMonth() {
+		return date.getDayOfMonth();
+	}
+
+	public Month getMonth() {
+		return date.getMonth();
+	}
+
+	/**
+	 * 所属する月が所有する日数(28~31)を返却.
+	 */
+	public int getLengthOfMonth() {
+		YearMonth ym = YearMonth.of(this.date.getYear(), this.date.getMonthValue());
+		return ym.lengthOfMonth();
+	}
+
+	// validate
+	public boolean isFirstDateOfMonth() {
+		return this.getDayOfMonth() == 1;
+	}
+
+	public boolean isLastDateOfMonth() {
+		return this.getDayOfMonth() == this.getLastDateOfMonth().getDayOfMonth();
+	}
+
 	public boolean isWeekDay() {
 		return !this.isWeekend();
 	}
@@ -149,12 +198,6 @@ public class TheDate extends ValueBase implements Comparable<TheDate> {
 	public String toString(String pattern) {
 		DateTimeFormatter f = DateTimeFormatter.ofPattern(pattern);
 		return date.format(f);
-	}
-
-	public String getDayOfWeek() {
-		Locale locale = Locale.getDefault();
-		DateTimeFormatter formatterOutput = DateTimeFormatter.ofPattern("E").withLocale(locale);
-		return formatterOutput.format(this.date);
 	}
 
 	// override

@@ -44,4 +44,5 @@ public class TUrikake extends EntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "uriage_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TUriage uriage;
+
 }

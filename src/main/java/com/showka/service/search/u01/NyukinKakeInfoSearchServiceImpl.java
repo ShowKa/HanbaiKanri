@@ -1,5 +1,6 @@
 package com.showka.service.search.u01;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ import com.showka.entity.MNyukinKakeInfo;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
 import com.showka.service.crud.u01.i.KokyakuCrudService;
 import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
-import com.showka.value.EigyoDate;
+import com.showka.value.ShimeDate;
 
 @Service
 public class NyukinKakeInfoSearchServiceImpl implements NyukinKakeInfoSearchService {
@@ -26,13 +27,20 @@ public class NyukinKakeInfoSearchServiceImpl implements NyukinKakeInfoSearchServ
 	private KokyakuCrudService kokyakuCrudService;
 
 	@Override
-	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, EigyoDate shimeDate) {
+	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates) {
+		return shimeDates.stream().map(shimeDate -> {
+			return this.getKokyakuOnShimeDate(busho, shimeDate);
+		}).flatMap(List::stream).collect(Collectors.toList());
+	}
+
+	@Override
+	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, ShimeDate shimeDate) {
 		// 顧客条件
 		MKokyaku k = new MKokyaku();
 		k.setShukanBushoId(busho.getRecordId());
 		// 入金掛売情報条件
 		MNyukinKakeInfo n = new MNyukinKakeInfo();
-		n.setShimebi(shimeDate.getDate().getDayOfMonth());
+		n.setShimebi(shimeDate.getDateValue());
 		n.setKokyaku(k);
 		// example
 		Example<MNyukinKakeInfo> example = Example.of(n);

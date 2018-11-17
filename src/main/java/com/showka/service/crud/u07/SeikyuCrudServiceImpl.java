@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.builder.SeikyuBuilder;
@@ -15,6 +16,8 @@ import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.TSeikyu;
 import com.showka.entity.TSeikyuPK;
+import com.showka.event.CrudEvent.EventType;
+import com.showka.event.u07.SeikyuCrudEvent;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.i.Kubun;
 import com.showka.repository.i.TSeikyuRepository;
@@ -41,6 +44,9 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 	@Autowired
 	private BushoCrudService bushoCrudService;
 
+	@Autowired
+	private ApplicationEventPublisher applicationEventPublisher;
+
 	@Override
 	public void save(Seikyu domain) {
 		// PK
@@ -66,6 +72,9 @@ public class SeikyuCrudServiceImpl implements SeikyuCrudService {
 		repo.save(e);
 		// override 明細
 		seikyuMeisaiCrudService.overrideList(recordId, domain.getSeikyuMeisai());
+		// trigger event
+		SeikyuCrudEvent event = new SeikyuCrudEvent(this, EventType.save, domain);
+		applicationEventPublisher.publishEvent(event);
 	}
 
 	@Override

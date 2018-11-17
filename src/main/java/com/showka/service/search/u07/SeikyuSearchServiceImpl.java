@@ -1,6 +1,6 @@
 package com.showka.service.search.u07;
 
-import static com.showka.table.public_.tables.J_SEIKYU_URIKAKE.*;
+import static com.showka.table.public_.tables.S_URIKAKE_SEIKYU_DONE.*;
 import static com.showka.table.public_.tables.T_SEIKYU.*;
 
 import java.util.List;
@@ -28,7 +28,7 @@ import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.repository.i.TSeikyuRepository;
 import com.showka.service.crud.u07.i.SeikyuCrudService;
 import com.showka.service.search.u07.i.SeikyuSearchService;
-import com.showka.table.public_.tables.J_SEIKYU_URIKAKE;
+import com.showka.table.public_.tables.S_URIKAKE_SEIKYU_DONE;
 import com.showka.table.public_.tables.T_SEIKYU;
 import com.showka.table.public_.tables.records.T_SEIKYU_RECORD;
 
@@ -78,7 +78,7 @@ public class SeikyuSearchServiceImpl implements SeikyuSearchService {
 	List<T_SEIKYU_RECORD> getAllRecordsOf(Busho busho) {
 		// alias
 		T_SEIKYU s = t_seikyu.as("s");
-		J_SEIKYU_URIKAKE su = j_seikyu_urikake.as("su");
+		S_URIKAKE_SEIKYU_DONE su = s_urikake_seikyu_done.as("su");
 		// build SQL
 		SelectSelectStep<Record> select = create.selectDistinct(s.fields());
 		SelectJoinStep<Record> from = select.from(s);
