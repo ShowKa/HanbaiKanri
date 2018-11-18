@@ -57,7 +57,8 @@ public class UrikakeSeikyuStatusHandler {
 		public void afterSave(Seikyu seikyu) {
 			seikyu.getSeikyuMeisai().forEach(m -> {
 				Urikake urikake = m.getUrikake();
-				urikakePersistence.updateNyukinYoteiDate(urikake, seikyu.getShiharaiDate());
+				urikake.updateNyukinYoteiDate(seikyu.getShiharaiDate());
+				urikakePersistence.save(urikake);
 				urikakeSeikyuStatusPersistence.toDone(urikake.getRecordId(), seikyu.getRecordId());
 			});
 		}

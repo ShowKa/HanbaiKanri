@@ -21,7 +21,6 @@ import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.specification.u06.i.UrikakeSpecificationService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
-import com.showka.value.TheDate;
 
 @Service
 public class UrikakePersistenceImpl implements UrikakePersistence {
@@ -123,14 +122,6 @@ public class UrikakePersistenceImpl implements UrikakePersistence {
 			urikake.setVersion(version);
 			this.save(urikake);
 		}
-	}
-
-	@Override
-	public void updateNyukinYoteiDate(Urikake urikake, TheDate updatedNyukinYoteiDate) {
-		UrikakeBuilder b = new UrikakeBuilder();
-		b.withNyukinYoteiDate(updatedNyukinYoteiDate);
-		Urikake updated = b.apply(urikake);
-		this.save(updated);
 	}
 
 	@Override
