@@ -10,15 +10,16 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.u06.Urikake;
+import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.service.specification.u08.i.NyukinKeshikomiBuildService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -34,7 +35,7 @@ public class NyukinKeshikomiBuildServiceImpl implements NyukinKeshikomiBuildServ
 	private NyukinFBFurikomiPersistence nyukinFBFurikomiPersistence;
 
 	@Autowired
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	@Override
 	public NyukinKeshikomi build(MatchedFBFurikomi matchedFBFurikomi) {
@@ -71,7 +72,8 @@ public class NyukinKeshikomiBuildServiceImpl implements NyukinKeshikomiBuildServ
 		Set<Keshikomi> keshikomiSet = seikyuMeisai.parallelStream().map(m -> {
 			// 売掛金残高=売掛仕様サービス#残高取得
 			Urikake urikake = m.getUrikake();
-			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+			AmountOfMoney zandaka = urikakeKeshikomi.getZandaka();
 			// 消込構築
 			KeshikomiBuilder kb = new KeshikomiBuilder();
 			kb.withDate(keshikomiDate);

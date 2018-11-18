@@ -13,8 +13,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
-import com.showka.service.validator.u08.NyukinKeshikomiValidatorImpl;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -32,7 +31,7 @@ public class NyukinKeshikomiValidatorImplTest extends SimpleTestCase {
 	private NyukinKeshikomiValidatorImpl service;
 
 	@Injectable
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	/**
 	 * 各整合性検証用メソッドの呼出確認
@@ -175,7 +174,7 @@ public class NyukinKeshikomiValidatorImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				result = keshikomiSet;
-				urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake, keshikomi);
+				urikakeKeshikomiPersistence.getDomainAsOf(urikake, keshikomi);
 				result = new AmountOfMoney(1000);
 			}
 		};
@@ -187,7 +186,7 @@ public class NyukinKeshikomiValidatorImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				times = 1;
-				urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake, keshikomi);
+				urikakeKeshikomiPersistence.getDomainAsOf(urikake, keshikomi);
 				times = 1;
 			}
 		};

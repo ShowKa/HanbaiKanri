@@ -16,7 +16,9 @@ import com.showka.domain.builder.NyukinKeshikomiBuilder;
 import com.showka.domain.builder.SeikyuBuilder;
 import com.showka.domain.builder.SeikyuMeisaiBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.domain.builder.UrikakeKeshikomiBuilder;
 import com.showka.domain.u06.Urikake;
+import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.domain.u08.Keshikomi;
@@ -24,9 +26,9 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
@@ -48,7 +50,7 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 	private NyukinFBFurikomiPersistence nyukinFBFurikomiPersistence;
 
 	@Injectable
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	@Test
 	public void test_BuildKeshikomiSet_01() throws Exception {
@@ -61,7 +63,13 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 		Busho busho = bb.build();
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
+		ub.withKingaku(1);
 		Urikake urikake = ub.build();
+		// 売掛消込
+		UrikakeKeshikomiBuilder ukb = new UrikakeKeshikomiBuilder();
+		ukb.withUrikake(urikake);
+		ukb.withKeshikomiSet(new HashSet<>());
+		UrikakeKeshikomi urikakeKeshikomi = ukb.build();
 		// 請求明細
 		SeikyuMeisaiBuilder smb = new SeikyuMeisaiBuilder();
 		smb.withUrikake(urikake);
@@ -80,13 +88,12 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 		// 入金
 		NyukinBuilder nb = new NyukinBuilder();
 		Nyukin nyukin = nb.build();
-		// 売掛残高
-		AmountOfMoney zandaka = new AmountOfMoney(1);
+
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
-				result = zandaka;
+				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+				result = urikakeKeshikomi;
 			}
 		};
 		// do
@@ -94,7 +101,7 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
+				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
 				times = 1;
 			}
 		};
@@ -104,7 +111,7 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 			assertEquals(nyukin, a.getNyukin());
 			assertEquals(urikake, a.getUrikake());
 			assertEquals(eigyoDate, a.getDate());
-			assertEquals(zandaka, a.getKingaku());
+			assertEquals(new AmountOfMoney(1), a.getKingaku());
 		});
 	}
 

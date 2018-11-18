@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.NyukinKeshikomi;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.validator.u08.i.NyukinKeshikomiValidator;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.AmountOfMoney;
@@ -21,7 +21,7 @@ import com.showka.value.EigyoDate;
 public class NyukinKeshikomiValidatorImpl implements NyukinKeshikomiValidator {
 
 	@Autowired
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+	private UrikakeKeshikomiPersistence UrikakeKeshikomiPersistence;
 
 	@Override
 	public void validate(NyukinKeshikomi nyukinKeshikomi) throws ValidateException {
@@ -62,7 +62,7 @@ public class NyukinKeshikomiValidatorImpl implements NyukinKeshikomiValidator {
 		keshikomiList.forEach(keshikomi -> {
 			AmountOfMoney keshikomiKingaku = keshikomi.getKingaku();
 			Urikake urikake = keshikomi.getUrikake();
-			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaAsOfKeshikomi(urikake, keshikomi);
+			AmountOfMoney zandaka = UrikakeKeshikomiPersistence.getDomainAsOf(urikake, keshikomi);
 			if (keshikomiKingaku.greaterThan(zandaka)) {
 				throw new ValidateException("消込金額が売掛金額を上回っています。");
 			}

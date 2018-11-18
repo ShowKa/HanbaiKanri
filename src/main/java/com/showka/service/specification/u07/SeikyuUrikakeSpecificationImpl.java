@@ -9,10 +9,10 @@ import com.showka.domain.builder.SeikyuMeisaiBuilder;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u01.NyukinKakeInfo;
 import com.showka.domain.u06.Urikake;
+import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.SeikyuMeisai;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
-import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
@@ -31,7 +31,7 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 	private List<Urikake> urikakeList;
 
 	@Autowired
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	// constructor
 	public SeikyuUrikakeSpecificationImpl(Kokyaku kokyaku, EigyoDate seikyuDate, List<Urikake> urikakeList) {
@@ -55,8 +55,8 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 		return urikakeList.stream().map(urikake -> {
 			SeikyuMeisaiBuilder b = new SeikyuMeisaiBuilder();
 			// 売掛金残高
-			AmountOfMoney zandaka = urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
-			b.withKingaku(zandaka);
+			UrikakeKeshikomi keshikomi = urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+			b.withKingaku(keshikomi.getZandaka());
 			b.withUrikake(urikake);
 			return b.build();
 		}).collect(Collectors.toList());

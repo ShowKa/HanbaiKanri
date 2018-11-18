@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.u01.FurikomiIrainin;
 import com.showka.domain.u01.FurikomiIraininSet;
 import com.showka.domain.u06.Urikake;
+import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.Seikyu;
 import com.showka.entity.WFirmBankFuriwake;
 import com.showka.entity.WFirmBankFuriwakePK;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.FirmBankFuriwakePersistence;
 import com.showka.service.query.u01.i.FurikomiIraininQuery;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 
 @Service
 public class FirmBankFuriwakePersistenceImpl implements FirmBankFuriwakePersistence {
@@ -24,7 +25,7 @@ public class FirmBankFuriwakePersistenceImpl implements FirmBankFuriwakePersiste
 	private FurikomiIraininQuery furikomiIraininQuery;
 
 	@Autowired
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	@Autowired
 	private WFirmBankFuriwakeRepository repo;
@@ -61,7 +62,8 @@ public class FirmBankFuriwakePersistenceImpl implements FirmBankFuriwakePersiste
 		// 請求合計金額でなく、請求明細の各売掛.残高の合計
 		int urikakeZandakaGokei = seikyu.getSeikyuMeisai().stream().mapToInt(m -> {
 			Urikake urikake = m.getUrikake();
-			return urikakeKeshikomiSpecificationService.getZandakaOf(urikake).intValue();
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+			return urikakeKeshikomi.getZandaka().intValue();
 		}).sum();
 		e.setSaikenKingaku(urikakeZandakaGokei);
 		// record id

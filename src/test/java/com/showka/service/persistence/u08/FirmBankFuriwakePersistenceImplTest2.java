@@ -2,6 +2,7 @@ package com.showka.service.persistence.u08;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,17 +12,17 @@ import com.showka.common.PersistenceTestCase;
 import com.showka.domain.builder.SeikyuBuilder;
 import com.showka.domain.builder.SeikyuMeisaiBuilder;
 import com.showka.domain.builder.UrikakeBuilder;
+import com.showka.domain.builder.UrikakeKeshikomiBuilder;
 import com.showka.domain.u01.FurikomiIrainin;
 import com.showka.domain.u06.Urikake;
+import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.entity.WFirmBankFuriwake;
 import com.showka.entity.WFirmBankFuriwakePK;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;
-import com.showka.service.persistence.u08.FirmBankFuriwakePersistenceImpl;
+import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.query.u01.i.FurikomiIraininQuery;
-import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
-import com.showka.value.AmountOfMoney;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -42,7 +43,7 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 	private FurikomiIraininQuery furikomiIraininQuery;
 
 	@Injectable
-	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;
+	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	@Injectable
 	@Autowired
@@ -65,7 +66,13 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 		// data
 		// 売掛
 		UrikakeBuilder ub = new UrikakeBuilder();
+		ub.withKingaku(100);
 		Urikake urikake = ub.build();
+		// 売掛消込
+		UrikakeKeshikomiBuilder ukb = new UrikakeKeshikomiBuilder();
+		ukb.withUrikake(urikake);
+		ukb.withKeshikomiSet(new HashSet<>());
+		UrikakeKeshikomi urikakeKeshikomi = ukb.build();
 		// 請求明細
 		SeikyuMeisaiBuilder smb = new SeikyuMeisaiBuilder();
 		smb.withUrikake(urikake);
@@ -82,8 +89,8 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
-				result = new AmountOfMoney(100);
+				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+				result = urikakeKeshikomi;
 			}
 		};
 		// do
@@ -91,7 +98,7 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiSpecificationService.getZandakaOf(urikake);
+				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
 				times = 1;
 			}
 		};
