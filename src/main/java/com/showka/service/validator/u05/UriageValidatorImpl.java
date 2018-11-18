@@ -13,7 +13,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.persistence.u05.i.UriagePersistence;
-import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
+import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.service.validator.u05.i.UriageMeisaiValidator;
 import com.showka.service.validator.u05.i.UriageValidator;
@@ -40,7 +40,7 @@ public class UriageValidatorImpl implements UriageValidator {
 	private CUriageRepository cUriageRepository;
 
 	@Autowired
-	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
+	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Autowired
 	private BushoDateBusinessService bushoDateBusinessService;
@@ -89,7 +89,7 @@ public class UriageValidatorImpl implements UriageValidator {
 			throw new CanNotUpdateOrDeleteException("キャンセル済の売上のため");
 		}
 		// 計上済み検証
-		boolean keijoZumi = uriageKeijoSpecificationService.isKeijoZumi(domain);
+		boolean keijoZumi = uriageKeijoQuery.isKeijoDone(domain);
 		if (keijoZumi) {
 			throw new CanNotUpdateOrDeleteException("計上済の売上のため");
 		}

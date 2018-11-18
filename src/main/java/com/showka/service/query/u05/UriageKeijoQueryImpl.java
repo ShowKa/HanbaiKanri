@@ -14,8 +14,10 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriageKeijo;
 import com.showka.entity.RUriageKeijoTeisei;
+import com.showka.entity.RUriagePK;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
+import com.showka.repository.i.RUriageRepository;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
@@ -30,6 +32,9 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 
 	@Autowired
 	private RUriageKeijoTeiseiRepository repoTeisei;
+
+	@Autowired
+	private RUriageRepository rUriageRepository;
 
 	@Autowired
 	private UriageRirekiPersistence uriageRirekiPersistence;
@@ -84,4 +89,17 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 		}).sum();
 		return teiseiKingaku;
 	}
+
+	@Override
+	public boolean isKeijoDone(Uriage uriage) {
+		// get 売上履歴
+		RUriagePK pk = new RUriagePK();
+		pk.setKeijoDate(uriage.getKeijoDate().toDate());
+		pk.setUriageId(uriage.getRecordId());
+		RUriage uriageRireki = rUriageRepository.getOne(pk);
+		// exists 売上計上
+		boolean exists = repo.existsById(uriageRireki.getRecordId());
+		return exists;
+	}
+
 }

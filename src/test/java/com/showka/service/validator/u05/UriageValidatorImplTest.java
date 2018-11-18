@@ -19,9 +19,8 @@ import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.persistence.u05.i.UriagePersistence;
-import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
+import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.specification.z00.i.BushoDateBusinessService;
-import com.showka.service.validator.u05.UriageValidatorImpl;
 import com.showka.service.validator.u05.i.UriageMeisaiValidator;
 import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
@@ -56,7 +55,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 	private CUriageRepository cUriageRepository;
 
 	@Injectable
-	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
+	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Injectable
 	private BushoDateBusinessService bushoDateBusinessService;
@@ -275,7 +274,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
-				uriageKeijoSpecificationService.isKeijoZumi(domain);
+				uriageKeijoQuery.isKeijoDone(domain);
 				result = true;
 			}
 		};
@@ -304,7 +303,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
-				uriageKeijoSpecificationService.isKeijoZumi(domain);
+				uriageKeijoQuery.isKeijoDone(domain);
 				result = false;
 			}
 		};
@@ -317,7 +316,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 				times = 1;
 				cUriageRepository.existsById(uriageId);
 				times = 1;
-				uriageKeijoSpecificationService.isKeijoZumi(domain);
+				uriageKeijoQuery.isKeijoDone(domain);
 				times = 1;
 			}
 		};

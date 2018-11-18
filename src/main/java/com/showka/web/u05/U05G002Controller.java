@@ -35,7 +35,7 @@ import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.persistence.z00.i.ShohinPersistence;
-import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
+import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.specification.u06.i.UrikakeSpecificationService;
 import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.service.validator.u05.i.UriageValidator;
@@ -63,7 +63,7 @@ public class U05G002Controller extends ControllerBase {
 	private UriageValidator uriageValidator;
 
 	@Autowired
-	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
+	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Autowired
 	private ShohinPersistence shohinPersistence;
@@ -182,7 +182,7 @@ public class U05G002Controller extends ControllerBase {
 		model.setViewName("/u05/u05g002");
 
 		// 計上済み判定
-		model.addObject("isKeijoZumi", uriageKeijoSpecificationService.isKeijoZumi(u));
+		model.addObject("isKeijoZumi", uriageKeijoQuery.isKeijoDone(u));
 
 		return model;
 	}
@@ -236,8 +236,10 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiPersistence.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
-				m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai()
+				.stream()
+				.filter(m -> m.getMeisaiNumber() == null)
+				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
