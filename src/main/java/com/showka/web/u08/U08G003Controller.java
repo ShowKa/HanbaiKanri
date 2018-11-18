@@ -33,7 +33,7 @@ import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinPersistence;
 import com.showka.service.query.u06.i.UrikakeQuery;
-import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
+import com.showka.service.validator.u08.i.NyukinKeshikomiValidator;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
@@ -55,7 +55,7 @@ public class U08G003Controller extends ControllerBase {
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	@Autowired
-	private NyukinKeshikomiValidateService nyukinKeshikomiValidateService;
+	private NyukinKeshikomiValidator nyukinKeshikomiValidator;
 
 	@Autowired
 	private UrikakeQuery urikakeQuery;
@@ -196,7 +196,7 @@ public class U08G003Controller extends ControllerBase {
 			u.setVersion(v);
 		});
 		// validate
-		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
+		nyukinKeshikomiValidator.validate(nyukinKeshikomi);
 		// save
 		nyukinKeshikomiPersistence.save(eigyoDate, nyukinKeshikomi);
 		// return model

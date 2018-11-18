@@ -24,7 +24,7 @@ import com.showka.service.persistence.u08.i.NyukinKeijoPersistence;
 import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
 import com.showka.service.persistence.u17.i.BushoDatePersistence;
 import com.showka.service.persistence.z00.i.BushoPersistence;
-import com.showka.service.validate.u17.i.BushoDateValidateService;
+import com.showka.service.validator.u17.i.BushoDateValidator;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -38,7 +38,7 @@ public class U17G001Controller extends ControllerBase {
 	private BushoPersistence bushoPersistence;
 
 	@Autowired
-	private BushoDateValidateService bushoDateValidateService;
+	private BushoDateValidator bushoDateValidator;
 
 	@Autowired
 	private BushoDatePersistence bushoDatePersistence;
@@ -118,7 +118,7 @@ public class U17G001Controller extends ControllerBase {
 		Busho busho = bushoPersistence.getDomain(bushoCode);
 		EigyoDate eigyoDate = new EigyoDate(form.getEigyoDate());
 		// validate
-		bushoDateValidateService.validateForClosing(busho, eigyoDate);
+		bushoDateValidator.validateForClosing(busho, eigyoDate);
 		// 売上計上
 		uriageKeijoPersistence.keijo(busho, eigyoDate);
 		// 入金計上

@@ -37,8 +37,8 @@ import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.persistence.z00.i.ShohinPersistence;
 import com.showka.service.specification.u05.i.UriageKeijoSpecificationService;
 import com.showka.service.specification.u06.i.UrikakeSpecificationService;
-import com.showka.service.validate.u01.i.KokyakuValidateService;
-import com.showka.service.validate.u05.i.UriageValidateService;
+import com.showka.service.validator.u01.i.KokyakuValidator;
+import com.showka.service.validator.u05.i.UriageValidator;
 import com.showka.system.exception.NotExistException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
@@ -54,13 +54,13 @@ public class U05G002Controller extends ControllerBase {
 	private KokyakuPersistence kokyakuPersistence;
 
 	@Autowired
-	private KokyakuValidateService kokyakuValidateService;
+	private KokyakuValidator kokyakuValidator;
 
 	@Autowired
 	private UriagePersistence uriagePersistence;
 
 	@Autowired
-	private UriageValidateService uriageValidateService;
+	private UriageValidator uriageValidator;
 
 	@Autowired
 	private UriageKeijoSpecificationService uriageKeijoSpecificationService;
@@ -204,8 +204,8 @@ public class U05G002Controller extends ControllerBase {
 		Uriage uriage = buildDomainFromForm(form);
 
 		// validate
-		uriageValidateService.validateForRegister(uriage);
-		uriageValidateService.validate(uriage);
+		uriageValidator.validateForRegister(uriage);
+		uriageValidator.validate(uriage);
 
 		// save
 		uriagePersistence.save(uriage);
@@ -243,8 +243,8 @@ public class U05G002Controller extends ControllerBase {
 		Uriage uriage = buildDomainFromForm(form);
 
 		// validate
-		uriageValidateService.validateForUpdate(uriage);
-		uriageValidateService.validate(uriage);
+		uriageValidator.validateForUpdate(uriage);
+		uriageValidator.validate(uriage);
 
 		// save
 		uriagePersistence.save(uriage);
@@ -288,7 +288,7 @@ public class U05G002Controller extends ControllerBase {
 		uriage.setVersion(form.getVersion());
 
 		// validate
-		uriageValidateService.validateForDelete(pk);
+		uriageValidator.validateForDelete(pk);
 
 		// delete 商品移動
 		shohinIdoUriagePersistence.delete(pk);
@@ -375,9 +375,9 @@ public class U05G002Controller extends ControllerBase {
 	 */
 	@RequestMapping(value = "/u05g002/validateHeader", method = RequestMethod.POST)
 	public ResponseEntity<?> validateHeader(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-		kokyakuValidateService.validateForRefer(form.getKokyakuCode());
+		kokyakuValidator.validateForRefer(form.getKokyakuCode());
 		Uriage d = buildDomainFromForm(form);
-		uriageValidateService.validateForRegister(d);
+		uriageValidator.validateForRegister(d);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
@@ -401,7 +401,7 @@ public class U05G002Controller extends ControllerBase {
 		});
 
 		Uriage d = buildDomainFromForm(form);
-		uriageValidateService.validate(d);
+		uriageValidator.validate(d);
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
@@ -418,7 +418,7 @@ public class U05G002Controller extends ControllerBase {
 		// delete 売掛
 		urikakePersistence.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
 		// cancel
-		uriageValidateService.validateForCancel(pk);
+		uriageValidator.validateForCancel(pk);
 		uriagePersistence.cancel(pk, form.getVersion());
 		// message
 		form.setSuccessMessage("売上伝票をキャンセルしました.");

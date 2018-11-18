@@ -30,7 +30,7 @@ import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.kubun.i.Kubun;
 import com.showka.service.persistence.u01.KokyakuPersistenceImpl;
 import com.showka.service.persistence.z00.i.BushoPersistence;
-import com.showka.service.validate.u01.KokyakuValidateServiceImpl;
+import com.showka.service.validator.u01.KokyakuValidatorImpl;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -51,7 +51,7 @@ public class U01G002Controller {
 	private BushoPersistence bushoPersistence;
 
 	@Autowired
-	private KokyakuValidateServiceImpl kokyakuValidateService;
+	private KokyakuValidatorImpl kokyakuValidator;
 
 	// public method called by request
 	/**
@@ -88,7 +88,7 @@ public class U01G002Controller {
 
 		// validate
 		String code = form.getCode();
-		kokyakuValidateService.validateForRefer(code);
+		kokyakuValidator.validateForRefer(code);
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
 		Kokyaku kokyaku = kokyakuPersistence.getDomain(code);
@@ -155,8 +155,8 @@ public class U01G002Controller {
 		Kokyaku kokyakuDomain = createKokyakuDomain(form);
 
 		// validate
-		kokyakuValidateService.validateForRegister(kokyakuDomain);
-		kokyakuValidateService.validate(kokyakuDomain);
+		kokyakuValidator.validateForRegister(kokyakuDomain);
+		kokyakuValidator.validate(kokyakuDomain);
 
 		// register
 		kokyakuPersistence.save(kokyakuDomain);
@@ -189,7 +189,7 @@ public class U01G002Controller {
 		Kokyaku kokyakuDomain = createKokyakuDomain(form);
 
 		// validate
-		kokyakuValidateService.validate(kokyakuDomain);
+		kokyakuValidator.validate(kokyakuDomain);
 
 		// update
 		kokyakuPersistence.save(kokyakuDomain);
@@ -214,7 +214,7 @@ public class U01G002Controller {
 		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getCode());
 		kokyaku.setVersion(form.getKokyakuVersion());
 		// validate
-		kokyakuValidateService.validateForDelete(form.getCode());
+		kokyakuValidator.validateForDelete(form.getCode());
 		// delete
 		kokyakuPersistence.delete(kokyaku);
 		// jump search

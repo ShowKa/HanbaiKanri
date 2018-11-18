@@ -20,10 +20,10 @@ import com.showka.service.persistence.u01.i.KokyakuPersistence;
 import com.showka.service.persistence.u08.i.ShukinPersistence;
 import com.showka.service.persistence.z00.i.BushoPersistence;
 import com.showka.service.persistence.z00.i.ShainPersistence;
-import com.showka.service.validate.u01.i.KokyakuValidateService;
-import com.showka.service.validate.u08.i.ShukinValidateService;
-import com.showka.service.validate.z00.i.BushoValidateService;
-import com.showka.service.validate.z00.i.ShainValidateService;
+import com.showka.service.validator.u01.i.KokyakuValidator;
+import com.showka.service.validator.u08.i.ShukinValidator;
+import com.showka.service.validator.z00.i.BushoValidator;
+import com.showka.service.validator.z00.i.ShainValidator;
 import com.showka.system.exception.AuthorizationException;
 import com.showka.value.AmountOfMoney;
 import com.showka.web.ControllerBase;
@@ -35,19 +35,19 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G002Controller extends ControllerBase {
 
 	@Autowired
-	private ShukinValidateService shukinValidateService;
+	private ShukinValidator shukinValidator;
 
 	@Autowired
 	private ShukinPersistence shukinPersistence;
 
 	@Autowired
-	private KokyakuValidateService kokyakuValidateService;
+	private KokyakuValidator kokyakuValidator;
 
 	@Autowired
-	private BushoValidateService bushoValidateService;
+	private BushoValidator bushoValidator;
 
 	@Autowired
-	private ShainValidateService shainValidateService;
+	private ShainValidator shainValidator;
 
 	@Autowired
 	private BushoPersistence bushoPersistence;
@@ -84,9 +84,9 @@ public class U08G002Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> register(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
 		// データ存在チェック
-		kokyakuValidateService.validateForRefer(form.getKokyakuCode());
-		bushoValidateService.validateExistance(form.getBushoCode());
-		shainValidateService.validateExistance(form.getTantoShainCode());
+		kokyakuValidator.validateForRefer(form.getKokyakuCode());
+		bushoValidator.validateExistance(form.getBushoCode());
+		shainValidator.validateExistance(form.getTantoShainCode());
 		// 集金の構築
 		ShukinBuilder sb = new ShukinBuilder();
 		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
@@ -103,9 +103,9 @@ public class U08G002Controller extends ControllerBase {
 		// ユーザー権限チェック
 		this.validateAuth(shukin);
 		// 集金の業務整合性検証
-		shukinValidateService.validate(shukin);
+		shukinValidator.validate(shukin);
 		// 集金の登録整合性検証
-		shukinValidateService.validateForRegister(shukin);
+		shukinValidator.validateForRegister(shukin);
 		// 集金の保存
 		shukinPersistence.save(shukin);
 		// return
@@ -122,7 +122,7 @@ public class U08G002Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> update(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
 		// データ存在チェック
-		shainValidateService.validateExistance(form.getTantoShainCode());
+		shainValidator.validateExistance(form.getTantoShainCode());
 		// 登録済み
 		Shukin old = shukinPersistence.getDomain(form.getNyukinId());
 		// 集金の構築
@@ -136,9 +136,9 @@ public class U08G002Controller extends ControllerBase {
 		// ユーザー権限チェック
 		this.validateAuth(shukin);
 		// 集金の業務整合性検証
-		shukinValidateService.validate(shukin);
+		shukinValidator.validate(shukin);
 		// 集金の更新整合性検証
-		shukinValidateService.validateForUpdate(shukin);
+		shukinValidator.validateForUpdate(shukin);
 		// 集金の保存
 		shukinPersistence.save(shukin);
 		// return
@@ -159,7 +159,7 @@ public class U08G002Controller extends ControllerBase {
 		// ユーザー権限チェック
 		this.validateAuth(shukin);
 		// 集金の更新整合性検証
-		shukinValidateService.validateForDelete(shukin);
+		shukinValidator.validateForDelete(shukin);
 		// 集金の保存
 		shukinPersistence.delete(shukin);
 		// return
