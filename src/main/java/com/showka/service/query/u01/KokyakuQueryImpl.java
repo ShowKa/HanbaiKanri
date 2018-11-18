@@ -1,4 +1,4 @@
-package com.showka.service.search.u01;
+package com.showka.service.query.u01;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,11 +14,11 @@ import com.showka.entity.MKokyaku;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
 import com.showka.service.persistence.u01.i.KokyakuPersistence;
-import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
+import com.showka.service.query.u01.i.KokyakuQuery;
 import com.showka.value.ShimeDate;
 
 @Service
-public class NyukinKakeInfoSearchServiceImpl implements NyukinKakeInfoSearchService {
+public class KokyakuQueryImpl implements KokyakuQuery {
 
 	@Autowired
 	private MNyukinKakeInfoRepository mNyukinKakeInfoRepository;

@@ -11,7 +11,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.z00.Busho;
 import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.persistence.u07.i.SeikyuUrikakePersistence;
-import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
+import com.showka.service.query.u01.i.KokyakuQuery;
 import com.showka.service.search.u06.i.UrikakeSearchService;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
@@ -23,7 +23,7 @@ import com.showka.value.ShimeDate;
 public class SeikyuUrikakePersistenceImpl implements SeikyuUrikakePersistence {
 
 	@Autowired
-	private NyukinKakeInfoSearchService nyukinKakeInfoSearchService;
+	private KokyakuQuery nyukinKakeInfoSearchService;
 
 	@Autowired
 	private UrikakeSearchService urikakeSearchService;

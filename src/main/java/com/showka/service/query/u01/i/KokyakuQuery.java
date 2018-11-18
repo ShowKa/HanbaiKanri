@@ -1,4 +1,4 @@
-package com.showka.service.search.u01.i;
+package com.showka.service.query.u01.i;
 
 import java.util.Collection;
 import java.util.List;
@@ -7,7 +7,7 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.z00.Busho;
 import com.showka.value.ShimeDate;
 
-public interface NyukinKakeInfoSearchService {
+public interface KokyakuQuery {
 
 	/**
 	 * 締日の顧客取得.

@@ -16,7 +16,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.z00.Busho;
 import com.showka.service.persistence.u07.SeikyuUrikakePersistenceImpl;
 import com.showka.service.persistence.u07.i.SeikyuPersistence;
-import com.showka.service.search.u01.i.NyukinKakeInfoSearchService;
+import com.showka.service.query.u01.i.KokyakuQuery;
 import com.showka.service.search.u06.i.UrikakeSearchService;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
@@ -36,7 +36,7 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 	private SeikyuUrikakePersistenceImpl service;
 
 	@Injectable
-	private NyukinKakeInfoSearchService nyukinKakeInfoSearchService;
+	private KokyakuQuery nyukinKakeInfoSearchService;
 
 	@Injectable
 	private UrikakeSearchService urikakeSearchService;

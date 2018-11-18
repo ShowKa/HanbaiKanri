@@ -1,4 +1,4 @@
-package com.showka.service.search.u01;
+package com.showka.service.query.u01;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,12 +10,13 @@ import com.showka.common.PersistenceTestCase;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.z00.Busho;
+import com.showka.service.query.u01.KokyakuQueryImpl;
 import com.showka.value.ShimeDate;
 
-public class NyukinKakeInfoSearchServiceImplTest extends PersistenceTestCase {
+public class KokyakuQueryImplTest extends PersistenceTestCase {
 
 	@Autowired
-	private NyukinKakeInfoSearchServiceImpl service;
+	private KokyakuQueryImpl service;
 
 	/** 顧客. */
 	private static final Object[] M_KOKYAKU_01 = { "KK01", "aaaa", "左京区", "01", "10", "r-BS01", "r-KK01" };
