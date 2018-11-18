@@ -19,7 +19,7 @@ import com.showka.entity.WFirmBankFuriwake;
 import com.showka.entity.WFirmBankFuriwakePK;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;
 import com.showka.service.persistence.u08.FirmBankFuriwakePersistenceImpl;
-import com.showka.service.search.u01.i.FurikomiIraininSearchService;
+import com.showka.service.query.u01.i.FurikomiIraininQuery;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 import com.showka.value.AmountOfMoney;
 
@@ -39,7 +39,7 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 	private FirmBankFuriwakePersistenceImpl service;
 
 	@Injectable
-	private FurikomiIraininSearchService furikomiIraininSearchService;
+	private FurikomiIraininQuery furikomiIraininSearchService;
 
 	@Injectable
 	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;

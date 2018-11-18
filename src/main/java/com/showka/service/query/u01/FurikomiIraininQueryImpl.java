@@ -1,4 +1,4 @@
-package com.showka.service.search.u01;
+package com.showka.service.query.u01;
 
 import java.util.List;
 import java.util.Set;
@@ -14,10 +14,10 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.entity.MFurikomiIrainin;
 import com.showka.entity.MFurikomiIraininPK;
 import com.showka.repository.i.MFurikomiIraininRepository;
-import com.showka.service.search.u01.i.FurikomiIraininSearchService;
+import com.showka.service.query.u01.i.FurikomiIraininQuery;
 
 @Service
-public class FurikomiIraininSearchServiceImpl implements FurikomiIraininSearchService {
+public class FurikomiIraininQueryImpl implements FurikomiIraininQuery {
 
 	@Autowired
 	private MFurikomiIraininRepository repo;

@@ -1,9 +1,9 @@
-package com.showka.service.search.u01.i;
+package com.showka.service.query.u01.i;
 
 import com.showka.domain.u01.FurikomiIraininSet;
 import com.showka.domain.u01.Kokyaku;
 
-public interface FurikomiIraininSearchService {
+public interface FurikomiIraininQuery {
 
 	/**
 	 * 振込依頼人Set検索.

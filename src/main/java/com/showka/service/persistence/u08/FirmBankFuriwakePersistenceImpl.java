@@ -14,14 +14,14 @@ import com.showka.entity.WFirmBankFuriwake;
 import com.showka.entity.WFirmBankFuriwakePK;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;
 import com.showka.service.persistence.u08.i.FirmBankFuriwakePersistence;
-import com.showka.service.search.u01.i.FurikomiIraininSearchService;
+import com.showka.service.query.u01.i.FurikomiIraininQuery;
 import com.showka.service.specification.u06.i.UrikakeKeshikomiSpecificationService;
 
 @Service
 public class FirmBankFuriwakePersistenceImpl implements FirmBankFuriwakePersistence {
 
 	@Autowired
-	private FurikomiIraininSearchService furikomiIraininSearchService;
+	private FurikomiIraininQuery furikomiIraininSearchService;
 
 	@Autowired
 	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;

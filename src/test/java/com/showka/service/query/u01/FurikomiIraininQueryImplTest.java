@@ -1,4 +1,4 @@
-package com.showka.service.search.u01;
+package com.showka.service.query.u01;
 
 import java.util.List;
 
@@ -9,14 +9,15 @@ import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u01.FurikomiIraininSet;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.entity.MFurikomiIrainin;
+import com.showka.service.query.u01.FurikomiIraininQueryImpl;
 
 import mockit.Expectations;
 import mockit.Mocked;
 
-public class FurikomiIraininSearchServiceImplTest extends PersistenceTestCase {
+public class FurikomiIraininQueryImplTest extends PersistenceTestCase {
 
 	@Autowired
-	private FurikomiIraininSearchServiceImpl service;
+	private FurikomiIraininQueryImpl service;
 
 	// test data
 	private static final Object[] F_VALUE01 = { "r-KK01", "振込依頼人KK01-1", "r-KK01-1" };
