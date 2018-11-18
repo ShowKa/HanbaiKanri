@@ -1,4 +1,4 @@
-package com.showka.service.query.u05.i;
+package com.showka.service.query.u05;
 
 import java.util.Date;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u05.Uriage;
+import com.showka.service.query.u05.UriageQueryImpl;
 
 public class UriageQueryImplTest extends PersistenceTestCase {
 

@@ -1,4 +1,4 @@
-package com.showka.service.query.u05.i;
+package com.showka.service.query.u05;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +14,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.persistence.u01.i.KokyakuPersistence;
 import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.query.u05.i.UriageQuery;
 
 // TODO 売上PersistenceでgetDomain(Example exampleつくる？）
 @Service
