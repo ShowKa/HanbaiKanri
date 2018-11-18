@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u07.Seikyu;
 import com.showka.service.persistence.u01.i.KokyakuPersistence;
-import com.showka.service.search.u07.i.SeikyuSearchService;
+import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
@@ -29,7 +29,7 @@ public class U07G001Controller extends ControllerBase {
 	private KokyakuPersistence kokyakuPersistence;
 
 	@Autowired
-	private SeikyuSearchService seikyuSearchService;
+	private SeikyuQuery seikyuQuery;
 
 	/**
 	 * 参照.
@@ -54,7 +54,7 @@ public class U07G001Controller extends ControllerBase {
 		// get 顧客
 		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
 		// get 請求リスト
-		List<Seikyu> _seikyuList = seikyuSearchService.getAllOf(kokyaku);
+		List<Seikyu> _seikyuList = seikyuQuery.getAllOf(kokyaku);
 		// to map
 		List<Map<String, Object>> seikyuList = _seikyuList.stream().map(seikyu -> {
 			Map<String, Object> ret = new HashMap<String, Object>();

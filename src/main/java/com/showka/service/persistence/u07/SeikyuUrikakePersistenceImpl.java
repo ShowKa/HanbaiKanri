@@ -12,7 +12,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.persistence.u07.i.SeikyuUrikakePersistence;
 import com.showka.service.query.u01.i.KokyakuQuery;
-import com.showka.service.search.u06.i.UrikakeSearchService;
+import com.showka.service.query.u06.i.UrikakeQuery;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.service.specification.u07.i.ShimeDateBusinessService;
@@ -23,10 +23,10 @@ import com.showka.value.ShimeDate;
 public class SeikyuUrikakePersistenceImpl implements SeikyuUrikakePersistence {
 
 	@Autowired
-	private KokyakuQuery nyukinKakeInfoSearchService;
+	private KokyakuQuery nyukinKakeInfoQuery;
 
 	@Autowired
-	private UrikakeSearchService urikakeSearchService;
+	private UrikakeQuery urikakeQuery;
 
 	@Autowired
 	private SeikyuPersistence seikyuPersistence;
@@ -42,7 +42,7 @@ public class SeikyuUrikakePersistenceImpl implements SeikyuUrikakePersistence {
 		// 締日リスト
 		Set<ShimeDate> shimeDateSet = shimeDateBusinessService.getShimeDate(busho, eigyoDate);
 		// 締日の顧客リスト
-		List<Kokyaku> kokyakuList = nyukinKakeInfoSearchService.getKokyakuOnShimeDate(busho, shimeDateSet);
+		List<Kokyaku> kokyakuList = nyukinKakeInfoQuery.getKokyakuOnShimeDate(busho, shimeDateSet);
 		kokyakuList.forEach(kokyaku -> {
 			// 請求
 			this.seikyu(kokyaku, eigyoDate);
@@ -52,7 +52,7 @@ public class SeikyuUrikakePersistenceImpl implements SeikyuUrikakePersistence {
 	@Override
 	public void seikyu(Kokyaku kokyaku, EigyoDate eigyoDate) {
 		// 売掛リスト取得
-		List<Urikake> urikakeList = urikakeSearchService.getUrikakeForSeikyu(kokyaku);
+		List<Urikake> urikakeList = urikakeQuery.getUrikakeForSeikyu(kokyaku);
 		// 請求
 		this.seikyu(kokyaku, eigyoDate, urikakeList);
 	}

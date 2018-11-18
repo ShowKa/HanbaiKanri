@@ -13,7 +13,7 @@ import com.showka.entity.SUrikakeSeikyuNotYet;
 import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
 import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
 import com.showka.service.persistence.u06.UrikakeSeikyuStatusPersistenceImpl;
-import com.showka.service.search.u07.i.SeikyuSearchService;
+import com.showka.service.query.u07.i.SeikyuQuery;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -35,7 +35,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 	private SUrikakeSeikyuDoneRepository seikyuDoneRepo;
 
 	@Injectable
-	private SeikyuSearchService seikyuSearchService;
+	private SeikyuQuery seikyuQuery;
 
 	/** 売掛未請求状態. */
 	private static final Object[] V1 = { "r-001", "r-001" };
@@ -182,7 +182,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// expect
 		new Expectations() {
 			{
-				seikyuSearchService.getNewestOf(urikakeId);
+				seikyuQuery.getNewestOf(urikakeId);
 				result = Optional.empty();
 				service.toNotYet(urikakeId);
 				times = 1;
@@ -193,7 +193,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// verify
 		new Verifications() {
 			{
-				seikyuSearchService.getNewestOf(urikakeId);
+				seikyuQuery.getNewestOf(urikakeId);
 				times = 1;
 			}
 		};
@@ -214,7 +214,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// expect
 		new Expectations() {
 			{
-				seikyuSearchService.getNewestOf(urikakeId);
+				seikyuQuery.getNewestOf(urikakeId);
 				result = Optional.of(seikyu);
 				service.toDone(urikakeId, seikyuId);
 			}
@@ -224,7 +224,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// verify
 		new Verifications() {
 			{
-				seikyuSearchService.getNewestOf(urikakeId);
+				seikyuQuery.getNewestOf(urikakeId);
 				times = 1;
 				service.toDone(urikakeId, seikyuId);
 				times = 1;

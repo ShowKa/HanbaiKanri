@@ -39,7 +39,7 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 	private FirmBankFuriwakePersistenceImpl service;
 
 	@Injectable
-	private FurikomiIraininQuery furikomiIraininSearchService;
+	private FurikomiIraininQuery furikomiIraininQuery;
 
 	@Injectable
 	private UrikakeKeshikomiSpecificationService urikakeKeshikomiSpecificationService;

@@ -17,7 +17,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.service.persistence.u07.SeikyuUrikakePersistenceImpl;
 import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.query.u01.i.KokyakuQuery;
-import com.showka.service.search.u06.i.UrikakeSearchService;
+import com.showka.service.query.u06.i.UrikakeQuery;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.service.specification.u07.i.ShimeDateBusinessService;
@@ -36,10 +36,10 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 	private SeikyuUrikakePersistenceImpl service;
 
 	@Injectable
-	private KokyakuQuery nyukinKakeInfoSearchService;
+	private KokyakuQuery nyukinKakeInfoQuery;
 
 	@Injectable
-	private UrikakeSearchService urikakeSearchService;
+	private UrikakeQuery urikakeQuery;
 
 	@Injectable
 	private SeikyuPersistence seikyuPersistence;
@@ -75,7 +75,7 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 				shimeDateBusinessService.getShimeDate(busho, eigyoDate);
 				result = shimeDates;
 				// 締日の顧客リスト取得
-				nyukinKakeInfoSearchService.getKokyakuOnShimeDate(busho, shimeDates);
+				nyukinKakeInfoQuery.getKokyakuOnShimeDate(busho, shimeDates);
 				result = kokyakuList;
 				// 内部呼出
 				service.seikyu(kokyaku, eigyoDate);
@@ -91,7 +91,7 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 				shimeDateBusinessService.getShimeDate(busho, eigyoDate);
 				times = 1;
 				// 締日の顧客リスト取得
-				nyukinKakeInfoSearchService.getKokyakuOnShimeDate(busho, shimeDates);
+				nyukinKakeInfoQuery.getKokyakuOnShimeDate(busho, shimeDates);
 				times = 1;
 			}
 		};
@@ -113,7 +113,7 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				// 売掛リスト
-				urikakeSearchService.getUrikakeForSeikyu(kokyaku);
+				urikakeQuery.getUrikakeForSeikyu(kokyaku);
 				result = urikakeList;
 				// 請求
 				service.seikyu(kokyaku, shimeDate, urikakeList);
@@ -126,7 +126,7 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 		new Verifications() {
 			{
 				// 売掛リスト
-				urikakeSearchService.getUrikakeForSeikyu(kokyaku);
+				urikakeQuery.getUrikakeForSeikyu(kokyaku);
 				times = 1;
 			}
 		};

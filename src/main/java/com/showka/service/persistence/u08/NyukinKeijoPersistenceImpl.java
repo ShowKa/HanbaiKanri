@@ -14,14 +14,14 @@ import com.showka.entity.TNyukinKeijo;
 import com.showka.repository.i.TNyukinKeijoRepository;
 import com.showka.service.persistence.u08.i.NyukinKeijoPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
-import com.showka.service.search.u08.i.NyukinKeijoSearchService;
+import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.value.EigyoDate;
 
 @Service
 public class NyukinKeijoPersistenceImpl implements NyukinKeijoPersistence {
 
 	@Autowired
-	private NyukinKeijoSearchService nyukinKeijoSearchService;
+	private NyukinKeijoQuery nyukinKeijoQuery;
 
 	@Autowired
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
@@ -31,7 +31,7 @@ public class NyukinKeijoPersistenceImpl implements NyukinKeijoPersistence {
 
 	@Override
 	public void keijo(Busho busho, EigyoDate keijoDate) {
-		List<Nyukin> nyukinList = nyukinKeijoSearchService.searchNotDone(busho, keijoDate);
+		List<Nyukin> nyukinList = nyukinKeijoQuery.searchNotDone(busho, keijoDate);
 		nyukinList.forEach(nyukin -> {
 			TNyukinKeijo e = new TNyukinKeijo();
 			e.setBushoId(nyukin.getBushoId());
@@ -45,7 +45,7 @@ public class NyukinKeijoPersistenceImpl implements NyukinKeijoPersistence {
 
 	@Override
 	public BushoNyukin getBushoNyukin(Busho busho, EigyoDate keijoDate) {
-		List<Nyukin> nyukinList = nyukinKeijoSearchService.seach(busho, keijoDate);
+		List<Nyukin> nyukinList = nyukinKeijoQuery.seach(busho, keijoDate);
 		List<NyukinKeshikomi> nyukinKeshikomiList = nyukinList.stream().map(nyukin -> {
 			String nyukinId = nyukin.getRecordId();
 			return nyukinKeshikomiPersistence.getDomain(nyukinId);

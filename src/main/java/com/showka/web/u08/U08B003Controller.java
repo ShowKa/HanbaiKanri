@@ -19,7 +19,7 @@ import com.showka.kubun.FurikomiMatchintErrorCause;
 import com.showka.service.persistence.u08.i.FirmBankFurikomiMatchingErrorPersistence;
 import com.showka.service.persistence.u08.i.FirmBankFurikomiMatchingPersistence;
 import com.showka.service.persistence.z00.i.BushoPersistence;
-import com.showka.service.search.u08.i.FirmBankFurikomiSearchService;
+import com.showka.service.query.u08.i.FirmBankFurikomiQuery;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
@@ -32,7 +32,7 @@ public class U08B003Controller extends ControllerBase {
 	private FirmBankFurikomiMatchingPersistence Persistence;
 
 	@Autowired
-	private FirmBankFurikomiSearchService searchService;
+	private FirmBankFurikomiQuery Query;
 
 	@Autowired
 	private FirmBankFurikomiMatchingErrorPersistence errorService;
@@ -113,7 +113,7 @@ public class U08B003Controller extends ControllerBase {
 		// matching error
 		TheDate date = new TheDate(form.getDate());
 		// マッチングデータ抽出
-		FBFurikomiMatchingResult result = searchService.searchMatched(busho, date);
+		FBFurikomiMatchingResult result = Query.searchMatched(busho, date);
 		// マッチング成功
 		result.getMatchedNormally().parallelStream().forEach(m -> {
 			Persistence.save(m.getFbFurikomiId(), m.getFuriwakeId());
@@ -148,7 +148,7 @@ public class U08B003Controller extends ControllerBase {
 	public ResponseEntity<?> unmatch(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// アンマッチ
 		TheDate date = new TheDate(form.getDate());
-		List<String> unmatchedList = searchService.searchUnmatched(date);
+		List<String> unmatchedList = Query.searchUnmatched(date);
 		unmatchedList.stream().forEach(fbFurikomiId -> {
 			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.マッチング対象なし);
 		});

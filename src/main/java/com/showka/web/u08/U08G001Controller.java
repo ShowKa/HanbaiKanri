@@ -22,8 +22,8 @@ import com.showka.kubun.i.Kubun;
 import com.showka.service.persistence.u01.i.KokyakuPersistence;
 import com.showka.service.persistence.z00.i.BushoPersistence;
 import com.showka.service.persistence.z00.i.ShainPersistence;
+import com.showka.service.search.u08.i.NyukinKeshikomiSearch;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
-import com.showka.service.search.u08.i.NyukinKeshikomiSearchService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
@@ -35,7 +35,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G001Controller extends ControllerBase {
 
 	@Autowired
-	private NyukinKeshikomiSearchService nyukinSearchService;
+	private NyukinKeshikomiSearch nyukinQuery;
 
 	@Autowired
 	private BushoPersistence bushoPersistence;
@@ -111,7 +111,7 @@ public class U08G001Controller extends ControllerBase {
 			param.setMinNyukinDate(new EigyoDate(form.getMinNyukinDate()));
 		}
 		// search
-		List<NyukinKeshikomi> nyukinList = nyukinSearchService.search(param);
+		List<NyukinKeshikomi> nyukinList = nyukinQuery.search(param);
 		// model
 		List<Map<String, Object>> resultList = nyukinList.stream().map(nk -> {
 			Nyukin n = nk.getNyukin();

@@ -15,7 +15,7 @@ import com.showka.domain.u07.Seikyu;
 import com.showka.domain.z00.Busho;
 import com.showka.service.persistence.u08.i.FirmBankFuriwakePersistence;
 import com.showka.service.persistence.z00.i.BushoPersistence;
-import com.showka.service.search.u07.i.SeikyuSearchService;
+import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
 
@@ -27,7 +27,7 @@ public class U08B002Controller extends ControllerBase {
 	private FirmBankFuriwakePersistence firmBankFuriwakePersistence;
 
 	@Autowired
-	private SeikyuSearchService seikyuSearchService;
+	private SeikyuQuery seikyuQuery;
 
 	@Autowired
 	private BushoPersistence bushoPersistence;
@@ -49,7 +49,7 @@ public class U08B002Controller extends ControllerBase {
 	public ResponseEntity<?> fbFuriwake(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
 		// search 請求・売掛
 		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
-		List<Seikyu> seikyuList = seikyuSearchService.getAllOf(busho);
+		List<Seikyu> seikyuList = seikyuQuery.getAllOf(busho);
 		// save FB振分
 		firmBankFuriwakePersistence.save(seikyuList);
 		// return

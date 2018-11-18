@@ -20,8 +20,8 @@ import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.persistence.u05.UriageKeijoPersistenceImpl;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
-import com.showka.service.search.u05.i.UriageKeijoSearchService;
-import com.showka.service.search.u05.i.UriageRirekiSearchService;
+import com.showka.service.query.u05.i.UriageKeijoQuery;
+import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -43,13 +43,13 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 	private RUriageKeijoTeiseiRepository repoTeisei;
 
 	@Injectable
-	private UriageRirekiSearchService uriageRirekiSearchService;
+	private UriageRirekiQuery uriageRirekiQuery;
 
 	@Injectable
 	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Injectable
-	private UriageKeijoSearchService uriageKeijoSearchService;
+	private UriageKeijoQuery uriageKeijoQuery;
 
 	/**
 	 * 計上.
@@ -79,7 +79,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiSearchService.search(busho, date);
+				uriageRirekiQuery.search(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
@@ -129,7 +129,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiSearchService.search(busho, date);
+				uriageRirekiQuery.search(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
@@ -142,7 +142,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiSearchService.search(busho, date);
+				uriageRirekiQuery.search(busho, date);
 				times = 1;
 				busho.getRecordId();
 				times = 1;
@@ -192,7 +192,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiSearchService.search(busho, date);
+				uriageRirekiQuery.search(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
@@ -208,7 +208,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiSearchService.search(busho, date);
+				uriageRirekiQuery.search(busho, date);
 				times = 1;
 				busho.getRecordId();
 				times = 1;
@@ -234,9 +234,9 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageKeijoSearchService.getKeijoKingaku(busho, date);
+				uriageKeijoQuery.getKeijoKingaku(busho, date);
 				result = 300;
-				uriageKeijoSearchService.getTeiseiKingaku(busho, date);
+				uriageKeijoQuery.getTeiseiKingaku(busho, date);
 				result = -100;
 			}
 		};
@@ -245,9 +245,9 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageKeijoSearchService.getKeijoKingaku(busho, date);
+				uriageKeijoQuery.getKeijoKingaku(busho, date);
 				times = 1;
-				uriageKeijoSearchService.getTeiseiKingaku(busho, date);
+				uriageKeijoQuery.getTeiseiKingaku(busho, date);
 				times = 1;
 			}
 		};

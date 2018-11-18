@@ -19,8 +19,8 @@ import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.persistence.u05.i.UriageKeijoPersistence;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
-import com.showka.service.search.u05.i.UriageKeijoSearchService;
-import com.showka.service.search.u05.i.UriageRirekiSearchService;
+import com.showka.service.query.u05.i.UriageKeijoQuery;
+import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -33,18 +33,18 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 	private RUriageKeijoTeiseiRepository repoTeisei;
 
 	@Autowired
-	private UriageRirekiSearchService uriageRirekiSearchService;
+	private UriageRirekiQuery uriageRirekiQuery;
 
 	@Autowired
 	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Autowired
-	private UriageKeijoSearchService uriageKeijoSearchService;
+	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Override
 	public void keijo(Busho busho, EigyoDate date) {
 		// search 計上対象売上
-		List<RUriage> uriageRirekiList = uriageRirekiSearchService.search(busho, date);
+		List<RUriage> uriageRirekiList = uriageRirekiQuery.search(busho, date);
 		// 売上計上
 		uriageRirekiList.forEach(uriageRireki -> {
 			// entity
@@ -84,8 +84,8 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 	@Override
 	public BushoUriage getBushoUriage(Busho busho, EigyoDate date) {
 		// 売上計上金額集計（訂正除く）
-		int keijoKingaku = uriageKeijoSearchService.getKeijoKingaku(busho, date);
-		int teiseiKingaku = uriageKeijoSearchService.getTeiseiKingaku(busho, date);
+		int keijoKingaku = uriageKeijoQuery.getKeijoKingaku(busho, date);
+		int teiseiKingaku = uriageKeijoQuery.getTeiseiKingaku(busho, date);
 		// build
 		BushoUriageBuilder b = new BushoUriageBuilder();
 		b.withBusho(busho);

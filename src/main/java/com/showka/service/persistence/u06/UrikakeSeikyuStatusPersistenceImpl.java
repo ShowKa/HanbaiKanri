@@ -11,7 +11,7 @@ import com.showka.entity.SUrikakeSeikyuNotYet;
 import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
 import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
 import com.showka.service.persistence.u06.i.UrikakeSeikyuStatusPersistence;
-import com.showka.service.search.u07.i.SeikyuSearchService;
+import com.showka.service.query.u07.i.SeikyuQuery;
 
 @Service
 public class UrikakeSeikyuStatusPersistenceImpl implements UrikakeSeikyuStatusPersistence {
@@ -23,7 +23,7 @@ public class UrikakeSeikyuStatusPersistenceImpl implements UrikakeSeikyuStatusPe
 	private SUrikakeSeikyuDoneRepository seikyuDoneRepo;
 
 	@Autowired
-	private SeikyuSearchService seikyuSearchService;
+	private SeikyuQuery seikyuQuery;
 
 	@Override
 	public void toNotYet(String urikakeId) {
@@ -64,7 +64,7 @@ public class UrikakeSeikyuStatusPersistenceImpl implements UrikakeSeikyuStatusPe
 		}
 		// 最新請求を取得。
 		// 未請求の場合、未請求状態とする。
-		Optional<Seikyu> _newestSeikyu = seikyuSearchService.getNewestOf(urikakeId);
+		Optional<Seikyu> _newestSeikyu = seikyuQuery.getNewestOf(urikakeId);
 		if (!_newestSeikyu.isPresent()) {
 			this.toNotYet(urikakeId);
 			return;

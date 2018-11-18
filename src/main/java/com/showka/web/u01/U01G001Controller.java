@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.entity.MKokyaku;
-import com.showka.service.search.u01.KokyakuSearchCriteria;
-import com.showka.service.search.u01.i.KokyakuSearchService;
+import com.showka.service.search.u01.i.KokyakuSearch;
+import com.showka.service.search.u01.i.KokyakuSearchCriteria;
 import com.showka.web.ModelAndViewExtended;
 
 /**
@@ -32,7 +32,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U01G001Controller {
 
 	@Autowired
-	private KokyakuSearchService service;
+	private KokyakuSearch service;
 
 	// public method called by request
 	/**

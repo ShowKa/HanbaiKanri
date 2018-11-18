@@ -32,7 +32,7 @@ import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinPersistence;
-import com.showka.service.search.u06.i.UrikakeSearchService;
+import com.showka.service.query.u06.i.UrikakeQuery;
 import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -58,7 +58,7 @@ public class U08G003Controller extends ControllerBase {
 	private NyukinKeshikomiValidateService nyukinKeshikomiValidateService;
 
 	@Autowired
-	private UrikakeSearchService urikakeSearchService;
+	private UrikakeQuery urikakeQuery;
 
 	@Autowired
 	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
@@ -132,7 +132,7 @@ public class U08G003Controller extends ControllerBase {
 				.collect(Collectors.toSet());
 		// get 売掛
 		Kokyaku kokyaku = nyukinKeshikomi.getNyukin().getKokyaku();
-		List<Urikake> urikake = urikakeSearchService.getUrikakeNotSettled(kokyaku);
+		List<Urikake> urikake = urikakeQuery.getUrikakeNotSettled(kokyaku);
 		// この入金によって消込まれた売掛は除去
 		urikake.removeIf(u -> {
 			String thisUrikakeId = u.getRecordId();
