@@ -13,9 +13,9 @@ import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.persistence.u07.i.SeikyuUrikakePersistence;
 import com.showka.service.query.u01.i.KokyakuQuery;
 import com.showka.service.query.u06.i.UrikakeQuery;
+import com.showka.service.query.u07.i.ShimeDateQuery;
 import com.showka.service.specification.u07.SeikyuUrikakeSpecificationFactory;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
-import com.showka.service.specification.u07.i.ShimeDateBusinessService;
 import com.showka.value.EigyoDate;
 import com.showka.value.ShimeDate;
 
@@ -35,7 +35,7 @@ public class SeikyuUrikakePersistenceImpl implements SeikyuUrikakePersistence {
 	private SeikyuUrikakeSpecificationFactory seikyuUrikakeSpecificationFactory;
 
 	@Autowired
-	private ShimeDateBusinessService shimeDateBusinessService;
+	private ShimeDateQuery shimeDateBusinessService;
 
 	@Override
 	public void seikyu(Busho busho, EigyoDate eigyoDate) {

@@ -1,4 +1,4 @@
-package com.showka.service.specification.u07;
+package com.showka.service.query.u07;
 
 import java.util.Set;
 
@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.z00.Busho;
+import com.showka.service.query.u07.ShimeDateQueryImpl;
 import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.value.EigyoDate;
 import com.showka.value.ShimeDate;
@@ -17,10 +18,10 @@ import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class ShimeDateBusinessServiceImplTest extends SimpleTestCase {
+public class ShimeDateQueryImplTest extends SimpleTestCase {
 
 	@Tested
-	private ShimeDateBusinessServiceImpl service;
+	private ShimeDateQueryImpl service;
 
 	@Injectable
 	private BushoDateBusinessService dateService;

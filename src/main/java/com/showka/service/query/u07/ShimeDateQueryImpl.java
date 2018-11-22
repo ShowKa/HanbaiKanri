@@ -1,4 +1,4 @@
-package com.showka.service.specification.u07;
+package com.showka.service.query.u07;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.z00.Busho;
-import com.showka.service.specification.u07.i.ShimeDateBusinessService;
+import com.showka.service.query.u07.i.ShimeDateQuery;
 import com.showka.service.specification.z00.i.BushoDateBusinessService;
 import com.showka.value.EigyoDate;
 import com.showka.value.ShimeDate;
 import com.showka.value.TheDate;
 
 @Service
-public class ShimeDateBusinessServiceImpl implements ShimeDateBusinessService {
+public class ShimeDateQueryImpl implements ShimeDateQuery {
 
 	@Autowired
 	private BushoDateBusinessService dateService;

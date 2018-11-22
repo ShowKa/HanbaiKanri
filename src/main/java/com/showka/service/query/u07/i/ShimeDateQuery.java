@@ -1,4 +1,4 @@
-package com.showka.service.specification.u07.i;
+package com.showka.service.query.u07.i;
 
 import java.util.Set;
 
@@ -6,7 +6,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 import com.showka.value.ShimeDate;
 
-public interface ShimeDateBusinessService {
+public interface ShimeDateQuery {
 
 	/**
 	 * 営業日を基準にして$締日リスト取得.
