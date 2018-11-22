@@ -78,4 +78,10 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 			return nyukinPersistence.getDomain(r.getNyukinId());
 		}).collect(Collectors.toList());
 	}
+
+	@Override
+	public boolean keijoDone(String nyukinId) {
+		return repo.existsById(nyukinId);
+	}
+
 }

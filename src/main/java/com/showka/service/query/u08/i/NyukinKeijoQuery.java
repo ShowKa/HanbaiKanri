@@ -40,4 +40,13 @@ public interface NyukinKeijoQuery {
 	 * @return 計上済み入金リスト
 	 */
 	List<Nyukin> seach(Busho busho, EigyoDate keijoDate);
+
+	/**
+	 * 計上済判定.
+	 * 
+	 * @param nyukinId
+	 *            入金ID
+	 * @return 計上済の場合true
+	 */
+	public boolean keijoDone(String nyukinId);
 }

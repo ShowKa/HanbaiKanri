@@ -12,9 +12,8 @@ import com.showka.domain.u08.Shukin;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.service.persistence.u08.i.ShukinPersistence;
+import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
-import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
-import com.showka.service.validator.u08.ShukinValidatorImpl;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.DuprecatedException;
 import com.showka.system.exception.NotAllowedNumberException;
@@ -34,7 +33,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 	private ShukinValidatorImpl service;
 
 	@Injectable
-	private NyukinKeijoBusinessService nyukinKeijoBusinessService;
+	private NyukinKeijoQuery nyukinKeijoQuery;
 
 	@Injectable
 	private ShukinPersistence shukinPersistence;
@@ -357,7 +356,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinKeijoBusinessService.keijoDone(nyukinId);
+				nyukinKeijoQuery.keijoDone(nyukinId);
 				result = false;
 			}
 		};
@@ -366,7 +365,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				nyukinKeijoBusinessService.keijoDone(nyukinId);
+				nyukinKeijoQuery.keijoDone(nyukinId);
 				times = 1;
 			}
 		};
@@ -387,7 +386,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinKeijoBusinessService.keijoDone(nyukinId);
+				nyukinKeijoQuery.keijoDone(nyukinId);
 				result = true;
 			}
 		};

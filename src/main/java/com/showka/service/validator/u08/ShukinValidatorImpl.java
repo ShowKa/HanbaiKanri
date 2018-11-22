@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u08.Shukin;
 import com.showka.service.persistence.u08.i.ShukinPersistence;
+import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
-import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
 import com.showka.service.validator.u08.i.ShukinValidator;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.DuprecatedException;
@@ -21,7 +21,7 @@ import com.showka.value.EigyoDate;
 public class ShukinValidatorImpl implements ShukinValidator {
 
 	@Autowired
-	private NyukinKeijoBusinessService nyukinKeijoBusinessService;
+	private NyukinKeijoQuery nyukinKeijoQuery;
 
 	@Autowired
 	private ShukinPersistence shukinPersistence;
@@ -84,7 +84,7 @@ public class ShukinValidatorImpl implements ShukinValidator {
 	 */
 	void validateKeijo(Shukin shukin) throws CanNotUpdateOrDeleteException {
 		String nyukinId = shukin.getNyukinId();
-		boolean keijoDone = nyukinKeijoBusinessService.keijoDone(nyukinId);
+		boolean keijoDone = nyukinKeijoQuery.keijoDone(nyukinId);
 		if (keijoDone) {
 			throw new CanNotUpdateOrDeleteException("計上済みのため");
 		}
