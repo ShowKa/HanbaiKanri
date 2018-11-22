@@ -1,4 +1,4 @@
-package com.showka.service.specification.u08;
+package com.showka.service.query.u08;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,16 +9,17 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.service.persistence.u08.i.KeshikomiPersistence;
+import com.showka.service.query.u08.NyukinKeshikomiQueryImpl;
 
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class NyukinKeshikomiSpecificationServiceImplTest extends SimpleTestCase {
+public class NyukinKeshikomiQueryImplTest extends SimpleTestCase {
 
 	@Tested
-	private NyukinKeshikomiSpecificationServiceImpl service;
+	private NyukinKeshikomiQueryImpl service;
 
 	@Injectable
 	private KeshikomiPersistence keshikomiPersistence;

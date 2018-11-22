@@ -1,9 +1,9 @@
-package com.showka.service.specification.u08.i;
+package com.showka.service.query.u08.i;
 
 /**
  * 入金消込仕様Service.
  */
-public interface NyukinKeshikomiSpecificationService {
+public interface NyukinKeshikomiQuery {
 
 	/**
 	 * 消込有無.

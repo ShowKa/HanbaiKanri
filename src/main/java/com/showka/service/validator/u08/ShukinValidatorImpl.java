@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u08.Shukin;
 import com.showka.service.persistence.u08.i.ShukinPersistence;
+import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
 import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
-import com.showka.service.specification.u08.i.NyukinKeshikomiSpecificationService;
 import com.showka.service.validator.u08.i.ShukinValidator;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.DuprecatedException;
@@ -27,7 +27,7 @@ public class ShukinValidatorImpl implements ShukinValidator {
 	private ShukinPersistence shukinPersistence;
 
 	@Autowired
-	private NyukinKeshikomiSpecificationService nyukinKeshikomiSpecificationService;
+	private NyukinKeshikomiQuery nyukinKeshikomiSpecificationService;
 
 	@Override
 	public void validate(Shukin shukin) throws NotAllowedNumberException {

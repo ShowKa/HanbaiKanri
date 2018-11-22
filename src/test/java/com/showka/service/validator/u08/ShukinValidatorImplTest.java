@@ -12,8 +12,8 @@ import com.showka.domain.u08.Shukin;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.service.persistence.u08.i.ShukinPersistence;
+import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
 import com.showka.service.specification.u08.i.NyukinKeijoBusinessService;
-import com.showka.service.specification.u08.i.NyukinKeshikomiSpecificationService;
 import com.showka.service.validator.u08.ShukinValidatorImpl;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.DuprecatedException;
@@ -40,7 +40,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 	private ShukinPersistence shukinPersistence;
 
 	@Injectable
-	private NyukinKeshikomiSpecificationService nyukinKeshikomiSpecificationService;
+	private NyukinKeshikomiQuery nyukinKeshikomiSpecificationService;
 
 	/**
 	 * 金額1円の場合OK
