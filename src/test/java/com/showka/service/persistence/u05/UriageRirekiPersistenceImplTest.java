@@ -17,9 +17,9 @@ import com.showka.entity.RUriage;
 import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.repository.i.RUriageRepository;
-import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrud;
 import com.showka.service.persistence.u05.UriageRirekiPersistenceImpl;
-import com.showka.service.persistence.u05.i.UriageRirekiMeisaiPersistence;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
@@ -40,10 +40,10 @@ public class UriageRirekiPersistenceImplTest extends PersistenceTestCase {
 	private RUriageRepository repo;
 
 	@Injectable
-	private KokyakuPersistence kokyakuPersistence;
+	private KokyakuCrud kokyakuPersistence;
 
 	@Injectable
-	private UriageRirekiMeisaiPersistence uriageRirekiMeisaiPersistence;
+	private UriageRirekiMeisaiCrud uriageRirekiMeisaiPersistence;
 
 	/** 売上01. */
 	private static final Uriage rUriage01;

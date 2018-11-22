@@ -3,11 +3,8 @@ package com.showka.service.persistence.u08;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationEventPublisher;
 
 import com.showka.common.PersistenceTestCase;
 import com.showka.domain.builder.KeshikomiBuilder;
@@ -16,122 +13,36 @@ import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
-import com.showka.entity.TKeshikomi;
 import com.showka.repository.i.CKeshikomiRepository;
 import com.showka.repository.i.TKeshikomiRepository;
-import com.showka.service.persistence.u06.i.UrikakePersistence;
-import com.showka.service.persistence.u08.KeshikomiPersistenceImpl;
-import com.showka.service.persistence.u08.i.NyukinPersistence;
+import com.showka.service.crud.u08.i.KeshikomiCrud;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 import mockit.Expectations;
 import mockit.Injectable;
 import mockit.Tested;
+import mockit.Verifications;
 
-// FIXME Service Refactoring後、テスト再構築
 public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 
 	@Tested
 	@Injectable
 	private KeshikomiPersistenceImpl service;
 
-	@Autowired
 	@Injectable
+	@Autowired
 	private TKeshikomiRepository repo;
 
-	@Autowired
 	@Injectable
+	@Autowired
 	private CKeshikomiRepository cancelRepo;
 
-	@Autowired
 	@Injectable
-	private NyukinPersistence nyukinPersistence;
-
-	@Autowired
-	@Injectable
-	private UrikakePersistence urikakePersistence;
-
-	@Injectable
-	private ApplicationEventPublisher applicationEventPublisher;
+	private KeshikomiCrud keshikomiCrud;
 
 	private static final Object[] T_KESHIKOMI_01 = { "r-001", d("20170101"), 1000, "r-001", "r-KK01-00001", "r-001" };
 	private static final Object[] T_KESHIKOMI_02 = { "r-002", d("20170101"), 2000, "r-001", "r-KK01-00002", "r-002" };
-
-	@Before
-	public void supressPublisher() {
-		new Expectations() {
-			{
-				applicationEventPublisher.publishEvent((ApplicationEvent) any);
-			}
-		};
-	}
-
-	/**
-	 * 新規登録.
-	 */
-	@Test
-	public void test01_save() throws Exception {
-		// database
-		super.deleteAll(T_KESHIKOMI);
-		// input
-		// 入金
-		NyukinBuilder nb = new NyukinBuilder();
-		nb.withRecordId("r-001");
-		Nyukin nyukin = nb.build();
-		// 売掛
-		UrikakeBuilder ub = new UrikakeBuilder();
-		String urikakeId = "r-KK01-00001";
-		ub.withRecordId(urikakeId);
-		Urikake urikake = ub.build();
-		// 消込
-		KeshikomiBuilder kb = new KeshikomiBuilder();
-		kb.withDate(new EigyoDate(2017, 1, 1));
-		kb.withTimestamp(new TheTimestamp());
-		kb.withKingaku(1000);
-		kb.withNyukin(nyukin);
-		kb.withUrikake(urikake);
-		Keshikomi keshikomi = kb.build();
-		// do
-		service.save(keshikomi);
-		// check
-		TKeshikomi actual = repo.getOne(keshikomi.getRecordId());
-		assertNotNull(actual);
-		assertEquals(1000, actual.getKingaku().intValue());
-	}
-
-	/**
-	 * 更新
-	 */
-	@Test
-	public void test02_save() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01);
-		// input
-		// 入金
-		NyukinBuilder nb = new NyukinBuilder();
-		nb.withRecordId("r-001");
-		Nyukin nyukin = nb.build();
-		// 売掛
-		UrikakeBuilder ub = new UrikakeBuilder();
-		ub.withRecordId("r-KK01-00001");
-		Urikake urikake = ub.build();
-		// 消込
-		KeshikomiBuilder kb = new KeshikomiBuilder();
-		kb.withDate(new EigyoDate(2017, 1, 1));
-		kb.withTimestamp(new TheTimestamp());
-		kb.withKingaku(1001);
-		kb.withNyukin(nyukin);
-		kb.withUrikake(urikake);
-		kb.withRecordId("r-001");
-		kb.withVersion(0);
-		Keshikomi keshikomi = kb.build();
-		// do
-		service.save(keshikomi);
-		// check
-		TKeshikomi actual = repo.getOne(keshikomi.getRecordId());
-		assertEquals(1001, actual.getKingaku().intValue());
-	}
 
 	/**
 	 * override.
@@ -143,38 +54,43 @@ public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 	 */
 	@Test
 	public void test01_override() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01, T_KESHIKOMI_02);
 		// input
-		// 入金
-		NyukinBuilder nb = new NyukinBuilder();
-		nb.withRecordId("r-001");
-		Nyukin nyukin = nb.build();
-		// 売掛
-		UrikakeBuilder ub = new UrikakeBuilder();
-		ub.withRecordId("r-KK01-00002");
-		Urikake urikake = ub.build();
+		String nyukinId = "r-001";
 		// 消込
 		KeshikomiBuilder kb = new KeshikomiBuilder();
 		kb.withDate(new EigyoDate(2017, 1, 1));
-		kb.withTimestamp(new TheTimestamp());
-		kb.withKingaku(2001);
-		kb.withNyukin(nyukin);
-		kb.withUrikake(urikake);
-		kb.withRecordId("r-002");
-		kb.withVersion(0);
-		Keshikomi keshikomi = kb.build();
+		kb.withRecordId("r-001");
+		Keshikomi keshikomi1 = kb.build();
 		// 消込リスト
 		Set<Keshikomi> keshikomiSet = new HashSet<Keshikomi>();
-		keshikomiSet.add(keshikomi);
+		keshikomiSet.add(keshikomi1);
+		// 削除対象消込
+		KeshikomiBuilder kb2 = new KeshikomiBuilder();
+		kb2.withDate(new EigyoDate(2017, 1, 1));
+		kb2.withRecordId("r-002");
+		Keshikomi keshikomi2 = kb2.build();
+		// expect
+		new Expectations() {
+			{
+				service.getKeshikomiSetOfNyukin(nyukinId);
+				result = keshikomi2;
+				keshikomiCrud.delete(keshikomi2);
+				keshikomiCrud.save(keshikomi1);
+			}
+		};
 		// do
 		service.override("r-001", new EigyoDate(2017, 1, 1), keshikomiSet);
-		// check saved
-		TKeshikomi actual = repo.getOne(keshikomi.getRecordId());
-		assertEquals(2001, actual.getKingaku().intValue());
-		// check deleted
-		boolean exists = repo.existsById("r-001");
-		assertFalse(exists);
+		// verify
+		new Verifications() {
+			{
+				service.getKeshikomiSetOfNyukin(nyukinId);
+				times = 1;
+				keshikomiCrud.delete(keshikomi2);
+				times = 1;
+				keshikomiCrud.save(keshikomi1);
+				times = 1;
+			}
+		};
 	}
 
 	@Test
@@ -196,45 +112,43 @@ public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 	}
 
 	@Test
-	public void test01_delete() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01);
-		// do
-		service.delete("r-001", 0);
-		// check
-		boolean actual = repo.existsById("r-001");
-		assertFalse(actual);
-	}
-
-	@Test
-	public void test01_getDomain() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01);
-		// do
-		Keshikomi actual = service.getDomain("r-001");
-		// check
-		assertEquals(1000, actual.getKingaku().intValue());
-	}
-
-	@Test
-	public void test01_exists() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01);
-		// do
-		boolean actual = service.exsists("r-001");
-		// check
-		assertTrue(actual);
-	}
-
-	@Test
 	public void test01_cancel() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01);
+		// mock
+		// 入金
+		Nyukin n = new NyukinBuilder().build();
+		n.setRecordId("r-001");
+		// 売掛
+		Urikake u = new UrikakeBuilder().build();
+		u.setRecordId("r-001");
+		// 消込
+		KeshikomiBuilder kb = new KeshikomiBuilder();
+		kb.withDate(new EigyoDate(2017, 1, 1));
+		kb.withRecordId("r-001");
+		kb.withKingaku(1000);
+		kb.withTimestamp(new TheTimestamp());
+		kb.withNyukin(n);
+		kb.withUrikake(u);
+		Keshikomi keshikomi = kb.build();
+		// expect
+		new Expectations() {
+			{
+				keshikomiCrud.getDomain("r-001");
+				result = keshikomi;
+				keshikomiCrud.delete(keshikomi);
+			}
+		};
 		// do
 		service.cancel("r-001", new EigyoDate(2099, 9, 9));
+		// verify
+		new Verifications() {
+			{
+				keshikomiCrud.getDomain("r-001");
+				times = 1;
+				keshikomiCrud.delete((Keshikomi) any);
+				times = 1;
+			}
+		};
 		// check
-		boolean keshikomi = repo.existsById("r-001");
-		assertFalse(keshikomi);
 		boolean cancel = cancelRepo.existsById("r-001");
 		assertTrue(cancel);
 	}

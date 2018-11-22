@@ -9,7 +9,6 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.service.persistence.u08.i.KeshikomiPersistence;
-import com.showka.service.query.u08.NyukinKeshikomiQueryImpl;
 
 import mockit.Expectations;
 import mockit.Injectable;

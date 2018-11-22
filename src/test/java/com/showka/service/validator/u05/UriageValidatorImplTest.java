@@ -18,7 +18,7 @@ import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
-import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.service.validator.u05.i.UriageMeisaiValidator;
@@ -43,7 +43,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 	private UriageValidatorImpl service;
 
 	@Injectable
-	private UriagePersistence uriagePersistence;
+	private UriageCrud uriageCrud;
 
 	@Injectable
 	private UriageMeisaiValidator meisaiService;
@@ -243,7 +243,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = true;
@@ -270,7 +270,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
@@ -299,7 +299,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
@@ -312,7 +312,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				times = 1;
 				cUriageRepository.existsById(uriageId);
 				times = 1;
@@ -331,7 +331,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				result = uriage01;
 				service.validateForUpdate(uriage01);
 				result = new ValidateException("");
@@ -351,7 +351,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				result = uriage01;
 				service.validateForUpdate(uriage01);
 			}

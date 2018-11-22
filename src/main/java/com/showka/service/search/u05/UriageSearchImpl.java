@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriagePK;
-import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.search.u05.i.UriageSearch;
 import com.showka.service.search.u05.i.UriageSearchCriteria;
 import com.showka.table.public_.tables.T_URIAGE;
@@ -32,7 +32,7 @@ public class UriageSearchImpl implements UriageSearch {
 	private DSLContext create;
 
 	@Autowired
-	private UriagePersistence uriagePersistence;
+	private UriageCrud uriageCrud;
 
 	@Override
 	public List<Uriage> search(UriageSearchCriteria criteria) {
@@ -85,7 +85,7 @@ public class UriageSearchImpl implements UriageSearch {
 			TUriagePK pk = new TUriagePK();
 			pk.setKokyakuId(r.get(t_uriage.kokyaku_id));
 			pk.setDenpyoNumber(r.get(t_uriage.denpyo_number));
-			return uriagePersistence.getDomain(pk);
+			return uriageCrud.getDomain(pk);
 		}).collect(Collectors.toList());
 	}
 }

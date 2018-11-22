@@ -12,8 +12,8 @@ import com.showka.domain.u05.UriageCancel;
 import com.showka.entity.CUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
+import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.persistence.u05.i.UriageCancelPersistence;
-import com.showka.service.persistence.u05.i.UriagePersistence;
 
 @Service
 public class UriageCancelPersistenceImpl implements UriageCancelPersistence {
@@ -22,7 +22,7 @@ public class UriageCancelPersistenceImpl implements UriageCancelPersistence {
 	private CUriageRepository repo;
 
 	@Autowired
-	private UriagePersistence uriagePersistence;
+	private UriageCrud uriageCrud;
 
 	@Override
 	public void save(Uriage domain) {
@@ -51,7 +51,7 @@ public class UriageCancelPersistenceImpl implements UriageCancelPersistence {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId(e.getUriage().getPk().getKokyakuId());
 		pk.setDenpyoNumber(e.getUriage().getPk().getDenpyoNumber());
-		Uriage uriage = uriagePersistence.getDomain(pk);
+		Uriage uriage = uriageCrud.getDomain(pk);
 
 		// set builder
 		UriageCancelBuilder b = new UriageCancelBuilder();

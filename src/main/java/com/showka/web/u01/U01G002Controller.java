@@ -28,8 +28,8 @@ import com.showka.kubun.KokyakuKubun;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.service.persistence.u01.KokyakuPersistenceImpl;
-import com.showka.service.persistence.z00.i.BushoPersistence;
+import com.showka.service.crud.u01.KokyakuCrudImpl;
+import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.validator.u01.KokyakuValidatorImpl;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
@@ -45,10 +45,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U01G002Controller {
 
 	@Autowired
-	private KokyakuPersistenceImpl kokyakuPersistence;
+	private KokyakuCrudImpl kokyakuPersistence;
 
 	@Autowired
-	private BushoPersistence bushoPersistence;
+	private BushoCrud bushoPersistence;
 
 	@Autowired
 	private KokyakuValidatorImpl kokyakuValidator;

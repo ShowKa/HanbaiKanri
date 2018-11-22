@@ -26,7 +26,7 @@ import com.showka.entity.TSeikyuMeisaiPK;
 import com.showka.entity.TSeikyuPK;
 import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.repository.i.TSeikyuRepository;
-import com.showka.service.persistence.u07.i.SeikyuPersistence;
+import com.showka.service.crud.u07.i.SeikyuCrud;
 import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.table.public_.tables.S_URIKAKE_SEIKYU_DONE;
 import com.showka.table.public_.tables.T_SEIKYU;
@@ -42,7 +42,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 	private TSeikyuMeisaiRepository meisaiRepo;
 
 	@Autowired
-	private SeikyuPersistence seikyuPersistence;
+	private SeikyuCrud seikyuPersistence;
 
 	@Autowired
 	private DSLContext create;

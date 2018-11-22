@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import com.showka.domain.z00.Shain;
-import com.showka.service.persistence.z00.i.ShainPersistence;
+import com.showka.service.crud.z00.i.ShainCrud;
 
 /**
  * Controllerの基盤クラス.
@@ -21,7 +21,7 @@ public abstract class ControllerBase {
 
 	/** 社員Persistence */
 	@Autowired
-	private ShainPersistence shainPersistence;
+	private ShainCrud shainPersistence;
 
 	/** Logger. */
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());

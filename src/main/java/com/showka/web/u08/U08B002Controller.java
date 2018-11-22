@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.z00.Busho;
+import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.persistence.u08.i.FirmBankFuriwakePersistence;
-import com.showka.service.persistence.z00.i.BushoPersistence;
 import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
@@ -30,7 +30,7 @@ public class U08B002Controller extends ControllerBase {
 	private SeikyuQuery seikyuQuery;
 
 	@Autowired
-	private BushoPersistence bushoPersistence;
+	private BushoCrud bushoPersistence;
 
 	/**
 	 * FirmBank振分データ作成.

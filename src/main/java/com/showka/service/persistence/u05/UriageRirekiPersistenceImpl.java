@@ -20,8 +20,8 @@ import com.showka.entity.RUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
 import com.showka.repository.i.RUriageRepository;
-import com.showka.service.persistence.u01.i.KokyakuPersistence;
-import com.showka.service.persistence.u05.i.UriageRirekiMeisaiPersistence;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.crud.u05.i.UriageRirekiMeisaiCrud;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
@@ -33,10 +33,10 @@ public class UriageRirekiPersistenceImpl implements UriageRirekiPersistence {
 	private RUriageRepository repo;
 
 	@Autowired
-	private KokyakuPersistence kokyakuPersistence;
+	private KokyakuCrud kokyakuPersistence;
 
 	@Autowired
-	private UriageRirekiMeisaiPersistence uriageRirekiMeisaiPersistence;
+	private UriageRirekiMeisaiCrud uriageRirekiMeisaiPersistence;
 
 	@Override
 	public UriageRireki getUriageRirekiList(String uriageId) {

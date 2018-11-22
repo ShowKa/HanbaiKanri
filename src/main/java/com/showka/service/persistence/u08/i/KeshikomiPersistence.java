@@ -9,18 +9,6 @@ import com.showka.value.EigyoDate;
 public interface KeshikomiPersistence {
 
 	/**
-	 * 消込保存.
-	 * 
-	 * <pre>
-	 * 消込が完了した場合は、請求状態を解除する（請求・売掛関係テーブルのレコードも削除する）。
-	 * </pre>
-	 * 
-	 * @param keshikomi
-	 *            消込
-	 */
-	public void save(Keshikomi keshikomi);
-
-	/**
 	 * 消込上書保存.
 	 * 
 	 * <pre>
@@ -74,4 +62,5 @@ public interface KeshikomiPersistence {
 	 *            キャンセル日付
 	 */
 	public void cancel(String keshikomiId, EigyoDate date);
+
 }

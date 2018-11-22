@@ -19,9 +19,9 @@ import com.showka.domain.z00.Shohin;
 import com.showka.entity.TShohinZaiko;
 import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
-import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
+import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
-import com.showka.service.persistence.z00.i.ShohinPersistence;
+import com.showka.service.query.u11.i.ShohinIdoQuery;
 import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.value.EigyoDate;
 
@@ -33,10 +33,10 @@ public class ShohinZaikoPersistenceImpl implements ShohinZaikoPersistence {
 	private TShohinZaikoRepository repo;
 
 	@Autowired
-	private ShohinIdoPersistence shohinIdoPersistence;
+	private ShohinIdoQuery shohinIdoQuery;
 
 	@Autowired
-	private ShohinPersistence shohinPersistence;
+	private ShohinCrud shohinPersistence;
 
 	@Autowired
 	private BushoDateQuery bushoDateBusinessService;
@@ -71,7 +71,7 @@ public class ShohinZaikoPersistenceImpl implements ShohinZaikoPersistence {
 		b.withShohin(shohin);
 		b.withKurikoshiNumber(e.getNumber());
 		// 商品移動リスト
-		List<ShohinIdo> _idoList = shohinIdoPersistence.getShohinIdoListInDate(busho, date, shohin);
+		List<ShohinIdo> _idoList = shohinIdoQuery.getShohinIdoListInDate(busho, date, shohin);
 		List<ShohinIdoOnDate> idoList = _idoList.stream().map(ido -> {
 			return new ShohinIdoOnDate(ido, shohin);
 		}).collect(Collectors.toList());

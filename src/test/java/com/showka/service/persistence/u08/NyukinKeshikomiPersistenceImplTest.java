@@ -23,10 +23,9 @@ import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
 import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
-import com.showka.service.persistence.u06.i.UrikakePersistence;
-import com.showka.service.persistence.u08.NyukinKeshikomiPersistenceImpl;
+import com.showka.service.crud.u06.i.UrikakeCrud;
+import com.showka.service.crud.u08.i.NyukinCrud;
 import com.showka.service.persistence.u08.i.KeshikomiPersistence;
-import com.showka.service.persistence.u08.i.NyukinPersistence;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -41,13 +40,13 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 	private NyukinKeshikomiPersistenceImpl service;
 
 	@Injectable
-	private NyukinPersistence nyukinPersistence;
+	private NyukinCrud nyukinPersistence;
 
 	@Injectable
 	private KeshikomiPersistence keshikomiPersistence;
 
 	@Injectable
-	private UrikakePersistence urikakePersistence;
+	private UrikakeCrud urikakeCrud;
 
 	@Injectable
 	private NyukinKeshikomiConstruct nyukinKeshikomiBuildService;
@@ -85,7 +84,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				nyukinPersistence.save(nyukin);
-				urikakePersistence.save(urikake);
+				urikakeCrud.save(urikake);
 				keshikomiPersistence.override(nyukinId, date, keshikomiSet);
 			}
 		};
@@ -96,7 +95,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 			{
 				nyukinPersistence.save(nyukin);
 				times = 1;
-				urikakePersistence.save(urikake);
+				urikakeCrud.save(urikake);
 				times = 1;
 				keshikomiPersistence.override(nyukinId, date, keshikomiSet);
 				times = 1;

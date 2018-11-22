@@ -19,7 +19,7 @@ import com.showka.domain.u08.Nyukin;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.TNyukinKeijo;
 import com.showka.repository.i.TNyukinKeijoRepository;
-import com.showka.service.persistence.u08.i.NyukinPersistence;
+import com.showka.service.crud.u08.i.NyukinCrud;
 import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.table.public_.tables.T_NYUKIN;
 import com.showka.table.public_.tables.T_NYUKIN_KEIJO;
@@ -36,7 +36,7 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 	private TNyukinKeijoRepository repo;
 
 	@Autowired
-	private NyukinPersistence nyukinPersistence;
+	private NyukinCrud nyukinPersistence;
 
 	// alias
 	private static final T_NYUKIN nk = t_nyukin.as("nk");

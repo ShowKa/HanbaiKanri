@@ -19,9 +19,8 @@ import com.showka.entity.MShohin;
 import com.showka.entity.TShohinZaiko;
 import com.showka.entity.TShohinZaikoPK;
 import com.showka.repository.i.TShohinZaikoRepository;
-import com.showka.service.persistence.u11.ShohinZaikoPersistenceImpl;
-import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
-import com.showka.service.persistence.z00.i.ShohinPersistence;
+import com.showka.service.crud.z00.i.ShohinCrud;
+import com.showka.service.query.u11.i.ShohinIdoQuery;
 import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
@@ -43,10 +42,10 @@ public class ShohinZaikoPersistenceImplTest extends PersistenceTestCase {
 	private TShohinZaikoRepository repo;
 
 	@Injectable
-	private ShohinIdoPersistence shohinIdoPersistence;
+	private ShohinIdoQuery shohinIdoQuery;
 
 	@Injectable
-	private ShohinPersistence shohinPersistence;
+	private ShohinCrud shohinPersistence;
 
 	@Injectable
 	private BushoDateQuery bushoDateBusinessService;
@@ -124,7 +123,7 @@ public class ShohinZaikoPersistenceImplTest extends PersistenceTestCase {
 		_idoList.add(ido);
 		new Expectations() {
 			{
-				shohinIdoPersistence.getShohinIdoListInDate(busho, date, shohin);
+				shohinIdoQuery.getShohinIdoListInDate(busho, date, shohin);
 				result = _idoList;
 			}
 		};
@@ -133,7 +132,7 @@ public class ShohinZaikoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				shohinIdoPersistence.getShohinIdoListInDate(busho, date, shohin);
+				shohinIdoQuery.getShohinIdoListInDate(busho, date, shohin);
 				times = 1;
 			}
 		};
@@ -182,7 +181,7 @@ public class ShohinZaikoPersistenceImplTest extends PersistenceTestCase {
 			{
 				shohinPersistence.getDomain("SH01");
 				result = shohin;
-				shohinIdoPersistence.getShohinIdoListInDate(busho, date, shohin);
+				shohinIdoQuery.getShohinIdoListInDate(busho, date, shohin);
 				result = _idoList;
 			}
 		};
@@ -193,7 +192,7 @@ public class ShohinZaikoPersistenceImplTest extends PersistenceTestCase {
 			{
 				shohinPersistence.getDomain("SH01");
 				times = 1;
-				shohinIdoPersistence.getShohinIdoListInDate(busho, date, shohin);
+				shohinIdoQuery.getShohinIdoListInDate(busho, date, shohin);
 				times = 1;
 			}
 		};

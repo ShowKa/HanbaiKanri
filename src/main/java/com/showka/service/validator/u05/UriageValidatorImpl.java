@@ -12,7 +12,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
-import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.service.validator.u05.i.UriageMeisaiValidator;
@@ -31,7 +31,7 @@ public class UriageValidatorImpl implements UriageValidator {
 	private TUriageRepository uriageRepo;
 
 	@Autowired
-	private UriagePersistence uriagePersistence;
+	private UriageCrud uriageCrud;
 
 	@Autowired
 	private UriageMeisaiValidator uriageMeisaiValidate;
@@ -82,7 +82,7 @@ public class UriageValidatorImpl implements UriageValidator {
 
 	@Override
 	public void validateForDelete(TUriagePK pk) throws ValidateException {
-		Uriage domain = uriagePersistence.getDomain(pk);
+		Uriage domain = uriageCrud.getDomain(pk);
 		// キャンセル済み検証
 		boolean exists = cUriageRepository.existsById(domain.getRecordId());
 		if (exists) {
@@ -97,7 +97,7 @@ public class UriageValidatorImpl implements UriageValidator {
 
 	@Override
 	public void validateForCancel(TUriagePK pk) throws ValidateException {
-		Uriage domain = uriagePersistence.getDomain(pk);
+		Uriage domain = uriageCrud.getDomain(pk);
 		validateForUpdate(domain);
 	}
 

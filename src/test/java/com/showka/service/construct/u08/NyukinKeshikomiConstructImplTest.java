@@ -26,9 +26,9 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
-import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
@@ -50,7 +50,7 @@ public class NyukinKeshikomiConstructImplTest extends SimpleTestCase {
 	private NyukinFBFurikomiPersistence nyukinFBFurikomiPersistence;
 
 	@Injectable
-	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@Test
 	public void test_BuildKeshikomiSet_01() throws Exception {
@@ -92,7 +92,7 @@ public class NyukinKeshikomiConstructImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+				urikakeKeshikomiPersistence.get(urikake.getRecordId());
 				result = urikakeKeshikomi;
 			}
 		};
@@ -101,7 +101,7 @@ public class NyukinKeshikomiConstructImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+				urikakeKeshikomiPersistence.get(urikake.getRecordId());
 				times = 1;
 			}
 		};

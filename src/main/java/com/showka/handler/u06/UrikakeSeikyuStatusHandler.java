@@ -8,18 +8,18 @@ import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.handler.CrudEventListener;
-import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
-import com.showka.service.persistence.u06.i.UrikakePersistence;
+import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.service.persistence.u06.i.UrikakeSeikyuStatusPersistence;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 
 @Component
 public class UrikakeSeikyuStatusHandler {
 
 	@Autowired
-	private UrikakePersistence urikakePersistence;
+	private UrikakeCrud urikakePersistence;
 
 	@Autowired
-	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@Autowired
 	private UrikakeSeikyuStatusPersistence urikakeSeikyuStatusPersistence;
@@ -77,7 +77,7 @@ public class UrikakeSeikyuStatusHandler {
 		@Override
 		public void afterSave(Keshikomi keshikomi) {
 			String urikakeId = keshikomi.getUrikakeId();
-			UrikakeKeshikomi urikakeKeshikomoi = urikakeKeshikomiPersistence.getDomain(urikakeId);
+			UrikakeKeshikomi urikakeKeshikomoi = urikakeKeshikomiPersistence.get(urikakeId);
 			if (urikakeKeshikomoi.done()) {
 				urikakeSeikyuStatusPersistence.toSettled(urikakeId);
 			} else {

@@ -16,8 +16,7 @@ import com.showka.entity.TUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.repository.i.CUriageRepository;
-import com.showka.service.persistence.u05.UriageCancelPersistenceImpl;
-import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
@@ -39,7 +38,7 @@ public class UriageCancelPersistenceImplTest extends PersistenceTestCase {
 	private CUriageRepository repo;
 
 	@Injectable
-	private UriagePersistence uriagePersistence;
+	private UriageCrud uriageCrud;
 
 	/** 売上01. */
 	public static final Uriage uriage01;
@@ -91,7 +90,7 @@ public class UriageCancelPersistenceImplTest extends PersistenceTestCase {
 		uriage.setPk(pk);
 		new Expectations() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				result = new UriageBuilder().build();
 			}
 		};
@@ -107,7 +106,7 @@ public class UriageCancelPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriagePersistence.getDomain(pk);
+				uriageCrud.getDomain(pk);
 				times = 1;
 			}
 		};

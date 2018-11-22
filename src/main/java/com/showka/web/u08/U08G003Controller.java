@@ -28,10 +28,10 @@ import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
-import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
-import com.showka.service.persistence.u06.i.UrikakePersistence;
+import com.showka.service.crud.u06.i.UrikakeCrud;
+import com.showka.service.crud.u08.i.NyukinCrud;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
-import com.showka.service.persistence.u08.i.NyukinPersistence;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 import com.showka.service.query.u06.i.UrikakeQuery;
 import com.showka.service.validator.u08.i.NyukinKeshikomiValidator;
 import com.showka.value.AmountOfMoney;
@@ -46,10 +46,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G003Controller extends ControllerBase {
 
 	@Autowired
-	private NyukinPersistence nyukinPersistence;
+	private NyukinCrud nyukinPersistence;
 
 	@Autowired
-	private UrikakePersistence urikakePersistence;
+	private UrikakeCrud urikakePersistence;
 
 	@Autowired
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
@@ -61,7 +61,7 @@ public class U08G003Controller extends ControllerBase {
 	private UrikakeQuery urikakeQuery;
 
 	@Autowired
-	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@RequestMapping(value = "/u08g003/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
@@ -90,7 +90,7 @@ public class U08G003Controller extends ControllerBase {
 		model.addObject("keshikomiList", keshikomiList);
 		// get 売掛消込
 		Set<UrikakeKeshikomi> urikakeKeshikomiSet = nyukinKeshikomi.getUrikakeSet().stream().map(u -> {
-			return urikakeKeshikomiPersistence.getDomain(u.getRecordId());
+			return urikakeKeshikomiPersistence.get(u.getRecordId());
 		}).collect(Collectors.toSet());
 		List<Map<String, Object>> urikakeKeshikomiList = urikakeKeshikomiSet.stream().map(uk -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -148,7 +148,7 @@ public class U08G003Controller extends ControllerBase {
 			// 売掛
 			ret.put("urikakeKingaku", u.getKingaku().intValue());
 			// 売掛消込
-			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.getDomain(u.getRecordId());
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.get(u.getRecordId());
 			AmountOfMoney otherNyukinKeshikomiKingaku = urikakeKeshikomi.getKeshikomiKigakuExcluding(nyukin);
 			ret.put("otherNyukinKeshikomiKingaku", otherNyukinKeshikomiKingaku.intValue());
 			AmountOfMoney otherKeshikomiKingaku = urikakeKeshikomi.getKeshikomiKingakuOf(nyukin);
@@ -309,7 +309,7 @@ public class U08G003Controller extends ControllerBase {
 			Urikake urikake = keshikomi.getUrikake();
 			ret.put("urikakeKingaku", urikake.getKingaku().intValue());
 			// 売掛消込
-			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.get(urikake.getRecordId());
 			AmountOfMoney otherNyukinKeshikomiKingaku = urikakeKeshikomi.getKeshikomiKigakuExcluding(nyukin);
 			ret.put("otherNyukinKeshikomiKingaku", otherNyukinKeshikomiKingaku.intValue());
 			AmountOfMoney keshikomiKingaku = urikakeKeshikomi.getKeshikomiKingakuOf(nyukin);

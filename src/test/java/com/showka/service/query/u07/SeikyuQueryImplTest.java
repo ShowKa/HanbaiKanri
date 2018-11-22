@@ -19,7 +19,7 @@ import com.showka.entity.TSeikyuMeisaiPK;
 import com.showka.entity.TSeikyuPK;
 import com.showka.repository.i.TSeikyuMeisaiRepository;
 import com.showka.repository.i.TSeikyuRepository;
-import com.showka.service.persistence.u07.i.SeikyuPersistence;
+import com.showka.service.crud.u07.i.SeikyuCrud;
 import com.showka.service.query.u07.SeikyuQueryImpl;
 import com.showka.table.public_.tables.records.T_SEIKYU_RECORD;
 import com.showka.value.EigyoDate;
@@ -50,7 +50,7 @@ public class SeikyuQueryImplTest extends SimpleTestCase {
 	private TSeikyuMeisaiRepository meisaiRepo;
 
 	@Injectable
-	private SeikyuPersistence seikyuPersistence;
+	private SeikyuCrud seikyuPersistence;
 
 	@Injectable
 	private DSLContext create;

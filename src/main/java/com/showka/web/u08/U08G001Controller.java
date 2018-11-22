@@ -19,9 +19,9 @@ import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.service.persistence.u01.i.KokyakuPersistence;
-import com.showka.service.persistence.z00.i.BushoPersistence;
-import com.showka.service.persistence.z00.i.ShainPersistence;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.crud.z00.i.BushoCrud;
+import com.showka.service.crud.z00.i.ShainCrud;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearch;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
 import com.showka.value.AmountOfMoney;
@@ -38,13 +38,13 @@ public class U08G001Controller extends ControllerBase {
 	private NyukinKeshikomiSearch nyukinQuery;
 
 	@Autowired
-	private BushoPersistence bushoPersistence;
+	private BushoCrud bushoPersistence;
 
 	@Autowired
-	private KokyakuPersistence kokyakuPersistence;
+	private KokyakuCrud kokyakuPersistence;
 
 	@Autowired
-	private ShainPersistence shainPersistence;
+	private ShainCrud shainPersistence;
 
 	@RequestMapping(value = "/u08g001/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G001Form form, ModelAndViewExtended model) {
@@ -69,7 +69,7 @@ public class U08G001Controller extends ControllerBase {
 		// 部署
 		String bushoCode = form.getBushoCode();
 		if (bushoCode != null) {
-			boolean exists = bushoPersistence.exists(bushoCode);
+			boolean exists = bushoPersistence.exsists(bushoCode);
 			if (exists) {
 				param.setBusho(bushoPersistence.getDomain(bushoCode));
 			}
@@ -85,7 +85,7 @@ public class U08G001Controller extends ControllerBase {
 		// 担当社員
 		String shainCode = form.getTantoShainCode();
 		if (shainCode != null) {
-			boolean exists = shainPersistence.exists(shainCode);
+			boolean exists = shainPersistence.exsists(shainCode);
 			if (exists) {
 				param.setTantoShain(shainPersistence.getDomain(shainCode));
 			}

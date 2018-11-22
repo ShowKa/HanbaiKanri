@@ -14,7 +14,6 @@ import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u06.Urikake;
 import com.showka.domain.z00.Busho;
-import com.showka.service.persistence.u07.SeikyuUrikakePersistenceImpl;
 import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.query.u01.i.KokyakuQuery;
 import com.showka.service.query.u06.i.UrikakeQuery;

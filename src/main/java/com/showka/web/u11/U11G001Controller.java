@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
+import com.showka.service.crud.z00.i.BushoCrud;
+import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
-import com.showka.service.persistence.z00.i.BushoPersistence;
-import com.showka.service.persistence.z00.i.ShohinPersistence;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -32,10 +32,10 @@ public class U11G001Controller extends ControllerBase {
 	private ShohinZaikoPersistence shohinZaikoPersistence;
 
 	@Autowired
-	private BushoPersistence bushoPersistence;
+	private BushoCrud bushoPersistence;
 
 	@Autowired
-	private ShohinPersistence mShohinPersistence;
+	private ShohinCrud mShohinPersistence;
 
 	/**
 	 * 参照.

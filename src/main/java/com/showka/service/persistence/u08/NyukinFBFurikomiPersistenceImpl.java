@@ -15,8 +15,8 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.JNyukinFBFurikomi;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.repository.i.JNyukinFBFurikomiRepository;
+import com.showka.service.crud.u08.i.NyukinCrud;
 import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
-import com.showka.service.persistence.u08.i.NyukinPersistence;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
@@ -24,7 +24,7 @@ import com.showka.value.EigyoDate;
 public class NyukinFBFurikomiPersistenceImpl implements NyukinFBFurikomiPersistence {
 
 	@Autowired
-	private NyukinPersistence nyukinPersistence;
+	private NyukinCrud nyukinPersistence;
 
 	@Autowired
 	private JNyukinFBFurikomiRepository repo;

@@ -13,7 +13,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
-import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 import com.showka.system.exception.ValidateException;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -31,7 +31,7 @@ public class NyukinKeshikomiValidatorImplTest extends SimpleTestCase {
 	private NyukinKeshikomiValidatorImpl service;
 
 	@Injectable
-	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	/**
 	 * 各整合性検証用メソッドの呼出確認
@@ -174,7 +174,7 @@ public class NyukinKeshikomiValidatorImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				result = keshikomiSet;
-				urikakeKeshikomiPersistence.getDomainAsOf(urikake, keshikomi);
+				urikakeKeshikomiPersistence.getAsOf(urikake, keshikomi);
 				result = new AmountOfMoney(1000);
 			}
 		};
@@ -186,7 +186,7 @@ public class NyukinKeshikomiValidatorImplTest extends SimpleTestCase {
 				// 消込マップ取得
 				nyukinKeshikomi.getKeshikomiSet();
 				times = 1;
-				urikakeKeshikomiPersistence.getDomainAsOf(urikake, keshikomi);
+				urikakeKeshikomiPersistence.getAsOf(urikake, keshikomi);
 				times = 1;
 			}
 		};

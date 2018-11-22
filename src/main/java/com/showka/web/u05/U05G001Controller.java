@@ -18,7 +18,7 @@ import org.thymeleaf.util.StringUtils;
 
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
-import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.crud.u01.i.KokyakuCrud;
 import com.showka.service.search.u05.i.UriageSearch;
 import com.showka.service.search.u05.i.UriageSearchCriteria;
 import com.showka.service.validator.u01.i.KokyakuValidator;
@@ -35,7 +35,7 @@ public class U05G001Controller extends ControllerBase {
 	private UriageSearch uriageQuery;
 
 	@Autowired
-	private KokyakuPersistence kokyakuPersistence;
+	private KokyakuCrud kokyakuPersistence;
 
 	@Autowired
 	private KokyakuValidator kokyakuValidator;

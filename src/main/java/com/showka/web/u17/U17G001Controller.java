@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.u17.BushoNyukin;
 import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
+import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.persistence.u05.i.UriageKeijoPersistence;
 import com.showka.service.persistence.u07.i.SeikyuUrikakePersistence;
 import com.showka.service.persistence.u08.i.NyukinKeijoPersistence;
 import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
 import com.showka.service.persistence.u17.i.BushoDatePersistence;
-import com.showka.service.persistence.z00.i.BushoPersistence;
 import com.showka.service.validator.u17.i.BushoDateValidator;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
@@ -35,7 +35,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U17G001Controller extends ControllerBase {
 
 	@Autowired
-	private BushoPersistence bushoPersistence;
+	private BushoCrud bushoPersistence;
 
 	@Autowired
 	private BushoDateValidator bushoDateValidator;

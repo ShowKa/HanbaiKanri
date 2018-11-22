@@ -21,8 +21,8 @@ import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.entity.WFirmBankFuriwake;
 import com.showka.entity.WFirmBankFuriwakePK;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;
-import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.query.u01.i.FurikomiIraininQuery;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -43,7 +43,7 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 	private FurikomiIraininQuery furikomiIraininQuery;
 
 	@Injectable
-	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@Injectable
 	@Autowired
@@ -89,7 +89,7 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+				urikakeKeshikomiPersistence.get(urikake.getRecordId());
 				result = urikakeKeshikomi;
 			}
 		};
@@ -98,7 +98,7 @@ public class FirmBankFuriwakePersistenceImplTest2 extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+				urikakeKeshikomiPersistence.get(urikake.getRecordId());
 				times = 1;
 			}
 		};

@@ -3,7 +3,7 @@ package com.showka.service.validator.z00;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.service.persistence.z00.i.ShainPersistence;
+import com.showka.service.crud.z00.i.ShainCrud;
 import com.showka.service.validator.z00.i.ShainValidator;
 import com.showka.system.exception.NotExistException;
 
@@ -11,11 +11,11 @@ import com.showka.system.exception.NotExistException;
 public class ShainValidatorImpl implements ShainValidator {
 
 	@Autowired
-	private ShainPersistence shainPersistence;
+	private ShainCrud shainPersistence;
 
 	@Override
 	public void validateExistance(String shainCode) throws NotExistException {
-		boolean exists = shainPersistence.exists(shainCode);
+		boolean exists = shainPersistence.exsists(shainCode);
 		if (!exists) {
 			throw new NotExistException("社員", shainCode);
 		}

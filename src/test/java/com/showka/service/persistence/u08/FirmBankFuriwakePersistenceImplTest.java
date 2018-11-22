@@ -14,8 +14,8 @@ import com.showka.domain.u01.FurikomiIraininSet;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u07.Seikyu;
 import com.showka.repository.i.WFirmBankFuriwakeRepository;
-import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.query.u01.i.FurikomiIraininQuery;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 
 import mockit.Expectations;
 import mockit.Injectable;
@@ -41,7 +41,7 @@ public class FirmBankFuriwakePersistenceImplTest extends SimpleTestCase {
 	private FurikomiIraininQuery furikomiIraininQuery;
 
 	@Injectable
-	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@Injectable
 	private WFirmBankFuriwakeRepository repo;

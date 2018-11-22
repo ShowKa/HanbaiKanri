@@ -14,7 +14,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.TUrikake;
 import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
 import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
-import com.showka.service.persistence.u06.i.UrikakePersistence;
+import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.service.query.u06.UrikakeQueryImpl;
 import com.showka.value.EigyoDate;
 
@@ -36,7 +36,7 @@ public class UrikakeQueryImplTest2 extends SimpleTestCase {
 	private SUrikakeSeikyuDoneRepository sUrikakeSeikyuDoneRepository;
 
 	@Injectable
-	private UrikakePersistence urikakePersistence;
+	private UrikakeCrud urikakePersistence;
 
 	@Test
 	public void teset_getUrikakeForSeikyu_01() {

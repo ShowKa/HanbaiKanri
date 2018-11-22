@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.showka.domain.z00.Shain;
-import com.showka.service.persistence.z00.i.ShainPersistence;
+import com.showka.service.crud.z00.i.ShainCrud;
 import com.showka.web.ModelAndViewExtended;
 
 /**
@@ -23,7 +23,7 @@ import com.showka.web.ModelAndViewExtended;
 public class UserInformationSetter {
 
 	@Autowired
-	private ShainPersistence shainPersistence;
+	private ShainCrud shainPersistence;
 
 	/**
 	 * ユーザー情報の設定.

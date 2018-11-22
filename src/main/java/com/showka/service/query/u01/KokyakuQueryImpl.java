@@ -13,7 +13,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.MKokyaku;
 import com.showka.entity.MNyukinKakeInfo;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
-import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.crud.u01.i.KokyakuCrud;
 import com.showka.service.query.u01.i.KokyakuQuery;
 import com.showka.value.ShimeDate;
 
@@ -24,7 +24,7 @@ public class KokyakuQueryImpl implements KokyakuQuery {
 	private MNyukinKakeInfoRepository mNyukinKakeInfoRepository;
 
 	@Autowired
-	private KokyakuPersistence kokyakuPersistence;
+	private KokyakuCrud kokyakuPersistence;
 
 	@Override
 	public List<Kokyaku> getOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates) {

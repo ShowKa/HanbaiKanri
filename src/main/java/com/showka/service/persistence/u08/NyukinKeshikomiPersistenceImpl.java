@@ -12,23 +12,23 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
-import com.showka.service.persistence.u06.i.UrikakePersistence;
+import com.showka.service.crud.u06.i.UrikakeCrud;
+import com.showka.service.crud.u08.i.NyukinCrud;
 import com.showka.service.persistence.u08.i.KeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
-import com.showka.service.persistence.u08.i.NyukinPersistence;
 import com.showka.value.EigyoDate;
 
 @Service
 public class NyukinKeshikomiPersistenceImpl implements NyukinKeshikomiPersistence {
 
 	@Autowired
-	private NyukinPersistence nyukinPersistence;
+	private NyukinCrud nyukinPersistence;
 
 	@Autowired
 	private KeshikomiPersistence keshikomiPersistence;
 
 	@Autowired
-	private UrikakePersistence urikakePersistence;
+	private UrikakeCrud urikakePersistence;
 
 	@Autowired
 	private NyukinKeshikomiConstruct nyukinKeshikomiBuildService;

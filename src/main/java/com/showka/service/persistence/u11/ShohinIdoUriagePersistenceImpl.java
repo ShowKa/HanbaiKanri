@@ -14,7 +14,8 @@ import com.showka.domain.u11.ShohinIdo;
 import com.showka.entity.JShohinIdoUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.JShohinIdoUriageRepository;
-import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.crud.u05.i.UriageCrud;
+import com.showka.service.crud.u11.i.ShohinIdoCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
@@ -28,13 +29,16 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 	private JShohinIdoUriageRepository repo;
 
 	@Autowired
+	private ShohinIdoCrud shohinIdoCrud;
+
+	@Autowired
 	private ShohinIdoSpecificationFactory shohinIdoSpecificationFactory;
 
 	@Autowired
 	private ShohinIdoPersistence shohinIdoPersistence;
 
 	@Autowired
-	private UriagePersistence uriagePersistence;
+	private UriageCrud uriageCrud;
 
 	@Override
 	public void save(Uriage uriage) {
@@ -73,14 +77,14 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 			Date timestamp2 = ido2.getShohinIdo().getTimestamp();
 			return timestamp1.compareTo(timestamp2);
 		});
-		ShohinIdo shohinIdo = shohinIdoPersistence.getDomain(newest.get().getShohinIdoId());
+		ShohinIdo shohinIdo = shohinIdoCrud.getDomain(newest.get().getShohinIdoId());
 		return Optional.of(shohinIdo);
 	}
 
 	@Override
 	public void delete(TUriagePK pk) {
 		// find records
-		Uriage uriage = uriagePersistence.getDomain(pk);
+		Uriage uriage = uriageCrud.getDomain(pk);
 		String uriageId = uriage.getRecordId();
 		JShohinIdoUriage e = new JShohinIdoUriage();
 		e.setUriageId(uriageId);
@@ -93,7 +97,8 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 		}).forEach(ido -> {
 			// delete records
 			repo.delete(ido);
-			shohinIdoPersistence.deleteForcibly(ido.getShohinIdoId());
+			ShohinIdo domain = shohinIdoCrud.getDomain(ido.getShohinIdoId());
+			shohinIdoCrud.delete(domain);
 		});
 	}
 }

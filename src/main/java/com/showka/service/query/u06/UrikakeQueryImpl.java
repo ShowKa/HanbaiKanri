@@ -18,7 +18,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.entity.TUrikake;
 import com.showka.repository.i.SUrikakeSeikyuDoneRepository;
 import com.showka.repository.i.SUrikakeSeikyuNotYetRepository;
-import com.showka.service.persistence.u06.i.UrikakePersistence;
+import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.service.query.u06.i.UrikakeQuery;
 import com.showka.value.EigyoDate;
 
@@ -32,7 +32,7 @@ public class UrikakeQueryImpl implements UrikakeQuery {
 	private SUrikakeSeikyuDoneRepository sUrikakeSeikyuDoneRepository;
 
 	@Autowired
-	private UrikakePersistence urikakePersistence;
+	private UrikakeCrud urikakePersistence;
 
 	@Override
 	public List<Urikake> getForSeikyu(Kokyaku kokyaku) {

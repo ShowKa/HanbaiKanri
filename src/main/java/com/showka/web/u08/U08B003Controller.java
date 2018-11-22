@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.u08.FBFurikomiMatchingResult;
 import com.showka.domain.z00.Busho;
 import com.showka.kubun.FurikomiMatchintErrorCause;
+import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.persistence.u08.i.FirmBankFurikomiMatchingErrorPersistence;
 import com.showka.service.persistence.u08.i.FirmBankFurikomiMatchingPersistence;
-import com.showka.service.persistence.z00.i.BushoPersistence;
 import com.showka.service.query.u08.i.FirmBankFurikomiQuery;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
@@ -38,7 +38,7 @@ public class U08B003Controller extends ControllerBase {
 	private FirmBankFurikomiMatchingErrorPersistence errorService;
 
 	@Autowired
-	private BushoPersistence bushoPersistence;
+	private BushoCrud bushoPersistence;
 
 	// transaction制御のため自クラスをinject
 	@Autowired

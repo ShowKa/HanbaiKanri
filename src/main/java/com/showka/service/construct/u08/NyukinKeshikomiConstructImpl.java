@@ -18,9 +18,9 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
-import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
@@ -35,7 +35,7 @@ public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 	private NyukinFBFurikomiPersistence nyukinFBFurikomiPersistence;
 
 	@Autowired
-	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@Override
 	public NyukinKeshikomi by(MatchedFBFurikomi matchedFBFurikomi) {
@@ -72,7 +72,7 @@ public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 		Set<Keshikomi> keshikomiSet = seikyuMeisai.parallelStream().map(m -> {
 			// 売掛金残高=売掛仕様サービス#残高取得
 			Urikake urikake = m.getUrikake();
-			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.getDomain(urikake.getRecordId());
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.get(urikake.getRecordId());
 			AmountOfMoney zandaka = urikakeKeshikomi.getZandaka();
 			// 消込構築
 			KeshikomiBuilder kb = new KeshikomiBuilder();

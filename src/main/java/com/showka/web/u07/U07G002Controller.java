@@ -21,8 +21,8 @@ import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u07.SeikyuMeisai;
 import com.showka.entity.TSeikyuPK;
 import com.showka.kubun.NyukinHohoKubun;
-import com.showka.service.persistence.u01.i.KokyakuPersistence;
-import com.showka.service.persistence.u07.i.SeikyuPersistence;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.crud.u07.i.SeikyuCrud;
 import com.showka.value.Kakaku;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -33,10 +33,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U07G002Controller extends ControllerBase {
 
 	@Autowired
-	private KokyakuPersistence kokyakuPersistence;
+	private KokyakuCrud kokyakuPersistence;
 
 	@Autowired
-	private SeikyuPersistence seikyuPersistence;
+	private SeikyuCrud seikyuPersistence;
 
 	/**
 	 * 参照.

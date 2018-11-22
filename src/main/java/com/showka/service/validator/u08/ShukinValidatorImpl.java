@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u08.Shukin;
-import com.showka.service.persistence.u08.i.ShukinPersistence;
+import com.showka.service.crud.u08.i.ShukinCrud;
 import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
+import com.showka.service.query.u08.i.ShukinQuery;
 import com.showka.service.validator.u08.i.ShukinValidator;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
 import com.showka.system.exception.DuprecatedException;
@@ -24,7 +25,10 @@ public class ShukinValidatorImpl implements ShukinValidator {
 	private NyukinKeijoQuery nyukinKeijoQuery;
 
 	@Autowired
-	private ShukinPersistence shukinPersistence;
+	private ShukinCrud shukinCrud;
+
+	@Autowired
+	private ShukinQuery shukinQuery;
 
 	@Autowired
 	private NyukinKeshikomiQuery nyukinKeshikomiSpecificationService;
@@ -45,7 +49,7 @@ public class ShukinValidatorImpl implements ShukinValidator {
 		Kokyaku kokyaku = shukin.getKokyaku();
 		EigyoDate nyukinDate = shukin.getDate();
 		String denpyoNumber = shukin.getDenpyoNumber();
-		boolean exists = shukinPersistence.exists(kokyaku, nyukinDate, denpyoNumber);
+		boolean exists = shukinQuery.exists(kokyaku, nyukinDate, denpyoNumber);
 		if (exists) {
 			throw new DuprecatedException("顧客", "入金日", "伝票番号");
 		}
@@ -56,7 +60,7 @@ public class ShukinValidatorImpl implements ShukinValidator {
 		// 担当社員の所属を検証
 		// ただし担当社員が更新された場合のみ
 		String nyukinId = shukin.getNyukinId();
-		Shukin old = shukinPersistence.getDomain(nyukinId);
+		Shukin old = shukinCrud.getDomain(nyukinId);
 		if (!old.getTantoShain().equals(shukin.getTantoShain())) {
 			this.validateTantoShainShozokuBusho(shukin);
 		}

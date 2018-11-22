@@ -17,7 +17,7 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.SeikyuBuilder;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u08.MatchedFBFurikomi;
-import com.showka.service.persistence.u07.i.SeikyuPersistence;
+import com.showka.service.crud.u07.i.SeikyuCrud;
 import com.showka.service.query.u08.MatchedFBFurikomiQueryImpl;
 import com.showka.table.public_.tables.T_FIRM_BANK_FURIKOMI;
 import com.showka.table.public_.tables.W_FIRM_BANK_FURIKOMI_MATCHING;
@@ -40,7 +40,7 @@ public class MatchedFBFurikomiQueryImplTest extends SimpleTestCase {
 	private DSLContext create;
 
 	@Injectable
-	private SeikyuPersistence seikyuPersistence;
+	private SeikyuCrud seikyuPersistence;
 
 	// alias
 	/** T_FIRM_BANK_FURIKOMI */

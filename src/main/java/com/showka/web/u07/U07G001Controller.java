@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u07.Seikyu;
-import com.showka.service.persistence.u01.i.KokyakuPersistence;
+import com.showka.service.crud.u01.i.KokyakuCrud;
 import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -26,7 +26,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U07G001Controller extends ControllerBase {
 
 	@Autowired
-	private KokyakuPersistence kokyakuPersistence;
+	private KokyakuCrud kokyakuPersistence;
 
 	@Autowired
 	private SeikyuQuery seikyuQuery;

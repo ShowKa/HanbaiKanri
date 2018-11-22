@@ -1,10 +1,8 @@
 package com.showka.service.persistence.u05.i;
 
-import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriagePK;
-import com.showka.service.persistence.Persistence;
 
-public interface UriagePersistence extends Persistence<Uriage, TUriagePK> {
+public interface UriagePersistence {
 
 	/**
 	 * 売上キャンセル.
@@ -29,16 +27,5 @@ public interface UriagePersistence extends Persistence<Uriage, TUriagePK> {
 	 *            version for OCC
 	 */
 	public void revert(TUriagePK pk, int version);
-
-	/**
-	 * 売上を取得.
-	 * 
-	 * @param kokyakuCode
-	 *            顧客コード
-	 * @param denpyoNumber
-	 *            伝票ナンバー
-	 * @return 売上
-	 */
-	public Uriage getDomain(String kokyakuCode, String denpyoNumber);
 
 }
