@@ -30,7 +30,7 @@ public class UriageQueryImpl implements UriageQuery {
 	private UriagePersistence uriagePersistence;
 
 	@Override
-	public List<Uriage> getUriageOfKokyaku(String kokyakuCode) {
+	public List<Uriage> get(String kokyakuCode) {
 		// 顧客
 		Kokyaku kokyaku = kokyakuPersistence.getDomain(kokyakuCode);
 		TUriage e = new TUriage();

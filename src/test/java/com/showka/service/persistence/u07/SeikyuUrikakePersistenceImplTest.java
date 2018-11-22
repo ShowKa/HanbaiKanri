@@ -72,10 +72,10 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				// 締日取得
-				shimeDateBusinessService.getShimeDate(busho, eigyoDate);
+				shimeDateBusinessService.get(busho, eigyoDate);
 				result = shimeDates;
 				// 締日の顧客リスト取得
-				nyukinKakeInfoQuery.getKokyakuOnShimeDate(busho, shimeDates);
+				nyukinKakeInfoQuery.getOnShimeDate(busho, shimeDates);
 				result = kokyakuList;
 				// 内部呼出
 				service.seikyu(kokyaku, eigyoDate);
@@ -88,10 +88,10 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 		new Verifications() {
 			{
 				// 締日取得
-				shimeDateBusinessService.getShimeDate(busho, eigyoDate);
+				shimeDateBusinessService.get(busho, eigyoDate);
 				times = 1;
 				// 締日の顧客リスト取得
-				nyukinKakeInfoQuery.getKokyakuOnShimeDate(busho, shimeDates);
+				nyukinKakeInfoQuery.getOnShimeDate(busho, shimeDates);
 				times = 1;
 			}
 		};
@@ -113,7 +113,7 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 		new Expectations() {
 			{
 				// 売掛リスト
-				urikakeQuery.getUrikakeForSeikyu(kokyaku);
+				urikakeQuery.getForSeikyu(kokyaku);
 				result = urikakeList;
 				// 請求
 				service.seikyu(kokyaku, shimeDate, urikakeList);
@@ -126,7 +126,7 @@ public class SeikyuUrikakePersistenceImplTest extends SimpleTestCase {
 		new Verifications() {
 			{
 				// 売掛リスト
-				urikakeQuery.getUrikakeForSeikyu(kokyaku);
+				urikakeQuery.getForSeikyu(kokyaku);
 				times = 1;
 			}
 		};

@@ -16,5 +16,5 @@ public interface UriageRirekiQuery {
 	 *            計上日
 	 * @return 未計上売上リスト（売上履歴）
 	 */
-	public List<RUriage> search(Busho busho, TheDate date);
+	public List<RUriage> get(Busho busho, TheDate date);
 }

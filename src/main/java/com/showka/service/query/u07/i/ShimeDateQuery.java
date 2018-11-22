@@ -27,5 +27,5 @@ public interface ShimeDateQuery {
 	 *            基準の営業日
 	 * @return 締日リスト
 	 */
-	Set<ShimeDate> getShimeDate(Busho busho, EigyoDate date);
+	Set<ShimeDate> get(Busho busho, EigyoDate date);
 }

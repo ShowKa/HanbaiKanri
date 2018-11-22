@@ -27,14 +27,14 @@ public class KokyakuQueryImpl implements KokyakuQuery {
 	private KokyakuPersistence kokyakuPersistence;
 
 	@Override
-	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates) {
+	public List<Kokyaku> getOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates) {
 		return shimeDates.stream().map(shimeDate -> {
-			return this.getKokyakuOnShimeDate(busho, shimeDate);
+			return this.getOnShimeDate(busho, shimeDate);
 		}).flatMap(List::stream).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, ShimeDate shimeDate) {
+	public List<Kokyaku> getOnShimeDate(Busho busho, ShimeDate shimeDate) {
 		// 顧客条件
 		MKokyaku k = new MKokyaku();
 		k.setShukanBushoId(busho.getRecordId());

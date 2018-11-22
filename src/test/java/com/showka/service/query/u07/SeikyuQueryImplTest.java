@@ -89,7 +89,7 @@ public class SeikyuQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<Seikyu> actual = service.getAllOf(kokyaku);
+		List<Seikyu> actual = service.get(kokyaku);
 		// verify
 		new Verifications() {
 			{
@@ -120,7 +120,7 @@ public class SeikyuQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<Seikyu> actual = service.getAllOf(busho);
+		List<Seikyu> actual = service.get(busho);
 		// assert
 		assertEquals(1, actual.size());
 		assertEquals(seikyu, actual.get(0));
@@ -155,7 +155,7 @@ public class SeikyuQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<Seikyu> actual = service.getHistoryOf(urikakeId);
+		List<Seikyu> actual = service.getHistory(urikakeId);
 		// verify
 		new Verifications() {
 			{
@@ -188,16 +188,16 @@ public class SeikyuQueryImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				service.getHistoryOf(urikakeId);
+				service.getHistory(urikakeId);
 				result = seikyuList;
 			}
 		};
 		// do
-		Optional<Seikyu> actual = service.getNewestOf(urikakeId);
+		Optional<Seikyu> actual = service.getNewest(urikakeId);
 		// verify
 		new Verifications() {
 			{
-				service.getHistoryOf(urikakeId);
+				service.getHistory(urikakeId);
 				times = 1;
 			}
 		};

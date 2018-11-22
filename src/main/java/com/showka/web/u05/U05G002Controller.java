@@ -182,7 +182,7 @@ public class U05G002Controller extends ControllerBase {
 		model.setViewName("/u05/u05g002");
 
 		// 計上済み判定
-		model.addObject("isKeijoZumi", uriageKeijoQuery.isKeijoDone(u));
+		model.addObject("isKeijoZumi", uriageKeijoQuery.hasDone(u));
 
 		return model;
 	}

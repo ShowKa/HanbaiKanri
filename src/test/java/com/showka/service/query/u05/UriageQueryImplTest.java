@@ -35,7 +35,7 @@ public class UriageQueryImplTest extends PersistenceTestCase {
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, KOKYAKU_01);
 		super.deleteAndInsert(T_URIAGE_MEISAI, T_URIAGE_MEISAI_COLUMN, URIAGE_MEISAI_01);
 		super.deleteAndInsert(M_BUSHO, M_BUSHO_COLUMN, M_BUSHO_01);
-		List<Uriage> actual = service.getUriageOfKokyaku("KK01");
+		List<Uriage> actual = service.get("KK01");
 		assertEquals(2, actual.size());
 	}
 

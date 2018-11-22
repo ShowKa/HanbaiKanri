@@ -35,7 +35,7 @@ public class UrikakeQueryImpl implements UrikakeQuery {
 	private UrikakePersistence urikakePersistence;
 
 	@Override
-	public List<Urikake> getUrikakeForSeikyu(Kokyaku kokyaku) {
+	public List<Urikake> getForSeikyu(Kokyaku kokyaku) {
 		// 主幹部署の営業日
 		EigyoDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
 		// entities
@@ -52,7 +52,7 @@ public class UrikakeQueryImpl implements UrikakeQuery {
 	}
 
 	@Override
-	public List<Urikake> getUrikakeNotSettled(Kokyaku kokyaku) {
+	public List<Urikake> getNotSettled(Kokyaku kokyaku) {
 		// entities
 		List<TUrikake> result1 = this.getSeikyuNotYetEntity(kokyaku);
 		List<TUrikake> result2 = this.getSeikyuDoneEntity(kokyaku);

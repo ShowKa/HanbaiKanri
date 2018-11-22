@@ -56,7 +56,7 @@ public class FirmBankFurikomiQueryImpl implements FirmBankFurikomiQuery {
 	private static final W_FIRM_BANK_FURIKOMI_MATCHING_ERROR me = w_firm_bank_furikomi_matching_error.as("me");
 
 	@Override
-	public FBFurikomiMatchingResult searchMatched(Busho busho, TheDate date) {
+	public FBFurikomiMatchingResult getMatched(Busho busho, TheDate date) {
 		// 検索
 		Result<Record> result = this.searchOf(busho, date);
 		// マッチング
@@ -75,7 +75,7 @@ public class FirmBankFurikomiQueryImpl implements FirmBankFurikomiQuery {
 	// and not exists (match.id = fb.id)
 	// and not exists(matchingError.id = fb.id)
 	@Override
-	public List<String> searchUnmatched(TheDate date) {
+	public List<String> getUnmatched(TheDate date) {
 		// 副問合せ1
 		SelectConditionStep<Record1<Integer>> sub1 = create.selectOne()
 				.from(mt)

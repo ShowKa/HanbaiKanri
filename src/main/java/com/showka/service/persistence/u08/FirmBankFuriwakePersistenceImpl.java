@@ -43,7 +43,7 @@ public class FirmBankFuriwakePersistenceImpl implements FirmBankFuriwakePersiste
 	@Override
 	public void save(Seikyu seikyu) {
 		// 振込依頼人set 取得
-		FurikomiIraininSet furikomiIrainin = furikomiIraininQuery.search(seikyu.getKokyaku());
+		FurikomiIraininSet furikomiIrainin = furikomiIraininQuery.get(seikyu.getKokyaku());
 		// save
 		furikomiIrainin.getSet().forEach(f -> {
 			this.save(seikyu, f);

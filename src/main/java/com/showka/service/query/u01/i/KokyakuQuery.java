@@ -24,7 +24,7 @@ public interface KokyakuQuery {
 	 *            締日リスト
 	 * @return 顧客 list
 	 */
-	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates);
+	public List<Kokyaku> getOnShimeDate(Busho busho, Collection<ShimeDate> shimeDates);
 
 	/**
 	 * 締日の顧客取得.
@@ -41,5 +41,5 @@ public interface KokyakuQuery {
 	 *            締日
 	 * @return 顧客 list
 	 */
-	public List<Kokyaku> getKokyakuOnShimeDate(Busho busho, ShimeDate shimeDate);
+	public List<Kokyaku> getOnShimeDate(Busho busho, ShimeDate shimeDate);
 }

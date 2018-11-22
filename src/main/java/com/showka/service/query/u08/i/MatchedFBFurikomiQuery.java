@@ -21,5 +21,5 @@ public interface MatchedFBFurikomiQuery {
 	 * @param transmissionDate
 	 *            伝送日付.
 	 */
-	public List<MatchedFBFurikomi> search(TheDate transmissionDate);
+	public List<MatchedFBFurikomi> get(TheDate transmissionDate);
 }

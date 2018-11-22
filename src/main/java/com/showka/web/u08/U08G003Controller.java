@@ -132,7 +132,7 @@ public class U08G003Controller extends ControllerBase {
 				.collect(Collectors.toSet());
 		// get 売掛
 		Kokyaku kokyaku = nyukinKeshikomi.getNyukin().getKokyaku();
-		List<Urikake> urikake = urikakeQuery.getUrikakeNotSettled(kokyaku);
+		List<Urikake> urikake = urikakeQuery.getNotSettled(kokyaku);
 		// この入金によって消込まれた売掛は除去
 		urikake.removeIf(u -> {
 			String thisUrikakeId = u.getRecordId();

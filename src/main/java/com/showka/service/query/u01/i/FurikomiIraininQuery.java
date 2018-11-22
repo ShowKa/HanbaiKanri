@@ -12,6 +12,6 @@ public interface FurikomiIraininQuery {
 	 *            顧客
 	 * @return 顧客の振込依頼人Set
 	 */
-	public FurikomiIraininSet search(Kokyaku kokyaku);
+	public FurikomiIraininSet get(Kokyaku kokyaku);
 
 }

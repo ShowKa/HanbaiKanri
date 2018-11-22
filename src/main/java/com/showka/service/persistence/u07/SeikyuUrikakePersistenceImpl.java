@@ -40,9 +40,9 @@ public class SeikyuUrikakePersistenceImpl implements SeikyuUrikakePersistence {
 	@Override
 	public void seikyu(Busho busho, EigyoDate eigyoDate) {
 		// 締日リスト
-		Set<ShimeDate> shimeDateSet = shimeDateBusinessService.getShimeDate(busho, eigyoDate);
+		Set<ShimeDate> shimeDateSet = shimeDateBusinessService.get(busho, eigyoDate);
 		// 締日の顧客リスト
-		List<Kokyaku> kokyakuList = nyukinKakeInfoQuery.getKokyakuOnShimeDate(busho, shimeDateSet);
+		List<Kokyaku> kokyakuList = nyukinKakeInfoQuery.getOnShimeDate(busho, shimeDateSet);
 		kokyakuList.forEach(kokyaku -> {
 			// 請求
 			this.seikyu(kokyaku, eigyoDate);
@@ -52,7 +52,7 @@ public class SeikyuUrikakePersistenceImpl implements SeikyuUrikakePersistence {
 	@Override
 	public void seikyu(Kokyaku kokyaku, EigyoDate eigyoDate) {
 		// 売掛リスト取得
-		List<Urikake> urikakeList = urikakeQuery.getUrikakeForSeikyu(kokyaku);
+		List<Urikake> urikakeList = urikakeQuery.getForSeikyu(kokyaku);
 		// 請求
 		this.seikyu(kokyaku, eigyoDate, urikakeList);
 	}

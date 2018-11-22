@@ -23,7 +23,7 @@ public class FurikomiIraininQueryImpl implements FurikomiIraininQuery {
 	private MFurikomiIraininRepository repo;
 
 	@Override
-	public FurikomiIraininSet search(Kokyaku kokyaku) {
+	public FurikomiIraininSet get(Kokyaku kokyaku) {
 		// search entity
 		List<MFurikomiIrainin> resultList = this.searchEntity(kokyaku);
 		// build 振込依頼人set

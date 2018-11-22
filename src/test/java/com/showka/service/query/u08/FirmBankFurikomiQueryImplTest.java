@@ -100,7 +100,7 @@ public class FirmBankFurikomiQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		FBFurikomiMatchingResult actual = service.searchMatched(busho, date);
+		FBFurikomiMatchingResult actual = service.getMatched(busho, date);
 		// verify
 		new Verifications() {
 			{

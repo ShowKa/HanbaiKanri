@@ -79,7 +79,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.search(busho, date);
+				uriageRirekiQuery.get(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
@@ -129,7 +129,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.search(busho, date);
+				uriageRirekiQuery.get(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
@@ -142,7 +142,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiQuery.search(busho, date);
+				uriageRirekiQuery.get(busho, date);
 				times = 1;
 				busho.getRecordId();
 				times = 1;
@@ -192,7 +192,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.search(busho, date);
+				uriageRirekiQuery.get(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
@@ -208,7 +208,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiQuery.search(busho, date);
+				uriageRirekiQuery.get(busho, date);
 				times = 1;
 				busho.getRecordId();
 				times = 1;

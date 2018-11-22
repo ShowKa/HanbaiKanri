@@ -89,7 +89,7 @@ public class UriageValidatorImpl implements UriageValidator {
 			throw new CanNotUpdateOrDeleteException("キャンセル済の売上のため");
 		}
 		// 計上済み検証
-		boolean keijoZumi = uriageKeijoQuery.isKeijoDone(domain);
+		boolean keijoZumi = uriageKeijoQuery.hasDone(domain);
 		if (keijoZumi) {
 			throw new CanNotUpdateOrDeleteException("計上済の売上のため");
 		}

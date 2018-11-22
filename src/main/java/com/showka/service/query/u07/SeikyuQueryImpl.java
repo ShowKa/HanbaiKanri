@@ -51,7 +51,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 	// on = seikyu.seikyu_id = j.seikyu_id
 	// where seikyu.tantoBusho = busho
 	@Override
-	public List<Seikyu> getAllOf(Busho busho) {
+	public List<Seikyu> get(Busho busho) {
 		List<T_SEIKYU_RECORD> seikyuRecords = this.getAllRecordsOf(busho);
 		return seikyuRecords.stream().map(r -> {
 			return seikyuPersistence.getDomain(r.getRecordId());
@@ -59,7 +59,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 	}
 
 	@Override
-	public List<Seikyu> getAllOf(Kokyaku kokyaku) {
+	public List<Seikyu> get(Kokyaku kokyaku) {
 		// 請求リスト
 		List<TSeikyu> seikyuList = this.getAllEntitiesOf(kokyaku);
 		// entity -> domain
@@ -112,7 +112,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 	}
 
 	@Override
-	public List<Seikyu> getHistoryOf(String urikakeId) {
+	public List<Seikyu> getHistory(String urikakeId) {
 		// 請求明細取得
 		List<TSeikyuMeisai> result = this.getHistoryEntitiesOf(urikakeId);
 		// 請求IDのみ抽出（重複排除）
@@ -147,9 +147,9 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 	}
 
 	@Override
-	public Optional<Seikyu> getNewestOf(String urikakeId) {
+	public Optional<Seikyu> getNewest(String urikakeId) {
 		// 請求履歴
-		List<Seikyu> seikyuList = this.getHistoryOf(urikakeId);
+		List<Seikyu> seikyuList = this.getHistory(urikakeId);
 		// 最新のものを抽出。
 		Optional<Seikyu> newest = seikyuList.parallelStream().max((one, two) -> {
 			return one.getSeikyuDate().compareTo(two.getSeikyuDate());

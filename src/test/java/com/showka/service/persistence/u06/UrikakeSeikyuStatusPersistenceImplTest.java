@@ -182,7 +182,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// expect
 		new Expectations() {
 			{
-				seikyuQuery.getNewestOf(urikakeId);
+				seikyuQuery.getNewest(urikakeId);
 				result = Optional.empty();
 				service.toNotYet(urikakeId);
 				times = 1;
@@ -193,7 +193,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// verify
 		new Verifications() {
 			{
-				seikyuQuery.getNewestOf(urikakeId);
+				seikyuQuery.getNewest(urikakeId);
 				times = 1;
 			}
 		};
@@ -214,7 +214,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// expect
 		new Expectations() {
 			{
-				seikyuQuery.getNewestOf(urikakeId);
+				seikyuQuery.getNewest(urikakeId);
 				result = Optional.of(seikyu);
 				service.toDone(urikakeId, seikyuId);
 			}
@@ -224,7 +224,7 @@ public class UrikakeSeikyuStatusPersistenceImplTest extends PersistenceTestCase 
 		// verify
 		new Verifications() {
 			{
-				seikyuQuery.getNewestOf(urikakeId);
+				seikyuQuery.getNewest(urikakeId);
 				times = 1;
 				service.toDone(urikakeId, seikyuId);
 				times = 1;

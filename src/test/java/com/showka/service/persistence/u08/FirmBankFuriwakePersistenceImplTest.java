@@ -118,7 +118,7 @@ public class FirmBankFuriwakePersistenceImplTest extends SimpleTestCase {
 			{
 				seikyu.getKokyaku();
 				result = kokyaku;
-				furikomiIraininQuery.search(kokyaku);
+				furikomiIraininQuery.get(kokyaku);
 				result = set;
 			}
 		};
@@ -129,7 +129,7 @@ public class FirmBankFuriwakePersistenceImplTest extends SimpleTestCase {
 			{
 				seikyu.getKokyaku();
 				times = 1;
-				furikomiIraininQuery.search(kokyaku);
+				furikomiIraininQuery.get(kokyaku);
 				times = 1;
 				service.save(seikyu, f);
 				times = 1;

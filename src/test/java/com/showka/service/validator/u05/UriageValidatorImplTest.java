@@ -274,7 +274,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
-				uriageKeijoQuery.isKeijoDone(domain);
+				uriageKeijoQuery.hasDone(domain);
 				result = true;
 			}
 		};
@@ -303,7 +303,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 				result = domain;
 				cUriageRepository.existsById(uriageId);
 				result = false;
-				uriageKeijoQuery.isKeijoDone(domain);
+				uriageKeijoQuery.hasDone(domain);
 				result = false;
 			}
 		};
@@ -316,7 +316,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 				times = 1;
 				cUriageRepository.existsById(uriageId);
 				times = 1;
-				uriageKeijoQuery.isKeijoDone(domain);
+				uriageKeijoQuery.hasDone(domain);
 				times = 1;
 			}
 		};

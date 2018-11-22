@@ -54,7 +54,7 @@ public class U07G001Controller extends ControllerBase {
 		// get 顧客
 		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
 		// get 請求リスト
-		List<Seikyu> _seikyuList = seikyuQuery.getAllOf(kokyaku);
+		List<Seikyu> _seikyuList = seikyuQuery.get(kokyaku);
 		// to map
 		List<Map<String, Object>> seikyuList = _seikyuList.stream().map(seikyu -> {
 			Map<String, Object> ret = new HashMap<String, Object>();

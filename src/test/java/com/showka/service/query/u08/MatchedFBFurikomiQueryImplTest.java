@@ -76,7 +76,7 @@ public class MatchedFBFurikomiQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		List<MatchedFBFurikomi> actual = service.search(transmissionDate);
+		List<MatchedFBFurikomi> actual = service.get(transmissionDate);
 		// verify
 		new Verifications() {
 			{

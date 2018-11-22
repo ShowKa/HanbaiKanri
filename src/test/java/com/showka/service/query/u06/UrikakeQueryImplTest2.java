@@ -78,7 +78,7 @@ public class UrikakeQueryImplTest2 extends SimpleTestCase {
 			}
 		};
 		// do
-		List<Urikake> actual = service.getUrikakeForSeikyu(kokyaku);
+		List<Urikake> actual = service.getForSeikyu(kokyaku);
 		// verify
 		new Verifications() {
 			{
@@ -129,7 +129,7 @@ public class UrikakeQueryImplTest2 extends SimpleTestCase {
 			}
 		};
 		// do
-		List<Urikake> actual = service.getUrikakeNotSettled(kokyaku);
+		List<Urikake> actual = service.getNotSettled(kokyaku);
 		// verify
 		new Verifications() {
 			{

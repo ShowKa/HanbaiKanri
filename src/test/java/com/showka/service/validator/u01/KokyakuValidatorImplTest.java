@@ -257,7 +257,7 @@ public class KokyakuValidatorImplTest extends SimpleTestCase {
 		uriageList.add(new UriageBuilder().build());
 		new Expectations() {
 			{
-				uriageQuery.getUriageOfKokyaku("KK01");
+				uriageQuery.get("KK01");
 				result = uriageList;
 			}
 		};
@@ -271,7 +271,7 @@ public class KokyakuValidatorImplTest extends SimpleTestCase {
 		List<Uriage> uriageList = new ArrayList<Uriage>();
 		new Expectations() {
 			{
-				uriageQuery.getUriageOfKokyaku("KK01");
+				uriageQuery.get("KK01");
 				result = uriageList;
 			}
 		};

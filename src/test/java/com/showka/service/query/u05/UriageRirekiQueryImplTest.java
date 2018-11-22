@@ -62,7 +62,7 @@ public class UriageRirekiQueryImplTest extends PersistenceTestCase {
 		// 計上日
 		EigyoDate date = new EigyoDate(2017, 1, 1);
 		// do
-		List<RUriage> actual = service.search(busho, date);
+		List<RUriage> actual = service.get(busho, date);
 		// check
 		assertEquals(1, actual.size());
 	}

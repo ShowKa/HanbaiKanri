@@ -13,6 +13,6 @@ public interface UriageQuery {
 	 *            顧客コード
 	 * @return 売上リスト
 	 */
-	public List<Uriage> getUriageOfKokyaku(String kokyakuCode);
+	public List<Uriage> get(String kokyakuCode);
 
 }

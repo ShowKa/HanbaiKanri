@@ -22,7 +22,7 @@ public interface NyukinKeijoQuery {
 	 *            基準日
 	 * @return 未計上の入金リスト.
 	 */
-	List<Nyukin> searchNotDone(Busho busho, EigyoDate kijunDate);
+	List<Nyukin> getNotDone(Busho busho, EigyoDate kijunDate);
 
 	/**
 	 * 計上済み入金検索.
@@ -39,7 +39,7 @@ public interface NyukinKeijoQuery {
 	 *            計上日
 	 * @return 計上済み入金リスト
 	 */
-	List<Nyukin> seach(Busho busho, EigyoDate keijoDate);
+	List<Nyukin> getDone(Busho busho, EigyoDate keijoDate);
 
 	/**
 	 * 計上済判定.
@@ -48,5 +48,5 @@ public interface NyukinKeijoQuery {
 	 *            入金ID
 	 * @return 計上済の場合true
 	 */
-	public boolean keijoDone(String nyukinId);
+	public boolean hasDone(String nyukinId);
 }

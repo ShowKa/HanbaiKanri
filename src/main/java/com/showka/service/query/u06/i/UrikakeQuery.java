@@ -25,7 +25,7 @@ public interface UrikakeQuery {
 	 *            顧客
 	 * @return 売掛リスト
 	 */
-	public List<Urikake> getUrikakeForSeikyu(Kokyaku kokyaku);
+	public List<Urikake> getForSeikyu(Kokyaku kokyaku);
 
 	/**
 	 * 顧客の未済売掛を取得する.
@@ -34,5 +34,5 @@ public interface UrikakeQuery {
 	 *            顧客
 	 * @return 売掛リスト
 	 */
-	public List<Urikake> getUrikakeNotSettled(Kokyaku kokyaku);
+	public List<Urikake> getNotSettled(Kokyaku kokyaku);
 }

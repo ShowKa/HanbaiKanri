@@ -21,7 +21,7 @@ public interface SeikyuQuery {
 	 *            顧客
 	 * @return 請求リスト
 	 */
-	public List<Seikyu> getAllOf(Busho busho);
+	public List<Seikyu> get(Busho busho);
 
 	/**
 	 * 引数.顧客への請求を全て取得する
@@ -30,7 +30,7 @@ public interface SeikyuQuery {
 	 *            顧客
 	 * @return 請求リスト
 	 */
-	public List<Seikyu> getAllOf(Kokyaku kokyaku);
+	public List<Seikyu> get(Kokyaku kokyaku);
 
 	/**
 	 * 売掛の請求履歴を取得する。
@@ -39,7 +39,7 @@ public interface SeikyuQuery {
 	 *            売掛ID
 	 * @return 請求リスト
 	 */
-	public List<Seikyu> getHistoryOf(String urikakeId);
+	public List<Seikyu> getHistory(String urikakeId);
 
 	/**
 	 * 売掛の請求履歴のうち、最近のものを取得する。
@@ -52,5 +52,5 @@ public interface SeikyuQuery {
 	 *            売掛ID
 	 * @return 最新の請求
 	 */
-	public Optional<Seikyu> getNewestOf(String urikakeId);
+	public Optional<Seikyu> getNewest(String urikakeId);
 }

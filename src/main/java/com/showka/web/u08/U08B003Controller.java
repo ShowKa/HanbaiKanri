@@ -113,7 +113,7 @@ public class U08B003Controller extends ControllerBase {
 		// matching error
 		TheDate date = new TheDate(form.getDate());
 		// マッチングデータ抽出
-		FBFurikomiMatchingResult result = Query.searchMatched(busho, date);
+		FBFurikomiMatchingResult result = Query.getMatched(busho, date);
 		// マッチング成功
 		result.getMatchedNormally().parallelStream().forEach(m -> {
 			Persistence.save(m.getFbFurikomiId(), m.getFuriwakeId());
@@ -148,7 +148,7 @@ public class U08B003Controller extends ControllerBase {
 	public ResponseEntity<?> unmatch(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// アンマッチ
 		TheDate date = new TheDate(form.getDate());
-		List<String> unmatchedList = Query.searchUnmatched(date);
+		List<String> unmatchedList = Query.getUnmatched(date);
 		unmatchedList.stream().forEach(fbFurikomiId -> {
 			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.マッチング対象なし);
 		});

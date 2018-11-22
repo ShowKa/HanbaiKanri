@@ -84,7 +84,7 @@ public class FirmBankFurikomiQueryImplTest2 extends CrudByJooqServiceTestCase {
 		super.deleteAndInsert(W_FIRM_BANK_FURIKOMI_MATCHING_ERROR, W_FIRM_BANK_FURIKOMI_MATCHING_ERROR_COLUMN, me01);
 		// input
 		TheDate date = new TheDate(2017, 8, 20);
-		List<String> actual = service.searchUnmatched(date);
+		List<String> actual = service.getUnmatched(date);
 		assertEquals(1, actual.size());
 		assertEquals("r-20170820-03", actual.get(0));
 	}

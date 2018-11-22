@@ -89,16 +89,16 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.search(busho, date);
+				uriageRirekiQuery.get(busho, date);
 				result = rUriageList;
 			}
 		};
 		// do
-		List<RUriageKeijo> actual = service.search(busho, date);
+		List<RUriageKeijo> actual = service.get(busho, date);
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiQuery.search(busho, date);
+				uriageRirekiQuery.get(busho, date);
 				times = 1;
 			}
 		};
@@ -135,7 +135,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		new Expectations() {
 			{
 				// search 売上計上 entity
-				service.search(busho, date);
+				service.get(busho, date);
 				result = keijoEntities;
 				// get 売上ID
 				ke1.getUriageId();
@@ -165,7 +165,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		new Verifications() {
 			{
 				// search 売上計上 entity
-				service.search(busho, date);
+				service.get(busho, date);
 				times = 1;
 				// get 売上ID
 				ke1.getUriageId();
@@ -226,7 +226,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		new Expectations() {
 			{
 				// search 売上計上 entities
-				service.search(busho, date);
+				service.get(busho, date);
 				result = keijoEntities;
 				// get 計上ID
 				ke.getRecordId();
@@ -257,7 +257,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		new Verifications() {
 			{
 				// search 売上計上 entities
-				service.search(busho, date);
+				service.get(busho, date);
 				times = 1;
 				// get 計上ID
 				ke.getRecordId();
@@ -332,7 +332,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 			}
 		};
 		// do
-		boolean actual = service.isKeijoDone(uriage);
+		boolean actual = service.hasDone(uriage);
 		// verify
 		new Verifications() {
 			{
@@ -375,7 +375,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 			}
 		};
 		// do
-		boolean actual = service.isKeijoDone(uriage);
+		boolean actual = service.hasDone(uriage);
 		// verify
 		new Verifications() {
 			{

@@ -84,7 +84,7 @@ public class ShukinValidatorImpl implements ShukinValidator {
 	 */
 	void validateKeijo(Shukin shukin) throws CanNotUpdateOrDeleteException {
 		String nyukinId = shukin.getNyukinId();
-		boolean keijoDone = nyukinKeijoQuery.keijoDone(nyukinId);
+		boolean keijoDone = nyukinKeijoQuery.hasDone(nyukinId);
 		if (keijoDone) {
 			throw new CanNotUpdateOrDeleteException("計上済みのため");
 		}

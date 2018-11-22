@@ -43,7 +43,7 @@ public class KokyakuQueryImplTest extends PersistenceTestCase {
 		ShimeDate shimeDate = new ShimeDate(20);
 		List<ShimeDate> shimeDates = Arrays.asList(shimeDate);
 		// do
-		List<Kokyaku> actual = service.getKokyakuOnShimeDate(busho, shimeDates);
+		List<Kokyaku> actual = service.getOnShimeDate(busho, shimeDates);
 		// check
 		assertEquals(1, actual.size());
 		assertEquals("r-KK01", actual.get(0).getRecordId());

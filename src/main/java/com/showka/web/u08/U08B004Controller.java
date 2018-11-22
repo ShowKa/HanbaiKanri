@@ -42,7 +42,7 @@ public class U08B004Controller extends ControllerBase {
 	public ResponseEntity<?> saveNyukin(@ModelAttribute U08B004Form form, ModelAndViewExtended model) {
 		// FB振込Tableから$マッチング済FB振込を検索
 		TheDate transmissionDate = new TheDate(form.getDate());
-		List<MatchedFBFurikomi> matchedFbFurikomi = Query.search(transmissionDate);
+		List<MatchedFBFurikomi> matchedFbFurikomi = Query.get(transmissionDate);
 		// $マッチング済FB振込を入金登録
 		matchedFbFurikomi.forEach(Persistence::save);
 		// return

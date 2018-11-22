@@ -64,7 +64,7 @@ public class UrikakeSeikyuStatusPersistenceImpl implements UrikakeSeikyuStatusPe
 		}
 		// 最新請求を取得。
 		// 未請求の場合、未請求状態とする。
-		Optional<Seikyu> _newestSeikyu = seikyuQuery.getNewestOf(urikakeId);
+		Optional<Seikyu> _newestSeikyu = seikyuQuery.getNewest(urikakeId);
 		if (!_newestSeikyu.isPresent()) {
 			this.toNotYet(urikakeId);
 			return;

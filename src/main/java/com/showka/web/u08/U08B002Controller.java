@@ -49,7 +49,7 @@ public class U08B002Controller extends ControllerBase {
 	public ResponseEntity<?> fbFuriwake(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
 		// search 請求・売掛
 		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
-		List<Seikyu> seikyuList = seikyuQuery.getAllOf(busho);
+		List<Seikyu> seikyuList = seikyuQuery.get(busho);
 		// save FB振分
 		firmBankFuriwakePersistence.save(seikyuList);
 		// return

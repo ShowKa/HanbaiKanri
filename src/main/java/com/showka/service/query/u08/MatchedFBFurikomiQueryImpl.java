@@ -42,7 +42,7 @@ public class MatchedFBFurikomiQueryImpl implements MatchedFBFurikomiQuery {
 	private static final W_FIRM_BANK_FURIWAKE fw = w_firm_bank_furiwake.as("fw");
 
 	@Override
-	public List<MatchedFBFurikomi> search(TheDate transmissionDate) {
+	public List<MatchedFBFurikomi> get(TheDate transmissionDate) {
 		Result<Record> result = this.query(transmissionDate);
 		// build
 		List<MatchedFBFurikomi> matchedFbFurikomiList = result.parallelStream().map(r -> {

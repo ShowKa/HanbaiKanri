@@ -64,7 +64,7 @@ public class KokyakuValidatorImpl implements KokyakuValidator {
 
 	@Override
 	public void validateForDelete(String kokyakuCode) throws ValidateException {
-		List<Uriage> uriageList = uriageQuery.getUriageOfKokyaku(kokyakuCode);
+		List<Uriage> uriageList = uriageQuery.get(kokyakuCode);
 		if (!uriageList.isEmpty()) {
 			throw new CanNotUpdateOrDeleteException("売上が登録済み");
 		}

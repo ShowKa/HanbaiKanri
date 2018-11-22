@@ -43,9 +43,9 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 	private UriageRirekiQuery uriageRirekiQuery;
 
 	@Override
-	public List<RUriageKeijo> search(Busho busho, EigyoDate date) {
+	public List<RUriageKeijo> get(Busho busho, EigyoDate date) {
 		// search 計上対象売上
-		List<RUriage> uriageRirekiList = uriageRirekiQuery.search(busho, date);
+		List<RUriage> uriageRirekiList = uriageRirekiQuery.get(busho, date);
 		// 売上履歴 record id
 		Iterable<String> uriageRirekiRecordIds = uriageRirekiList.stream().map(uriageRireki -> {
 			return uriageRireki.getRecordId();
@@ -57,7 +57,7 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 	@Override
 	public int getKeijoKingaku(Busho busho, EigyoDate date) {
 		// 売上計上 entities
-		List<RUriageKeijo> keijoEntities = this.search(busho, date);
+		List<RUriageKeijo> keijoEntities = this.get(busho, date);
 		// 売上計上金額集計
 		int keijoKingaku = keijoEntities.stream().mapToInt(ke -> {
 			String uriageId = ke.getUriageId();
@@ -73,7 +73,7 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 	@Override
 	public int getTeiseiKingaku(Busho busho, EigyoDate date) {
 		// 売上計上 entities
-		List<RUriageKeijo> keijoEntities = this.search(busho, date);
+		List<RUriageKeijo> keijoEntities = this.get(busho, date);
 		// 売上計上訂正分金額集計
 		Iterable<String> keijoIds = keijoEntities.stream().map(e -> e.getRecordId()).collect(Collectors.toList());
 		List<RUriageKeijoTeisei> teiseiEntities = repoTeisei.findAllById(keijoIds);
@@ -91,7 +91,7 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 	}
 
 	@Override
-	public boolean isKeijoDone(Uriage uriage) {
+	public boolean hasDone(Uriage uriage) {
 		// get 売上履歴
 		RUriagePK pk = new RUriagePK();
 		pk.setKeijoDate(uriage.getKeijoDate().toDate());

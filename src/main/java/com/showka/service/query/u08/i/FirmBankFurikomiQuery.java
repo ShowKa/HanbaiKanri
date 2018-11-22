@@ -17,7 +17,7 @@ public interface FirmBankFurikomiQuery {
 	 *            伝送日付
 	 * @return FB振込IDのリスト
 	 */
-	public FBFurikomiMatchingResult searchMatched(Busho busho, TheDate date);
+	public FBFurikomiMatchingResult getMatched(Busho busho, TheDate date);
 
 	/**
 	 * FB振込のうち、マッチする振り分けデータがないものを検索
@@ -32,5 +32,5 @@ public interface FirmBankFurikomiQuery {
 	 *            伝送日付
 	 * @return FB振込IDのリスト
 	 */
-	public List<String> searchUnmatched(TheDate date);
+	public List<String> getUnmatched(TheDate date);
 }

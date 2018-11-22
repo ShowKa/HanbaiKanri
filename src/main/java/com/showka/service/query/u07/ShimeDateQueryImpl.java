@@ -23,7 +23,7 @@ public class ShimeDateQueryImpl implements ShimeDateQuery {
 	private static final int _31 = 31;
 
 	@Override
-	public Set<ShimeDate> getShimeDate(Busho busho, EigyoDate eigyoDate) {
+	public Set<ShimeDate> get(Busho busho, EigyoDate eigyoDate) {
 		// set
 		Set<ShimeDate> shimeDates = new HashSet<>();
 		// 営業日かつ31ではない -> 対象

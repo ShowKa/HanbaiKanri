@@ -35,7 +35,7 @@ public class FurikomiIraininQueryImplTest extends PersistenceTestCase {
 			}
 		};
 		// do
-		FurikomiIraininSet actual = service.search(kokyaku);
+		FurikomiIraininSet actual = service.get(kokyaku);
 		// assert
 		assertEquals(1, actual.getSet().size());
 		assertEquals(kokyaku, actual.getKokyaku());

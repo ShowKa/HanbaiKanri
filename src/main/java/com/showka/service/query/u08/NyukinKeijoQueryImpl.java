@@ -43,7 +43,7 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 	private static final T_NYUKIN_KEIJO kj = t_nyukin_keijo.as("kj");
 
 	@Override
-	public List<Nyukin> searchNotDone(Busho busho, EigyoDate kijunDate) {
+	public List<Nyukin> getNotDone(Busho busho, EigyoDate kijunDate) {
 		Result<T_NYUKIN_RECORD> results = this._searchNotDone(busho, kijunDate);
 		return results.stream().map(r -> {
 			return nyukinPersistence.getDomain(r.getRecordId());
@@ -68,7 +68,7 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 	}
 
 	@Override
-	public List<Nyukin> seach(Busho busho, EigyoDate keijoDate) {
+	public List<Nyukin> getDone(Busho busho, EigyoDate keijoDate) {
 		TNyukinKeijo nk = new TNyukinKeijo();
 		nk.setBushoId(busho.getRecordId());
 		nk.setDate(keijoDate.toDate());
@@ -80,7 +80,7 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 	}
 
 	@Override
-	public boolean keijoDone(String nyukinId) {
+	public boolean hasDone(String nyukinId) {
 		return repo.existsById(nyukinId);
 	}
 

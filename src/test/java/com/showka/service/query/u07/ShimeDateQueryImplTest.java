@@ -41,7 +41,7 @@ public class ShimeDateQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Set<ShimeDate> actual = service.getShimeDate(busho, eigyoDate);
+		Set<ShimeDate> actual = service.get(busho, eigyoDate);
 		// check
 		assertTrue(actual.contains(new ShimeDate(30)));
 	}
@@ -61,7 +61,7 @@ public class ShimeDateQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Set<ShimeDate> actual = service.getShimeDate(busho, eigyoDate);
+		Set<ShimeDate> actual = service.get(busho, eigyoDate);
 		// check
 		assertEquals(0, actual.size());
 	}
@@ -87,7 +87,7 @@ public class ShimeDateQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Set<ShimeDate> actual = service.getShimeDate(busho, eigyoDate);
+		Set<ShimeDate> actual = service.get(busho, eigyoDate);
 		// verify
 		new Verifications() {
 			{
@@ -120,7 +120,7 @@ public class ShimeDateQueryImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Set<ShimeDate> actual = service.getShimeDate(busho, eigyoDate);
+		Set<ShimeDate> actual = service.get(busho, eigyoDate);
 		// check
 		assertEquals(3, actual.size());
 		assertTrue(actual.contains(new ShimeDate(28)));

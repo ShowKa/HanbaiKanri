@@ -22,7 +22,7 @@ public class UriageRirekiQueryImpl implements UriageRirekiQuery {
 	private RUriageRepository repo;
 
 	@Override
-	public List<RUriage> search(Busho busho, TheDate date) {
+	public List<RUriage> get(Busho busho, TheDate date) {
 		// entity
 		RUriage e = new RUriage();
 		// pk

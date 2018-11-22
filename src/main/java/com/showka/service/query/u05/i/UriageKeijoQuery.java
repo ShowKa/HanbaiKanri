@@ -17,7 +17,7 @@ public interface UriageKeijoQuery {
 	 *            計上日
 	 * @return 売上計上
 	 */
-	public List<RUriageKeijo> search(Busho busho, EigyoDate date);
+	public List<RUriageKeijo> get(Busho busho, EigyoDate date);
 
 	/**
 	 * 指定した計上日における部署の売上の計上金額を集計.
@@ -61,5 +61,5 @@ public interface UriageKeijoQuery {
 	 *            売上ドメイン
 	 * @return true=計上済み
 	 */
-	public boolean isKeijoDone(Uriage uriage);
+	public boolean hasDone(Uriage uriage);
 }

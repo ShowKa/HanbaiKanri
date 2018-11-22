@@ -356,7 +356,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinKeijoQuery.keijoDone(nyukinId);
+				nyukinKeijoQuery.hasDone(nyukinId);
 				result = false;
 			}
 		};
@@ -365,7 +365,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				nyukinKeijoQuery.keijoDone(nyukinId);
+				nyukinKeijoQuery.hasDone(nyukinId);
 				times = 1;
 			}
 		};
@@ -386,7 +386,7 @@ public class ShukinValidatorImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinKeijoQuery.keijoDone(nyukinId);
+				nyukinKeijoQuery.hasDone(nyukinId);
 				result = true;
 			}
 		};

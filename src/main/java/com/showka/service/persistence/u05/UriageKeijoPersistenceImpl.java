@@ -44,7 +44,7 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 	@Override
 	public void keijo(Busho busho, EigyoDate date) {
 		// search 計上対象売上
-		List<RUriage> uriageRirekiList = uriageRirekiQuery.search(busho, date);
+		List<RUriage> uriageRirekiList = uriageRirekiQuery.get(busho, date);
 		// 売上計上
 		uriageRirekiList.forEach(uriageRireki -> {
 			// entity
