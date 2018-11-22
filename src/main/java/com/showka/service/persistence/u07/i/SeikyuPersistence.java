@@ -18,15 +18,6 @@ public interface SeikyuPersistence extends Persistence<Seikyu, TSeikyuPK> {
 	/**
 	 * 請求取得.
 	 * 
-	 * @param spec
-	 *            請求仕様
-	 * @return 請求.
-	 */
-	public Seikyu getDomain(SeikyuSpecification spec);
-
-	/**
-	 * 請求取得.
-	 * 
 	 * @param seikyuId
 	 *            請求ID
 	 * @return 請求.

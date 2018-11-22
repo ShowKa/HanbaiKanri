@@ -118,17 +118,6 @@ public class SeikyuPersistenceImpl implements SeikyuPersistence {
 	}
 
 	@Override
-	public Seikyu getDomain(SeikyuSpecification spec) {
-		TSeikyuPK pk = new TSeikyuPK();
-		Kokyaku kokyaku = spec.getKokyaku();
-		String kokyakuId = kokyaku.getRecordId();
-		pk.setKokyakuId(kokyakuId);
-		EigyoDate seikyuDate = spec.getSeikyuDate();
-		pk.setSeikyuDate(seikyuDate.toDate());
-		return this.getDomain(pk);
-	}
-
-	@Override
 	public Seikyu getDomain(String seikyuId) {
 		TSeikyu e = repo.findByRecordId(seikyuId);
 		return this.getDomain(e.getPk());
