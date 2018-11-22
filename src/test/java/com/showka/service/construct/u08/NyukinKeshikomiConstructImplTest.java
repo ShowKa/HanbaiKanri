@@ -1,4 +1,4 @@
-package com.showka.service.specification.u08;
+package com.showka.service.construct.u08;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,11 +37,11 @@ import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
+public class NyukinKeshikomiConstructImplTest extends SimpleTestCase {
 
 	@Tested
 	@Injectable
-	private NyukinKeshikomiBuildServiceImpl service;
+	private NyukinKeshikomiConstructImpl service;
 
 	@Injectable
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
@@ -150,7 +150,7 @@ public class NyukinKeshikomiBuildServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		NyukinKeshikomi actual = service.build(matchedFBFurikomi);
+		NyukinKeshikomi actual = service.by(matchedFBFurikomi);
 		// check
 		assertEquals(1, actual.getKeshikomiSet().size());
 		assertTrue(actual.getKeshikomiSet().contains(keshikomi));

@@ -11,11 +11,11 @@ import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
+import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
 import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u08.i.KeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinPersistence;
-import com.showka.service.specification.u08.i.NyukinKeshikomiBuildService;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -31,7 +31,7 @@ public class NyukinKeshikomiPersistenceImpl implements NyukinKeshikomiPersistenc
 	private UrikakePersistence urikakePersistence;
 
 	@Autowired
-	private NyukinKeshikomiBuildService nyukinKeshikomiBuildService;
+	private NyukinKeshikomiConstruct nyukinKeshikomiBuildService;
 
 	@Override
 	public void save(EigyoDate date, NyukinKeshikomi nyukinKeshikomi) {
@@ -54,7 +54,7 @@ public class NyukinKeshikomiPersistenceImpl implements NyukinKeshikomiPersistenc
 		// 営業日=請求担当部署の営業日
 		EigyoDate eigyoDate = matchedFBFurikomi.getSeikyuTantoBushoEigyoDate();
 		// 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiBuildService.build(matchedFBFurikomi);
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiBuildService.by(matchedFBFurikomi);
 		// save
 		this.save(eigyoDate, nyukinKeshikomi);
 	}

@@ -1,4 +1,4 @@
-package com.showka.service.specification.u08;
+package com.showka.service.construct.u08;
 
 import java.util.List;
 import java.util.Set;
@@ -17,16 +17,16 @@ import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
+import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
 import com.showka.service.persistence.u06.i.UrikakeKeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
-import com.showka.service.specification.u08.i.NyukinKeshikomiBuildService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 @Service
-public class NyukinKeshikomiBuildServiceImpl implements NyukinKeshikomiBuildService {
+public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 
 	@Autowired
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
@@ -38,7 +38,7 @@ public class NyukinKeshikomiBuildServiceImpl implements NyukinKeshikomiBuildServ
 	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
 
 	@Override
-	public NyukinKeshikomi build(MatchedFBFurikomi matchedFBFurikomi) {
+	public NyukinKeshikomi by(MatchedFBFurikomi matchedFBFurikomi) {
 		// 入金
 		String fbFurikomiId = matchedFBFurikomi.getFBFurikomiId();
 		Nyukin nyukin = nyukinFBFurikomiPersistence.getNyukin(fbFurikomiId);

@@ -22,11 +22,11 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
+import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
 import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u08.NyukinKeshikomiPersistenceImpl;
 import com.showka.service.persistence.u08.i.KeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinPersistence;
-import com.showka.service.specification.u08.i.NyukinKeshikomiBuildService;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -50,7 +50,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 	private UrikakePersistence urikakePersistence;
 
 	@Injectable
-	private NyukinKeshikomiBuildService nyukinKeshikomiBuildService;
+	private NyukinKeshikomiConstruct nyukinKeshikomiBuildService;
 
 	@Test
 	public void test01_save() throws Exception {
@@ -216,7 +216,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinKeshikomiBuildService.build(matchedFBFurikomi);
+				nyukinKeshikomiBuildService.by(matchedFBFurikomi);
 				result = nyukinKeshikomi;
 				service.save(eigyoDate, nyukinKeshikomi);
 			}
@@ -226,7 +226,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				nyukinKeshikomiBuildService.build(matchedFBFurikomi);
+				nyukinKeshikomiBuildService.by(matchedFBFurikomi);
 				times = 1;
 				service.save(eigyoDate, nyukinKeshikomi);
 				times = 1;
