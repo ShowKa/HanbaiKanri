@@ -28,6 +28,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
+import com.showka.service.construct.u06.i.UrikakeConstruct;
 import com.showka.service.persistence.u01.i.KokyakuPersistence;
 import com.showka.service.persistence.u05.i.UriageMeisaiPersistence;
 import com.showka.service.persistence.u05.i.UriagePersistence;
@@ -36,7 +37,6 @@ import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.persistence.z00.i.ShohinPersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
-import com.showka.service.specification.u06.i.UrikakeSpecificationService;
 import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.service.validator.u05.i.UriageValidator;
 import com.showka.system.exception.NotExistException;
@@ -78,7 +78,7 @@ public class U05G002Controller extends ControllerBase {
 	private ShohinIdoUriagePersistence shohinIdoUriagePersistence;
 
 	@Autowired
-	private UrikakeSpecificationService urikakeSpecificationService;
+	private UrikakeConstruct urikakeSpecificationService;
 
 	@Autowired
 	private UrikakePersistence urikakePersistence;
@@ -211,7 +211,7 @@ public class U05G002Controller extends ControllerBase {
 		uriagePersistence.save(uriage);
 
 		// 掛売
-		Optional<Urikake> urikake = urikakeSpecificationService.buildUrikakeBy(uriage);
+		Optional<Urikake> urikake = urikakeSpecificationService.by(uriage);
 		urikake.ifPresent(u -> {
 			urikakePersistence.save(u);
 		});
@@ -252,7 +252,7 @@ public class U05G002Controller extends ControllerBase {
 		uriagePersistence.save(uriage);
 
 		// 掛売
-		Optional<Urikake> urikake = urikakeSpecificationService.buildUrikakeBy(uriage);
+		Optional<Urikake> urikake = urikakeSpecificationService.by(uriage);
 		urikake.ifPresent(u -> {
 			// OCC
 			u.setVersion(form.getUrikakeVersion());

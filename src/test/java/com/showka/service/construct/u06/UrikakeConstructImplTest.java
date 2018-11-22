@@ -1,4 +1,4 @@
-package com.showka.service.specification.u06;
+package com.showka.service.construct.u06;
 
 import java.util.Optional;
 
@@ -17,10 +17,10 @@ import mockit.Injectable;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
+public class UrikakeConstructImplTest extends SimpleTestCase {
 
 	@Tested
-	private UrikakeSpecificationServiceImpl service;
+	private UrikakeConstructImpl service;
 
 	@Injectable
 	private UrikakeKeshikomiPersistence urikakeKeshikomiPersistence;
@@ -54,7 +54,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Optional<Urikake> actual = service.buildUrikakeBy(uriage);
+		Optional<Urikake> actual = service.by(uriage);
 		// verify
 		new Verifications() {
 			{
@@ -103,7 +103,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Optional<Urikake> actual = service.buildUrikakeBy(uriage);
+		Optional<Urikake> actual = service.by(uriage);
 		// verify
 		new Verifications() {
 			{
@@ -147,7 +147,7 @@ public class UrikakeSpecificationServiceImplTest extends SimpleTestCase {
 			}
 		};
 		// do
-		Optional<Urikake> actual = service.buildUrikakeBy(uriage);
+		Optional<Urikake> actual = service.by(uriage);
 		// verify
 		new Verifications() {
 			{

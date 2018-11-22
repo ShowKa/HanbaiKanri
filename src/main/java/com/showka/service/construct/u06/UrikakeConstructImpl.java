@@ -1,4 +1,4 @@
-package com.showka.service.specification.u06;
+package com.showka.service.construct.u06;
 
 import java.util.Optional;
 
@@ -8,15 +8,15 @@ import com.showka.domain.builder.UrikakeBuilder;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.kubun.HanbaiKubun;
-import com.showka.service.specification.u06.i.UrikakeSpecificationService;
+import com.showka.service.construct.u06.i.UrikakeConstruct;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.TheDate;
 
 @Service
-public class UrikakeSpecificationServiceImpl implements UrikakeSpecificationService {
+public class UrikakeConstructImpl implements UrikakeConstruct {
 
 	@Override
-	public Optional<Urikake> buildUrikakeBy(Uriage uriage) {
+	public Optional<Urikake> by(Uriage uriage) {
 		// 販売区分が掛売じゃない場合
 		if (uriage.getHanbaiKubun() != HanbaiKubun.掛売) {
 			return Optional.empty();

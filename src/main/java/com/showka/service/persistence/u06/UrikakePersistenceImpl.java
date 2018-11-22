@@ -15,10 +15,10 @@ import com.showka.entity.TUrikake;
 import com.showka.event.CrudEvent.EventType;
 import com.showka.event.u06.UrikakeCrudEvent;
 import com.showka.repository.i.TUrikakeRepository;
+import com.showka.service.construct.u06.i.UrikakeConstruct;
 import com.showka.service.persistence.u05.i.UriagePersistence;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.persistence.u06.i.UrikakePersistence;
-import com.showka.service.specification.u06.i.UrikakeSpecificationService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
@@ -35,7 +35,7 @@ public class UrikakePersistenceImpl implements UrikakePersistence {
 	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Autowired
-	private UrikakeSpecificationService urikakeSpecificationService;
+	private UrikakeConstruct urikakeSpecificationService;
 
 	@Autowired
 	private ApplicationEventPublisher applicationEventPublisher;
@@ -115,7 +115,7 @@ public class UrikakePersistenceImpl implements UrikakePersistence {
 		}
 		// build 売掛
 		Uriage revertTarget = _reverTarget.get();
-		Optional<Urikake> _urikake = urikakeSpecificationService.buildUrikakeBy(revertTarget);
+		Optional<Urikake> _urikake = urikakeSpecificationService.by(revertTarget);
 		// 売掛がある場合はsave
 		if (_urikake.isPresent()) {
 			Urikake urikake = _urikake.get();

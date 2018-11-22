@@ -1,4 +1,4 @@
-package com.showka.service.specification.u06.i;
+package com.showka.service.construct.u06.i;
 
 import java.util.Optional;
 
@@ -9,7 +9,7 @@ import com.showka.domain.u06.Urikake;
  * 売掛の仕様.
  *
  */
-public interface UrikakeSpecificationService {
+public interface UrikakeConstruct {
 	/**
 	 * 売上から売掛をビルド
 	 * 
@@ -24,5 +24,5 @@ public interface UrikakeSpecificationService {
 	 *            売上
 	 * @return 売掛
 	 */
-	public Optional<Urikake> buildUrikakeBy(Uriage uriage);
+	public Optional<Urikake> by(Uriage uriage);
 }
