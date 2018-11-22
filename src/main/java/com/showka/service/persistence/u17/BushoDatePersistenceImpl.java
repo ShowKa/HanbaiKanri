@@ -7,14 +7,14 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.persistence.u17.i.BushoDatePersistence;
-import com.showka.service.specification.z00.i.BushoDateBusinessService;
+import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.value.EigyoDate;
 
 @Service
 public class BushoDatePersistenceImpl implements BushoDatePersistence {
 
 	@Autowired
-	private BushoDateBusinessService bushoDateBusinessService;
+	private BushoDateQuery bushoDateBusinessService;
 
 	@Autowired
 	private MBushoDateRepository repo;

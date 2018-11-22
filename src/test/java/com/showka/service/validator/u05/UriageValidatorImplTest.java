@@ -20,7 +20,7 @@ import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.persistence.u05.i.UriagePersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
-import com.showka.service.specification.z00.i.BushoDateBusinessService;
+import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.service.validator.u05.i.UriageMeisaiValidator;
 import com.showka.system.exception.AlreadyExistsException;
 import com.showka.system.exception.CanNotUpdateOrDeleteException;
@@ -58,7 +58,7 @@ public class UriageValidatorImplTest extends SimpleTestCase {
 	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Injectable
-	private BushoDateBusinessService bushoDateBusinessService;
+	private BushoDateQuery bushoDateBusinessService;
 
 	// data
 	/** 顧客01. */

@@ -22,7 +22,7 @@ import com.showka.repository.i.TShohinZaikoRepository;
 import com.showka.service.persistence.u11.ShohinZaikoPersistenceImpl;
 import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
 import com.showka.service.persistence.z00.i.ShohinPersistence;
-import com.showka.service.specification.z00.i.BushoDateBusinessService;
+import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
 
@@ -49,7 +49,7 @@ public class ShohinZaikoPersistenceImplTest extends PersistenceTestCase {
 	private ShohinPersistence shohinPersistence;
 
 	@Injectable
-	private BushoDateBusinessService bushoDateBusinessService;
+	private BushoDateQuery bushoDateBusinessService;
 
 	/** 商品. */
 	private static final Object[] M_SHOHIN_V01 = { "SH01", "商品01", 10, "r-SH01" };

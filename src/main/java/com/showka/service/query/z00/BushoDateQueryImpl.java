@@ -1,14 +1,14 @@
-package com.showka.service.specification.z00;
+package com.showka.service.query.z00;
 
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.z00.Busho;
-import com.showka.service.specification.z00.i.BushoDateBusinessService;
+import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
 @Service
-public class BushoDateBusinessServiceImpl implements BushoDateBusinessService {
+public class BushoDateQueryImpl implements BushoDateQuery {
 
 	@Override
 	public EigyoDate getNext(Busho busho, EigyoDate eigyoDate) {

@@ -1,10 +1,10 @@
-package com.showka.service.specification.z00.i;
+package com.showka.service.query.z00.i;
 
 import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
-public interface BushoDateBusinessService {
+public interface BushoDateQuery {
 
 	/**
 	 * 引数で指定した営業日の次の営業日を取得する。

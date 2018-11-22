@@ -8,7 +8,7 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.z00.Busho;
 import com.showka.service.query.u07.ShimeDateQueryImpl;
-import com.showka.service.specification.z00.i.BushoDateBusinessService;
+import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.value.EigyoDate;
 import com.showka.value.ShimeDate;
 import com.showka.value.TheDate;
@@ -24,7 +24,7 @@ public class ShimeDateQueryImplTest extends SimpleTestCase {
 	private ShimeDateQueryImpl service;
 
 	@Injectable
-	private BushoDateBusinessService dateService;
+	private BushoDateQuery dateService;
 
 	// input=30 => 対象
 	@Test

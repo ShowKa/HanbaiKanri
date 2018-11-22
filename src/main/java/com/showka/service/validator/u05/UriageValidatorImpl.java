@@ -14,7 +14,7 @@ import com.showka.repository.i.CUriageRepository;
 import com.showka.repository.i.TUriageRepository;
 import com.showka.service.persistence.u05.i.UriagePersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
-import com.showka.service.specification.z00.i.BushoDateBusinessService;
+import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.service.validator.u05.i.UriageMeisaiValidator;
 import com.showka.service.validator.u05.i.UriageValidator;
 import com.showka.system.exception.AlreadyExistsException;
@@ -43,7 +43,7 @@ public class UriageValidatorImpl implements UriageValidator {
 	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Autowired
-	private BushoDateBusinessService bushoDateBusinessService;
+	private BushoDateQuery bushoDateBusinessService;
 
 	@Override
 	public void validate(Uriage domain) throws ValidateException {

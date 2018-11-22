@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.z00.Busho;
 import com.showka.service.query.u07.i.ShimeDateQuery;
-import com.showka.service.specification.z00.i.BushoDateBusinessService;
+import com.showka.service.query.z00.i.BushoDateQuery;
 import com.showka.value.EigyoDate;
 import com.showka.value.ShimeDate;
 import com.showka.value.TheDate;
@@ -17,7 +17,7 @@ import com.showka.value.TheDate;
 public class ShimeDateQueryImpl implements ShimeDateQuery {
 
 	@Autowired
-	private BushoDateBusinessService dateService;
+	private BushoDateQuery dateService;
 
 	private static final int _30 = 31;
 	private static final int _31 = 31;

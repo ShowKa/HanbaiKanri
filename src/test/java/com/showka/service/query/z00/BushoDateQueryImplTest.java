@@ -1,18 +1,19 @@
-package com.showka.service.specification.z00;
+package com.showka.service.query.z00;
 
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.z00.Busho;
+import com.showka.service.query.z00.BushoDateQueryImpl;
 import com.showka.value.EigyoDate;
 
 import mockit.Injectable;
 import mockit.Tested;
 
-public class BushoDateBusinessServiceImplTest extends SimpleTestCase {
+public class BushoDateQueryImplTest extends SimpleTestCase {
 
 	@Tested
-	private BushoDateBusinessServiceImpl service;
+	private BushoDateQueryImpl service;
 
 	@Test
 	public void test02_getNextBushoEigyoDate(@Injectable Busho busho) throws Exception {
