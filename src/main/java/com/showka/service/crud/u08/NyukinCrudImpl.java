@@ -86,7 +86,7 @@ public class NyukinCrudImpl implements NyukinCrud {
 	}
 
 	@Override
-	public boolean exsists(String nyukinId) {
+	public boolean exists(String nyukinId) {
 		return repo.existsById(nyukinId);
 	}
 

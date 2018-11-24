@@ -177,7 +177,7 @@ public class U05G002Controller extends ControllerBase {
 		form.setMeisai(meisaiList);
 
 		// set 売掛
-		boolean exists = urikakeCrud.exsists(uriageId);
+		boolean exists = urikakeCrud.exists(uriageId);
 		if (exists) {
 			Urikake urikake = urikakeCrud.getDomain(uriageId);
 			form.setUrikakeVersion(urikake.getVersion());

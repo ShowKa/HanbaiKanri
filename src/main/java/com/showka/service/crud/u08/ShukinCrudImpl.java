@@ -99,7 +99,7 @@ public class ShukinCrudImpl implements ShukinCrud {
 	}
 
 	@Override
-	public boolean exsists(String id) {
+	public boolean exists(String id) {
 		return repo.existsById(id);
 	}
 }

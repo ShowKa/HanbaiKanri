@@ -264,7 +264,7 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 
 		String id = "KK03";
 
-		boolean result = service.exsists(id);
+		boolean result = service.exists(id);
 		assertTrue(result);
 
 	}
@@ -284,7 +284,7 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 
 		String id = "KK03";
 
-		boolean result = service.exsists(id);
+		boolean result = service.exists(id);
 		assertFalse(result);
 	}
 

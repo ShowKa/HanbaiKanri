@@ -121,7 +121,7 @@ public class SeikyuCrudImpl implements SeikyuCrud {
 	}
 
 	@Override
-	public boolean exsists(TSeikyuPK pk) {
+	public boolean exists(TSeikyuPK pk) {
 		return repo.existsById(pk);
 	}
 }

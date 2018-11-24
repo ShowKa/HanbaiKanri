@@ -116,7 +116,7 @@ public class KokyakuCrudImpl implements KokyakuCrud {
 	}
 
 	@Override
-	public boolean exsists(String pk) {
+	public boolean exists(String pk) {
 		return repo.existsById(pk);
 	}
 }

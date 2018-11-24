@@ -232,7 +232,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId("r-KK01");
 		pk.setDenpyoNumber("00001");
-		boolean actual = service.exsists(pk);
+		boolean actual = service.exists(pk);
 		// check
 		assertEquals(true, actual);
 	}
@@ -251,7 +251,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 		TUriagePK pk = new TUriagePK();
 		pk.setKokyakuId("r-KK99");
 		pk.setDenpyoNumber("99999");
-		boolean actual = service.exsists(pk);
+		boolean actual = service.exists(pk);
 		// check
 		assertEquals(false, actual);
 	}

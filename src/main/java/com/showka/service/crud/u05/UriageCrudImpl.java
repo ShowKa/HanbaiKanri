@@ -63,7 +63,7 @@ public class UriageCrudImpl implements UriageCrud {
 	}
 
 	@Override
-	public boolean exsists(TUriagePK pk) {
+	public boolean exists(TUriagePK pk) {
 		return repo.existsById(pk);
 	}
 

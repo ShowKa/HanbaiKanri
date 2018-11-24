@@ -179,7 +179,7 @@ public class ShohinIdoCrudImplTest extends PersistenceTestCase {
 		// table
 		super.deleteAndInsert(T_SHOHIN_IDO, T_SHOHIN_IDO_COLUMN, T_SHOHIN_IDO_V1);
 		// do
-		boolean actual = service.exsists("r-001");
+		boolean actual = service.exists("r-001");
 		assertTrue(actual);
 	}
 }

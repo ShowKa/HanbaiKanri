@@ -15,7 +15,7 @@ public class BushoValidatorImpl implements BushoValidator {
 
 	@Override
 	public void validateExistance(String bushoCode) throws NotExistException {
-		boolean exists = bushoPersistence.exsists(bushoCode);
+		boolean exists = bushoPersistence.exists(bushoCode);
 		if (!exists) {
 			throw new NotExistException("部署", bushoCode);
 		}

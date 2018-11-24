@@ -90,7 +90,7 @@ public class UrikakeCrudImpl implements UrikakeCrud {
 	}
 
 	@Override
-	public boolean exsists(String uriageId) {
+	public boolean exists(String uriageId) {
 		return repo.existsById(uriageId);
 	}
 

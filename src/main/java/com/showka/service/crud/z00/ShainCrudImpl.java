@@ -42,7 +42,7 @@ public class ShainCrudImpl implements ShainCrud {
 	}
 
 	@Override
-	public boolean exsists(String shainCode) {
+	public boolean exists(String shainCode) {
 		return repo.existsById(shainCode);
 	}
 

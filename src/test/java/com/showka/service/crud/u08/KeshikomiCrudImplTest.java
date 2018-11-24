@@ -160,7 +160,7 @@ public class KeshikomiCrudImplTest extends PersistenceTestCase {
 		// database
 		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01);
 		// do
-		boolean actual = service.exsists("r-001");
+		boolean actual = service.exists("r-001");
 		// check
 		assertTrue(actual);
 	}

@@ -69,7 +69,7 @@ public class U08G001Controller extends ControllerBase {
 		// 部署
 		String bushoCode = form.getBushoCode();
 		if (bushoCode != null) {
-			boolean exists = bushoPersistence.exsists(bushoCode);
+			boolean exists = bushoPersistence.exists(bushoCode);
 			if (exists) {
 				param.setBusho(bushoPersistence.getDomain(bushoCode));
 			}
@@ -77,7 +77,7 @@ public class U08G001Controller extends ControllerBase {
 		// 顧客
 		String kokyakuCode = form.getKokyakuCode();
 		if (kokyakuCode != null) {
-			boolean exists = kokyakuPersistence.exsists(kokyakuCode);
+			boolean exists = kokyakuPersistence.exists(kokyakuCode);
 			if (exists) {
 				param.setKokyaku(kokyakuPersistence.getDomain(kokyakuCode));
 			}
@@ -85,7 +85,7 @@ public class U08G001Controller extends ControllerBase {
 		// 担当社員
 		String shainCode = form.getTantoShainCode();
 		if (shainCode != null) {
-			boolean exists = shainPersistence.exsists(shainCode);
+			boolean exists = shainPersistence.exists(shainCode);
 			if (exists) {
 				param.setTantoShain(shainPersistence.getDomain(shainCode));
 			}

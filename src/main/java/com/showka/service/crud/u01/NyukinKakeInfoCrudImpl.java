@@ -80,7 +80,7 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 	}
 
 	@Override
-	public boolean exsists(String kokyakuId) {
+	public boolean exists(String kokyakuId) {
 		return repo.existsById(kokyakuId);
 	}
 }

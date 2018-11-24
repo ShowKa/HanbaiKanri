@@ -37,7 +37,7 @@ public interface Crud<T extends DomainBase, P> {
 	 * @param pk
 	 * @return 主キーでテーブルを検索し、存在すればtrue
 	 */
-	boolean exsists(P pk);
+	boolean exists(P pk);
 
 	/**
 	 * 存在する場合、削除する.
@@ -50,7 +50,7 @@ public interface Crud<T extends DomainBase, P> {
 	 *            主キー
 	 */
 	default void deleteIfExists(P pk) {
-		if (exsists(pk)) {
+		if (exists(pk)) {
 			T domain = getDomain(pk);
 			delete(domain);
 		}
@@ -63,7 +63,7 @@ public interface Crud<T extends DomainBase, P> {
 	 *            主キー
 	 */
 	default void deleteIfExists(P pk, Integer version) {
-		if (exsists(pk)) {
+		if (exists(pk)) {
 			T domain = getDomain(pk);
 			domain.setVersion(version);
 			delete(domain);

@@ -53,7 +53,7 @@ public class ShohinCrudImpl implements ShohinCrud {
 	}
 
 	@Override
-	public boolean exsists(String pk) {
+	public boolean exists(String pk) {
 		return repo.existsById(pk);
 	}
 }

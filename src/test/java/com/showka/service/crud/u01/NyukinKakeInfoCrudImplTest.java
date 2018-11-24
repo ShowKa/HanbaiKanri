@@ -189,7 +189,7 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		String id = "KK03";
 
 		// do
-		boolean actual = service.exsists(id);
+		boolean actual = service.exists(id);
 
 		// check
 		assertTrue(actual);
@@ -204,7 +204,7 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		String id = "AAAAAAA";
 
 		// do
-		boolean actual = service.exsists(id);
+		boolean actual = service.exists(id);
 
 		// check
 		assertFalse(actual);

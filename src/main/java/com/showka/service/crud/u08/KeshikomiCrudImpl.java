@@ -96,7 +96,7 @@ public class KeshikomiCrudImpl implements KeshikomiCrud {
 	 * @return 存在する場合true
 	 */
 	@Override
-	public boolean exsists(String keshikomiId) {
+	public boolean exists(String keshikomiId) {
 		return repo.existsById(keshikomiId);
 	}
 }

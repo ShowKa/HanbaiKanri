@@ -58,7 +58,7 @@ public class BushoCrudImpl implements BushoCrud {
 	}
 
 	@Override
-	public boolean exsists(String pk) {
+	public boolean exists(String pk) {
 		return repo.existsById(pk);
 	}
 

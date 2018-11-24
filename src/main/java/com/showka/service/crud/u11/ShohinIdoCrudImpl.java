@@ -106,7 +106,7 @@ public class ShohinIdoCrudImpl implements ShohinIdoCrud {
 	}
 
 	@Override
-	public boolean exsists(String pk) {
+	public boolean exists(String pk) {
 		return repo.existsById(pk);
 	}
 }

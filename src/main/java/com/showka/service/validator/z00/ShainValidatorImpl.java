@@ -15,7 +15,7 @@ public class ShainValidatorImpl implements ShainValidator {
 
 	@Override
 	public void validateExistance(String shainCode) throws NotExistException {
-		boolean exists = shainPersistence.exsists(shainCode);
+		boolean exists = shainPersistence.exists(shainCode);
 		if (!exists) {
 			throw new NotExistException("社員", shainCode);
 		}
