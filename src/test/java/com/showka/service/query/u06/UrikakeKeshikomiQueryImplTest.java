@@ -13,8 +13,7 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.service.crud.u06.i.UrikakeCrud;
-import com.showka.service.crud.u08.i.KeshikomiCrud;
-import com.showka.service.query.u06.UrikakeKeshikomiQueryImpl;
+import com.showka.service.persistence.u08.i.KeshikomiPersistence;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.TheTimestamp;
 
@@ -29,10 +28,10 @@ public class UrikakeKeshikomiQueryImplTest extends SimpleTestCase {
 	private UrikakeKeshikomiQueryImpl service;
 
 	@Injectable
-	private UrikakeCrud urikakePersistence;
+	private UrikakeCrud urikakeCrud;
 
 	@Injectable
-	private KeshikomiCrud keshikomiPersistence;
+	private KeshikomiPersistence KeshikomiPersistence;
 
 	/**
 	 * 消込時点残高取得.
@@ -45,7 +44,7 @@ public class UrikakeKeshikomiQueryImplTest extends SimpleTestCase {
 	 * 
 	 */
 	@Test
-	public void test01_getZandakaAsOfKeshikomi() throws Exception {
+	public void test01_getAsOf() throws Exception {
 		// input
 		// 売掛ID
 		String urikakeId = "r-KK01-00001-20170101";

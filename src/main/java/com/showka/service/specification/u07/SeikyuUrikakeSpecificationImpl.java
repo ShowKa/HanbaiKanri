@@ -16,7 +16,9 @@ import com.showka.service.specification.u07.i.SeikyuSpecification;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheDate;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
@@ -30,11 +32,13 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 	/** 売掛リスト. */
 	private List<Urikake> urikakeList;
 
+	/** 売掛消込Query(Setterはテスト用) */
 	@Autowired
-	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
+	@Setter(value = AccessLevel.PACKAGE)
+	private UrikakeKeshikomiQuery urikakeKeshikomiQuery;
 
 	// constructor
-	public SeikyuUrikakeSpecificationImpl(Kokyaku kokyaku, EigyoDate seikyuDate, List<Urikake> urikakeList) {
+	protected SeikyuUrikakeSpecificationImpl(Kokyaku kokyaku, EigyoDate seikyuDate, List<Urikake> urikakeList) {
 		this.kokyaku = kokyaku;
 		this.seikyuDate = seikyuDate;
 		this.urikakeList = urikakeList;
@@ -55,7 +59,7 @@ public class SeikyuUrikakeSpecificationImpl implements SeikyuSpecification {
 		return urikakeList.stream().map(urikake -> {
 			SeikyuMeisaiBuilder b = new SeikyuMeisaiBuilder();
 			// 売掛金残高
-			UrikakeKeshikomi keshikomi = urikakeKeshikomiPersistence.get(urikake.getRecordId());
+			UrikakeKeshikomi keshikomi = urikakeKeshikomiQuery.get(urikake.getRecordId());
 			b.withKingaku(keshikomi.getZandaka());
 			b.withUrikake(urikake);
 			return b.build();
