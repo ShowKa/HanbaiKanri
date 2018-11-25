@@ -1,54 +1,11 @@
 package com.showka.service.query.u05.i;
 
-import java.util.List;
-
 import com.showka.domain.u05.Uriage;
+import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
-import com.showka.entity.RUriageKeijo;
 import com.showka.value.EigyoDate;
 
 public interface UriageKeijoQuery {
-	/**
-	 * 指定した計上日の部署売上計上を取得.
-	 * 
-	 * @param busho
-	 *            部署
-	 * @param date
-	 *            計上日
-	 * @return 売上計上
-	 */
-	public List<RUriageKeijo> get(Busho busho, EigyoDate date);
-
-	/**
-	 * 指定した計上日における部署の売上の計上金額を集計.
-	 * 
-	 * <pre>
-	 * ただし、売上訂正の金額は除く
-	 * </pre>
-	 * 
-	 * @param busho
-	 *            部署
-	 * @param date
-	 *            計上日
-	 * @return 集計金額
-	 */
-	public int getKeijoKingaku(Busho busho, EigyoDate date);
-
-	/**
-	 * 指定した計上日における部署の売上の訂正分の計上金額を集計.
-	 * 
-	 * <pre>
-	 * 基本的にマイナス円として集計.
-	 * </pre>
-	 * 
-	 * @param busho
-	 *            部署
-	 * @param date
-	 *            計上日
-	 * @return 売上訂正の集計金額
-	 */
-	public int getTeiseiKingaku(Busho busho, EigyoDate date);
-
 	/**
 	 * 計上済みか否かを判定する。
 	 * 
@@ -62,4 +19,15 @@ public interface UriageKeijoQuery {
 	 * @return true=計上済み
 	 */
 	public boolean hasDone(Uriage uriage);
+
+	/**
+	 * 部署売上の集計を取得する.
+	 * 
+	 * @param busho
+	 *            部署
+	 * @param date
+	 *            計上日
+	 * @return 部署売上
+	 */
+	public BushoUriage getBushoUriage(Busho busho, EigyoDate date);
 }

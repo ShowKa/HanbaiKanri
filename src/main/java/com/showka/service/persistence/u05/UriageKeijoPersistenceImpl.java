@@ -7,10 +7,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.builder.BushoUriageBuilder;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
-import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriageKeijo;
@@ -19,7 +17,6 @@ import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.persistence.u05.i.UriageKeijoPersistence;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
-import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
@@ -37,9 +34,6 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 
 	@Autowired
 	private UriageRirekiPersistence uriageRirekiPersistence;
-
-	@Autowired
-	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Override
 	public void keijo(Busho busho, EigyoDate date) {
@@ -79,19 +73,5 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 				repoTeisei.save(et);
 			}
 		});
-	}
-
-	@Override
-	public BushoUriage getBushoUriage(Busho busho, EigyoDate date) {
-		// 売上計上金額集計（訂正除く）
-		int keijoKingaku = uriageKeijoQuery.getKeijoKingaku(busho, date);
-		int teiseiKingaku = uriageKeijoQuery.getTeiseiKingaku(busho, date);
-		// build
-		BushoUriageBuilder b = new BushoUriageBuilder();
-		b.withBusho(busho);
-		b.withKeijoDate(date);
-		b.withKeijoKingaku(keijoKingaku);
-		b.withTeiseiKingaku(teiseiKingaku);
-		return b.build();
 	}
 }

@@ -1,6 +1,5 @@
 package com.showka.service.persistence.u05.i;
 
-import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 
@@ -21,15 +20,4 @@ public interface UriageKeijoPersistence {
 	 *            計上日
 	 */
 	public void keijo(Busho busho, EigyoDate date);
-
-	/**
-	 * 部署売上の集計を取得する.
-	 * 
-	 * @param busho
-	 *            部署
-	 * @param date
-	 *            計上日
-	 * @return 部署売上
-	 */
-	public BushoUriage getBushoUriage(Busho busho, EigyoDate date);
 }

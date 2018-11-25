@@ -8,8 +8,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.showka.domain.builder.BushoUriageBuilder;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
+import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriageKeijo;
@@ -43,7 +45,41 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 	private UriageRirekiQuery uriageRirekiQuery;
 
 	@Override
-	public List<RUriageKeijo> get(Busho busho, EigyoDate date) {
+	public BushoUriage getBushoUriage(Busho busho, EigyoDate date) {
+		// 売上計上金額集計（訂正除く）
+		int keijoKingaku = this.getKeijoKingaku(busho, date);
+		int teiseiKingaku = this.getTeiseiKingaku(busho, date);
+		// build
+		BushoUriageBuilder b = new BushoUriageBuilder();
+		b.withBusho(busho);
+		b.withKeijoDate(date);
+		b.withKeijoKingaku(keijoKingaku);
+		b.withTeiseiKingaku(teiseiKingaku);
+		return b.build();
+	}
+
+	@Override
+	public boolean hasDone(Uriage uriage) {
+		// get 売上履歴
+		RUriagePK pk = new RUriagePK();
+		pk.setKeijoDate(uriage.getKeijoDate().toDate());
+		pk.setUriageId(uriage.getRecordId());
+		RUriage uriageRireki = rUriageRepository.getOne(pk);
+		// exists 売上計上
+		boolean exists = repo.existsById(uriageRireki.getRecordId());
+		return exists;
+	}
+
+	/**
+	 * 指定した計上日の部署売上計上を取得.
+	 * 
+	 * @param busho
+	 *            部署
+	 * @param date
+	 *            計上日
+	 * @return 売上計上
+	 */
+	List<RUriageKeijo> get(Busho busho, EigyoDate date) {
 		// search 計上対象売上
 		List<RUriage> uriageRirekiList = uriageRirekiQuery.get(busho, date);
 		// 売上履歴 record id
@@ -54,8 +90,20 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 		return repo.findAllById(uriageRirekiRecordIds);
 	}
 
-	@Override
-	public int getKeijoKingaku(Busho busho, EigyoDate date) {
+	/**
+	 * 指定した計上日における部署の売上の計上金額を集計.
+	 * 
+	 * <pre>
+	 * ただし、売上訂正の金額は除く
+	 * </pre>
+	 * 
+	 * @param busho
+	 *            部署
+	 * @param date
+	 *            計上日
+	 * @return 集計金額
+	 */
+	int getKeijoKingaku(Busho busho, EigyoDate date) {
 		// 売上計上 entities
 		List<RUriageKeijo> keijoEntities = this.get(busho, date);
 		// 売上計上金額集計
@@ -70,8 +118,20 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 		return keijoKingaku;
 	}
 
-	@Override
-	public int getTeiseiKingaku(Busho busho, EigyoDate date) {
+	/**
+	 * 指定した計上日における部署の売上の訂正分の計上金額を集計.
+	 * 
+	 * <pre>
+	 * 基本的にマイナス円として集計.
+	 * </pre>
+	 * 
+	 * @param busho
+	 *            部署
+	 * @param date
+	 *            計上日
+	 * @return 売上訂正の集計金額
+	 */
+	int getTeiseiKingaku(Busho busho, EigyoDate date) {
 		// 売上計上 entities
 		List<RUriageKeijo> keijoEntities = this.get(busho, date);
 		// 売上計上訂正分金額集計
@@ -89,17 +149,4 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 		}).sum();
 		return teiseiKingaku;
 	}
-
-	@Override
-	public boolean hasDone(Uriage uriage) {
-		// get 売上履歴
-		RUriagePK pk = new RUriagePK();
-		pk.setKeijoDate(uriage.getKeijoDate().toDate());
-		pk.setUriageId(uriage.getRecordId());
-		RUriage uriageRireki = rUriageRepository.getOne(pk);
-		// exists 売上計上
-		boolean exists = repo.existsById(uriageRireki.getRecordId());
-		return exists;
-	}
-
 }

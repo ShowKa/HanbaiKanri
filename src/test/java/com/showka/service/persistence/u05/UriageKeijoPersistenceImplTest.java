@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
-import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriageKeijo;
@@ -18,9 +17,7 @@ import com.showka.entity.RUriageKeijoTeisei;
 import com.showka.entity.RUriagePK;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
-import com.showka.service.persistence.u05.UriageKeijoPersistenceImpl;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
-import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
@@ -47,9 +44,6 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 
 	@Injectable
 	private UriageRirekiPersistence uriageRirekiPersistence;
-
-	@Injectable
-	private UriageKeijoQuery uriageKeijoQuery;
 
 	/**
 	 * 計上.
@@ -224,37 +218,6 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		RUriageKeijo keijo = repo.getOne(uriageRirekiId);
 		RUriageKeijoTeisei actual = repoTeisei.getOne(keijo.getRecordId());
 		assertEquals(teiseiUriageId, actual.getUriageRirekiId());
-	}
-
-	/**
-	 * 売上計上金額集計
-	 */
-	@Test
-	public void test04_getBushoUriage(@Injectable Busho busho, @Injectable EigyoDate date) throws Exception {
-		// expect
-		new Expectations() {
-			{
-				uriageKeijoQuery.getKeijoKingaku(busho, date);
-				result = 300;
-				uriageKeijoQuery.getTeiseiKingaku(busho, date);
-				result = -100;
-			}
-		};
-		// do
-		BushoUriage actual = uriageKeijoPersistenceImpl.getBushoUriage(busho, date);
-		// verify
-		new Verifications() {
-			{
-				uriageKeijoQuery.getKeijoKingaku(busho, date);
-				times = 1;
-				uriageKeijoQuery.getTeiseiKingaku(busho, date);
-				times = 1;
-			}
-		};
-		// check
-		assertEquals(300, actual.getKeijoKingaku().intValue());
-		assertEquals(-100, actual.getTeiseiKingaku().intValue());
-		assertEquals(200, actual.getKeijoKingakuGokei().intValue());
 	}
 
 }

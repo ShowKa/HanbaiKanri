@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.showka.common.PersistenceTestCase;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
+import com.showka.domain.u17.BushoUriage;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriage;
 import com.showka.entity.RUriageKeijo;
@@ -389,4 +390,34 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		assertFalse(actual);
 	}
 
+	/**
+	 * 売上計上金額集計
+	 */
+	@Test
+	public void test04_getBushoUriage(@Injectable Busho busho, @Injectable EigyoDate date) throws Exception {
+		// expect
+		new Expectations() {
+			{
+				service.getKeijoKingaku(busho, date);
+				result = 300;
+				service.getTeiseiKingaku(busho, date);
+				result = -100;
+			}
+		};
+		// do
+		BushoUriage actual = service.getBushoUriage(busho, date);
+		// verify
+		new Verifications() {
+			{
+				service.getKeijoKingaku(busho, date);
+				times = 1;
+				service.getTeiseiKingaku(busho, date);
+				times = 1;
+			}
+		};
+		// check
+		assertEquals(300, actual.getKeijoKingaku().intValue());
+		assertEquals(-100, actual.getTeiseiKingaku().intValue());
+		assertEquals(200, actual.getKeijoKingakuGokei().intValue());
+	}
 }

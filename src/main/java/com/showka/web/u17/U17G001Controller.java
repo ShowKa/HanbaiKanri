@@ -24,6 +24,7 @@ import com.showka.service.persistence.u07.i.SeikyuUrikakePersistence;
 import com.showka.service.persistence.u08.i.NyukinKeijoPersistence;
 import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
 import com.showka.service.persistence.u17.i.BushoDatePersistence;
+import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.validator.u17.i.BushoDateValidator;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
@@ -48,6 +49,9 @@ public class U17G001Controller extends ControllerBase {
 
 	@Autowired
 	private UriageKeijoPersistence uriageKeijoPersistence;
+
+	@Autowired
+	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Autowired
 	private SeikyuUrikakePersistence seikyuUrikakePersistence;
@@ -87,7 +91,7 @@ public class U17G001Controller extends ControllerBase {
 			ret.put("dayOfWeek", eigyoDate.getDayOfWeek());
 			// FIXME 前日の売上計上を取得
 			EigyoDate keijoDate = new EigyoDate(eigyoDate.plusDays(-1));
-			BushoUriage bushoKeijo = uriageKeijoPersistence.getBushoUriage(b, keijoDate);
+			BushoUriage bushoKeijo = uriageKeijoQuery.getBushoUriage(b, keijoDate);
 			ret.put("uriageKeijo", bushoKeijo.getKeijoKingaku());
 			ret.put("uriageKeijoTeisei", bushoKeijo.getTeiseiKingaku());
 			// 入金の計上を取得
