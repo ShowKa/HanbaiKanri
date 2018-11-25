@@ -20,7 +20,6 @@ import com.showka.entity.RUriagePK;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.repository.i.RUriageRepository;
-import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
@@ -37,9 +36,6 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 
 	@Autowired
 	private RUriageRepository rUriageRepository;
-
-	@Autowired
-	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Autowired
 	private UriageRirekiQuery uriageRirekiQuery;
@@ -81,7 +77,7 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 	 */
 	List<RUriageKeijo> get(Busho busho, EigyoDate date) {
 		// search 計上対象売上
-		List<RUriage> uriageRirekiList = uriageRirekiQuery.get(busho, date);
+		List<RUriage> uriageRirekiList = uriageRirekiQuery.getEntityList(busho, date);
 		// 売上履歴 record id
 		Iterable<String> uriageRirekiRecordIds = uriageRirekiList.stream().map(uriageRireki -> {
 			return uriageRireki.getRecordId();
@@ -109,7 +105,7 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 		// 売上計上金額集計
 		int keijoKingaku = keijoEntities.stream().mapToInt(ke -> {
 			String uriageId = ke.getUriageId();
-			UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(uriageId);
+			UriageRireki rireki = uriageRirekiQuery.get(uriageId);
 			Optional<Uriage> uriage = rireki.getUriageOf(date);
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い
 			Kakaku uriageGokeiKingaku = uriage.get().getUriageGokeiKakaku();
@@ -139,7 +135,7 @@ public class UriageKeijoQueryImpl implements UriageKeijoQuery {
 		List<RUriageKeijoTeisei> teiseiEntities = repoTeisei.findAllById(keijoIds);
 		int teiseiKingaku = teiseiEntities.stream().mapToInt(teisei -> {
 			String uriageId = teisei.getUriageId();
-			UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(uriageId);
+			UriageRireki rireki = uriageRirekiQuery.get(uriageId);
 			Date pastKeijoDate = teisei.getTeiseiUriageRirekiKeijoDate();
 			Optional<Uriage> uriage = rireki.getUriageOf(new EigyoDate(pastKeijoDate));
 			// 指定して日付での売上が取得できない場合、データ不整合なのでそのまま落ちて良い

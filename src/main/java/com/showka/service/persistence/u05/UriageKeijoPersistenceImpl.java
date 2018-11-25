@@ -16,7 +16,6 @@ import com.showka.entity.RUriageKeijoTeisei;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.service.persistence.u05.i.UriageKeijoPersistence;
-import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
@@ -32,13 +31,10 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 	@Autowired
 	private UriageRirekiQuery uriageRirekiQuery;
 
-	@Autowired
-	private UriageRirekiPersistence uriageRirekiPersistence;
-
 	@Override
 	public void keijo(Busho busho, EigyoDate date) {
 		// search 計上対象売上
-		List<RUriage> uriageRirekiList = uriageRirekiQuery.get(busho, date);
+		List<RUriage> uriageRirekiList = uriageRirekiQuery.getEntityList(busho, date);
 		// 売上計上
 		uriageRirekiList.forEach(uriageRireki -> {
 			// entity
@@ -55,7 +51,7 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 		uriageRirekiList.forEach(uriageRireki -> {
 			// 売上履歴取得
 			String uriageId = uriageRireki.getPk().getUriageId();
-			UriageRireki rirekiDomain = uriageRirekiPersistence.getUriageRirekiList(uriageId);
+			UriageRireki rirekiDomain = uriageRirekiQuery.get(uriageId);
 			Optional<Uriage> teisei = rirekiDomain.getTeiseiUriage(date);
 			if (teisei.isPresent()) {
 				// 売上計上ID取得

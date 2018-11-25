@@ -14,6 +14,7 @@ import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.persistence.u05.i.UriageCancelPersistence;
 import com.showka.service.persistence.u05.i.UriagePersistence;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
+import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -27,6 +28,9 @@ public class UriagePersistenceImpl implements UriagePersistence {
 
 	@Autowired
 	private UriageRirekiPersistence uriageRirekiPersistence;
+
+	@Autowired
+	private UriageRirekiQuery uriageRirekiQuery;
 
 	@Override
 	public void cancel(TUriagePK pk, int version) {
@@ -74,7 +78,7 @@ public class UriagePersistenceImpl implements UriagePersistence {
 		RUriagePK rpk = new RUriagePK(uriageId, uriage.getKeijoDate().toDate());
 		uriageRirekiPersistence.delete(rpk);
 		// 残った履歴取得
-		UriageRireki rirekiList = uriageRirekiPersistence.getUriageRirekiList(uriageId);
+		UriageRireki rirekiList = uriageRirekiQuery.get(uriageId);
 		// 計上済みの履歴で売上を上書きし直す。
 		Uriage newest = rirekiList.getNewest();
 		newest.setVersion(version);

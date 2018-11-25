@@ -19,6 +19,7 @@ import com.showka.entity.TUriagePK;
 import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.persistence.u05.i.UriageCancelPersistence;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
+import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;
@@ -40,6 +41,9 @@ public class UriagePersistenceImplTest extends SimpleTestCase {
 
 	@Injectable
 	private UriageCancelPersistence uriageCancelPersistence;
+
+	@Injectable
+	private UriageRirekiQuery uriageRirekiQuery;
 
 	@Test
 	public void test_cancel_01() throws Exception {
@@ -115,7 +119,7 @@ public class UriagePersistenceImplTest extends SimpleTestCase {
 				uriageCrud.getDomain(pk);
 				result = uriage;
 				uriageRirekiPersistence.delete(rpk);
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				result = rireki;
 				uriageCrud.save(newest);
 			}
@@ -128,7 +132,7 @@ public class UriagePersistenceImplTest extends SimpleTestCase {
 				times = 1;
 				uriageRirekiPersistence.delete(rpk);
 				times = 1;
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				times = 1;
 				uriageCrud.save(newest);
 				times = 1;

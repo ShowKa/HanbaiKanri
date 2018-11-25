@@ -20,7 +20,6 @@ import com.showka.entity.RUriageKeijoTeisei;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
 import com.showka.repository.i.RUriageRepository;
-import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.system.EmptyProxy;
 import com.showka.value.EigyoDate;
@@ -48,9 +47,6 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 
 	@Injectable
 	private RUriageKeijoTeiseiRepository repoTeisei;
-
-	@Injectable
-	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Injectable
 	private UriageRirekiQuery uriageRirekiQuery;
@@ -90,7 +86,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.get(busho, date);
+				uriageRirekiQuery.getEntityList(busho, date);
 				result = rUriageList;
 			}
 		};
@@ -99,7 +95,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiQuery.get(busho, date);
+				uriageRirekiQuery.getEntityList(busho, date);
 				times = 1;
 			}
 		};
@@ -144,9 +140,9 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 				ke2.getUriageId();
 				result = uriageId2;
 				// get 売上履歴
-				uriageRirekiPersistence.getUriageRirekiList(uriageId1);
+				uriageRirekiQuery.get(uriageId1);
 				result = rireki1;
-				uriageRirekiPersistence.getUriageRirekiList(uriageId2);
+				uriageRirekiQuery.get(uriageId2);
 				result = rireki2;
 				// get 売上
 				rireki1.getUriageOf(date);
@@ -174,9 +170,9 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 				ke2.getUriageId();
 				times = 1;
 				// get 売上履歴
-				uriageRirekiPersistence.getUriageRirekiList(uriageId1);
+				uriageRirekiQuery.get(uriageId1);
 				times = 1;
-				uriageRirekiPersistence.getUriageRirekiList(uriageId2);
+				uriageRirekiQuery.get(uriageId2);
 				times = 1;
 				// get 売上
 				rireki1.getUriageOf(date);
@@ -239,7 +235,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 				teisei.getUriageId();
 				result = uriageId;
 				// get 売上履歴
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				result = rireki;
 				// get 過去計上日
 				teisei.getTeiseiUriageRirekiKeijoDate();
@@ -270,7 +266,7 @@ public class UriageKeijoQueryImplTest extends PersistenceTestCase {
 				teisei.getUriageId();
 				times = 1;
 				// get 売上履歴
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				times = 1;
 				// get 過去計上日
 				teisei.getTeiseiUriageRirekiKeijoDate();

@@ -17,7 +17,6 @@ import com.showka.entity.RUriageKeijoTeisei;
 import com.showka.entity.RUriagePK;
 import com.showka.repository.i.RUriageKeijoRepository;
 import com.showka.repository.i.RUriageKeijoTeiseiRepository;
-import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.value.EigyoDate;
 
@@ -41,9 +40,6 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 
 	@Injectable
 	private UriageRirekiQuery uriageRirekiQuery;
-
-	@Injectable
-	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	/**
 	 * 計上.
@@ -73,7 +69,7 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.get(busho, date);
+				uriageRirekiQuery.getEntityList(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
@@ -123,11 +119,11 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.get(busho, date);
+				uriageRirekiQuery.getEntityList(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				rirekiDomain.getTeiseiUriage(date);
 			}
 		};
@@ -136,11 +132,11 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiQuery.get(busho, date);
+				uriageRirekiQuery.getEntityList(busho, date);
 				times = 1;
 				busho.getRecordId();
 				times = 1;
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				times = 1;
 				rirekiDomain.getTeiseiUriage(date);
 				times = 1;
@@ -186,11 +182,11 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiQuery.get(busho, date);
+				uriageRirekiQuery.getEntityList(busho, date);
 				result = uriageRirekiList;
 				busho.getRecordId();
 				result = "r-BS01";
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				rirekiDomain.getTeiseiUriage(date);
 				result = teisei;
 				teiseiUriage.getRecordId();
@@ -202,11 +198,11 @@ public class UriageKeijoPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiQuery.get(busho, date);
+				uriageRirekiQuery.getEntityList(busho, date);
 				times = 1;
 				busho.getRecordId();
 				times = 1;
-				uriageRirekiPersistence.getUriageRirekiList(uriageId);
+				uriageRirekiQuery.get(uriageId);
 				times = 1;
 				rirekiDomain.getTeiseiUriage(date);
 				times = 1;

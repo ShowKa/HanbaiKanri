@@ -1,19 +1,9 @@
 package com.showka.service.persistence.u05.i;
 
 import com.showka.domain.u05.Uriage;
-import com.showka.domain.u05.UriageRireki;
 import com.showka.entity.RUriagePK;
 
 public interface UriageRirekiPersistence {
-
-	/**
-	 * 売上履歴取得.
-	 * 
-	 * @param uriageId
-	 *            売上ID
-	 * @return 売上履歴
-	 */
-	public UriageRireki getUriageRirekiList(String uriageId);
 
 	/**
 	 * 売上履歴保存.

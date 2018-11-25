@@ -35,10 +35,10 @@ import com.showka.service.crud.u05.i.UriageMeisaiCrud;
 import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.persistence.u05.i.UriagePersistence;
-import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
 import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
+import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.service.validator.u05.i.UriageValidator;
 import com.showka.system.exception.NotExistException;
@@ -77,7 +77,7 @@ public class U05G002Controller extends ControllerBase {
 	private UriageMeisaiCrud uriageMeisaiPersistence;
 
 	@Autowired
-	private UriageRirekiPersistence uriageRirekiPersistence;
+	private UriageRirekiQuery uriageRirekiQuery;
 
 	@Autowired
 	private ShohinIdoUriagePersistence shohinIdoUriagePersistence;
@@ -304,7 +304,7 @@ public class U05G002Controller extends ControllerBase {
 
 		// 売上履歴=1件 -> 一度も計上されていないで売上・売掛を削除。
 		// 売上履歴>1件 -> 前回計上状態に差し戻す。
-		UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(form.getRecordId());
+		UriageRireki rireki = uriageRirekiQuery.get(form.getRecordId());
 		if (rireki.getList().size() == 1) {
 			// delete
 			urikakeCrud.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
@@ -439,7 +439,7 @@ public class U05G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u05g002/getRireki", method = RequestMethod.POST)
 	public ResponseEntity<?> getRireki(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// 履歴取得
-		UriageRireki rireki = uriageRirekiPersistence.getUriageRirekiList(form.getRecordId());
+		UriageRireki rireki = uriageRirekiQuery.get(form.getRecordId());
 
 		// 画面に必要な履歴情報をmapに入れる。
 		List<Map<String, Object>> rirekiList = new ArrayList<Map<String, Object>>();
