@@ -16,10 +16,13 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.u08.Nyukin;
+import com.showka.domain.u08.NyukinKeshikomi;
+import com.showka.domain.u17.BushoNyukin;
 import com.showka.domain.z00.Busho;
 import com.showka.entity.TNyukinKeijo;
 import com.showka.repository.i.TNyukinKeijoRepository;
 import com.showka.service.crud.u08.i.NyukinCrud;
+import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.table.public_.tables.T_NYUKIN;
 import com.showka.table.public_.tables.T_NYUKIN_KEIJO;
@@ -37,6 +40,12 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 
 	@Autowired
 	private NyukinCrud nyukinPersistence;
+
+	@Autowired
+	private NyukinKeijoQuery nyukinKeijoQuery;
+
+	@Autowired
+	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	// alias
 	private static final T_NYUKIN nk = t_nyukin.as("nk");
@@ -84,4 +93,13 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 		return repo.existsById(nyukinId);
 	}
 
+	@Override
+	public BushoNyukin getBushoNyukin(Busho busho, EigyoDate keijoDate) {
+		List<Nyukin> nyukinList = nyukinKeijoQuery.getDone(busho, keijoDate);
+		List<NyukinKeshikomi> nyukinKeshikomiList = nyukinList.stream().map(nyukin -> {
+			String nyukinId = nyukin.getRecordId();
+			return nyukinKeshikomiPersistence.getDomain(nyukinId);
+		}).collect(Collectors.toList());
+		return new BushoNyukin(busho, keijoDate, nyukinKeshikomiList);
+	}
 }

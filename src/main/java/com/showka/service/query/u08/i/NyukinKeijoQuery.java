@@ -3,6 +3,7 @@ package com.showka.service.query.u08.i;
 import java.util.List;
 
 import com.showka.domain.u08.Nyukin;
+import com.showka.domain.u17.BushoNyukin;
 import com.showka.domain.z00.Busho;
 import com.showka.value.EigyoDate;
 
@@ -49,4 +50,15 @@ public interface NyukinKeijoQuery {
 	 * @return 計上済の場合true
 	 */
 	public boolean hasDone(String nyukinId);
+
+	/**
+	 * 部署の入金を取得する。
+	 * 
+	 * @param busho
+	 *            部署
+	 * @param keijoDate
+	 *            計上日
+	 * @return 部署の入金
+	 */
+	public BushoNyukin getBushoNyukin(Busho busho, EigyoDate keijoDate);
 }

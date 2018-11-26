@@ -25,6 +25,7 @@ import com.showka.service.persistence.u08.i.NyukinKeijoPersistence;
 import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
 import com.showka.service.persistence.u17.i.BushoDatePersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
+import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.service.validator.u17.i.BushoDateValidator;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
@@ -58,6 +59,9 @@ public class U17G001Controller extends ControllerBase {
 
 	@Autowired
 	private NyukinKeijoPersistence nyukinKeijoPersistence;
+
+	@Autowired
+	private NyukinKeijoQuery nyukinKeijoQuery;
 
 	/**
 	 * 参照.
@@ -95,7 +99,7 @@ public class U17G001Controller extends ControllerBase {
 			ret.put("uriageKeijo", bushoKeijo.getKeijoKingaku());
 			ret.put("uriageKeijoTeisei", bushoKeijo.getTeiseiKingaku());
 			// 入金の計上を取得
-			BushoNyukin nyukinKeijo = nyukinKeijoPersistence.getBushoNyukin(b, keijoDate);
+			BushoNyukin nyukinKeijo = nyukinKeijoQuery.getBushoNyukin(b, keijoDate);
 			ret.put("keshikomiFurikomi", nyukinKeijo.getKeshikomiKingaku_Furikomi().intValue());
 			ret.put("mishoriFurikomi", nyukinKeijo.getMishoriKingaku_Furikomi().intValue());
 			ret.put("keshikomiGenkin", nyukinKeijo.getKeshikomiKingaku_Genkin().intValue());
