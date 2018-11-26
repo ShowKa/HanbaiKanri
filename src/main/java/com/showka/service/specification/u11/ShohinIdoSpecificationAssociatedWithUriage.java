@@ -21,8 +21,8 @@ import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
-import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
 import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
+import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.system.exception.MinusZaikoException.MinusZaiko;
@@ -45,7 +45,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	private ShohinIdoUriageQuery shohinIdoUriageQuery;
 
 	@Autowired
-	private ShohinZaikoPersistence shohinZaikoPersistence;
+	private ShohinZaikoQuery shohinZaikoQuery;
 
 	/**
 	 * 商品移動.
@@ -139,7 +139,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdo, false);
 		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdoForDelete, true);
 		shohinIdoNumberMap.forEach((s, n) -> {
-			ShohinZaiko zaiko = shohinZaikoPersistence.getShohinZaiko(this.busho, this.busho.getEigyoDate(), s);
+			ShohinZaiko zaiko = shohinZaikoQuery.get(this.busho, this.busho.getEigyoDate(), s);
 			Integer present = zaiko.getNumber();
 			Integer after = present + n;
 			if (after < 0) {

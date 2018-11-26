@@ -18,7 +18,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
-import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
+import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -29,13 +29,13 @@ import com.showka.web.ModelAndViewExtended;
 public class U11G001Controller extends ControllerBase {
 
 	@Autowired
-	private ShohinZaikoPersistence shohinZaikoPersistence;
+	private ShohinZaikoQuery shohinZaikoQuery;
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	@Autowired
-	private ShohinCrud mShohinPersistence;
+	private ShohinCrud shohinCrud;
 
 	/**
 	 * 参照.
@@ -61,8 +61,8 @@ public class U11G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u11g001/getAll", method = RequestMethod.POST)
 	public ResponseEntity<?> getAll(@ModelAttribute U11G001Form form, ModelAndViewExtended model) {
 		// get 商品在庫
-		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
-		List<ShohinZaiko> _zaikoList = shohinZaikoPersistence.getShohinZaiko(busho, new EigyoDate(form.getDate()));
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
+		List<ShohinZaiko> _zaikoList = shohinZaikoQuery.get(busho, new EigyoDate(form.getDate()));
 		// to map
 		List<Map<String, Object>> zaikoList = _zaikoList.stream().map(z -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -86,9 +86,9 @@ public class U11G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u11g001/get", method = RequestMethod.POST)
 	public ResponseEntity<?> get(@ModelAttribute U11G001FormForShohinIdoMeisai form, ModelAndViewExtended model) {
 		// get 商品在庫
-		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
-		Shohin shohin = mShohinPersistence.getDomain(form.getShohinCode());
-		ShohinZaiko _zaiko = shohinZaikoPersistence.getShohinZaiko(busho, new EigyoDate(form.getDate()), shohin);
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
+		Shohin shohin = shohinCrud.getDomain(form.getShohinCode());
+		ShohinZaiko _zaiko = shohinZaikoQuery.get(busho, new EigyoDate(form.getDate()), shohin);
 		// to map
 		List<Map<String, Object>> shohinIdoList = _zaiko.getShohinIdoList().stream().map(z -> {
 			Map<String, Object> ret = new HashMap<String, Object>();

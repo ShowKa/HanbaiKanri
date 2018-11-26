@@ -1,39 +1,10 @@
 package com.showka.service.persistence.u11.i;
 
-import java.util.List;
-
-import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.value.EigyoDate;
 
 public interface ShohinZaikoPersistence {
-	/**
-	 * 
-	 * 商品在庫取得.
-	 * 
-	 * @param busho
-	 *            部署
-	 * @param date
-	 *            商品移動日付
-	 * @param shohin
-	 *            商品
-	 * @return 商品在庫
-	 */
-	public ShohinZaiko getShohinZaiko(Busho busho, EigyoDate date, Shohin shohin);
-
-	/**
-	 * 
-	 * すべての商品在庫取得.
-	 * 
-	 * @param busho
-	 *            部署
-	 * @param date
-	 *            商品移動日付
-	 * @return 商品在庫
-	 */
-	public List<ShohinZaiko> getShohinZaiko(Busho busho, EigyoDate date);
-
 	/**
 	 * 商品在庫繰越.
 	 * 

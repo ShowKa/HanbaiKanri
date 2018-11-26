@@ -25,8 +25,8 @@ import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.persistence.u05.i.UriagePersistence;
-import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
 import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
+import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.value.EigyoDate;
@@ -45,7 +45,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 	private UriagePersistence uriagePersistence;
 
 	@Injectable
-	private ShohinZaikoPersistence shohinZaikoPersistence;
+	private ShohinZaikoQuery shohinZaikoQuery;
 
 	@Injectable
 	private ShohinIdoUriageQuery shohinIdoUriageQuery;
