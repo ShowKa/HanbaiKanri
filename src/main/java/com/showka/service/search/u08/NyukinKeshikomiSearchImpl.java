@@ -19,7 +19,7 @@ import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.NyukinHohoKubun;
-import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
+import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearch;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
 import com.showka.table.public_.tables.T_NYUKIN;
@@ -35,7 +35,7 @@ public class NyukinKeshikomiSearchImpl implements NyukinKeshikomiSearch {
 	private DSLContext create;
 
 	@Autowired
-	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
+	private NyukinKeshikomiQuery nyukinKeshikomiQuery;
 
 	// alias
 	private static final T_NYUKIN nk = t_nyukin.as("nk");
@@ -48,7 +48,7 @@ public class NyukinKeshikomiSearchImpl implements NyukinKeshikomiSearch {
 		// 入金消込取得
 		// XXX paralellStream使うと Hibernate でバグる。lazy fetch はマルチスレッドで使えない。
 		List<NyukinKeshikomi> keshikomiList = results.stream().map(n -> {
-			NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiPersistence.getDomain(n.getRecordId());
+			NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(n.getRecordId());
 			return nyukinKeshikomi;
 		}).filter(nyukinKeshikomi -> {
 			if (param.isIncludeKeshikomiDone()) {
@@ -68,9 +68,8 @@ public class NyukinKeshikomiSearchImpl implements NyukinKeshikomiSearch {
 		Shain tantoShain = param.getTantoShain();
 		List<NyukinHohoKubun> hohoList = param.getNyukinHoho();
 		if (hohoList.contains(NyukinHohoKubun.集金) && tantoShain != null) {
-			from = from.innerJoin(sk)
-					.on(nk.record_id.eq(sk.nyukin_id))
-					.and(sk.tanto_shain_id.eq(tantoShain.getRecordId()));
+			from = from.innerJoin(sk).on(nk.record_id.eq(sk.nyukin_id)).and(
+					sk.tanto_shain_id.eq(tantoShain.getRecordId()));
 		}
 		// 顧客
 		SelectConditionStep<Record> where = from.where();
@@ -103,9 +102,8 @@ public class NyukinKeshikomiSearchImpl implements NyukinKeshikomiSearch {
 		}
 		// 入金方法区分
 		if (hohoList.size() > 0) {
-			List<String> codeList = hohoList.parallelStream()
-					.map(NyukinHohoKubun::getCode)
-					.collect(Collectors.toList());
+			List<String> codeList = hohoList.parallelStream().map(NyukinHohoKubun::getCode).collect(
+					Collectors.toList());
 			where = where.and(nk.nyukin_hoho_kubun.in(codeList));
 		}
 		// 検索

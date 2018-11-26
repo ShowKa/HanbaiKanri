@@ -31,7 +31,7 @@ public class ShukinValidatorImpl implements ShukinValidator {
 	private ShukinQuery shukinQuery;
 
 	@Autowired
-	private NyukinKeshikomiQuery nyukinKeshikomiSpecificationService;
+	private NyukinKeshikomiQuery nyukinKeshikomiQuery;
 
 	@Override
 	public void validate(Shukin shukin) throws NotAllowedNumberException {
@@ -104,7 +104,7 @@ public class ShukinValidatorImpl implements ShukinValidator {
 	 */
 	void validateKeshikomi(Shukin shukin) throws CanNotUpdateOrDeleteException {
 		String nyukinId = shukin.getNyukinId();
-		boolean hasKeshikomi = nyukinKeshikomiSpecificationService.hasKeshikomi(nyukinId);
+		boolean hasKeshikomi = nyukinKeshikomiQuery.hasKeshikomi(nyukinId);
 		if (hasKeshikomi) {
 			throw new CanNotUpdateOrDeleteException("消込済みのため");
 		}

@@ -43,15 +43,6 @@ public interface NyukinKeshikomiPersistence {
 	public void save(MatchedFBFurikomi matchedFBFurikomi);
 
 	/**
-	 * 入金消込取得.
-	 * 
-	 * @param nyukinId
-	 *            入金ID
-	 * @return 入金消込
-	 */
-	public NyukinKeshikomi getDomain(String nyukinId);
-
-	/**
 	 * 入金消込キャンセル.
 	 * 
 	 * @param nyukin

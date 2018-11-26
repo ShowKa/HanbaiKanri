@@ -40,7 +40,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 	private NyukinKeshikomiPersistenceImpl service;
 
 	@Injectable
-	private NyukinCrud nyukinPersistence;
+	private NyukinCrud nyukinCrud;
 
 	@Injectable
 	private KeshikomiPersistence keshikomiPersistence;
@@ -49,7 +49,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 	private UrikakeCrud urikakeCrud;
 
 	@Injectable
-	private NyukinKeshikomiConstruct nyukinKeshikomiBuildService;
+	private NyukinKeshikomiConstruct nyukinKeshikomiConstruct;
 
 	@Test
 	public void test01_save() throws Exception {
@@ -83,7 +83,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinPersistence.save(nyukin);
+				nyukinCrud.save(nyukin);
 				urikakeCrud.save(urikake);
 				keshikomiPersistence.override(nyukinId, date, keshikomiSet);
 			}
@@ -93,7 +93,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				nyukinPersistence.save(nyukin);
+				nyukinCrud.save(nyukin);
 				times = 1;
 				urikakeCrud.save(urikake);
 				times = 1;
@@ -101,48 +101,6 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 				times = 1;
 			}
 		};
-	}
-
-	@Test
-	public void test01_getDomain() throws Exception {
-		// input
-		// 入金
-		NyukinBuilder nb = new NyukinBuilder();
-		String nyukinId = "r-001";
-		nb.withRecordId(nyukinId);
-		Nyukin nyukin = nb.build();
-		// 消込
-		KeshikomiBuilder kb = new KeshikomiBuilder();
-		kb.withNyukin(nyukin);
-		kb.withRecordId("r-001");
-		Keshikomi keshikomi = kb.build();
-		// 消込 set
-		Set<Keshikomi> keshikomiSet = new HashSet<Keshikomi>();
-		keshikomiSet.add(keshikomi);
-		// expect
-		new Expectations() {
-			{
-				nyukinPersistence.getDomain(nyukinId);
-				result = nyukin;
-				keshikomiPersistence.getOfNyukin(nyukinId);
-				result = keshikomiSet;
-			}
-		};
-		// do
-		NyukinKeshikomi actual = service.getDomain(nyukinId);
-		// verify
-		new Verifications() {
-			{
-				nyukinPersistence.getDomain(nyukinId);
-				times = 1;
-				keshikomiPersistence.getOfNyukin(nyukinId);
-				times = 1;
-			}
-		};
-		// check
-		assertEquals(nyukin, actual.getNyukin());
-		assertEquals(1, actual.getKeshikomiSet().size());
-		assertTrue(actual.getKeshikomiSet().contains(keshikomi));
 	}
 
 	@Test
@@ -165,7 +123,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinPersistence.save(nyukin);
+				nyukinCrud.save(nyukin);
 				keshikomiPersistence.cancel(target, eigyoDate);
 			}
 		};
@@ -174,7 +132,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				nyukinPersistence.save(nyukin);
+				nyukinCrud.save(nyukin);
 				times = 1;
 				keshikomiPersistence.cancel(target, eigyoDate);
 				times = 1;
@@ -215,7 +173,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinKeshikomiBuildService.by(matchedFBFurikomi);
+				nyukinKeshikomiConstruct.by(matchedFBFurikomi);
 				result = nyukinKeshikomi;
 				service.save(eigyoDate, nyukinKeshikomi);
 			}
@@ -225,7 +183,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 		// verify
 		new Verifications() {
 			{
-				nyukinKeshikomiBuildService.by(matchedFBFurikomi);
+				nyukinKeshikomiConstruct.by(matchedFBFurikomi);
 				times = 1;
 				service.save(eigyoDate, nyukinKeshikomi);
 				times = 1;

@@ -22,8 +22,8 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.TNyukinKeijo;
 import com.showka.repository.i.TNyukinKeijoRepository;
 import com.showka.service.crud.u08.i.NyukinCrud;
-import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.query.u08.i.NyukinKeijoQuery;
+import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
 import com.showka.table.public_.tables.T_NYUKIN;
 import com.showka.table.public_.tables.T_NYUKIN_KEIJO;
 import com.showka.table.public_.tables.records.T_NYUKIN_RECORD;
@@ -39,13 +39,10 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 	private TNyukinKeijoRepository repo;
 
 	@Autowired
-	private NyukinCrud nyukinPersistence;
+	private NyukinCrud nyukinCrud;
 
 	@Autowired
-	private NyukinKeijoQuery nyukinKeijoQuery;
-
-	@Autowired
-	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
+	private NyukinKeshikomiQuery nyukinKeshikomiQuery;
 
 	// alias
 	private static final T_NYUKIN nk = t_nyukin.as("nk");
@@ -55,7 +52,7 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 	public List<Nyukin> getNotDone(Busho busho, EigyoDate kijunDate) {
 		Result<T_NYUKIN_RECORD> results = this._searchNotDone(busho, kijunDate);
 		return results.stream().map(r -> {
-			return nyukinPersistence.getDomain(r.getRecordId());
+			return nyukinCrud.getDomain(r.getRecordId());
 		}).collect(Collectors.toList());
 	}
 
@@ -84,7 +81,7 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 		Example<TNyukinKeijo> example = Example.of(nk);
 		List<TNyukinKeijo> results = repo.findAll(example);
 		return results.stream().map(r -> {
-			return nyukinPersistence.getDomain(r.getNyukinId());
+			return nyukinCrud.getDomain(r.getNyukinId());
 		}).collect(Collectors.toList());
 	}
 
@@ -95,10 +92,10 @@ public class NyukinKeijoQueryImpl implements NyukinKeijoQuery {
 
 	@Override
 	public BushoNyukin getBushoNyukin(Busho busho, EigyoDate keijoDate) {
-		List<Nyukin> nyukinList = nyukinKeijoQuery.getDone(busho, keijoDate);
+		List<Nyukin> nyukinList = this.getDone(busho, keijoDate);
 		List<NyukinKeshikomi> nyukinKeshikomiList = nyukinList.stream().map(nyukin -> {
 			String nyukinId = nyukin.getRecordId();
-			return nyukinKeshikomiPersistence.getDomain(nyukinId);
+			return nyukinKeshikomiQuery.getDomain(nyukinId);
 		}).collect(Collectors.toList());
 		return new BushoNyukin(busho, keijoDate, nyukinKeshikomiList);
 	}

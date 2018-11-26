@@ -33,6 +33,7 @@ import com.showka.service.crud.u08.i.NyukinCrud;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 import com.showka.service.query.u06.i.UrikakeQuery;
+import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
 import com.showka.service.validator.u08.i.NyukinKeshikomiValidator;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
@@ -55,6 +56,9 @@ public class U08G003Controller extends ControllerBase {
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	@Autowired
+	private NyukinKeshikomiQuery nyukinKeshikomiQuery;
+
+	@Autowired
 	private NyukinKeshikomiValidator nyukinKeshikomiValidator;
 
 	@Autowired
@@ -73,7 +77,7 @@ public class U08G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u08g003/get", method = RequestMethod.POST)
 	public ResponseEntity<?> get(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiPersistence.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		// set model
 		// 営業日
 		model.addObject("eigyoDate", nyukinKeshikomi.getNyukinBushoEigyoDate().toString());
@@ -117,7 +121,7 @@ public class U08G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u08g003/updateForm", method = RequestMethod.POST)
 	public ResponseEntity<?> updateForm(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiPersistence.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		// 本日営業にのみ抽出
 		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
@@ -178,7 +182,7 @@ public class U08G003Controller extends ControllerBase {
 		// build 入金消込
 		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
 		// get 入金消込更新前
-		NyukinKeshikomi nyukinKeshikomiBeforeUpdate = nyukinKeshikomiPersistence.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomiBeforeUpdate = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		EigyoDate eigyoDate = nyukinKeshikomiBeforeUpdate.getNyukinBushoEigyoDate();
 		nyukinKeshikomiBeforeUpdate.removeKeshikomiOf(eigyoDate);
 		// merge 消込セット
@@ -208,7 +212,7 @@ public class U08G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u08g003/cancelForm", method = RequestMethod.POST)
 	public ResponseEntity<?> cancelForm(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiPersistence.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		// 本日営業日のみ削除(キャンセル対象ではないため)
 		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
 		nyukinKeshikomi.removeKeshikomiOf(eigyoDate);
@@ -229,7 +233,7 @@ public class U08G003Controller extends ControllerBase {
 			return m.getKeshikomiId();
 		}).collect(Collectors.toSet());
 		// 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiPersistence.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		// OCC
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		nyukin.setVersion(form.getVersion());

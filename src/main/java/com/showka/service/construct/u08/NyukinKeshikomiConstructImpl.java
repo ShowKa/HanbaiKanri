@@ -18,9 +18,9 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
-import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 import com.showka.service.query.u08.i.NyukinFBFurikomiQuery;
+import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
@@ -29,7 +29,7 @@ import com.showka.value.TheTimestamp;
 public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 
 	@Autowired
-	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
+	private NyukinKeshikomiQuery nyukinKeshikomiQuery;
 
 	@Autowired
 	private NyukinFBFurikomiQuery nyukinFBFurikomiQuery;
@@ -46,7 +46,7 @@ public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 		Set<Keshikomi> keshikomiSet = this.buildKeshikomiSet(nyukin, matchedFBFurikomi);
 		// 入金消込構築
 		String nyukinId = nyukin.getRecordId();
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiPersistence.getDomain(nyukinId);
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(nyukinId);
 		nyukinKeshikomi.merge(keshikomiSet);
 		return nyukinKeshikomi;
 	}
