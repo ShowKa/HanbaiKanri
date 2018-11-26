@@ -18,9 +18,9 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.service.construct.u08.i.NyukinKeshikomiConstruct;
-import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
+import com.showka.service.query.u08.i.NyukinFBFurikomiQuery;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
@@ -32,16 +32,16 @@ public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	@Autowired
-	private NyukinFBFurikomiPersistence nyukinFBFurikomiPersistence;
+	private NyukinFBFurikomiQuery nyukinFBFurikomiQuery;
 
 	@Autowired
-	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
+	private UrikakeKeshikomiQuery urikakeKeshikomiQuery;
 
 	@Override
 	public NyukinKeshikomi by(MatchedFBFurikomi matchedFBFurikomi) {
 		// 入金
 		String fbFurikomiId = matchedFBFurikomi.getFBFurikomiId();
-		Nyukin nyukin = nyukinFBFurikomiPersistence.getNyukin(fbFurikomiId);
+		Nyukin nyukin = nyukinFBFurikomiQuery.getNyukin(fbFurikomiId);
 		// 消込set
 		Set<Keshikomi> keshikomiSet = this.buildKeshikomiSet(nyukin, matchedFBFurikomi);
 		// 入金消込構築
@@ -72,7 +72,7 @@ public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 		Set<Keshikomi> keshikomiSet = seikyuMeisai.parallelStream().map(m -> {
 			// 売掛金残高=売掛仕様サービス#残高取得
 			Urikake urikake = m.getUrikake();
-			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.get(urikake.getRecordId());
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiQuery.get(urikake.getRecordId());
 			AmountOfMoney zandaka = urikakeKeshikomi.getZandaka();
 			// 消込構築
 			KeshikomiBuilder kb = new KeshikomiBuilder();

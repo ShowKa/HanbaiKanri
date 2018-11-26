@@ -26,9 +26,9 @@ import com.showka.domain.u08.MatchedFBFurikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
-import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
 import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
+import com.showka.service.query.u08.i.NyukinFBFurikomiQuery;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
@@ -47,7 +47,7 @@ public class NyukinKeshikomiConstructImplTest extends SimpleTestCase {
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	@Injectable
-	private NyukinFBFurikomiPersistence nyukinFBFurikomiPersistence;
+	private NyukinFBFurikomiQuery nyukinFBFurikomiQuery;
 
 	@Injectable
 	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
@@ -141,7 +141,7 @@ public class NyukinKeshikomiConstructImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				nyukinFBFurikomiPersistence.getNyukin(fbFurikomiId);
+				nyukinFBFurikomiQuery.getNyukin(fbFurikomiId);
 				result = nyukin;
 				service.buildKeshikomiSet(nyukin, matchedFBFurikomi);
 				result = keshikomiSet;
