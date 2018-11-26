@@ -21,8 +21,8 @@ import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
-import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.persistence.u11.i.ShohinZaikoPersistence;
+import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.system.exception.MinusZaikoException.MinusZaiko;
@@ -42,7 +42,7 @@ import lombok.NoArgsConstructor;
 public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpecification {
 
 	@Autowired
-	private ShohinIdoUriagePersistence shohinIdoUriagePersistence;
+	private ShohinIdoUriageQuery shohinIdoUriageQuery;
 
 	@Autowired
 	private ShohinZaikoPersistence shohinZaikoPersistence;
@@ -73,7 +73,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		// 売上による商品移動
 		this.shohinIdo.add(buildShohinIdoFromUriageDomain(uriage));
 		// 売上訂正による商品移動
-		Optional<ShohinIdo> pastIdo = shohinIdoUriagePersistence.getNewestShohinIdo(uriage.getRecordId());
+		Optional<ShohinIdo> pastIdo = shohinIdoUriageQuery.getNewest(uriage.getRecordId());
 		if (pastIdo.isPresent()) {
 			// get past
 			ShohinIdo p = pastIdo.get();

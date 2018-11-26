@@ -1,8 +1,6 @@
 package com.showka.service.persistence.u11;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,24 +59,6 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 			e.setRecordId(UUID.randomUUID().toString());
 			repo.save(e);
 		});
-	}
-
-	@Override
-	public Optional<ShohinIdo> getNewestShohinIdo(String uriageId) {
-		JShohinIdoUriage e = new JShohinIdoUriage();
-		e.setUriageId(uriageId);
-		Example<JShohinIdoUriage> example = Example.of(e);
-		List<JShohinIdoUriage> results = repo.findAll(example);
-		if (results.isEmpty()) {
-			return Optional.empty();
-		}
-		Optional<JShohinIdoUriage> newest = results.stream().max((ido1, ido2) -> {
-			Date timestamp1 = ido1.getShohinIdo().getTimestamp();
-			Date timestamp2 = ido2.getShohinIdo().getTimestamp();
-			return timestamp1.compareTo(timestamp2);
-		});
-		ShohinIdo shohinIdo = shohinIdoCrud.getDomain(newest.get().getShohinIdoId());
-		return Optional.of(shohinIdo);
 	}
 
 	@Override
