@@ -14,8 +14,8 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.repository.i.CKeshikomiRepository;
-import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u08.i.KeshikomiCrud;
+import com.showka.service.query.u08.i.KeshikomiQuery;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
@@ -30,19 +30,15 @@ public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 	@Injectable
 	private KeshikomiPersistenceImpl service;
 
-	@Injectable
 	@Autowired
-	private TKeshikomiRepository repo;
-
 	@Injectable
-	@Autowired
 	private CKeshikomiRepository cancelRepo;
 
 	@Injectable
 	private KeshikomiCrud keshikomiCrud;
 
-	private static final Object[] T_KESHIKOMI_01 = { "r-001", d("20170101"), 1000, "r-001", "r-KK01-00001", "r-001" };
-	private static final Object[] T_KESHIKOMI_02 = { "r-002", d("20170101"), 2000, "r-001", "r-KK01-00002", "r-002" };
+	@Injectable
+	private KeshikomiQuery keshikomiQuery;
 
 	/**
 	 * override.
@@ -72,7 +68,7 @@ public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				service.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiQuery.getOfNyukin(nyukinId);
 				result = keshikomi2;
 				keshikomiCrud.delete(keshikomi2);
 				keshikomiCrud.save(keshikomi1);
@@ -83,7 +79,7 @@ public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				service.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiQuery.getOfNyukin(nyukinId);
 				times = 1;
 				keshikomiCrud.delete(keshikomi2);
 				times = 1;
@@ -91,24 +87,6 @@ public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 				times = 1;
 			}
 		};
-	}
-
-	@Test
-	public void test01_getKeshikomiSetOfNyukin() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01, T_KESHIKOMI_02);
-		// do
-		Set<Keshikomi> actual = service.getKeshikomiSetOfNyukin("r-001");
-		assertEquals(2, actual.size());
-	}
-
-	@Test
-	public void test01_getKeshikomiSetOfUrikake() throws Exception {
-		// database
-		super.deleteAndInsert(T_KESHIKOMI, T_KESHIKOMI_COLUMN, T_KESHIKOMI_01, T_KESHIKOMI_02);
-		// do
-		Set<Keshikomi> actual = service.getKeshikomiSetOfUrikake("r-KK01-00001");
-		assertEquals(1, actual.size());
 	}
 
 	@Test
@@ -144,7 +122,7 @@ public class KeshikomiPersistenceImplTest extends PersistenceTestCase {
 			{
 				keshikomiCrud.getDomain("r-001");
 				times = 1;
-				keshikomiCrud.delete((Keshikomi) any);
+				keshikomiCrud.delete(keshikomi);
 				times = 1;
 			}
 		};

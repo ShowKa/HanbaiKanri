@@ -16,6 +16,7 @@ import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.service.crud.u08.i.NyukinCrud;
 import com.showka.service.persistence.u08.i.KeshikomiPersistence;
 import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
+import com.showka.service.query.u08.i.KeshikomiQuery;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -26,6 +27,9 @@ public class NyukinKeshikomiPersistenceImpl implements NyukinKeshikomiPersistenc
 
 	@Autowired
 	private KeshikomiPersistence keshikomiPersistence;
+
+	@Autowired
+	private KeshikomiQuery keshikomiQuery;
 
 	@Autowired
 	private UrikakeCrud urikakePersistence;
@@ -64,7 +68,7 @@ public class NyukinKeshikomiPersistenceImpl implements NyukinKeshikomiPersistenc
 		// 入金
 		Nyukin nyukin = nyukinPersistence.getDomain(nyukinId);
 		// 消込マップ
-		Set<Keshikomi> keshikomiList = keshikomiPersistence.getKeshikomiSetOfNyukin(nyukinId);
+		Set<Keshikomi> keshikomiList = keshikomiQuery.getOfNyukin(nyukinId);
 		// set builder
 		NyukinKeshikomiBuilder b = new NyukinKeshikomiBuilder();
 		b.withNyukin(nyukin);

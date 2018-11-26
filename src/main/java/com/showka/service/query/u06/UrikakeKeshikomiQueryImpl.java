@@ -10,8 +10,8 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.service.crud.u06.i.UrikakeCrud;
-import com.showka.service.persistence.u08.i.KeshikomiPersistence;
 import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
+import com.showka.service.query.u08.i.KeshikomiQuery;
 import com.showka.value.AmountOfMoney;
 
 @Service
@@ -21,14 +21,14 @@ public class UrikakeKeshikomiQueryImpl implements UrikakeKeshikomiQuery {
 	private UrikakeCrud urikakePersistence;
 
 	@Autowired
-	private KeshikomiPersistence keshikomiPersistence;
+	private KeshikomiQuery keshikomiQuery;
 
 	@Override
 	public UrikakeKeshikomi get(String urikakeId) {
 		// get 売掛
 		Urikake urikake = urikakePersistence.getDomainById(urikakeId);
 		// get 消込リスト
-		Set<Keshikomi> keshikomiList = keshikomiPersistence.getKeshikomiSetOfUrikake(urikakeId);
+		Set<Keshikomi> keshikomiList = keshikomiQuery.getOfUrikake(urikakeId);
 		// build 売掛消込
 		UrikakeKeshikomiBuilder ub = new UrikakeKeshikomiBuilder();
 		ub.withUrikake(urikake);

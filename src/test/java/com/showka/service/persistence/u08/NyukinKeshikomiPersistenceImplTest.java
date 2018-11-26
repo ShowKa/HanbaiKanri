@@ -124,7 +124,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 			{
 				nyukinPersistence.getDomain(nyukinId);
 				result = nyukin;
-				keshikomiPersistence.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiPersistence.getOfNyukin(nyukinId);
 				result = keshikomiSet;
 			}
 		};
@@ -135,7 +135,7 @@ public class NyukinKeshikomiPersistenceImplTest extends SimpleTestCase {
 			{
 				nyukinPersistence.getDomain(nyukinId);
 				times = 1;
-				keshikomiPersistence.getKeshikomiSetOfNyukin(nyukinId);
+				keshikomiPersistence.getOfNyukin(nyukinId);
 				times = 1;
 			}
 		};
