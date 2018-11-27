@@ -33,10 +33,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U07G002Controller extends ControllerBase {
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
-	private SeikyuCrud seikyuPersistence;
+	private SeikyuCrud seikyuCrud;
 
 	/**
 	 * 参照.
@@ -60,13 +60,13 @@ public class U07G002Controller extends ControllerBase {
 	 */
 	private void setSeikyu(@ModelAttribute U07G002Form form, ModelAndViewExtended model) {
 		// get 顧客
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 		// 請求PK
 		TSeikyuPK pk = new TSeikyuPK();
 		pk.setKokyakuId(kokyaku.getRecordId());
 		pk.setSeikyuDate(form.getSeikyuDate());
 		// get 請求
-		Seikyu seikyu = seikyuPersistence.getDomain(pk);
+		Seikyu seikyu = seikyuCrud.getDomain(pk);
 		// set model
 		model.addObject("kokyakuCode", kokyaku.getCode());
 		model.addObject("kokyakuName", kokyaku.getName());

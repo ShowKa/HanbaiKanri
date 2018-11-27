@@ -32,7 +32,7 @@ public class UrikakeQueryImpl implements UrikakeQuery {
 	private SUrikakeSeikyuDoneRepository sUrikakeSeikyuDoneRepository;
 
 	@Autowired
-	private UrikakeCrud urikakePersistence;
+	private UrikakeCrud urikakeCrud;
 
 	@Override
 	public List<Urikake> getForSeikyu(Kokyaku kokyaku) {
@@ -47,7 +47,7 @@ public class UrikakeQueryImpl implements UrikakeQuery {
 		result.addAll(result2);
 		// build domain
 		return result.stream().map(r -> {
-			return urikakePersistence.getDomain(r.getUriageId());
+			return urikakeCrud.getDomain(r.getUriageId());
 		}).collect(Collectors.toList());
 	}
 
@@ -62,7 +62,7 @@ public class UrikakeQueryImpl implements UrikakeQuery {
 		result.addAll(result2);
 		// build domain
 		return result.stream().map(r -> {
-			return urikakePersistence.getDomain(r.getUriageId());
+			return urikakeCrud.getDomain(r.getUriageId());
 		}).collect(Collectors.toList());
 	}
 

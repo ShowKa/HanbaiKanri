@@ -32,10 +32,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U05G001Controller extends ControllerBase {
 
 	@Autowired
-	private UriageSearch uriageQuery;
+	private UriageSearch uriageSearch;
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
 	private KokyakuValidator kokyakuValidator;
@@ -73,7 +73,7 @@ public class U05G001Controller extends ControllerBase {
 			criteria.setKokyaku(Optional.empty());
 		} else {
 			kokyakuValidator.validateForRefer(form.getKokyakuCode());
-			Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
+			Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 			criteria.setKokyaku(Optional.of(kokyaku));
 		}
 		// set 売上日from
@@ -87,7 +87,7 @@ public class U05G001Controller extends ControllerBase {
 		}
 		criteria.setTo(new EigyoDate(form.getTo()));
 		criteria.setOnlyUrikake(form.isOnlyUrikake());
-		List<Uriage> searchLislt = uriageQuery.search(criteria);
+		List<Uriage> searchLislt = uriageSearch.search(criteria);
 		// set model
 		List<Map<String, Object>> uriageList = searchLislt.stream().map(uriage -> {
 			Map<String, Object> ret = new HashMap<String, Object>();

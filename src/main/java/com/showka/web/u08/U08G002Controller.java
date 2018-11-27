@@ -50,13 +50,13 @@ public class U08G002Controller extends ControllerBase {
 	private ShainValidator shainValidator;
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
-	private ShainCrud shainPersistence;
+	private ShainCrud shainCrud;
 
 	@RequestMapping(value = "/u08g002/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
@@ -89,15 +89,15 @@ public class U08G002Controller extends ControllerBase {
 		shainValidator.validateExistance(form.getTantoShainCode());
 		// 集金の構築
 		ShukinBuilder sb = new ShukinBuilder();
-		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
 		sb.withBusho(busho);
 		sb.withDate(busho.getEigyoDate());
 		sb.withDenpyoNumber(form.getDenpyoNumber());
 		sb.withKingaku(new AmountOfMoney(form.getKingaku()));
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 		sb.withKokyaku(kokyaku);
 		sb.withNyukinHohoKubun(NyukinHohoKubun.集金);
-		Shain tantoShain = shainPersistence.getDomain(form.getTantoShainCode());
+		Shain tantoShain = shainCrud.getDomain(form.getTantoShainCode());
 		sb.withTantoShain(tantoShain);
 		Shukin shukin = sb.build();
 		// ユーザー権限チェック
@@ -127,7 +127,7 @@ public class U08G002Controller extends ControllerBase {
 		Shukin old = shukinCrud.getDomain(form.getNyukinId());
 		// 集金の構築
 		ShukinBuilder sb = new ShukinBuilder();
-		Shain tantoShain = shainPersistence.getDomain(form.getTantoShainCode());
+		Shain tantoShain = shainCrud.getDomain(form.getTantoShainCode());
 		sb.withTantoShain(tantoShain);
 		sb.withKingaku(new AmountOfMoney(form.getKingaku()));
 		Shukin shukin = sb.apply(old);

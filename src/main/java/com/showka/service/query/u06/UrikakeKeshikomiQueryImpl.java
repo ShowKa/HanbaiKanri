@@ -18,7 +18,7 @@ import com.showka.value.AmountOfMoney;
 public class UrikakeKeshikomiQueryImpl implements UrikakeKeshikomiQuery {
 
 	@Autowired
-	private UrikakeCrud urikakePersistence;
+	private UrikakeCrud urikakeCrud;
 
 	@Autowired
 	private KeshikomiQuery keshikomiQuery;
@@ -26,7 +26,7 @@ public class UrikakeKeshikomiQueryImpl implements UrikakeKeshikomiQuery {
 	@Override
 	public UrikakeKeshikomi get(String urikakeId) {
 		// get 売掛
-		Urikake urikake = urikakePersistence.getDomainById(urikakeId);
+		Urikake urikake = urikakeCrud.getDomainById(urikakeId);
 		// get 消込リスト
 		Set<Keshikomi> keshikomiList = keshikomiQuery.getOfUrikake(urikakeId);
 		// build 売掛消込

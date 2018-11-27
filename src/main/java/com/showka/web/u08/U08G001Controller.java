@@ -35,16 +35,16 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G001Controller extends ControllerBase {
 
 	@Autowired
-	private NyukinKeshikomiSearch nyukinQuery;
+	private NyukinKeshikomiSearch nyukinKeshikomiSearch;
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
-	private ShainCrud shainPersistence;
+	private ShainCrud shainCrud;
 
 	@RequestMapping(value = "/u08g001/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G001Form form, ModelAndViewExtended model) {
@@ -69,25 +69,25 @@ public class U08G001Controller extends ControllerBase {
 		// 部署
 		String bushoCode = form.getBushoCode();
 		if (bushoCode != null) {
-			boolean exists = bushoPersistence.exists(bushoCode);
+			boolean exists = bushoCrud.exists(bushoCode);
 			if (exists) {
-				param.setBusho(bushoPersistence.getDomain(bushoCode));
+				param.setBusho(bushoCrud.getDomain(bushoCode));
 			}
 		}
 		// 顧客
 		String kokyakuCode = form.getKokyakuCode();
 		if (kokyakuCode != null) {
-			boolean exists = kokyakuPersistence.exists(kokyakuCode);
+			boolean exists = kokyakuCrud.exists(kokyakuCode);
 			if (exists) {
-				param.setKokyaku(kokyakuPersistence.getDomain(kokyakuCode));
+				param.setKokyaku(kokyakuCrud.getDomain(kokyakuCode));
 			}
 		}
 		// 担当社員
 		String shainCode = form.getTantoShainCode();
 		if (shainCode != null) {
-			boolean exists = shainPersistence.exists(shainCode);
+			boolean exists = shainCrud.exists(shainCode);
 			if (exists) {
-				param.setTantoShain(shainPersistence.getDomain(shainCode));
+				param.setTantoShain(shainCrud.getDomain(shainCode));
 			}
 		}
 		// 入金方法
@@ -111,7 +111,7 @@ public class U08G001Controller extends ControllerBase {
 			param.setMinNyukinDate(new EigyoDate(form.getMinNyukinDate()));
 		}
 		// search
-		List<NyukinKeshikomi> nyukinList = nyukinQuery.search(param);
+		List<NyukinKeshikomi> nyukinList = nyukinKeshikomiSearch.search(param);
 		// model
 		List<Map<String, Object>> resultList = nyukinList.stream().map(nk -> {
 			Nyukin n = nk.getNyukin();

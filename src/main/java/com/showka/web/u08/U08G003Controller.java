@@ -47,10 +47,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G003Controller extends ControllerBase {
 
 	@Autowired
-	private NyukinCrud nyukinPersistence;
+	private NyukinCrud nyukinCrud;
 
 	@Autowired
-	private UrikakeCrud urikakePersistence;
+	private UrikakeCrud urikakeCrud;
 
 	@Autowired
 	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
@@ -253,7 +253,7 @@ public class U08G003Controller extends ControllerBase {
 	 */
 	private NyukinKeshikomi buildNyukinKeshikomiFromForm(U08G003Form form) {
 		// 入金
-		Nyukin nyukin = nyukinPersistence.getDomain(form.getNyukinId());
+		Nyukin nyukin = nyukinCrud.getDomain(form.getNyukinId());
 		// OCC
 		nyukin.setVersion(form.getVersion());
 		// 部署
@@ -264,7 +264,7 @@ public class U08G003Controller extends ControllerBase {
 		Set<Keshikomi> keshikomiSet = form.getMeisai().stream().map(m -> {
 			// 売掛
 			String urikakeId = m.getUrikakeId();
-			Urikake urikake = urikakePersistence.getDomainById(urikakeId);
+			Urikake urikake = urikakeCrud.getDomainById(urikakeId);
 			// FIXME
 			String id = m.getKeshikomiId();
 			String keshikomiId = !StringUtils.isEmpty(id) ? id : "dummy_" + UUID.randomUUID().toString();

@@ -17,7 +17,7 @@ import com.showka.value.TheDate;
 public class ShimeDateQueryImpl implements ShimeDateQuery {
 
 	@Autowired
-	private BushoDateQuery dateService;
+	private BushoDateQuery bushoDateQuery;
 
 	private static final int _30 = 31;
 	private static final int _31 = 31;
@@ -32,7 +32,7 @@ public class ShimeDateQueryImpl implements ShimeDateQuery {
 		}
 		// 翌日が非営業日 -> 対象
 		TheDate target1 = eigyoDate.plusDays(1);
-		while (!dateService.isEigyoDate(busho, target1)) {
+		while (!bushoDateQuery.isEigyoDate(busho, target1)) {
 			if (target1.getDayOfMonth() != _31) {
 				shimeDates.add(new ShimeDate(target1));
 			}

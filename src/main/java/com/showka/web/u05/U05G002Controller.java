@@ -53,7 +53,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U05G002Controller extends ControllerBase {
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
 	private KokyakuValidator kokyakuValidator;
@@ -71,10 +71,10 @@ public class U05G002Controller extends ControllerBase {
 	private UriageKeijoQuery uriageKeijoQuery;
 
 	@Autowired
-	private ShohinCrud shohinPersistence;
+	private ShohinCrud shohinCrud;
 
 	@Autowired
-	private UriageMeisaiCrud uriageMeisaiPersistence;
+	private UriageMeisaiCrud uriageMeisaiCrud;
 
 	@Autowired
 	private UriageRirekiQuery uriageRirekiQuery;
@@ -83,13 +83,14 @@ public class U05G002Controller extends ControllerBase {
 	private ShohinIdoUriagePersistence shohinIdoUriagePersistence;
 
 	@Autowired
-	private UrikakeConstruct urikakeSpecificationService;
+	private UrikakeConstruct urikakeConstruct;
 
 	@Autowired
 	private UrikakeCrud urikakeCrud;
 
 	@Autowired
 	private UrikakePersistence urikakePersistence;
+
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
 
@@ -145,7 +146,7 @@ public class U05G002Controller extends ControllerBase {
 	public ModelAndViewExtended refer(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// 顧客取得
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 
 		// 売上取得
 		TUriagePK pk = new TUriagePK();
@@ -218,7 +219,7 @@ public class U05G002Controller extends ControllerBase {
 		uriageCrud.save(uriage);
 
 		// 掛売
-		Optional<Urikake> urikake = urikakeSpecificationService.by(uriage);
+		Optional<Urikake> urikake = urikakeConstruct.by(uriage);
 		urikake.ifPresent(u -> {
 			urikakeCrud.save(u);
 		});
@@ -241,12 +242,10 @@ public class U05G002Controller extends ControllerBase {
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 
 		// 新しい売上明細に明細番号付番
-		Integer maxMeisaiNumber = uriageMeisaiPersistence.getMaxMeisaiNumber(form.getRecordId());
+		Integer maxMeisaiNumber = uriageMeisaiCrud.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai()
-				.stream()
-				.filter(m -> m.getMeisaiNumber() == null)
-				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+				m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -259,7 +258,7 @@ public class U05G002Controller extends ControllerBase {
 		uriageCrud.save(uriage);
 
 		// 掛売
-		Optional<Urikake> urikake = urikakeSpecificationService.by(uriage);
+		Optional<Urikake> urikake = urikakeConstruct.by(uriage);
 		urikake.ifPresent(u -> {
 			// OCC
 			u.setVersion(form.getUrikakeVersion());
@@ -289,7 +288,7 @@ public class U05G002Controller extends ControllerBase {
 		// 売上PK
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 		pk.setKokyakuId(kokyaku.getRecordId());
 
 		// 売上
@@ -348,7 +347,7 @@ public class U05G002Controller extends ControllerBase {
 			mb.withHanbaiTanka(BigDecimal.valueOf(mf.getHanbaiTanka()));
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
 			mb.withRecordId(mf.getRecordId());
-			mb.withShohinDomain(shohinPersistence.getDomain(mf.getShohinCode()));
+			mb.withShohinDomain(shohinCrud.getDomain(mf.getShohinCode()));
 			mb.withVersion(mf.getVersion());
 			UriageMeisai md = mb.build();
 
@@ -357,7 +356,7 @@ public class U05G002Controller extends ControllerBase {
 		}
 
 		// 顧客
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 
 		// 営業日取得
 		EigyoDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
@@ -403,7 +402,7 @@ public class U05G002Controller extends ControllerBase {
 		meisaiList.forEach(m -> {
 			String shohinCode = m.getShohinCode();
 			try {
-				shohinPersistence.getDomain(shohinCode);
+				shohinCrud.getDomain(shohinCode);
 			} catch (Exception e) {
 				throw new NotExistException("商品", shohinCode);
 			}
@@ -420,7 +419,7 @@ public class U05G002Controller extends ControllerBase {
 	public ResponseEntity<?> cancel(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// domain
 		TUriagePK pk = new TUriagePK();
-		pk.setKokyakuId(kokyakuPersistence.getDomain(form.getKokyakuCode()).getRecordId());
+		pk.setKokyakuId(kokyakuCrud.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		// delete 商品移動
 		shohinIdoUriagePersistence.delete(pk);

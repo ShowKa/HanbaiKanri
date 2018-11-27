@@ -37,7 +37,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U17G001Controller extends ControllerBase {
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	@Autowired
 	private BushoDateValidator bushoDateValidator;
@@ -84,7 +84,7 @@ public class U17G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u17g001/getBushoList", method = RequestMethod.POST)
 	public ResponseEntity<?> getBushoList(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// get 部署リスト
-		List<Busho> _bushoList = bushoPersistence.getDomains();
+		List<Busho> _bushoList = bushoCrud.getDomains();
 		// to map
 		List<Map<String, Object>> bushoList = _bushoList.stream().map(b -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -123,7 +123,7 @@ public class U17G001Controller extends ControllerBase {
 	public ResponseEntity<?> close(@ModelAttribute U17G001Form form, ModelAndViewExtended model) {
 		// input
 		String bushoCode = form.getBushoCode();
-		Busho busho = bushoPersistence.getDomain(bushoCode);
+		Busho busho = bushoCrud.getDomain(bushoCode);
 		EigyoDate eigyoDate = new EigyoDate(form.getEigyoDate());
 		// validate
 		bushoDateValidator.validateForClosing(busho, eigyoDate);

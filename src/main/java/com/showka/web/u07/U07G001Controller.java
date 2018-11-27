@@ -26,7 +26,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U07G001Controller extends ControllerBase {
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
 	private SeikyuQuery seikyuQuery;
@@ -52,7 +52,7 @@ public class U07G001Controller extends ControllerBase {
 	@RequestMapping(value = "/u07g001/getList", method = RequestMethod.POST)
 	public ResponseEntity<?> getList(@ModelAttribute U07G001Form form, ModelAndViewExtended model) {
 		// get 顧客
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 		// get 請求リスト
 		List<Seikyu> _seikyuList = seikyuQuery.get(kokyaku);
 		// to map

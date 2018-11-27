@@ -42,7 +42,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 	private TSeikyuMeisaiRepository meisaiRepo;
 
 	@Autowired
-	private SeikyuCrud seikyuPersistence;
+	private SeikyuCrud seikyuCrud;
 
 	@Autowired
 	private DSLContext create;
@@ -54,7 +54,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 	public List<Seikyu> get(Busho busho) {
 		List<T_SEIKYU_RECORD> seikyuRecords = this.getAllRecordsOf(busho);
 		return seikyuRecords.stream().map(r -> {
-			return seikyuPersistence.getDomain(r.getRecordId());
+			return seikyuCrud.getDomain(r.getRecordId());
 		}).collect(Collectors.toList());
 	}
 
@@ -64,7 +64,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 		List<TSeikyu> seikyuList = this.getAllEntitiesOf(kokyaku);
 		// entity -> domain
 		return seikyuList.stream().map(seikyu -> {
-			return seikyuPersistence.getDomain(seikyu.getPk());
+			return seikyuCrud.getDomain(seikyu.getPk());
 		}).collect(Collectors.toList());
 	}
 
@@ -121,7 +121,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 		}).collect(Collectors.toSet());
 		// 請求リスト
 		List<Seikyu> seikyuList = seikyuIdSet.parallelStream().map(id -> {
-			return seikyuPersistence.getDomain(id);
+			return seikyuCrud.getDomain(id);
 		}).collect(Collectors.toList());
 		return seikyuList;
 	}
