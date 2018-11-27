@@ -29,16 +29,16 @@ import com.showka.web.ModelAndViewExtended;
 public class U08B003Controller extends ControllerBase {
 
 	@Autowired
-	private FirmBankFurikomiMatchingPersistence Persistence;
+	private FirmBankFurikomiMatchingPersistence persistence;
 
 	@Autowired
-	private FirmBankFurikomiQuery Query;
+	private FirmBankFurikomiQuery query;
 
 	@Autowired
-	private FirmBankFurikomiMatchingErrorPersistence errorService;
+	private FirmBankFurikomiMatchingErrorPersistence errorPersistence;
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	// transaction制御のため自クラスをinject
 	@Autowired
@@ -62,9 +62,9 @@ public class U08B003Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> matchAll(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// delete
-		Persistence.deleteAll();
+		persistence.deleteAll();
 		// 部署リスト
-		List<Busho> bushoList = bushoPersistence.getDomains();
+		List<Busho> bushoList = bushoCrud.getDomains();
 		// 伝送日付
 		Date date = form.getDate();
 		// 部署毎にマッチング処理
@@ -109,21 +109,21 @@ public class U08B003Controller extends ControllerBase {
 	@Transactional(TxType.REQUIRES_NEW)
 	public ResponseEntity<?> match(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// 部署
-		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
 		// matching error
 		TheDate date = new TheDate(form.getDate());
 		// マッチングデータ抽出
-		FBFurikomiMatchingResult result = Query.getMatched(busho, date);
+		FBFurikomiMatchingResult result = query.getMatched(busho, date);
 		// マッチング成功
 		result.getMatchedNormally().parallelStream().forEach(m -> {
-			Persistence.save(m.getFbFurikomiId(), m.getFuriwakeId());
+			persistence.save(m.getFbFurikomiId(), m.getFuriwakeId());
 		});
 		// マッチングエラー
 		result.getMultipleMathed().stream().forEach(fbFurikomiId -> {
-			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.複数マッチング);
+			errorPersistence.save(fbFurikomiId, FurikomiMatchintErrorCause.複数マッチング);
 		});
 		result.getRepetition().stream().forEach(fbFurikomiId -> {
-			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.同一振込);
+			errorPersistence.save(fbFurikomiId, FurikomiMatchintErrorCause.同一振込);
 		});
 		// return
 		form.setSuccessMessage("部署FBマッチング成功");
@@ -148,9 +148,9 @@ public class U08B003Controller extends ControllerBase {
 	public ResponseEntity<?> unmatch(@ModelAttribute U08B003Form form, ModelAndViewExtended model) {
 		// アンマッチ
 		TheDate date = new TheDate(form.getDate());
-		List<String> unmatchedList = Query.getUnmatched(date);
+		List<String> unmatchedList = query.getUnmatched(date);
 		unmatchedList.stream().forEach(fbFurikomiId -> {
-			errorService.save(fbFurikomiId, FurikomiMatchintErrorCause.マッチング対象なし);
+			errorPersistence.save(fbFurikomiId, FurikomiMatchintErrorCause.マッチング対象なし);
 		});
 		// return
 		form.setSuccessMessage("FBアンマッチ処理");

@@ -30,7 +30,7 @@ public class U08B002Controller extends ControllerBase {
 	private SeikyuQuery seikyuQuery;
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	/**
 	 * FirmBank振分データ作成.
@@ -48,7 +48,7 @@ public class U08B002Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> fbFuriwake(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
 		// search 請求・売掛
-		Busho busho = bushoPersistence.getDomain(form.getBushoCode());
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
 		List<Seikyu> seikyuList = seikyuQuery.get(busho);
 		// save FB振分
 		firmBankFuriwakePersistence.save(seikyuList);

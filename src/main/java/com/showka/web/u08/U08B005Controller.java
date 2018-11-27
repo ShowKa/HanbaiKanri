@@ -23,7 +23,7 @@ import com.showka.web.ModelAndViewExtended;
 public class U08B005Controller extends ControllerBase {
 
 	@Autowired
-	private MatchedFBFurikomiQuery Query;
+	private MatchedFBFurikomiQuery query;
 
 	@Autowired
 	private NyukinKeshikomiPersistence keshikomiPersistence;
@@ -42,7 +42,7 @@ public class U08B005Controller extends ControllerBase {
 	public ResponseEntity<?> keshikomi(@ModelAttribute U08B005Form form, ModelAndViewExtended model) {
 		// FB振込Tableから$マッチング済FB振込を検索
 		TheDate transmissionDate = new TheDate(form.getDate());
-		List<MatchedFBFurikomi> matchedFbFurikomiList = Query.get(transmissionDate);
+		List<MatchedFBFurikomi> matchedFbFurikomiList = query.get(transmissionDate);
 		// 消込テーブル登録
 		matchedFbFurikomiList.forEach(keshikomiPersistence::save);
 		// return
