@@ -28,9 +28,9 @@ import com.showka.kubun.KokyakuKubun;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.service.crud.u01.KokyakuCrudServiceImpl;
-import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.validate.u01.KokyakuValidateServiceImpl;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.crud.z00.i.BushoCrud;
+import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -45,13 +45,13 @@ import com.showka.web.ModelAndViewExtended;
 public class U01G002Controller {
 
 	@Autowired
-	private KokyakuCrudServiceImpl kokyakuCrudService;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
-	private BushoCrudService bushoCrudService;
+	private BushoCrud bushoCrud;
 
 	@Autowired
-	private KokyakuValidateServiceImpl kokyakuValidateService;
+	private KokyakuValidator kokyakuValidator;
 
 	// public method called by request
 	/**
@@ -88,10 +88,10 @@ public class U01G002Controller {
 
 		// validate
 		String code = form.getCode();
-		kokyakuValidateService.validateForRefer(code);
+		kokyakuValidator.validateForRefer(code);
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(code);
+		Kokyaku kokyaku = kokyakuCrud.getDomain(code);
 		model.addForm(setForm(form, kokyaku));
 
 		// 選択肢を取得して画面に送る
@@ -121,7 +121,7 @@ public class U01G002Controller {
 	public ModelAndViewExtended updateForm(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 
 		// 顧客codeをもとに該当顧客の情報を取得し、画面に送る
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getCode());
 		model.addForm(setForm(form, kokyaku));
 
 		// 選択肢を取得して画面に送る
@@ -155,11 +155,11 @@ public class U01G002Controller {
 		Kokyaku kokyakuDomain = createKokyakuDomain(form);
 
 		// validate
-		kokyakuValidateService.validateForRegister(kokyakuDomain);
-		kokyakuValidateService.validate(kokyakuDomain);
+		kokyakuValidator.validateForRegister(kokyakuDomain);
+		kokyakuValidator.validate(kokyakuDomain);
 
 		// register
-		kokyakuCrudService.save(kokyakuDomain);
+		kokyakuCrud.save(kokyakuDomain);
 
 		// jump refer
 		form.setSuccessMessage("登録成功");
@@ -189,10 +189,10 @@ public class U01G002Controller {
 		Kokyaku kokyakuDomain = createKokyakuDomain(form);
 
 		// validate
-		kokyakuValidateService.validate(kokyakuDomain);
+		kokyakuValidator.validate(kokyakuDomain);
 
 		// update
-		kokyakuCrudService.save(kokyakuDomain);
+		kokyakuCrud.save(kokyakuDomain);
 
 		// jump refer
 		form.setSuccessMessage("更新成功");
@@ -211,12 +211,12 @@ public class U01G002Controller {
 	@Transactional
 	public ResponseEntity<?> delete(@Valid @ModelAttribute U01G002Form form, ModelAndViewExtended model) {
 		// get 顧客
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getCode());
 		kokyaku.setVersion(form.getKokyakuVersion());
 		// validate
-		kokyakuValidateService.validateForDelete(form.getCode());
+		kokyakuValidator.validateForDelete(form.getCode());
 		// delete
-		kokyakuCrudService.delete(kokyaku);
+		kokyakuCrud.delete(kokyaku);
 		// jump search
 		form.setSuccessMessage("削除成功");
 		model.addForm(form);
@@ -235,7 +235,7 @@ public class U01G002Controller {
 	private void setListToModelAttribute(ModelAndViewExtended model) {
 
 		// 部署一覧
-		model.addObject("bushoList", bushoCrudService.getMBushoList());
+		model.addObject("bushoList", bushoCrud.getMBushoList());
 
 		// 締日の候補日
 		List<Integer> shimebiList = new ArrayList<Integer>(Arrays.asList(5, 10, 15, 20, 25, 30));
@@ -278,7 +278,7 @@ public class U01G002Controller {
 		kokyakuDomainBuilder.withAddress(form.getAddress());
 		kokyakuDomainBuilder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, form.getKokyakuKubun()));
 		kokyakuDomainBuilder.withHanbaiKubun(hanbaiKubun);
-		kokyakuDomainBuilder.withShukanBusho(bushoCrudService.getDomain(form.getShukanBushoCode()));
+		kokyakuDomainBuilder.withShukanBusho(bushoCrud.getDomain(form.getShukanBushoCode()));
 		kokyakuDomainBuilder.withRecordId(form.getKokyakuRecordId());
 
 		// 入金掛売り情報は販売区分=掛売の時のみ

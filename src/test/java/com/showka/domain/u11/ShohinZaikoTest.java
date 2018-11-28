@@ -6,13 +6,16 @@ import java.util.List;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
+import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.ShohinBuilder;
 import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.domain.builder.ShohinZaikoBuilder;
 import com.showka.domain.u11.ShohinZaiko.ShohinIdoOnDate;
+import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
+import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 public class ShohinZaikoTest extends SimpleTestCase {
@@ -71,6 +74,7 @@ public class ShohinZaikoTest extends SimpleTestCase {
 		meisai.add(idoMeisai02);
 		meisai.add(idoMeisai03);
 		ShohinIdoBuilder b = new ShohinIdoBuilder();
+		b.withDate(new EigyoDate(2017, 1, 1));
 		b.withTimestamp(new TheTimestamp(2017, 1, 1, 0, 0, 0, 0));
 		b.withKubun(ShohinIdoKubun.売上);
 		b.withMeisai(meisai);
@@ -85,6 +89,7 @@ public class ShohinZaikoTest extends SimpleTestCase {
 		meisai.add(idoMeisai02);
 		meisai.add(idoMeisai03);
 		ShohinIdoBuilder b = new ShohinIdoBuilder();
+		b.withDate(new EigyoDate(2017, 1, 1));
 		b.withTimestamp(new TheTimestamp(2017, 1, 1, 3, 0, 0, 0));
 		b.withKubun(ShohinIdoKubun.売上訂正);
 		b.withMeisai(meisai);
@@ -204,4 +209,22 @@ public class ShohinZaikoTest extends SimpleTestCase {
 		assertEquals(2, actual.intValue());
 	}
 
+	@Test
+	public void test12_CloneForKurikoshi() throws Exception {
+		EigyoDate nextDate = new EigyoDate(2017, 1, 2);
+		ShohinZaiko actual = zaiko01.cloneForKurikoshi(nextDate);
+		assertEquals(1, actual.getKurikoshiNumber().intValue());
+		assertEquals(nextDate, actual.getDate());
+		assertEquals(0, actual.getShohinIdoList().size());
+	}
+
+	@Test
+	public void test13_BuildZeroZaiko() throws Exception {
+		Busho busho = new BushoBuilder().build();
+		EigyoDate date = new EigyoDate();
+		Shohin shohin = new ShohinBuilder().build();
+		ShohinZaiko actual = ShohinZaiko.buildZeroZaiko(busho, date, shohin);
+		assertEquals(0, actual.getKurikoshiNumber().intValue());
+		assertEquals(0, actual.getNumber().intValue());
+	}
 }

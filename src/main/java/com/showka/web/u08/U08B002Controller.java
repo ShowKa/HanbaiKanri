@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.z00.Busho;
-import com.showka.service.crud.u08.i.FirmBankFuriwakeCrudService;
-import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.search.u07.i.SeikyuSearchService;
+import com.showka.service.crud.z00.i.BushoCrud;
+import com.showka.service.persistence.u08.i.FirmBankFuriwakePersistence;
+import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
 
@@ -24,13 +24,13 @@ import com.showka.web.ModelAndViewExtended;
 public class U08B002Controller extends ControllerBase {
 
 	@Autowired
-	private FirmBankFuriwakeCrudService firmBankFuriwakeCrudService;
+	private FirmBankFuriwakePersistence firmBankFuriwakePersistence;
 
 	@Autowired
-	private SeikyuSearchService seikyuSearchService;
+	private SeikyuQuery seikyuQuery;
 
 	@Autowired
-	private BushoCrudService bushoCrudService;
+	private BushoCrud bushoCrud;
 
 	/**
 	 * FirmBank振分データ作成.
@@ -48,10 +48,10 @@ public class U08B002Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> fbFuriwake(@ModelAttribute U08B002Form form, ModelAndViewExtended model) {
 		// search 請求・売掛
-		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
-		List<Seikyu> seikyuList = seikyuSearchService.getAllOf(busho);
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
+		List<Seikyu> seikyuList = seikyuQuery.get(busho);
 		// save FB振分
-		firmBankFuriwakeCrudService.save(seikyuList);
+		firmBankFuriwakePersistence.save(seikyuList);
 		// return
 		form.setSuccessMessage("FB振分データ作成成功");
 		model.addForm(form);

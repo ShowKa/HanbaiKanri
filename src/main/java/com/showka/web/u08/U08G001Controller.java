@@ -19,11 +19,11 @@ import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.i.Kubun;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
-import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.crud.z00.i.ShainCrudService;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.crud.z00.i.BushoCrud;
+import com.showka.service.crud.z00.i.ShainCrud;
+import com.showka.service.search.u08.i.NyukinKeshikomiSearch;
 import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
-import com.showka.service.search.u08.i.NyukinKeshikomiSearchService;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
@@ -35,16 +35,16 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G001Controller extends ControllerBase {
 
 	@Autowired
-	private NyukinKeshikomiSearchService nyukinSearchService;
+	private NyukinKeshikomiSearch nyukinKeshikomiSearch;
 
 	@Autowired
-	private BushoCrudService bushoCrudService;
+	private BushoCrud bushoCrud;
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
-	private ShainCrudService shainCrudService;
+	private ShainCrud shainCrud;
 
 	@RequestMapping(value = "/u08g001/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G001Form form, ModelAndViewExtended model) {
@@ -69,25 +69,25 @@ public class U08G001Controller extends ControllerBase {
 		// 部署
 		String bushoCode = form.getBushoCode();
 		if (bushoCode != null) {
-			boolean exists = bushoCrudService.exists(bushoCode);
+			boolean exists = bushoCrud.exists(bushoCode);
 			if (exists) {
-				param.setBusho(bushoCrudService.getDomain(bushoCode));
+				param.setBusho(bushoCrud.getDomain(bushoCode));
 			}
 		}
 		// 顧客
 		String kokyakuCode = form.getKokyakuCode();
 		if (kokyakuCode != null) {
-			boolean exists = kokyakuCrudService.exsists(kokyakuCode);
+			boolean exists = kokyakuCrud.exists(kokyakuCode);
 			if (exists) {
-				param.setKokyaku(kokyakuCrudService.getDomain(kokyakuCode));
+				param.setKokyaku(kokyakuCrud.getDomain(kokyakuCode));
 			}
 		}
 		// 担当社員
 		String shainCode = form.getTantoShainCode();
 		if (shainCode != null) {
-			boolean exists = shainCrudService.exists(shainCode);
+			boolean exists = shainCrud.exists(shainCode);
 			if (exists) {
-				param.setTantoShain(shainCrudService.getDomain(shainCode));
+				param.setTantoShain(shainCrud.getDomain(shainCode));
 			}
 		}
 		// 入金方法
@@ -111,7 +111,7 @@ public class U08G001Controller extends ControllerBase {
 			param.setMinNyukinDate(new EigyoDate(form.getMinNyukinDate()));
 		}
 		// search
-		List<NyukinKeshikomi> nyukinList = nyukinSearchService.search(param);
+		List<NyukinKeshikomi> nyukinList = nyukinKeshikomiSearch.search(param);
 		// model
 		List<Map<String, Object>> resultList = nyukinList.stream().map(nk -> {
 			Nyukin n = nk.getNyukin();

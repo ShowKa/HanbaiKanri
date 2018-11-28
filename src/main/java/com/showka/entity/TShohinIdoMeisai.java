@@ -38,6 +38,7 @@ public class TShohinIdoMeisai extends EntityBase implements Serializable {
 	@Column(name = "number", nullable = false)
 	private Integer number;
 
+	// fetch
 	/** 商品 */
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "shohin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
@@ -48,4 +49,12 @@ public class TShohinIdoMeisai extends EntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "shohin_ido_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TShohinIdo shohinIdo;
+
+	// getter
+	/**
+	 * @return 商品移動ID
+	 */
+	public String getShohinIdoId() {
+		return this.pk.getShohinIdoId();
+	}
 }

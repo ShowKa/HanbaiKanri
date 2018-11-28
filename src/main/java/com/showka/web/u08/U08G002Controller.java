@@ -16,14 +16,14 @@ import com.showka.domain.u08.Shukin;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.NyukinHohoKubun;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
-import com.showka.service.crud.u08.i.ShukinCrudService;
-import com.showka.service.crud.z00.i.BushoCrudService;
-import com.showka.service.crud.z00.i.ShainCrudService;
-import com.showka.service.validate.u01.i.KokyakuValidateService;
-import com.showka.service.validate.u08.i.ShukinValidateService;
-import com.showka.service.validate.z00.i.BushoValidateService;
-import com.showka.service.validate.z00.i.ShainValidateService;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.crud.u08.i.ShukinCrud;
+import com.showka.service.crud.z00.i.BushoCrud;
+import com.showka.service.crud.z00.i.ShainCrud;
+import com.showka.service.validator.u01.i.KokyakuValidator;
+import com.showka.service.validator.u08.i.ShukinValidator;
+import com.showka.service.validator.z00.i.BushoValidator;
+import com.showka.service.validator.z00.i.ShainValidator;
 import com.showka.system.exception.AuthorizationException;
 import com.showka.value.AmountOfMoney;
 import com.showka.web.ControllerBase;
@@ -35,28 +35,28 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G002Controller extends ControllerBase {
 
 	@Autowired
-	private ShukinValidateService shukinValidateService;
+	private ShukinValidator shukinValidator;
 
 	@Autowired
-	private ShukinCrudService shukinCrudService;
+	private ShukinCrud shukinCrud;
 
 	@Autowired
-	private KokyakuValidateService kokyakuValidateService;
+	private KokyakuValidator kokyakuValidator;
 
 	@Autowired
-	private BushoValidateService bushoValidateService;
+	private BushoValidator bushoValidator;
 
 	@Autowired
-	private ShainValidateService shainValidateService;
+	private ShainValidator shainValidator;
 
 	@Autowired
-	private BushoCrudService bushoCrudService;
+	private BushoCrud bushoCrud;
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
-	private ShainCrudService shainCrudService;
+	private ShainCrud shainCrud;
 
 	@RequestMapping(value = "/u08g002/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
@@ -84,30 +84,30 @@ public class U08G002Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> register(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
 		// データ存在チェック
-		kokyakuValidateService.validateForRefer(form.getKokyakuCode());
-		bushoValidateService.validateExistance(form.getBushoCode());
-		shainValidateService.validateExistance(form.getTantoShainCode());
+		kokyakuValidator.validateForRefer(form.getKokyakuCode());
+		bushoValidator.validateExistance(form.getBushoCode());
+		shainValidator.validateExistance(form.getTantoShainCode());
 		// 集金の構築
 		ShukinBuilder sb = new ShukinBuilder();
-		Busho busho = bushoCrudService.getDomain(form.getBushoCode());
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
 		sb.withBusho(busho);
 		sb.withDate(busho.getEigyoDate());
 		sb.withDenpyoNumber(form.getDenpyoNumber());
 		sb.withKingaku(new AmountOfMoney(form.getKingaku()));
-		Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 		sb.withKokyaku(kokyaku);
 		sb.withNyukinHohoKubun(NyukinHohoKubun.集金);
-		Shain tantoShain = shainCrudService.getDomain(form.getTantoShainCode());
+		Shain tantoShain = shainCrud.getDomain(form.getTantoShainCode());
 		sb.withTantoShain(tantoShain);
 		Shukin shukin = sb.build();
 		// ユーザー権限チェック
 		this.validateAuth(shukin);
 		// 集金の業務整合性検証
-		shukinValidateService.validate(shukin);
+		shukinValidator.validate(shukin);
 		// 集金の登録整合性検証
-		shukinValidateService.validateForRegister(shukin);
+		shukinValidator.validateForRegister(shukin);
 		// 集金の保存
-		shukinCrudService.save(shukin);
+		shukinCrud.save(shukin);
 		// return
 		form.setSuccessMessage("集金を登録しました。");
 		form.setNyukinId(shukin.getNyukinId());
@@ -122,12 +122,12 @@ public class U08G002Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> update(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
 		// データ存在チェック
-		shainValidateService.validateExistance(form.getTantoShainCode());
+		shainValidator.validateExistance(form.getTantoShainCode());
 		// 登録済み
-		Shukin old = shukinCrudService.getDomain(form.getNyukinId());
+		Shukin old = shukinCrud.getDomain(form.getNyukinId());
 		// 集金の構築
 		ShukinBuilder sb = new ShukinBuilder();
-		Shain tantoShain = shainCrudService.getDomain(form.getTantoShainCode());
+		Shain tantoShain = shainCrud.getDomain(form.getTantoShainCode());
 		sb.withTantoShain(tantoShain);
 		sb.withKingaku(new AmountOfMoney(form.getKingaku()));
 		Shukin shukin = sb.apply(old);
@@ -136,11 +136,11 @@ public class U08G002Controller extends ControllerBase {
 		// ユーザー権限チェック
 		this.validateAuth(shukin);
 		// 集金の業務整合性検証
-		shukinValidateService.validate(shukin);
+		shukinValidator.validate(shukin);
 		// 集金の更新整合性検証
-		shukinValidateService.validateForUpdate(shukin);
+		shukinValidator.validateForUpdate(shukin);
 		// 集金の保存
-		shukinCrudService.save(shukin);
+		shukinCrud.save(shukin);
 		// return
 		form.setSuccessMessage("集金を更新しました。");
 		model.addForm(form);
@@ -154,14 +154,14 @@ public class U08G002Controller extends ControllerBase {
 	@Transactional
 	public ResponseEntity<?> delete(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
 		// 集金の取得
-		Shukin shukin = shukinCrudService.getDomain(form.getNyukinId());
+		Shukin shukin = shukinCrud.getDomain(form.getNyukinId());
 		shukin.setVersion(form.getVersion());
 		// ユーザー権限チェック
 		this.validateAuth(shukin);
 		// 集金の更新整合性検証
-		shukinValidateService.validateForDelete(shukin);
+		shukinValidator.validateForDelete(shukin);
 		// 集金の保存
-		shukinCrudService.delete(shukin);
+		shukinCrud.delete(shukin);
 		// return
 		form.setSuccessMessage("集金を削除しました。");
 		model.addForm(form);
@@ -174,7 +174,7 @@ public class U08G002Controller extends ControllerBase {
 	@RequestMapping(value = "/u08g002/get", method = RequestMethod.POST)
 	public ResponseEntity<?> get(@ModelAttribute U08G002Form form, ModelAndViewExtended model) {
 		// 集金の取得
-		Shukin shukin = shukinCrudService.getDomain(form.getNyukinId());
+		Shukin shukin = shukinCrud.getDomain(form.getNyukinId());
 		// set form
 		form.setBushoCode(shukin.getBusho().getCode());
 		form.setDenpyoNumber(shukin.getDenpyoNumber());

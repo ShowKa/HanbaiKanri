@@ -1,15 +1,15 @@
 (function(){
-  //標準エラーメッセージの変更
+  // 標準エラーメッセージの変更
   $.extend($.validator.messages, {
     required: '*入力必須です',
 
   });
-  //セレクトボックスの判定を追加
+  // セレクトボックスの判定を追加
   jQuery.validator.addMethod('selectCheck', function (value) {
       return (value != '');
   }, "*選択必須です");
-
-　//追加ルールの定義
+  
+  // 追加ルールの定義
   var methods = {
 	alphanumeric: function(value, element){
 	    return this.optional(element) || /^[a-zA-Z0-9]+$/.test(value);
@@ -19,12 +19,12 @@
 	  },
   };
 
-  //メソッドの追加
+  // メソッドの追加
   $.each(methods, function(key) {
     $.validator.addMethod(key, this);
   });
 
-  //入力項目の検証ルール定義
+  // 入力項目の検証ルール定義
   var rules = {
 	code: {required: true, maxlength: 4, alphanumeric: true},
 	name: {required: true, maxlength: 255},
@@ -33,7 +33,7 @@
 
   };
 
-  //入力項目ごとのエラーメッセージ定義
+  // 入力項目ごとのエラーメッセージ定義
   var messages = {
     code: {
     	maxlength: "*4文字以下で入力してください",
@@ -58,7 +58,7 @@
       rules: rules,
       messages: messages,
 
-      //エラーメッセージ出力箇所調整
+      // エラーメッセージ出力箇所調整
       errorPlacement: function(error, element){
         if (element.is(':radio')) {
           error.appendTo(element.parent());

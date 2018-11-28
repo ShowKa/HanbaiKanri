@@ -8,21 +8,21 @@ import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u08.Keshikomi;
 import com.showka.handler.CrudEventListener;
-import com.showka.service.crud.u06.i.UrikakeCrudService;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
-import com.showka.service.crud.u06.i.UrikakeSeikyuStatusCrudService;
+import com.showka.service.crud.u06.i.UrikakeCrud;
+import com.showka.service.persistence.u06.i.UrikakeSeikyuStatusPersistence;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
 
 @Component
 public class UrikakeSeikyuStatusHandler {
 
 	@Autowired
-	private UrikakeCrudService urikakeCrudService;
+	private UrikakeCrud urikakePersistence;
 
 	@Autowired
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@Autowired
-	private UrikakeSeikyuStatusCrudService urikakeSeikyuStatusCrudService;
+	private UrikakeSeikyuStatusPersistence urikakeSeikyuStatusPersistence;
 
 	@Component
 	public class Handler1 implements CrudEventListener<Urikake> {
@@ -31,7 +31,7 @@ public class UrikakeSeikyuStatusHandler {
 		 */
 		@Override
 		public void afterNewRegister(Urikake urikake) {
-			urikakeSeikyuStatusCrudService.toNotYet(urikake.getUriageId());
+			urikakeSeikyuStatusPersistence.toNotYet(urikake.getUriageId());
 		}
 
 		/**
@@ -39,7 +39,7 @@ public class UrikakeSeikyuStatusHandler {
 		 */
 		@Override
 		public void beforeDelete(Urikake urikake) {
-			urikakeSeikyuStatusCrudService.delete(urikake.getUriageId());
+			urikakeSeikyuStatusPersistence.delete(urikake.getUriageId());
 		}
 	}
 
@@ -57,8 +57,9 @@ public class UrikakeSeikyuStatusHandler {
 		public void afterSave(Seikyu seikyu) {
 			seikyu.getSeikyuMeisai().forEach(m -> {
 				Urikake urikake = m.getUrikake();
-				urikakeCrudService.updateNyukinYoteiDate(urikake, seikyu.getShiharaiDate());
-				urikakeSeikyuStatusCrudService.toDone(urikake.getRecordId(), seikyu.getRecordId());
+				urikake.updateNyukinYoteiDate(seikyu.getShiharaiDate());
+				urikakePersistence.save(urikake);
+				urikakeSeikyuStatusPersistence.toDone(urikake.getRecordId(), seikyu.getRecordId());
 			});
 		}
 	}
@@ -76,11 +77,11 @@ public class UrikakeSeikyuStatusHandler {
 		@Override
 		public void afterSave(Keshikomi keshikomi) {
 			String urikakeId = keshikomi.getUrikakeId();
-			UrikakeKeshikomi urikakeKeshikomoi = urikakeKeshikomiCrudService.getDomain(urikakeId);
+			UrikakeKeshikomi urikakeKeshikomoi = urikakeKeshikomiPersistence.get(urikakeId);
 			if (urikakeKeshikomoi.done()) {
-				urikakeSeikyuStatusCrudService.toSettled(urikakeId);
+				urikakeSeikyuStatusPersistence.toSettled(urikakeId);
 			} else {
-				urikakeSeikyuStatusCrudService.revert(urikakeId);
+				urikakeSeikyuStatusPersistence.revert(urikakeId);
 			}
 		}
 
@@ -90,7 +91,7 @@ public class UrikakeSeikyuStatusHandler {
 		@Override
 		public void afterDelete(Keshikomi keshikomi) {
 			String urikakeId = keshikomi.getUrikakeId();
-			urikakeSeikyuStatusCrudService.revert(urikakeId);
+			urikakeSeikyuStatusPersistence.revert(urikakeId);
 		}
 	}
 }

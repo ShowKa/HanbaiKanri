@@ -1,6 +1,7 @@
 package com.showka.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -28,20 +29,29 @@ public class TShohinZaiko extends EntityBase implements Serializable {
 	 */
 	private static final long serialVersionUID = 4531203945128958798L;
 
-	/**
-	 * 主キー
-	 */
+	// column
 	@EmbeddedId
 	private TShohinZaikoPK pk;
 
-	/** 在庫数 */
+	/** 在庫数（=繰越数） */
 	@Column(name = "number", nullable = false)
 	private Integer number;
 
+	// fetch
 	/** 商品 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "shohin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	@Setter(value = AccessLevel.NONE)
 	private MShohin shohin;
 
+	/** 部署 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
+	@Setter(value = AccessLevel.NONE)
+	private MBusho busho;
+
+	// getter
+	public Date getEigyoDate() {
+		return this.pk.getEigyoDate();
+	}
 }

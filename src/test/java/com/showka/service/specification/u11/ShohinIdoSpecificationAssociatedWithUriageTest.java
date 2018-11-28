@@ -24,9 +24,9 @@ import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
-import com.showka.service.crud.u05.i.UriageCrudService;
-import com.showka.service.crud.u11.i.ShohinIdoUriageCrudService;
-import com.showka.service.crud.u11.i.ShohinZaikoCrudService;
+import com.showka.service.persistence.u05.i.UriagePersistence;
+import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
+import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.system.EmptyProxy;
 import com.showka.system.exception.MinusZaikoException;
 import com.showka.value.EigyoDate;
@@ -42,13 +42,13 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 	private ShohinIdoSpecificationAssociatedWithUriage shohinIdoSpecificationImpl;
 
 	@Injectable
-	private UriageCrudService uriageCrudService;
+	private UriagePersistence uriagePersistence;
 
 	@Injectable
-	private ShohinZaikoCrudService shohinZaikoCrudService;
+	private ShohinZaikoQuery shohinZaikoQuery;
 
 	@Injectable
-	private ShohinIdoUriageCrudService shohinIdoUriageCrudService;
+	private ShohinIdoUriageQuery shohinIdoUriageQuery;
 
 	/**
 	 * 売上設定.
@@ -89,7 +89,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		// expect
 		new Expectations() {
 			{
-				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
+				shohinIdoUriageQuery.getNewest(uriage01.getRecordId());
 			}
 		};
 		// do
@@ -98,7 +98,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		// verify
 		new Verifications() {
 			{
-				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
+				shohinIdoUriageQuery.getNewest(uriage01.getRecordId());
 				times = 1;
 			}
 		};
@@ -165,7 +165,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 			{
 				busho.getEigyoDate();
 				result = new EigyoDate(2017, 8, 20);
-				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
+				shohinIdoUriageQuery.getNewest(uriage01.getRecordId());
 				result = Optional.of(shohinIdo01);
 			}
 		};
@@ -175,7 +175,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		// verify
 		new Verifications() {
 			{
-				shohinIdoUriageCrudService.getNewestShohinIdo(uriage01.getRecordId());
+				shohinIdoUriageQuery.getNewest(uriage01.getRecordId());
 				times = 1;
 			}
 		};
@@ -346,7 +346,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		new Expectations() {
 			{
 				// 訂正対象の過去商品移動
-				shohinIdoUriageCrudService.getNewestShohinIdo(uriage.getRecordId());
+				shohinIdoUriageQuery.getNewest(uriage.getRecordId());
 				result = Optional.of(pastShohinIdo);
 				// 当日営業日に移動した
 				pastShohinIdo.getDate();
@@ -367,7 +367,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 		// verify
 		new Verifications() {
 			{
-				shohinIdoUriageCrudService.getNewestShohinIdo(uriage.getRecordId());
+				shohinIdoUriageQuery.getNewest(uriage.getRecordId());
 				times = 1;
 			}
 		};

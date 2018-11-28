@@ -1,6 +1,8 @@
 package com.showka.domain.u11;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.showka.domain.DomainBase;
 import com.showka.domain.z00.Busho;
@@ -94,6 +96,44 @@ public class ShohinZaiko extends DomainBase {
 	 */
 	public Integer getKurikoshiNumber() {
 		return kurikoshiNumber;
+	}
+
+	/**
+	 * 繰越後の商品在庫を生成.
+	 * 
+	 * <pre>
+	 * 下記の通り更新
+	 * - 営業日 = 引数.次営業日
+	 * - 繰越在庫数 = 現時点での商品移動後在庫数
+	 * - 商品移動リスト = 空
+	 * </pre>
+	 * 
+	 * @param nextDate
+	 *            次営業日（繰越先の日付）
+	 * @return 繰越後の商品在庫
+	 */
+	public ShohinZaiko cloneForKurikoshi(EigyoDate nextDate) {
+		ShohinZaiko kurikoshi = new ShohinZaiko(busho, nextDate, shohin, this.getNumber(), new ArrayList<>());
+		kurikoshi.setRecordId(UUID.randomUUID().toString());
+		return kurikoshi;
+	}
+
+	// static
+	/**
+	 * ゼロ在庫のinstanceを生成
+	 * 
+	 * @param busho
+	 *            部署
+	 * @param date
+	 *            営業日
+	 * @param shohin
+	 *            商品
+	 * @return 商品在庫
+	 */
+	public static ShohinZaiko buildZeroZaiko(Busho busho, EigyoDate date, Shohin shohin) {
+		ShohinZaiko zaiko = new ShohinZaiko(busho, date, shohin, 0, new ArrayList<>());
+		zaiko.setRecordId(UUID.randomUUID().toString());
+		return zaiko;
 	}
 
 	// override method

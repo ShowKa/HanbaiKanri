@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.showka.domain.u08.MatchedFBFurikomi;
-import com.showka.service.crud.u08.i.NyukinFBFurikomiCrudService;
-import com.showka.service.search.u08.i.MatchedFBFurikomiSearchService;
+import com.showka.service.persistence.u08.i.NyukinFBFurikomiPersistence;
+import com.showka.service.query.u08.i.MatchedFBFurikomiQuery;
 import com.showka.value.TheDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.ModelAndViewExtended;
@@ -23,10 +23,10 @@ import com.showka.web.ModelAndViewExtended;
 public class U08B004Controller extends ControllerBase {
 
 	@Autowired
-	private MatchedFBFurikomiSearchService searchService;
+	private MatchedFBFurikomiQuery query;
 
 	@Autowired
-	private NyukinFBFurikomiCrudService crudService;
+	private NyukinFBFurikomiPersistence persistence;
 
 	/**
 	 * マッチング済FB振込を入金テーブルに登録する.
@@ -42,9 +42,9 @@ public class U08B004Controller extends ControllerBase {
 	public ResponseEntity<?> saveNyukin(@ModelAttribute U08B004Form form, ModelAndViewExtended model) {
 		// FB振込Tableから$マッチング済FB振込を検索
 		TheDate transmissionDate = new TheDate(form.getDate());
-		List<MatchedFBFurikomi> matchedFbFurikomi = searchService.search(transmissionDate);
+		List<MatchedFBFurikomi> matchedFbFurikomi = query.get(transmissionDate);
 		// $マッチング済FB振込を入金登録
-		matchedFbFurikomi.forEach(crudService::save);
+		matchedFbFurikomi.forEach(persistence::save);
 		// return
 		form.setSuccessMessage("マッチング済FB振込入金登録処理成功");
 		model.addForm(form);

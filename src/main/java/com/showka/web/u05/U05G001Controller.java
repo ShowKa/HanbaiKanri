@@ -18,10 +18,10 @@ import org.thymeleaf.util.StringUtils;
 
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
-import com.showka.service.crud.u01.i.KokyakuCrudService;
-import com.showka.service.search.u05.UriageSearchCriteria;
-import com.showka.service.search.u05.i.UriageSearchService;
-import com.showka.service.validate.u01.i.KokyakuValidateService;
+import com.showka.service.crud.u01.i.KokyakuCrud;
+import com.showka.service.search.u05.i.UriageSearch;
+import com.showka.service.search.u05.i.UriageSearchCriteria;
+import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
@@ -32,13 +32,13 @@ import com.showka.web.ModelAndViewExtended;
 public class U05G001Controller extends ControllerBase {
 
 	@Autowired
-	private UriageSearchService uriageSearchService;
+	private UriageSearch uriageSearch;
 
 	@Autowired
-	private KokyakuCrudService kokyakuCrudService;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
-	private KokyakuValidateService kokyakuValidateService;
+	private KokyakuValidator kokyakuValidator;
 
 	// public method called by request
 	/**
@@ -72,8 +72,8 @@ public class U05G001Controller extends ControllerBase {
 		if (StringUtils.isEmpty(form.getKokyakuCode())) {
 			criteria.setKokyaku(Optional.empty());
 		} else {
-			kokyakuValidateService.validateForRefer(form.getKokyakuCode());
-			Kokyaku kokyaku = kokyakuCrudService.getDomain(form.getKokyakuCode());
+			kokyakuValidator.validateForRefer(form.getKokyakuCode());
+			Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 			criteria.setKokyaku(Optional.of(kokyaku));
 		}
 		// set 売上日from
@@ -87,7 +87,7 @@ public class U05G001Controller extends ControllerBase {
 		}
 		criteria.setTo(new EigyoDate(form.getTo()));
 		criteria.setOnlyUrikake(form.isOnlyUrikake());
-		List<Uriage> searchLislt = uriageSearchService.search(criteria);
+		List<Uriage> searchLislt = uriageSearch.search(criteria);
 		// set model
 		List<Map<String, Object>> uriageList = searchLislt.stream().map(uriage -> {
 			Map<String, Object> ret = new HashMap<String, Object>();

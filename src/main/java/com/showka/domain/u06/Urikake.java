@@ -29,6 +29,16 @@ public class Urikake extends DomainBase {
 
 	// public methods
 	/**
+	 * 入金予定日更新.
+	 * 
+	 * @param nyukinYoteiDate
+	 *            新しい入金予定日
+	 */
+	public void updateNyukinYoteiDate(TheDate nyukinYoteiDate) {
+		this.nyukinYoteiDate = nyukinYoteiDate;
+	}
+
+	/**
 	 * 売上ID取得.
 	 * 
 	 * @return 売上ID

@@ -28,12 +28,13 @@ import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.domain.z00.Busho;
-import com.showka.service.crud.u06.i.UrikakeCrudService;
-import com.showka.service.crud.u06.i.UrikakeKeshikomiCrudService;
-import com.showka.service.crud.u08.i.NyukinCrudService;
-import com.showka.service.crud.u08.i.NyukinKeshikomiCrudService;
-import com.showka.service.search.u06.i.UrikakeSearchService;
-import com.showka.service.validate.u08.i.NyukinKeshikomiValidateService;
+import com.showka.service.crud.u06.i.UrikakeCrud;
+import com.showka.service.crud.u08.i.NyukinCrud;
+import com.showka.service.persistence.u08.i.NyukinKeshikomiPersistence;
+import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
+import com.showka.service.query.u06.i.UrikakeQuery;
+import com.showka.service.query.u08.i.NyukinKeshikomiQuery;
+import com.showka.service.validator.u08.i.NyukinKeshikomiValidator;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
@@ -46,22 +47,25 @@ import com.showka.web.ModelAndViewExtended;
 public class U08G003Controller extends ControllerBase {
 
 	@Autowired
-	private NyukinCrudService nyukinCrudService;
+	private NyukinCrud nyukinCrud;
 
 	@Autowired
-	private UrikakeCrudService urikakeCrudService;
+	private UrikakeCrud urikakeCrud;
 
 	@Autowired
-	private NyukinKeshikomiCrudService nyukinKeshikomiCrudService;
+	private NyukinKeshikomiPersistence nyukinKeshikomiPersistence;
 
 	@Autowired
-	private NyukinKeshikomiValidateService nyukinKeshikomiValidateService;
+	private NyukinKeshikomiQuery nyukinKeshikomiQuery;
 
 	@Autowired
-	private UrikakeSearchService urikakeSearchService;
+	private NyukinKeshikomiValidator nyukinKeshikomiValidator;
 
 	@Autowired
-	private UrikakeKeshikomiCrudService urikakeKeshikomiCrudService;
+	private UrikakeQuery urikakeQuery;
+
+	@Autowired
+	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
 
 	@RequestMapping(value = "/u08g003/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
@@ -73,7 +77,7 @@ public class U08G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u08g003/get", method = RequestMethod.POST)
 	public ResponseEntity<?> get(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		// set model
 		// 営業日
 		model.addObject("eigyoDate", nyukinKeshikomi.getNyukinBushoEigyoDate().toString());
@@ -90,7 +94,7 @@ public class U08G003Controller extends ControllerBase {
 		model.addObject("keshikomiList", keshikomiList);
 		// get 売掛消込
 		Set<UrikakeKeshikomi> urikakeKeshikomiSet = nyukinKeshikomi.getUrikakeSet().stream().map(u -> {
-			return urikakeKeshikomiCrudService.getDomain(u.getRecordId());
+			return urikakeKeshikomiPersistence.get(u.getRecordId());
 		}).collect(Collectors.toSet());
 		List<Map<String, Object>> urikakeKeshikomiList = urikakeKeshikomiSet.stream().map(uk -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
@@ -117,7 +121,7 @@ public class U08G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u08g003/updateForm", method = RequestMethod.POST)
 	public ResponseEntity<?> updateForm(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		// 本日営業にのみ抽出
 		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
@@ -132,7 +136,7 @@ public class U08G003Controller extends ControllerBase {
 				.collect(Collectors.toSet());
 		// get 売掛
 		Kokyaku kokyaku = nyukinKeshikomi.getNyukin().getKokyaku();
-		List<Urikake> urikake = urikakeSearchService.getUrikakeNotSettled(kokyaku);
+		List<Urikake> urikake = urikakeQuery.getNotSettled(kokyaku);
 		// この入金によって消込まれた売掛は除去
 		urikake.removeIf(u -> {
 			String thisUrikakeId = u.getRecordId();
@@ -148,7 +152,7 @@ public class U08G003Controller extends ControllerBase {
 			// 売掛
 			ret.put("urikakeKingaku", u.getKingaku().intValue());
 			// 売掛消込
-			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(u.getRecordId());
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.get(u.getRecordId());
 			AmountOfMoney otherNyukinKeshikomiKingaku = urikakeKeshikomi.getKeshikomiKigakuExcluding(nyukin);
 			ret.put("otherNyukinKeshikomiKingaku", otherNyukinKeshikomiKingaku.intValue());
 			AmountOfMoney otherKeshikomiKingaku = urikakeKeshikomi.getKeshikomiKingakuOf(nyukin);
@@ -178,7 +182,7 @@ public class U08G003Controller extends ControllerBase {
 		// build 入金消込
 		NyukinKeshikomi nyukinKeshikomi = this.buildNyukinKeshikomiFromForm(form);
 		// get 入金消込更新前
-		NyukinKeshikomi nyukinKeshikomiBeforeUpdate = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomiBeforeUpdate = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		EigyoDate eigyoDate = nyukinKeshikomiBeforeUpdate.getNyukinBushoEigyoDate();
 		nyukinKeshikomiBeforeUpdate.removeKeshikomiOf(eigyoDate);
 		// merge 消込セット
@@ -196,9 +200,9 @@ public class U08G003Controller extends ControllerBase {
 			u.setVersion(v);
 		});
 		// validate
-		nyukinKeshikomiValidateService.validate(nyukinKeshikomi);
+		nyukinKeshikomiValidator.validate(nyukinKeshikomi);
 		// save
-		nyukinKeshikomiCrudService.save(eigyoDate, nyukinKeshikomi);
+		nyukinKeshikomiPersistence.save(eigyoDate, nyukinKeshikomi);
 		// return model
 		form.setSuccessMessage("更新成功");
 		model.addForm(form);
@@ -208,7 +212,7 @@ public class U08G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u08g003/cancelForm", method = RequestMethod.POST)
 	public ResponseEntity<?> cancelForm(@ModelAttribute U08G003Form form, ModelAndViewExtended model) {
 		// get 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		// 本日営業日のみ削除(キャンセル対象ではないため)
 		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
 		nyukinKeshikomi.removeKeshikomiOf(eigyoDate);
@@ -229,12 +233,12 @@ public class U08G003Controller extends ControllerBase {
 			return m.getKeshikomiId();
 		}).collect(Collectors.toSet());
 		// 入金消込
-		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiCrudService.getDomain(form.getNyukinId());
+		NyukinKeshikomi nyukinKeshikomi = nyukinKeshikomiQuery.getDomain(form.getNyukinId());
 		// OCC
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		nyukin.setVersion(form.getVersion());
 		// 消込
-		nyukinKeshikomiCrudService.cancel(nyukin, target);
+		nyukinKeshikomiPersistence.cancel(nyukin, target);
 		// return model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
@@ -249,7 +253,7 @@ public class U08G003Controller extends ControllerBase {
 	 */
 	private NyukinKeshikomi buildNyukinKeshikomiFromForm(U08G003Form form) {
 		// 入金
-		Nyukin nyukin = nyukinCrudService.getDomain(form.getNyukinId());
+		Nyukin nyukin = nyukinCrud.getDomain(form.getNyukinId());
 		// OCC
 		nyukin.setVersion(form.getVersion());
 		// 部署
@@ -260,7 +264,7 @@ public class U08G003Controller extends ControllerBase {
 		Set<Keshikomi> keshikomiSet = form.getMeisai().stream().map(m -> {
 			// 売掛
 			String urikakeId = m.getUrikakeId();
-			Urikake urikake = urikakeCrudService.getDomainById(urikakeId);
+			Urikake urikake = urikakeCrud.getDomainById(urikakeId);
 			// FIXME
 			String id = m.getKeshikomiId();
 			String keshikomiId = !StringUtils.isEmpty(id) ? id : "dummy_" + UUID.randomUUID().toString();
@@ -309,7 +313,7 @@ public class U08G003Controller extends ControllerBase {
 			Urikake urikake = keshikomi.getUrikake();
 			ret.put("urikakeKingaku", urikake.getKingaku().intValue());
 			// 売掛消込
-			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiCrudService.getDomain(urikake.getRecordId());
+			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiPersistence.get(urikake.getRecordId());
 			AmountOfMoney otherNyukinKeshikomiKingaku = urikakeKeshikomi.getKeshikomiKigakuExcluding(nyukin);
 			ret.put("otherNyukinKeshikomiKingaku", otherNyukinKeshikomiKingaku.intValue());
 			AmountOfMoney keshikomiKingaku = urikakeKeshikomi.getKeshikomiKingakuOf(nyukin);
