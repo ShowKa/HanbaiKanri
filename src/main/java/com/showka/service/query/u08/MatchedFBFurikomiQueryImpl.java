@@ -45,7 +45,7 @@ public class MatchedFBFurikomiQueryImpl implements MatchedFBFurikomiQuery {
 	public List<MatchedFBFurikomi> get(TheDate transmissionDate) {
 		Result<Record> result = this.query(transmissionDate);
 		// build
-		List<MatchedFBFurikomi> matchedFbFurikomiList = result.parallelStream().map(r -> {
+		List<MatchedFBFurikomi> matchedFbFurikomiList = result.stream().map(r -> {
 			MatchedFBFurikomiBuilder b = new MatchedFBFurikomiBuilder();
 			// FB振込ID
 			String id = r.get(fb.record_id);

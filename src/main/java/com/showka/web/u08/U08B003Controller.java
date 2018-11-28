@@ -115,14 +115,14 @@ public class U08B003Controller extends ControllerBase {
 		// マッチングデータ抽出
 		FBFurikomiMatchingResult result = query.getMatched(busho, date);
 		// マッチング成功
-		result.getMatchedNormally().parallelStream().forEach(m -> {
+		result.getMatchedNormally().forEach(m -> {
 			persistence.save(m.getFbFurikomiId(), m.getFuriwakeId());
 		});
 		// マッチングエラー
-		result.getMultipleMathed().stream().forEach(fbFurikomiId -> {
+		result.getMultipleMathed().forEach(fbFurikomiId -> {
 			errorPersistence.save(fbFurikomiId, FurikomiMatchintErrorCause.複数マッチング);
 		});
-		result.getRepetition().stream().forEach(fbFurikomiId -> {
+		result.getRepetition().forEach(fbFurikomiId -> {
 			errorPersistence.save(fbFurikomiId, FurikomiMatchintErrorCause.同一振込);
 		});
 		// return

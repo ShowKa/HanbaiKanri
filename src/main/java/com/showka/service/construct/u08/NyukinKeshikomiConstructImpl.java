@@ -69,7 +69,7 @@ public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 		// 売掛=引数.マッチング済FB振込:-振分:-請求-:請求明細:-売掛
 		Seikyu seikyu = matchedFBFurikomi.getSeikyu();
 		List<SeikyuMeisai> seikyuMeisai = seikyu.getSeikyuMeisai();
-		Set<Keshikomi> keshikomiSet = seikyuMeisai.parallelStream().map(m -> {
+		Set<Keshikomi> keshikomiSet = seikyuMeisai.stream().map(m -> {
 			// 売掛金残高=売掛仕様サービス#残高取得
 			Urikake urikake = m.getUrikake();
 			UrikakeKeshikomi urikakeKeshikomi = urikakeKeshikomiQuery.get(urikake.getRecordId());

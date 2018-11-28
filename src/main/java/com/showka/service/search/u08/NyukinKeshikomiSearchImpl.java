@@ -102,7 +102,7 @@ public class NyukinKeshikomiSearchImpl implements NyukinKeshikomiSearch {
 		}
 		// 入金方法区分
 		if (hohoList.size() > 0) {
-			List<String> codeList = hohoList.parallelStream().map(NyukinHohoKubun::getCode).collect(
+			List<String> codeList = hohoList.stream().map(NyukinHohoKubun::getCode).collect(
 					Collectors.toList());
 			where = where.and(nk.nyukin_hoho_kubun.in(codeList));
 		}

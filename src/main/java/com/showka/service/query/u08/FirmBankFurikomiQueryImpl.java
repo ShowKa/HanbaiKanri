@@ -60,7 +60,7 @@ public class FirmBankFurikomiQueryImpl implements FirmBankFurikomiQuery {
 		// 検索
 		Result<Record> result = this.searchOf(busho, date);
 		// マッチング
-		List<MatchedPair> matched = result.parallelStream().map(r -> {
+		List<MatchedPair> matched = result.stream().map(r -> {
 			String fbFurikomiId = r.getValue(fb.record_id);
 			String furiwakeId = r.getValue(fw.record_id);
 			String seikyuId = r.getValue(ts.record_id);
@@ -97,7 +97,7 @@ public class FirmBankFurikomiQueryImpl implements FirmBankFurikomiQuery {
 		// 問い合わせ実施
 		Result<T_FIRM_BANK_FURIKOMI_RECORD> result = query.fetchInto(fb);
 		// FB振込のIDを抽出
-		return result.parallelStream().map(r -> {
+		return result.stream().map(r -> {
 			return r.getRecordId();
 		}).collect(Collectors.toList());
 	}

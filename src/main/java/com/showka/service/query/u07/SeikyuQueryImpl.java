@@ -116,11 +116,11 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 		// 請求明細取得
 		List<TSeikyuMeisai> result = this.getHistoryEntitiesOf(urikakeId);
 		// 請求IDのみ抽出（重複排除）
-		Set<String> seikyuIdSet = result.parallelStream().map(r -> {
+		Set<String> seikyuIdSet = result.stream().map(r -> {
 			return r.getSeikyuId();
 		}).collect(Collectors.toSet());
 		// 請求リスト
-		List<Seikyu> seikyuList = seikyuIdSet.parallelStream().map(id -> {
+		List<Seikyu> seikyuList = seikyuIdSet.stream().map(id -> {
 			return seikyuCrud.getDomain(id);
 		}).collect(Collectors.toList());
 		return seikyuList;
@@ -151,7 +151,7 @@ public class SeikyuQueryImpl implements SeikyuQuery {
 		// 請求履歴
 		List<Seikyu> seikyuList = this.getHistory(urikakeId);
 		// 最新のものを抽出。
-		Optional<Seikyu> newest = seikyuList.parallelStream().max((one, two) -> {
+		Optional<Seikyu> newest = seikyuList.stream().max((one, two) -> {
 			return one.getSeikyuDate().compareTo(two.getSeikyuDate());
 		});
 		return newest;
