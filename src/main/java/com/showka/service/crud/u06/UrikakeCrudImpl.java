@@ -3,7 +3,6 @@ package com.showka.service.crud.u06;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.builder.UrikakeBuilder;
@@ -11,11 +10,10 @@ import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.entity.TUriagePK;
 import com.showka.entity.TUrikake;
-import com.showka.event.CrudEvent.EventType;
-import com.showka.event.u06.UrikakeCrudEvent;
 import com.showka.repository.i.TUrikakeRepository;
 import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.crud.u06.i.UrikakeCrud;
+import com.showka.system.triggerEvent.TriggerCrudEvent;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 
@@ -29,9 +27,10 @@ public class UrikakeCrudImpl implements UrikakeCrud {
 	private UriageCrud uriageCrud;
 
 	@Autowired
-	private ApplicationEventPublisher applicationEventPublisher;
+	private UrikakeCrud _this;
 
 	@Override
+	@TriggerCrudEvent
 	public void save(Urikake domain) {
 		String uriageId = domain.getUriageId();
 		Optional<TUrikake> _e = repo.findById(uriageId);
@@ -50,18 +49,12 @@ public class UrikakeCrudImpl implements UrikakeCrud {
 		domain.setRecordId(e.getRecordId());
 		// save 売掛
 		repo.save(e);
-		// trigger event
-		if (!_e.isPresent()) {
-			UrikakeCrudEvent event = new UrikakeCrudEvent(this, EventType.newRegister, domain);
-			applicationEventPublisher.publishEvent(event);
-		}
 	}
 
 	@Override
+	@TriggerCrudEvent
 	public void delete(Urikake domain) {
 		// trigger
-		UrikakeCrudEvent event = new UrikakeCrudEvent(this, EventType.beforeDelete, domain);
-		applicationEventPublisher.publishEvent(event);
 		String uriageId = domain.getUriageId();
 		Integer version = domain.getVersion();
 		// get entity
@@ -98,5 +91,15 @@ public class UrikakeCrudImpl implements UrikakeCrud {
 	public Urikake getDomainById(String urikakeId) {
 		TUrikake _u = repo.findByRecordId(urikakeId);
 		return this.getDomain(_u.getUriageId());
+	}
+
+	@Override
+	public void deleteIfExists(String uriageId, Integer version) {
+		if (this.exists(uriageId)) {
+			Urikake uriage = this.getDomain(uriageId);
+			// クラス内呼び出しでもAOPを有効にする裏技
+			uriage.setVersion(version);
+			_this.delete(uriage);
+		}
 	}
 }

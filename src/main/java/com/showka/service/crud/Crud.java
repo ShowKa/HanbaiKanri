@@ -39,34 +39,4 @@ public interface Crud<T extends DomainBase, P> {
 	 */
 	boolean exists(P pk);
 
-	/**
-	 * 存在する場合、削除する.
-	 * 
-	 * <pre>
-	 * 排他制御対象外.
-	 * </pre>
-	 * 
-	 * @param pk
-	 *            主キー
-	 */
-	default void deleteIfExists(P pk) {
-		if (exists(pk)) {
-			T domain = getDomain(pk);
-			delete(domain);
-		}
-	}
-
-	/**
-	 * 存在する場合、削除する.
-	 * 
-	 * @param pk
-	 *            主キー
-	 */
-	default void deleteIfExists(P pk, Integer version) {
-		if (exists(pk)) {
-			T domain = getDomain(pk);
-			domain.setVersion(version);
-			delete(domain);
-		}
-	}
 }

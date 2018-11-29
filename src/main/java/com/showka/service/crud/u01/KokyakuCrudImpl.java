@@ -31,10 +31,10 @@ public class KokyakuCrudImpl implements KokyakuCrud {
 	private MKokyakuRepository repo;
 
 	@Autowired
-	private NyukinKakeInfoCrud nyukinPersistence;
+	private NyukinKakeInfoCrud nyukinKakeInfoCrud;
 
 	@Autowired
-	private BushoCrud bushoService;
+	private BushoCrud bushoCrud;
 
 	/**
 	 * 顧客情報を登録する。
@@ -45,73 +45,67 @@ public class KokyakuCrudImpl implements KokyakuCrud {
 	 * <pre>
 	 */
 	@Override
-	public void save(Kokyaku domain) {
-
+	public void save(Kokyaku kokyaku) {
 		// entity
-		Optional<MKokyaku> entity = repo.findById(domain.getCode());
+		Optional<MKokyaku> entity = repo.findById(kokyaku.getCode());
 		MKokyaku e = entity.orElse(new MKokyaku());
-
 		// set columns
-		e.setCode(domain.getCode());
-		e.setName(domain.getName());
-		e.setAddress(domain.getAddress());
-		e.setKokyakuKubun(domain.getKokyakuKubun().getCode());
-		e.setHanbaiKubun(domain.getHanbaiKubun().getCode());
-		e.setShukanBushoId(domain.getShukanBusho().getRecordId());
-
+		e.setCode(kokyaku.getCode());
+		e.setName(kokyaku.getName());
+		e.setAddress(kokyaku.getAddress());
+		e.setKokyakuKubun(kokyaku.getKokyakuKubun().getCode());
+		e.setHanbaiKubun(kokyaku.getHanbaiKubun().getCode());
+		e.setShukanBushoId(kokyaku.getShukanBusho().getRecordId());
 		// set record_id & version
-		e.setRecordId(domain.getRecordId());
-		e.setVersion(domain.getVersion());
-
-		// 顧客save
+		String recordId = kokyaku.getRecordId();
+		e.setRecordId(recordId);
+		e.setVersion(kokyaku.getVersion());
+		// save 顧客
 		repo.save(e);
-
-		// 入金掛情報save
-		if (domain.getHanbaiKubun() == HanbaiKubun.掛売) {
-			NyukinKakeInfo nyukinKakeInfo = domain.getNyukinKakeInfo().get();
-			nyukinPersistence.save(nyukinKakeInfo);
+		// save 入金掛情報
+		Optional<NyukinKakeInfo> _nk = kokyaku.getNyukinKakeInfo();
+		if (_nk.isPresent()) {
+			NyukinKakeInfo nyukinKakeInfo = _nk.get();
+			nyukinKakeInfoCrud.save(nyukinKakeInfo);
 		} else {
-			nyukinPersistence.deleteIfExists(domain.getRecordId());
+			nyukinKakeInfoCrud.deleteIfExists(recordId);
 		}
 	}
 
 	@Override
-	public void delete(Kokyaku domain) {
-		String code = domain.getCode();
-		Integer version = domain.getVersion();
+	public void delete(Kokyaku kokyaku) {
+		// delete 入金掛情報
+		nyukinKakeInfoCrud.deleteIfExists(kokyaku.getRecordId());
 		// entity
-		MKokyaku targetKokyaku = repo.getOne(code);
-		// 入金掛情報delete
-		nyukinPersistence.deleteIfExists(domain.getRecordId());
-		// 顧客を削除
-		targetKokyaku.setCode(code);
-		targetKokyaku.setVersion(version);
-		repo.delete(targetKokyaku);
+		MKokyaku e = repo.getOne(kokyaku.getCode());
+		// OCC
+		e.setVersion(kokyaku.getVersion());
+		// delete
+		repo.delete(e);
 	}
 
 	@Override
-	public Kokyaku getDomain(String pk) {
-		MKokyaku kokyakuEntity = repo.getOne(pk);
-		HanbaiKubun hanbaiKubun = Kubun.get(HanbaiKubun.class, kokyakuEntity.getHanbaiKubun());
-		String kokyakuRecordId = kokyakuEntity.getRecordId();
-
+	public Kokyaku getDomain(String code) {
+		MKokyaku e = repo.getOne(code);
+		// builder
 		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(kokyakuEntity.getCode());
-		builder.withAddress(kokyakuEntity.getAddress());
-		builder.withName(kokyakuEntity.getName());
-		builder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, kokyakuEntity.getKokyakuKubun()));
+		builder.withCode(e.getCode());
+		builder.withAddress(e.getAddress());
+		builder.withName(e.getName());
+		builder.withKokyakuKubun(Kubun.get(KokyakuKubun.class, e.getKokyakuKubun()));
+		// 販売区分
+		HanbaiKubun hanbaiKubun = Kubun.get(HanbaiKubun.class, e.getHanbaiKubun());
 		builder.withHanbaiKubun(hanbaiKubun);
-
-		Busho buhoDomain = bushoService.getDomain(kokyakuEntity.getShukanBusho().getCode());
+		// 部署
+		Busho buhoDomain = bushoCrud.getDomain(e.getShukanBusho().getCode());
 		builder.withShukanBusho(buhoDomain);
-
+		String recordId = e.getRecordId();
 		if (hanbaiKubun == HanbaiKubun.掛売) {
-			NyukinKakeInfo nyukinKakeInfoDomain = nyukinPersistence.getDomain(kokyakuRecordId);
+			NyukinKakeInfo nyukinKakeInfoDomain = nyukinKakeInfoCrud.getDomain(recordId);
 			builder.withNyukinKakeInfo(Optional.of(nyukinKakeInfoDomain));
 		}
-		builder.withRecordId(kokyakuRecordId);
-		builder.withVersion(kokyakuEntity.getVersion());
-
+		builder.withRecordId(recordId);
+		builder.withVersion(e.getVersion());
 		return builder.build();
 	}
 

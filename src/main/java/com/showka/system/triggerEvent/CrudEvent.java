@@ -1,4 +1,4 @@
-package com.showka.event;
+package com.showka.system.triggerEvent;
 
 import org.springframework.context.ApplicationEvent;
 
