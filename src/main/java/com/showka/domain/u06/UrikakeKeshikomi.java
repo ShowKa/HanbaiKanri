@@ -82,6 +82,15 @@ public class UrikakeKeshikomi extends DomainAggregation {
 		return getKeshikomiKingakuGokei().subtract(this.getKeshikomiKingakuOf(nyukin));
 	}
 
+	/**
+	 * 消込有無.
+	 * 
+	 * @return 消込ありの場合true
+	 */
+	public boolean hasKeshikomi() {
+		return this.keshikomiSet.size() > 0;
+	}
+
 	// override
 	@Override
 	public void validate() throws SystemException {
