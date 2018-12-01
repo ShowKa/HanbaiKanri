@@ -39,6 +39,26 @@ public class Urikake extends DomainBase {
 	}
 
 	/**
+	 * キャンセルにする.
+	 * 
+	 * <pre>
+	 * 金額=0円
+	 * </pre>
+	 */
+	public void toCanceld() {
+		this.kingaku = new AmountOfMoney(0);
+	}
+
+	/**
+	 * キャンセル判定.
+	 * 
+	 * @return 金額=0円ならtrue
+	 */
+	public boolean isCanceld() {
+		return this.kingaku.equals(0);
+	}
+
+	/**
 	 * 売上ID取得.
 	 * 
 	 * @return 売上ID

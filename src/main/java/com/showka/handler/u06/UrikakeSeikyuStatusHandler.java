@@ -35,6 +35,16 @@ public class UrikakeSeikyuStatusHandler {
 		}
 
 		/**
+		 * 売掛キャンセル時、請求状態をすべて削除する。
+		 */
+		@Override
+		public void afterUpdate(Urikake urikake) {
+			if (urikake.isCanceld()) {
+				urikakeSeikyuStatusPersistence.delete(urikake.getRecordId());
+			}
+		}
+
+		/**
 		 * 売掛削除時、請求状態をすべて削除する。
 		 */
 		@Override

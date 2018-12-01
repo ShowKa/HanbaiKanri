@@ -1,5 +1,7 @@
 package com.showka.service.persistence.u06.i;
 
+import com.showka.domain.u06.Urikake;
+
 public interface UrikakePersistence {
 
 	/**
@@ -15,6 +17,19 @@ public interface UrikakePersistence {
 	 * @param version
 	 *            バージョン for OCC
 	 */
+	// 引数は売掛型にすべき....
 	void revert(String uriageId, Integer version);
 
+	/**
+	 * 売掛をキャンセル.
+	 * 
+	 * <pre>
+	 * 下記の通り更新.
+	 * 売掛金 = 0円
+	 * </pre>
+	 * 
+	 * @param urikake
+	 *            売掛
+	 */
+	void cancel(Urikake urikake);
 }
