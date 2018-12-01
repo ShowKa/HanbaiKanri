@@ -25,6 +25,7 @@ import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageMeisai;
 import com.showka.domain.u05.UriageRireki;
 import com.showka.domain.u06.Urikake;
+import com.showka.domain.u07.Seikyu;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.kubun.i.Kubun;
@@ -39,6 +40,7 @@ import com.showka.service.persistence.u06.i.UrikakePersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.query.u05.i.UriageKeijoQuery;
 import com.showka.service.query.u05.i.UriageRirekiQuery;
+import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.service.validator.u05.i.UriageValidator;
 import com.showka.system.exception.NotExistException;
@@ -90,6 +92,9 @@ public class U05G002Controller extends ControllerBase {
 
 	@Autowired
 	private UrikakePersistence urikakePersistence;
+
+	@Autowired
+	private SeikyuQuery seikyuQuery;
 
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
@@ -182,6 +187,11 @@ public class U05G002Controller extends ControllerBase {
 		if (exists) {
 			Urikake urikake = urikakeCrud.getDomain(uriageId);
 			form.setUrikakeVersion(urikake.getVersion());
+			// 請求済み判定
+			Optional<Seikyu> _seikyu = seikyuQuery.getNewest(urikake.getRecordId());
+			if (_seikyu.isPresent()) {
+				model.addObject("isSeikyuZumi", true);
+			}
 		}
 
 		// set model
@@ -244,8 +254,10 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrud.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
-				m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai()
+				.stream()
+				.filter(m -> m.getMeisaiNumber() == null)
+				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -423,8 +435,13 @@ public class U05G002Controller extends ControllerBase {
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		// delete 商品移動
 		shohinIdoUriagePersistence.delete(pk);
-		// delete 売掛
-		urikakeCrud.deleteIfExists(form.getRecordId(), form.getUrikakeVersion());
+		// cancel 売掛
+		String uriageId = form.getRecordId();
+		if (urikakeCrud.exists(uriageId)) {
+			Urikake urikake = urikakeCrud.getDomain(uriageId);
+			urikake.setVersion(form.getUrikakeVersion());
+			urikakePersistence.cancel(urikake);
+		}
 		// cancel
 		uriageValidator.validateForCancel(pk);
 		uriagePersistence.cancel(pk, form.getVersion());

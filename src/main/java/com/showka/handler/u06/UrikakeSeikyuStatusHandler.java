@@ -31,7 +31,17 @@ public class UrikakeSeikyuStatusHandler {
 		 */
 		@Override
 		public void afterNewRegister(Urikake urikake) {
-			urikakeSeikyuStatusPersistence.toNotYet(urikake.getUriageId());
+			urikakeSeikyuStatusPersistence.toNotYet(urikake.getRecordId());
+		}
+
+		/**
+		 * 売掛キャンセル時、請求状態をすべて削除する。
+		 */
+		@Override
+		public void afterUpdate(Urikake urikake) {
+			if (urikake.isCanceld()) {
+				urikakeSeikyuStatusPersistence.delete(urikake.getRecordId());
+			}
 		}
 
 		/**
@@ -39,7 +49,7 @@ public class UrikakeSeikyuStatusHandler {
 		 */
 		@Override
 		public void beforeDelete(Urikake urikake) {
-			urikakeSeikyuStatusPersistence.delete(urikake.getUriageId());
+			urikakeSeikyuStatusPersistence.delete(urikake.getRecordId());
 		}
 	}
 

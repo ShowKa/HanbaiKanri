@@ -45,4 +45,12 @@ public class UrikakePersistenceImpl implements UrikakePersistence {
 			urikakeCrud.save(urikake);
 		}
 	}
+
+	@Override
+	public void cancel(Urikake urikake) {
+		// キャンセル
+		urikake.toCanceld();
+		// save
+		urikakeCrud.save(urikake);
+	}
 }

@@ -188,8 +188,12 @@ function($scope, $http, denpyoService, common, meisaiService) {
 		});
 	};
 	// 更新画面へ
-	$scope.updateForm = function() {
-		if(!!$scope.isKeijoZumi == true) {
+	$scope.updateForm = function() {	
+		if(!!$scope.isSeikyuZumi == true) {
+			if(!confirm("売上伝票は請求済みです。変更を行いますか？")) {
+				return;
+			}
+		} else if(!!$scope.isKeijoZumi == true) {
 			if(!confirm("売上伝票は計上済みです。変更を行いますか？")) {
 				return;
 			}
@@ -208,6 +212,15 @@ function($scope, $http, denpyoService, common, meisaiService) {
 	};
 	// キャンセル
 	$scope.cancel = function() {
+		if(!!$scope.isSeikyuZumi == true) {
+			if(!confirm("売上伝票は請求済みです。キャンセルを行いますか？（一度キャンセルを行うと、以降更新はできません。）")) {
+				return;
+			}
+		} else {
+			if(!confirm("キャンセルを行いますか？（一度キャンセルを行うと、以降更新はできません。）")) {
+				return;
+			}
+		}
 		_.crud({
 			url : "/u05g002/cancel",
 			formId : "uriageDenpyo",

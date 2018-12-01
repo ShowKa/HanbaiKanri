@@ -153,13 +153,20 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							type="hidden"
 							name="recordId"
 							th:value="${form.recordId}" />
+						<!-- 計上済み -->
 						<input
 							type="checkbox"
 							th:value="${isKeijoZumi}"
 							ng-hide="true"
 							ng-model="isKeijoZumi"
 							ng-init-from-value/>
-
+						<!-- 請求済み -->
+						<input
+							type="checkbox"
+							th:value="${isSeikyuZumi}"
+							ng-hide="true"
+							ng-model="isSeikyuZumi"
+							ng-init-from-value/>
 						<h4>明細</h4>
 
 						<button
