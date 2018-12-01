@@ -21,7 +21,6 @@ import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.repository.i.MNyukinKakeInfoRepository;
-import com.showka.service.crud.u01.KokyakuCrudImpl;
 import com.showka.service.crud.z00.i.BushoCrud;
 
 /**
@@ -174,11 +173,6 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 		final Integer version = 0;
 		final String record_id = "KK03";
 
-		// build nyukinKakeInfo domain
-		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
-		NyukinKakeInfo nyukinDomain = nyukinBuilder.build();
-
 		// get busho domain
 		Busho bushoDomain = bushoService.getDomain(bushoId);
 
@@ -190,7 +184,7 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 		builder.withKokyakuKubun(kokyakuKubun);
 		builder.withHanbaiKubun(hanbaiKubun);
 		builder.withShukanBusho(bushoDomain);
-		builder.withNyukinKakeInfo(nyukinDomain);
+		builder.withNyukinKakeInfo(Optional.empty());
 		builder.withVersion(version);
 		builder.withRecordId(record_id);
 		Kokyaku domain = builder.build();

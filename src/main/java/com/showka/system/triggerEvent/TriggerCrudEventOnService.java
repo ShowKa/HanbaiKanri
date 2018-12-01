@@ -11,9 +11,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import com.showka.domain.DomainBase;
-import com.showka.event.CrudEvent;
-import com.showka.event.CrudEvent.EventType;
 import com.showka.system.exception.SystemException;
+import com.showka.system.triggerEvent.CrudEvent.EventType;
 
 @Aspect
 @Component
@@ -23,27 +22,28 @@ public class TriggerCrudEventOnService {
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Around("execution(* com.showka.service.crud.Crud+.save(..)) && @annotation(triggerCrudEvent) && args(domain)")
-	public Object triggerSaveEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent, DomainBase domain)
-			throws Throwable {
+	public <T extends DomainBase> Object triggerSaveEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent,
+			T domain) throws Throwable {
 		// register or update
 		boolean doRegister = domain.getVersion() == null ? true : false;
 		// get constructor for event
-		Class<?> eventClass = triggerCrudEvent.event();
-		Constructor<?> constructor = this.getConstructor(eventClass);
+		Class<?> eventClass = CrudEventClassProxy.get(domain.getClass());
+		@SuppressWarnings("unchecked")
+		Constructor<CrudEvent<T>> constructor = this.getConstructor((Class<CrudEvent<T>>) eventClass);
 		// get event instance
 		Object target = pjp.getTarget();
-		CrudEvent<?> beforeSaveEvent = this.getEventInstance(constructor, target, EventType.beforeSave, domain);
+		CrudEvent<T> beforeSaveEvent = this.getEventInstance(constructor, target, EventType.beforeSave, domain);
 		EventType _beforeRegOrUpdate = doRegister ? EventType.beforeNewRegister : EventType.beforeUpdate;
-		CrudEvent<?> beforeRegOrUpdateEvent = this.getEventInstance(constructor, target, _beforeRegOrUpdate, domain);
+		CrudEvent<T> beforeRegOrUpdateEvent = this.getEventInstance(constructor, target, _beforeRegOrUpdate, domain);
 		// publish event
 		applicationEventPublisher.publishEvent(beforeSaveEvent);
 		applicationEventPublisher.publishEvent(beforeRegOrUpdateEvent);
 		// do
 		Object ret = pjp.proceed();
 		// get event instance
-		CrudEvent<?> saveEvent = this.getEventInstance(constructor, target, EventType.save, domain);
+		CrudEvent<T> saveEvent = this.getEventInstance(constructor, target, EventType.save, domain);
 		EventType _regOrUpdate = doRegister ? EventType.newRegister : EventType.update;
-		CrudEvent<?> regOrUpdateEvent = this.getEventInstance(constructor, target, _regOrUpdate, domain);
+		CrudEvent<T> regOrUpdateEvent = this.getEventInstance(constructor, target, _regOrUpdate, domain);
 		// publish event
 		applicationEventPublisher.publishEvent(saveEvent);
 		applicationEventPublisher.publishEvent(regOrUpdateEvent);
@@ -52,31 +52,33 @@ public class TriggerCrudEventOnService {
 	}
 
 	@Around("execution(* com.showka.service.crud.Crud+.delete(..)) && @annotation(triggerCrudEvent) && args(domain)")
-	public Object triggerDeleteEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent, DomainBase domain)
-			throws Throwable {
+	public <T extends DomainBase> Object triggerDeleteEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent,
+			T domain) throws Throwable {
 		// get constructor for event
-		Class<?> eventClass = triggerCrudEvent.event();
-		Constructor<?> constructor = this.getConstructor(eventClass);
+		Class<?> eventClass = CrudEventClassProxy.get(domain.getClass());
+		@SuppressWarnings("unchecked")
+		Constructor<CrudEvent<T>> constructor = this.getConstructor((Class<CrudEvent<T>>) eventClass);
 		// get event instance
 		Object target = pjp.getTarget();
-		CrudEvent<?> beforeDeleteEvent = this.getEventInstance(constructor, target, EventType.beforeDelete, domain);
+		CrudEvent<T> beforeDeleteEvent = this.getEventInstance(constructor, target, EventType.beforeDelete, domain);
 		// publish event
 		applicationEventPublisher.publishEvent(beforeDeleteEvent);
 		// do
 		Object ret = pjp.proceed();
 		// get event instance
-		CrudEvent<?> deleteEvent = this.getEventInstance(constructor, target, EventType.delete, domain);
+		CrudEvent<T> deleteEvent = this.getEventInstance(constructor, target, EventType.delete, domain);
 		// publish event
 		applicationEventPublisher.publishEvent(deleteEvent);
 		// return
 		return ret;
 	}
 
-	private Constructor<?> getConstructor(Class<?> eventClass) {
+	private <T extends DomainBase> Constructor<CrudEvent<T>> getConstructor(Class<CrudEvent<T>> eventClass) {
 		if (!CrudEvent.class.isAssignableFrom(eventClass)) {
 			throw new SystemException("@TriggerCrudEventにはCrudEventのサブクラスを設定してください。 : " + eventClass);
 		}
-		Constructor<?>[] constuctor = eventClass.getConstructors();
+		@SuppressWarnings("unchecked")
+		Constructor<CrudEvent<T>>[] constuctor = (Constructor<CrudEvent<T>>[]) eventClass.getConstructors();
 		if (constuctor.length == 0) {
 			throw new SystemException("CrudEventにコンストラクタが設定されていません。 : " + eventClass);
 		} else if (constuctor.length > 1) {
@@ -85,11 +87,11 @@ public class TriggerCrudEventOnService {
 		return constuctor[0];
 	}
 
-	private CrudEvent<?> getEventInstance(Constructor<?> constructor, Object target, EventType type,
-			DomainBase domain) {
-		CrudEvent<?> event;
+	private <T extends DomainBase> CrudEvent<T> getEventInstance(Constructor<CrudEvent<T>> constructor, Object target,
+			EventType type, T domain) {
+		CrudEvent<T> event;
 		try {
-			event = (CrudEvent<?>) constructor.newInstance(target, type, domain);
+			event = constructor.newInstance(target, type, domain);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			throw new SystemException("CrudEventにコンストラクタの設定が誤っています。 ", e);

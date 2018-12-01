@@ -15,6 +15,7 @@ import com.showka.repository.i.TKeshikomiRepository;
 import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.service.crud.u08.i.KeshikomiCrud;
 import com.showka.service.crud.u08.i.NyukinCrud;
+import com.showka.system.triggerEvent.TriggerCrudEvent;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
@@ -32,6 +33,7 @@ public class KeshikomiCrudImpl implements KeshikomiCrud {
 	private UrikakeCrud urikakeCrud;
 
 	@Override
+	@TriggerCrudEvent
 	public void save(Keshikomi keshikomi) {
 		// entity
 		Optional<TKeshikomi> _e = repo.findById(keshikomi.getRecordId());
@@ -54,6 +56,7 @@ public class KeshikomiCrudImpl implements KeshikomiCrud {
 	}
 
 	@Override
+	@TriggerCrudEvent
 	public void delete(Keshikomi domain) {
 		TKeshikomi e = repo.getOne(domain.getRecordId());
 		e.setVersion(domain.getVersion());

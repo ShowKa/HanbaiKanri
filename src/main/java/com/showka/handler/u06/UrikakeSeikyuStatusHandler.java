@@ -7,10 +7,10 @@ import com.showka.domain.u06.Urikake;
 import com.showka.domain.u06.UrikakeKeshikomi;
 import com.showka.domain.u07.Seikyu;
 import com.showka.domain.u08.Keshikomi;
-import com.showka.handler.CrudEventListener;
 import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.service.persistence.u06.i.UrikakeSeikyuStatusPersistence;
 import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
+import com.showka.system.triggerEvent.CrudEventListener;
 
 @Component
 public class UrikakeSeikyuStatusHandler {
@@ -81,7 +81,6 @@ public class UrikakeSeikyuStatusHandler {
 		 * 
 		 * <pre>
 		 * 売掛の消込完了なら、完済とする。
-		 * 未完了なら、そのまま。
 		 * </pre>
 		 */
 		@Override

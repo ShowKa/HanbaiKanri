@@ -11,7 +11,4 @@ import java.lang.annotation.Target;
 @Documented
 public @interface TriggerCrudEvent {
 
-	/** event type */
-	Class<?> event();
-
 }

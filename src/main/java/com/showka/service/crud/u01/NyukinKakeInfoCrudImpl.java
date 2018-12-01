@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.domain.u01.NyukinKakeInfo;
@@ -27,24 +26,23 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 	@Autowired
 	private MNyukinKakeInfoRepository repo;
 
+	@Autowired
+	private NyukinKakeInfoCrud _this;
+
 	@Override
 	public void save(NyukinKakeInfo domain) {
-
 		// entity
 		Optional<MNyukinKakeInfo> entity = repo.findById(domain.getKokyakuId());
 		MNyukinKakeInfo e = entity.orElse(new MNyukinKakeInfo());
-
 		// set columns
 		e.setKokyakuId(domain.getKokyakuId());
 		e.setNyukinDate(domain.getNyukinDate());
 		e.setNyukinHohoKubun(domain.getNyukinHohoKubun().getCode());
 		e.setNyukinTsukiKubun(domain.getNyukinTsukiKubun().getCode());
 		e.setShimebi(domain.getShimeDate());
-
 		// set record_id & version
 		e.setRecordId(domain.getRecordId());
 		e.setVersion(domain.getVersion());
-
 		// save
 		repo.save(e);
 	}
@@ -60,11 +58,9 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 	}
 
 	@Override
-	@Transactional
 	public NyukinKakeInfo getDomain(String kokyakuId) {
 		// get entity
 		MNyukinKakeInfo e = repo.getOne(kokyakuId);
-
 		// set domain builder
 		NyukinKakeInfoBuilder b = new NyukinKakeInfoBuilder();
 		b.withKokyakuId(e.getKokyakuId());
@@ -74,7 +70,6 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 		b.withRecordId(e.getRecordId());
 		b.withShimeDate(e.getShimebi());
 		b.withVersion(e.getVersion());
-
 		// build domain
 		return b.build();
 	}
@@ -82,5 +77,14 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 	@Override
 	public boolean exists(String kokyakuId) {
 		return repo.existsById(kokyakuId);
+	}
+
+	@Override
+	public void deleteIfExists(String kokyakuId) {
+		if (this.exists(kokyakuId)) {
+			NyukinKakeInfo domain = this.getDomain(kokyakuId);
+			// クラス内呼び出してもAOPを有効化する裏技
+			_this.delete(domain);
+		}
 	}
 }

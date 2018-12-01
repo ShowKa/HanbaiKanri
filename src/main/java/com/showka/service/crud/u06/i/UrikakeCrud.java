@@ -27,4 +27,14 @@ public interface UrikakeCrud extends Crud<Urikake, String> {
 	 * @return 売掛
 	 */
 	Urikake getDomainById(String urikakeId);
+
+	/**
+	 * 存在すれば削除 .
+	 * 
+	 * @param uriageId
+	 *            売上ID
+	 * @param version
+	 *            排他制御バージョン
+	 */
+	void deleteIfExists(String uriageId, Integer version);
 }
