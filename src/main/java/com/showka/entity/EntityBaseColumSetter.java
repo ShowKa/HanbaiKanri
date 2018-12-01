@@ -50,7 +50,7 @@ public class EntityBaseColumSetter {
 		// insert and refresh entity => fetch all columns
 		Session session = this.getSession();
 		session.flush();
-		session.refresh(entity);
+		// session.refresh(entity);
 		return ret;
 	}
 
