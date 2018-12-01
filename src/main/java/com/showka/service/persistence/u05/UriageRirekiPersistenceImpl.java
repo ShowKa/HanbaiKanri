@@ -41,7 +41,7 @@ public class UriageRirekiPersistenceImpl implements UriageRirekiPersistence {
 		String recordId = _e.isPresent() ? _e.get().getRecordId() : UUID.randomUUID().toString();
 		e.setRecordId(recordId);
 		// save
-		repo.saveAndFlush(e);
+		repo.save(e);
 		// 明細
 		uriageRirekiMeisaiPersistence.overrideList(recordId, domain.getUriageMeisai());
 	}

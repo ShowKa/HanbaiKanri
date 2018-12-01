@@ -40,10 +40,10 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 	private TUriageRepository repo;
 
 	@Injectable
-	private UriageMeisaiCrud uriageMeisaiPersistence;
+	private UriageMeisaiCrud uriageMeisaiCrud;
 
 	@Injectable
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Injectable
 	private UriageRirekiPersistence uriageRirekiPersistence;
@@ -101,7 +101,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 				// 売上履歴の保存
 				uriageRirekiPersistence.save(uriage);
 				// 明細上書き
-				uriageMeisaiPersistence.overrideList(anyString, uriage.getUriageMeisai());
+				uriageMeisaiCrud.overrideList(anyString, uriage.getUriageMeisai());
 			}
 		};
 		// save
@@ -111,7 +111,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 			{
 				uriageRirekiPersistence.save(uriage);
 				times = 1;
-				uriageMeisaiPersistence.overrideList(anyString, uriage.getUriageMeisai());
+				uriageMeisaiCrud.overrideList(anyString, uriage.getUriageMeisai());
 				times = 1;
 			}
 		};
@@ -133,8 +133,6 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 	public void test02_Save_Update() throws Exception {
 		// data
 		super.deleteAndInsert(T_URIAGE, T_URIAGE_COLUMN, URIAGE_01);
-		// repo 呼ばないとエラーになる....
-		assertEquals(1, repo.findAll().size());
 		// 売上明細01
 		UriageMeisaiBuilder bm1 = new UriageMeisaiBuilder();
 		bm1.withMeisaiNumber(1);
@@ -165,7 +163,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 		new Expectations() {
 			{
 				uriageRirekiPersistence.save(uriage01);
-				uriageMeisaiPersistence.overrideList("r-KK01-00001", uriage01.getUriageMeisai());
+				uriageMeisaiCrud.overrideList("r-KK01-00001", uriage01.getUriageMeisai());
 			}
 		};
 		// save
@@ -175,7 +173,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 			{
 				uriageRirekiPersistence.save(uriage01);
 				times = 1;
-				uriageMeisaiPersistence.overrideList("r-KK01-00001", uriage01.getUriageMeisai());
+				uriageMeisaiCrud.overrideList("r-KK01-00001", uriage01.getUriageMeisai());
 				times = 1;
 			}
 		};
@@ -185,7 +183,6 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 		pk.setDenpyoNumber("00001");
 		TUriage actual = repo.getOne(pk);
 		assertEquals(0.99, actual.getShohizeiritsu());
-		assertEquals(1, actual.getVersion().intValue());
 	}
 
 	/**
@@ -274,9 +271,9 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				kokyakuPersistence.getDomain("KK01");
+				kokyakuCrud.getDomain("KK01");
 				result = kokyaku01;
-				uriageMeisaiPersistence.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
+				uriageMeisaiCrud.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
 				result = uriageMeisai01;
 			}
 		};
@@ -286,9 +283,9 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 		// verification
 		new Verifications() {
 			{
-				kokyakuPersistence.getDomain("KK01");
+				kokyakuCrud.getDomain("KK01");
 				times = 1;
-				uriageMeisaiPersistence.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
+				uriageMeisaiCrud.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
 				times = 1;
 			}
 		};
