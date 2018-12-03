@@ -5,8 +5,10 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -22,6 +24,15 @@ import lombok.Setter;
 @MappedSuperclass
 @Getter
 public abstract class EntityBase {
+
+	@Transient
+	@Getter(value = AccessLevel.PACKAGE)
+	private boolean isNew;
+
+	@PrePersist
+	public void setWhetherNew() {
+		this.isNew = true;
+	}
 
 	/**
 	 * version

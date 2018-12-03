@@ -1,6 +1,9 @@
 package com.showka.entity;
 
 import java.util.Date;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -19,8 +22,11 @@ public class EntityBaseColumSetter {
 	@Autowired
 	private Entry entry;
 
+	@Autowired
+	private EntityManager entityManager;
+
 	@Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.save*(..)) && args(entity)")
-	public Object checkSearchResultSize(ProceedingJoinPoint pjp, EntityBase entity) throws Throwable {
+	public Object setBaseColumn(ProceedingJoinPoint pjp, EntityBase entity) throws Throwable {
 		// param
 		String u = getUserId();
 		Date d = new Date();
@@ -46,6 +52,44 @@ public class EntityBaseColumSetter {
 		// Session session = this.getSession();
 		// session.flush();
 		// session.refresh(entity);
+		return ret;
+	}
+
+	@Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.getOne(..))")
+	public Object refreshWhenGet(ProceedingJoinPoint pjp) throws Throwable {
+		// do
+		Object ret = pjp.proceed();
+		if (!(ret instanceof EntityBase)) {
+			return ret;
+		}
+		EntityBase e = (EntityBase) ret;
+		if (e.isNew()) {
+			entityManager.flush();
+			entityManager.refresh(e);
+		}
+		return ret;
+	}
+
+	@Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.findById(..))")
+	public Object refreshWhenFindById(ProceedingJoinPoint pjp) throws Throwable {
+		// do
+		Object ret = pjp.proceed();
+		if (!(ret instanceof Optional)) {
+			return ret;
+		}
+		Optional<?> o = (Optional<?>) ret;
+		if (!o.isPresent()) {
+			return ret;
+		}
+		Object _e = o.get();
+		if (!(_e instanceof EntityBase)) {
+			return ret;
+		}
+		EntityBase e = (EntityBase) _e;
+		if (e.isNew()) {
+			entityManager.flush();
+			entityManager.refresh(e);
+		}
 		return ret;
 	}
 
