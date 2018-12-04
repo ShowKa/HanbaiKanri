@@ -36,10 +36,10 @@ public class UriageRirekiPersistenceImplTest extends PersistenceTestCase {
 	private RUriageRepository repo;
 
 	@Injectable
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Injectable
-	private UriageRirekiMeisaiCrud uriageRirekiMeisaiPersistence;
+	private UriageRirekiMeisaiCrud uriageRirekiMeisaiCrud;
 
 	/** 売上01. */
 	private static final Uriage rUriage01;
@@ -65,7 +65,7 @@ public class UriageRirekiPersistenceImplTest extends PersistenceTestCase {
 		// expect
 		new Expectations() {
 			{
-				uriageRirekiMeisaiPersistence.overrideList(anyString, (List<UriageMeisai>) any);
+				uriageRirekiMeisaiCrud.overrideList(anyString, (List<UriageMeisai>) any);
 			}
 		};
 		// do
@@ -73,16 +73,15 @@ public class UriageRirekiPersistenceImplTest extends PersistenceTestCase {
 		// verify
 		new Verifications() {
 			{
-				uriageRirekiMeisaiPersistence.overrideList(anyString, (List<UriageMeisai>) any);
+				uriageRirekiMeisaiCrud.overrideList(anyString, (List<UriageMeisai>) any);
 				times = 1;
 			}
 		};
 		// check
 		RUriagePK pk = new RUriagePK();
-		pk.setUriageId("r-KK01-00001");
+		pk.setUriageId("r-KK01-00001-20170820");
 		pk.setKeijoDate(new EigyoDate(2017, 8, 20).toDate());
 		RUriage actual = repo.getOne(pk);
-		assertEquals("r-KK01-00001", actual.getPk().getUriageId());
-		assertEquals(new EigyoDate(2017, 8, 20).toDate(), actual.getPk().getKeijoDate());
+		assertEquals(0.08, actual.getShohizeiritsu());
 	}
 }
