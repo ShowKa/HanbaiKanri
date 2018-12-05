@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.showka.common.PersistenceTestCase;
 import com.showka.repository.i.MKokyakuRepository;
 
-public class EntityManagementTest extends PersistenceTestCase {
+public class EntityManagementAOPTest extends PersistenceTestCase {
 
 	@Autowired
 	private MKokyakuRepository repo;

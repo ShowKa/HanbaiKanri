@@ -17,7 +17,7 @@ import com.showka.system.Entry;
 
 @Aspect
 @Component
-public class EntityBaseColumSetter {
+public class EntityManagementAOP {
 
 	@Autowired
 	private Entry entry;
