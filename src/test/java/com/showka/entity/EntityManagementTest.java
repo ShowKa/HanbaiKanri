@@ -36,12 +36,12 @@ public class EntityManagementTest extends PersistenceTestCase {
 
 	@Test
 	public void test_insert() {
-		// databse
+		// database
 		super.deleteAll(M_KOKYAKU);
 		// entity
 		Optional<MKokyaku> _e = repo.findById("KK99");
 		MKokyaku e = _e.orElse(new MKokyaku());
-		// coloumns...
+		// columns...
 		e.setAddress("address");
 		e.setCode("KK99");
 		e.setHanbaiKubun("01");
@@ -62,12 +62,12 @@ public class EntityManagementTest extends PersistenceTestCase {
 
 	@Test
 	public void test_update() {
-		// databse
+		// database
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01);
 		// entity
 		Optional<MKokyaku> _e = repo.findById("KK01");
 		MKokyaku e = _e.orElse(new MKokyaku());
-		// coloumns...
+		// columns...
 		e.setCode("KK01");
 		e.setAddress("address_updated");
 		e.setHanbaiKubun("01");
@@ -89,12 +89,12 @@ public class EntityManagementTest extends PersistenceTestCase {
 
 	@Test
 	public void test_version_when_insert() {
-		// databse
+		// database
 		super.deleteAll(M_KOKYAKU);
 		// entity
 		Optional<MKokyaku> _e = repo.findById("KK99");
 		MKokyaku e = _e.orElse(new MKokyaku());
-		// coloumns...
+		// columns...
 		e.setAddress("address");
 		e.setCode("KK99");
 		e.setHanbaiKubun("01");
@@ -116,12 +116,12 @@ public class EntityManagementTest extends PersistenceTestCase {
 
 	@Test
 	public void test_version_when_update() {
-		// databse
+		// database
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01);
 		// entity
 		Optional<MKokyaku> _e = repo.findById("KK01");
 		MKokyaku e = _e.orElse(new MKokyaku());
-		// coloumns...
+		// columns...
 		e.setCode("KK01");
 		e.setAddress("address_updated");
 		e.setHanbaiKubun("01");
@@ -143,12 +143,12 @@ public class EntityManagementTest extends PersistenceTestCase {
 
 	@Test
 	public void test_recordId_not_updatable() {
-		// databse
+		// database
 		super.deleteAndInsert(M_KOKYAKU, M_KOKYAKU_COLUMN, M_KOKYAKU_V01);
 		// entity
 		Optional<MKokyaku> _e = repo.findById("KK01");
 		MKokyaku e = _e.orElse(new MKokyaku());
-		// coloumns...
+		// columns...
 		e.setCode("KK01");
 		e.setAddress("address_updated");
 		e.setHanbaiKubun("01");
@@ -169,4 +169,30 @@ public class EntityManagementTest extends PersistenceTestCase {
 		assertEquals("r-KK01", e.getRecordId());
 	}
 
+	@Test
+	public void test_setNew() {
+		// database
+		super.deleteAll(M_KOKYAKU);
+		// entity
+		Optional<MKokyaku> _e = repo.findById("KK99");
+		MKokyaku e = _e.orElse(new MKokyaku());
+		// columns...
+		e.setAddress("address");
+		e.setCode("KK99");
+		e.setHanbaiKubun("01");
+		e.setKokyakuKubun("00");
+		e.setName("name");
+		e.setShukanBushoId("r-BS01");
+		// record id
+		e.setRecordId("r-KK99");
+		// check
+		assertFalse(e.isNew());
+		// save
+		repo.save(e);
+		// check
+		assertTrue(e.isNew());
+		// check
+		MKokyaku e2 = repo.getOne("KK99");
+		assertFalse(e2.isNew());
+	}
 }

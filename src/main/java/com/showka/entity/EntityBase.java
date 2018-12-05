@@ -30,8 +30,12 @@ public abstract class EntityBase {
 	private boolean isNew;
 
 	@PrePersist
-	public void setWhetherNew() {
+	void setNew() {
 		this.isNew = true;
+	}
+
+	void setNotNew() {
+		this.isNew = false;
 	}
 
 	/**
