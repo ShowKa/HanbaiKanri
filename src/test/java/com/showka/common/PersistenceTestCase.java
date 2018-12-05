@@ -45,7 +45,7 @@ public abstract class PersistenceTestCase extends TestCaseBase {
 	protected HttpSession session;
 
 	@Autowired
-	protected Entry e;
+	protected Entry entry;
 
 	@Before
 	public void setAuthToSecurityContext() {
@@ -63,8 +63,8 @@ public abstract class PersistenceTestCase extends TestCaseBase {
 
 	@Before
 	public void setEntry() {
-		e.setEntryClass(this.getClass().getSimpleName());
-		e.setMethod("test");
+		entry.setEntryClass(this.getClass().getSimpleName());
+		entry.setMethod("test");
 	}
 
 	/**

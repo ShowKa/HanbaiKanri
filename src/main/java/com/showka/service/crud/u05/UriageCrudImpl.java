@@ -35,10 +35,10 @@ public class UriageCrudImpl implements UriageCrud {
 	private TUriageRepository repo;
 
 	@Autowired
-	private UriageMeisaiCrud uriageMeisaiPersistence;
+	private UriageMeisaiCrud uriageMeisaiCrud;
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Autowired
 	private UriageRirekiPersistence uriageRirekiPersistence;
@@ -48,11 +48,11 @@ public class UriageCrudImpl implements UriageCrud {
 		// entity
 		TUriage e = getEntityFromDomain(domain);
 		// save
-		repo.saveAndFlush(e);
+		repo.save(e);
 		// save 履歴
 		uriageRirekiPersistence.save(domain);
 		// 明細更新
-		uriageMeisaiPersistence.overrideList(domain.getRecordId(), domain.getUriageMeisai());
+		uriageMeisaiCrud.overrideList(domain.getRecordId(), domain.getUriageMeisai());
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class UriageCrudImpl implements UriageCrud {
 			TUriageMeisaiPK mpk = new TUriageMeisaiPK();
 			mpk.setUriageId(uriageId);
 			mpk.setMeisaiNumber(meisai.getMeisaiNumber());
-			uriageMeisaiPersistence.delete(mpk, meisai.getVersion());
+			uriageMeisaiCrud.delete(mpk, meisai.getVersion());
 		});
 		// 売上削除
 		repo.deleteById(pk);
@@ -98,12 +98,12 @@ public class UriageCrudImpl implements UriageCrud {
 	 */
 	private Uriage getDomainFromEntity(TUriage e) {
 		// 顧客
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(e.getKokyaku().getCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(e.getKokyaku().getCode());
 		// 売上明細ドメイン
 		List<UriageMeisai> uriageMeisai = new ArrayList<UriageMeisai>();
 		List<TUriageMeisai> meisaiEntityList = e.getMeisai();
 		for (TUriageMeisai m : meisaiEntityList) {
-			uriageMeisai.add(uriageMeisaiPersistence.getDomain(m.getPk()));
+			uriageMeisai.add(uriageMeisaiCrud.getDomain(m.getPk()));
 		}
 		// sort
 		Collections.sort(uriageMeisai);
