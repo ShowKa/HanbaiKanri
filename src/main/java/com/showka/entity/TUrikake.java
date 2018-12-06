@@ -41,7 +41,7 @@ public class TUrikake extends EntityBase implements Serializable {
 	private Date nyukinYoteiDate;
 
 	/** 売上. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "uriage_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TUriage uriage;
 

@@ -45,7 +45,7 @@ public class TUriageMeisai extends EntityBase implements Serializable {
 	private Integer hanbaiTanka;
 
 	/** 商品 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "shohin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	@Setter(value = AccessLevel.NONE)
 	private MShohin shohin;

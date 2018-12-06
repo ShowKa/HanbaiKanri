@@ -30,7 +30,7 @@ public class MNyukinKakeInfo extends EntityBase implements Serializable {
 	private String kokyakuId;
 
 	/** 顧客 */
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "kokyaku_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MKokyaku kokyaku;
 

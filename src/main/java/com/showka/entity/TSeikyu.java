@@ -2,7 +2,7 @@ package com.showka.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -58,7 +58,7 @@ public class TSeikyu extends EntityBase implements Serializable {
 
 	/** 請求明細. */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "seikyu")
-	private List<TSeikyuMeisai> meisai;
+	private Set<TSeikyuMeisai> meisai;
 
 	// public methods
 	/**
