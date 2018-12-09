@@ -2,7 +2,7 @@ package com.showka.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -50,22 +50,11 @@ public class TUriage extends EntityBase implements Serializable {
 
 	/** 売上明細. */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "uriage")
-	private List<TUriageMeisai> meisai;
+	private Set<TUriageMeisai> meisai;
 
 	/** 顧客 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "kokyaku_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MKokyaku kokyaku;
 
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)
-	private CUriage cancel;
-
-	/**
-	 * キャンセル済チェック
-	 * 
-	 * @return ture = キャンセル済
-	 */
-	public boolean isCanceld() {
-		return cancel != null;
-	}
 }

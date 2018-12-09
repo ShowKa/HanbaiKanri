@@ -48,12 +48,12 @@ public class TNyukin extends EntityUsingRecordIdAsId implements Serializable {
 
 	// fetch
 	/** 顧客. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "kokyaku_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MKokyaku kokyaku;
 
 	/** 部署. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MBusho busho;
 

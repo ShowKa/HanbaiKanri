@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,7 @@ public class UriageCrudImpl implements UriageCrud {
 		Kokyaku kokyaku = kokyakuCrud.getDomain(e.getKokyaku().getCode());
 		// 売上明細ドメイン
 		List<UriageMeisai> uriageMeisai = new ArrayList<UriageMeisai>();
-		List<TUriageMeisai> meisaiEntityList = e.getMeisai();
+		Set<TUriageMeisai> meisaiEntityList = e.getMeisai();
 		for (TUriageMeisai m : meisaiEntityList) {
 			uriageMeisai.add(uriageMeisaiCrud.getDomain(m.getPk()));
 		}

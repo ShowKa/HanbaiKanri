@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -41,8 +41,8 @@ public class MBushoDate extends EntityBase implements Serializable {
 	private Date eigyoDate;
 
 	/** 部署 */
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "busho_id", referencedColumnName = "record_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MBusho busho;
 
 }

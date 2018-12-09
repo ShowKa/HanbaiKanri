@@ -42,13 +42,13 @@ public class TShukin extends EntityBase implements Serializable {
 
 	// fetch
 	/** 入金. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "nyukin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	@Setter
 	private TNyukin nyukin;
 
 	/** 集金.担当社員. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tanto_shain_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MShain tantoShain;
 }

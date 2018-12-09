@@ -59,12 +59,12 @@ public class TKeshikomi extends EntityUsingRecordIdAsId implements Serializable 
 
 	// fetch
 	/** 入金. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "nyukin_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TNyukin nyukin;
 
 	/** 売掛. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "urikake_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TUrikake urikake;
 }

@@ -15,6 +15,7 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Name;
 import org.jooq.Schema;
 import org.jooq.Table;
@@ -37,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class M_BUSHO_DATE extends TableImpl<M_BUSHO_DATE_RECORD> {
 
-    private static final long serialVersionUID = 566701611;
+    private static final long serialVersionUID = -1932938955;
 
     /**
      * The reference instance of <code>PUBLIC.M_BUSHO_DATE</code>
@@ -153,6 +154,14 @@ public class M_BUSHO_DATE extends TableImpl<M_BUSHO_DATE_RECORD> {
     @Override
     public List<UniqueKey<M_BUSHO_DATE_RECORD>> getKeys() {
         return Arrays.<UniqueKey<M_BUSHO_DATE_RECORD>>asList(Keys.CONSTRAINT_E, Keys.UK_KGBIV56WTAT03W6I4V383FU7A);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ForeignKey<M_BUSHO_DATE_RECORD, ?>> getReferences() {
+        return Arrays.<ForeignKey<M_BUSHO_DATE_RECORD, ?>>asList(Keys.FKGXC449BRRDHF0MG5G35R1DIFS);
     }
 
     /**

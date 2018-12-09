@@ -3,6 +3,7 @@ package com.showka.service.crud.u11;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class ShohinIdoCrudImpl implements ShohinIdoCrud {
 	private ShohinIdoMeisaiCrud shohinIdoMeisaiCrud;
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	@Autowired
 	private ShohinZaikoPersistence shohinZaikoPersistence;
@@ -91,8 +92,11 @@ public class ShohinIdoCrudImpl implements ShohinIdoCrud {
 		// get entity
 		TShohinIdo entity = repo.getOne(pk);
 		// get other domains
-		Busho busho = bushoPersistence.getDomain(entity.getBusho().getCode());
-		List<ShohinIdoMeisai> meisai = shohinIdoMeisaiCrud.getDomainList(pk);
+		Busho busho = bushoCrud.getDomain(entity.getBusho().getCode());
+		List<ShohinIdoMeisai> meisai = entity.getMeisai().stream().map(m -> {
+			// getDomainListでなくgetDomainを使用（後者ならDB再取得Queryが発行されない）
+			return shohinIdoMeisaiCrud.getDomain(m.getPk());
+		}).collect(Collectors.toList());
 		// build domain
 		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withBusho(busho);

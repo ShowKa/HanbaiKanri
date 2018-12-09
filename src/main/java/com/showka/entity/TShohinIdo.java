@@ -2,7 +2,7 @@ package com.showka.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -55,10 +55,10 @@ public class TShohinIdo extends EntityUsingRecordIdAsId implements Serializable 
 
 	/** 商品移動明細. */
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "shohinIdo")
-	private List<TShohinIdoMeisai> meisai;
+	private Set<TShohinIdoMeisai> meisai;
 
 	/** 部署. */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "busho_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MBusho busho;
 }
