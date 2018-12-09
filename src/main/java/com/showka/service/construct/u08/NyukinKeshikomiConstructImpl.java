@@ -2,7 +2,6 @@ package com.showka.service.construct.u08;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,8 +80,6 @@ public class NyukinKeshikomiConstructImpl implements NyukinKeshikomiConstruct {
 			kb.withNyukin(nyukin);
 			kb.withTimestamp(timestamp);
 			kb.withUrikake(urikake);
-			// FIXME mergeするときに必要。消込の同値条件はid。
-			kb.withRecordId("dummy_" + UUID.randomUUID().toString());
 			return kb.build();
 		}).collect(Collectors.toSet());
 		return keshikomiSet;
