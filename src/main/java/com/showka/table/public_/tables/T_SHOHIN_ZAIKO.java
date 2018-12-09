@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_SHOHIN_ZAIKO extends TableImpl<T_SHOHIN_ZAIKO_RECORD> {
 
-    private static final long serialVersionUID = -222435449;
+    private static final long serialVersionUID = -1779685721;
 
     /**
      * The reference instance of <code>PUBLIC.T_SHOHIN_ZAIKO</code>
@@ -171,7 +171,7 @@ public class T_SHOHIN_ZAIKO extends TableImpl<T_SHOHIN_ZAIKO_RECORD> {
      */
     @Override
     public List<ForeignKey<T_SHOHIN_ZAIKO_RECORD, ?>> getReferences() {
-        return Arrays.<ForeignKey<T_SHOHIN_ZAIKO_RECORD, ?>>asList(Keys.FKTKU4TUGX74WKRAT36T4WWNWEB);
+        return Arrays.<ForeignKey<T_SHOHIN_ZAIKO_RECORD, ?>>asList(Keys.FK37YCTILUBSTKRUSDFLVWDLRUE, Keys.FKTKU4TUGX74WKRAT36T4WWNWEB);
     }
 
     /**

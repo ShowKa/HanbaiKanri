@@ -38,7 +38,7 @@ import org.jooq.impl.TableImpl;
 @SuppressWarnings({ "all", "unchecked", "rawtypes" })
 public class T_URIAGE extends TableImpl<T_URIAGE_RECORD> {
 
-    private static final long serialVersionUID = -1828042932;
+    private static final long serialVersionUID = 430294145;
 
     /**
      * The reference instance of <code>PUBLIC.T_URIAGE</code>
@@ -124,11 +124,6 @@ public class T_URIAGE extends TableImpl<T_URIAGE_RECORD> {
     public final TableField<T_URIAGE_RECORD, LocalDateTime> uriage_date = createField("URIAGE_DATE", org.jooq.impl.SQLDataType.LOCALDATETIME.nullable(false), this, "");
 
     /**
-     * The column <code>PUBLIC.T_URIAGE.CANCEL_URIAGE_ID</code>.
-     */
-    public final TableField<T_URIAGE_RECORD, String> cancel_uriage_id = createField("CANCEL_URIAGE_ID", org.jooq.impl.SQLDataType.VARCHAR(255), this, "");
-
-    /**
      * Create a <code>PUBLIC.T_URIAGE</code> table reference
      */
     public T_URIAGE() {
@@ -186,7 +181,7 @@ public class T_URIAGE extends TableImpl<T_URIAGE_RECORD> {
      */
     @Override
     public List<ForeignKey<T_URIAGE_RECORD, ?>> getReferences() {
-        return Arrays.<ForeignKey<T_URIAGE_RECORD, ?>>asList(Keys.FK12V4JQQCK1CDREC88PF37AU7D, Keys.FK6SW82826AYV5RUVOM3UGBU6JK);
+        return Arrays.<ForeignKey<T_URIAGE_RECORD, ?>>asList(Keys.FK12V4JQQCK1CDREC88PF37AU7D);
     }
 
     /**
