@@ -56,7 +56,7 @@ public abstract class DomainBuilderBase<T extends DomainCore, S extends DomainBu
 		T domain = createDomainObject();
 		if (domain instanceof DomainBase) {
 			DomainBase _domain = (DomainBase) domain;
-			if (_domain.getRecordId() == null) {
+			if (_domain.getRecordId() == null || _domain.getRecordId().length() == 0) {
 				_domain.initRecordId();
 			}
 		}
