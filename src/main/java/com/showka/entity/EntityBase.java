@@ -13,6 +13,8 @@ import javax.persistence.Version;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
+import com.showka.domain.RecordID;
+
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,6 +53,10 @@ public abstract class EntityBase {
 	@Column(name = "record_id", unique = true, nullable = false, length = 255, insertable = true, updatable = false)
 	@Setter
 	private String recordId;
+
+	public void initRecordId() {
+		this.recordId = new RecordID().toString();
+	}
 
 	/**
 	 * create_user_id
