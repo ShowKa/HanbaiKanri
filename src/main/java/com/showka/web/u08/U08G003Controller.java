@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.thymeleaf.util.StringUtils;
 
 import com.showka.domain.builder.KeshikomiBuilder;
 import com.showka.domain.builder.NyukinKeshikomiBuilder;
@@ -265,9 +263,6 @@ public class U08G003Controller extends ControllerBase {
 			// 売掛
 			String urikakeId = m.getUrikakeId();
 			Urikake urikake = urikakeCrud.getDomainById(urikakeId);
-			// FIXME
-			String id = m.getKeshikomiId();
-			String keshikomiId = !StringUtils.isEmpty(id) ? id : "dummy_" + UUID.randomUUID().toString();
 			// build 消込
 			KeshikomiBuilder b = new KeshikomiBuilder();
 			b.withNyukin(nyukin);
@@ -276,7 +271,7 @@ public class U08G003Controller extends ControllerBase {
 			b.withTimestamp(new TheTimestamp());
 			b.withKingaku(m.getKingaku());
 			b.withVersion(m.getVersion());
-			b.withRecordId(keshikomiId);
+			b.withRecordId(m.getKeshikomiId());
 			return b.build();
 		}).collect(Collectors.toSet());
 		// remove 消込.金額 = 0

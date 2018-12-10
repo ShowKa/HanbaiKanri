@@ -1,7 +1,6 @@
 package com.showka.service.crud.u08;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,8 +34,10 @@ public class KeshikomiCrudImpl implements KeshikomiCrud {
 	@Override
 	@TriggerCrudEvent
 	public void save(Keshikomi keshikomi) {
+		// 消込ID
+		String id = keshikomi.getRecordId();
 		// entity
-		Optional<TKeshikomi> _e = repo.findById(keshikomi.getRecordId());
+		Optional<TKeshikomi> _e = repo.findById(id);
 		TKeshikomi e = _e.orElse(new TKeshikomi());
 		// set columns
 		e.setDate(keshikomi.getDate().toDate());
@@ -47,10 +48,8 @@ public class KeshikomiCrudImpl implements KeshikomiCrud {
 		e.setUrikakeId(urikakeId);
 		// OCC
 		e.setVersion(keshikomi.getVersion());
-		// record id
-		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
-		e.setRecordId(recordId);
-		keshikomi.setRecordId(recordId);
+		// recordID = 消込ID
+		e.setRecordId(id);
 		// save
 		repo.save(e);
 	}
