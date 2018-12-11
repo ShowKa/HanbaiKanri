@@ -1,7 +1,6 @@
 package com.showka.service.persistence.u08;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -67,7 +66,7 @@ public class FirmBankFuriwakePersistenceImpl implements FirmBankFuriwakePersiste
 		}).sum();
 		e.setSaikenKingaku(urikakeZandakaGokei);
 		// record id
-		e.setRecordId(UUID.randomUUID().toString());
+		e.initRecordId();
 		// save
 		repo.save(e);
 	}

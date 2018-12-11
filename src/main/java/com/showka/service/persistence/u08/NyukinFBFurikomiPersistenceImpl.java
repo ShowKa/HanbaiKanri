@@ -1,7 +1,5 @@
 package com.showka.service.persistence.u08;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +44,7 @@ public class NyukinFBFurikomiPersistenceImpl implements NyukinFBFurikomiPersiste
 		// 入金ID
 		e.setNyukinId(nyukin.getRecordId());
 		// record id
-		String recordId = UUID.randomUUID().toString();
-		e.setRecordId(recordId);
+		e.initRecordId();
 		return e;
 	}
 

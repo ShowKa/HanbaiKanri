@@ -1,7 +1,6 @@
 package com.showka.service.persistence.u05;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,12 +37,13 @@ public class UriageRirekiPersistenceImpl implements UriageRirekiPersistence {
 		e.setShohizeiritsu(domain.getShohizeiritsu().getRate().doubleValue());
 		e.setUriageDate(domain.getUriageDate().toDate());
 		// set common column
-		String recordId = _e.isPresent() ? _e.get().getRecordId() : UUID.randomUUID().toString();
-		e.setRecordId(recordId);
+		if (!_e.isPresent()) {
+			e.initRecordId();
+		}
 		// save
 		repo.save(e);
 		// 明細
-		uriageRirekiMeisaiPersistence.overrideList(recordId, domain.getUriageMeisai());
+		uriageRirekiMeisaiPersistence.overrideList(e.getRecordId(), domain.getUriageMeisai());
 	}
 
 	@Override
