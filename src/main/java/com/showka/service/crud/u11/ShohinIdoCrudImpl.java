@@ -49,17 +49,15 @@ public class ShohinIdoCrudImpl implements ShohinIdoCrud {
 		// domain -> entity
 		Optional<TShohinIdo> _e = repo.findById(domain.getRecordId());
 		TShohinIdo entity = _e.isPresent() ? _e.get() : new TShohinIdo();
-		if (!_e.isPresent()) {
-			entity.initRecordId();
-		}
+		// set columns
 		entity.setBushoId(busho.getRecordId());
 		entity.setDate(date.toDate());
 		entity.setKubun(domain.getKubun().getCode());
 		entity.setTimestamp(domain.getTimestamp().toDate());
-		// occ
+		// OCC
 		entity.setVersion(domain.getVersion());
 		// record id
-		domain.setRecordId(entity.getRecordId());
+		entity.setRecordId(domain.getRecordId());
 		// save
 		repo.save(entity);
 		// meisai

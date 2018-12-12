@@ -9,15 +9,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.showka.common.PersistenceTestCase;
+import com.showka.domain.builder.ShohinBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.domain.u05.UriageMeisai;
 import com.showka.domain.z00.Shohin;
 import com.showka.entity.RUriageMeisai;
 import com.showka.entity.RUriageMeisaiPK;
 import com.showka.repository.i.RUriageMeisaiRepository;
-import com.showka.service.crud.u05.UriageRirekiMeisaiCrudImpl;
 import com.showka.service.crud.z00.i.ShohinCrud;
-import com.showka.system.EmptyProxy;
 
 import mockit.Injectable;
 import mockit.Tested;
@@ -56,7 +55,7 @@ public class UriageRirekiMeisaiCrudImplTest extends PersistenceTestCase {
 	private static final UriageMeisai meisai01;
 	static {
 		// 商品ドメインダミー
-		Shohin shohinDomain = EmptyProxy.domain(Shohin.class);
+		Shohin shohinDomain = new ShohinBuilder().build();
 
 		// 売上明細主キー
 		String uriageId = "r-KK01-00001-20170820";
