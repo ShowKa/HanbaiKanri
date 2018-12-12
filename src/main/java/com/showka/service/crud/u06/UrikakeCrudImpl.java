@@ -39,14 +39,10 @@ public class UrikakeCrudImpl implements UrikakeCrud {
 		e.setUriageId(uriageId);
 		e.setNyukinYoteiDate(domain.getNyukinYoteiDate().toDate());
 		e.setKingaku(domain.getKingaku().intValue());
-		// occ
+		// OCC
 		e.setVersion(domain.getVersion());
 		// set record id
-		if (!_e.isPresent()) {
-			// 売掛ID = 売上ID
-			e.setRecordId(uriageId);
-		}
-		domain.setRecordId(e.getRecordId());
+		e.setRecordId(domain.getRecordId());
 		// save 売掛
 		repo.save(e);
 	}

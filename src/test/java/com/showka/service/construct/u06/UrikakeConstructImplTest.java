@@ -8,7 +8,7 @@ import com.showka.common.SimpleTestCase;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.kubun.HanbaiKubun;
-import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
+import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.value.EigyoDate;
 import com.showka.value.Kakaku;
 
@@ -23,7 +23,7 @@ public class UrikakeConstructImplTest extends SimpleTestCase {
 	private UrikakeConstructImpl service;
 
 	@Injectable
-	private UrikakeKeshikomiQuery urikakeKeshikomiPersistence;
+	private UrikakeCrud urikakeCrud;
 
 	/**
 	 * 売掛ビルド.
@@ -51,6 +51,11 @@ public class UrikakeConstructImplTest extends SimpleTestCase {
 				// 売上合計金額取得
 				uriage.getUriageGokeiKakaku();
 				result = new Kakaku(100, 0.08);
+				// 既存チェック
+				uriage.getRecordId();
+				result = "r-001";
+				urikakeCrud.exists("r-001");
+				result = false;
 			}
 		};
 		// do
@@ -66,6 +71,9 @@ public class UrikakeConstructImplTest extends SimpleTestCase {
 				times = 1;
 				// 売上合計金額取得
 				uriage.getUriageGokeiKakaku();
+				times = 1;
+				// 既存チェック
+				urikakeCrud.exists("r-001");
 				times = 1;
 			}
 		};
@@ -100,6 +108,11 @@ public class UrikakeConstructImplTest extends SimpleTestCase {
 				// 売上合計金額取得
 				uriage.getUriageGokeiKakaku();
 				result = new Kakaku(100, 0.08);
+				// 既存チェック
+				uriage.getRecordId();
+				result = "r-001";
+				urikakeCrud.exists("r-001");
+				result = false;
 			}
 		};
 		// do
@@ -118,6 +131,9 @@ public class UrikakeConstructImplTest extends SimpleTestCase {
 				times = 1;
 				// 売上合計金額取得
 				uriage.getUriageGokeiKakaku();
+				times = 1;
+				// 既存チェック
+				urikakeCrud.exists("r-001");
 				times = 1;
 			}
 		};
