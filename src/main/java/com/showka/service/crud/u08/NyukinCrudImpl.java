@@ -1,7 +1,6 @@
 package com.showka.service.crud.u08;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,10 +26,10 @@ public class NyukinCrudImpl implements NyukinCrud {
 	private TNyukinRepository repo;
 
 	@Autowired
-	private BushoCrud bushoPersistence;
+	private BushoCrud bushoCrud;
 
 	@Autowired
-	private KokyakuCrud kokyakuPersistence;
+	private KokyakuCrud kokyakuCrud;
 
 	@Override
 	public void save(Nyukin domain) {
@@ -46,9 +45,7 @@ public class NyukinCrudImpl implements NyukinCrud {
 		// OCC
 		e.setVersion(domain.getVersion());
 		// record id
-		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
-		e.setRecordId(recordId);
-		domain.setRecordId(recordId);
+		e.setRecordId(domain.getRecordId());
 		// save
 		repo.save(e);
 	}
@@ -70,8 +67,8 @@ public class NyukinCrudImpl implements NyukinCrud {
 		// entity
 		TNyukin e = repo.getOne(nyukinId);
 		// other domains
-		Busho busho = bushoPersistence.getDomain(e.getBushoCode());
-		Kokyaku kokyaku = kokyakuPersistence.getDomain(e.getKokyakuCode());
+		Busho busho = bushoCrud.getDomain(e.getBushoCode());
+		Kokyaku kokyaku = kokyakuCrud.getDomain(e.getKokyakuCode());
 		// set builder
 		NyukinBuilder b = new NyukinBuilder();
 		b.withBusho(busho);
