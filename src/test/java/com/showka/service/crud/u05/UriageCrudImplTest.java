@@ -157,6 +157,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 				.withHanbaiKubun(HanbaiKubun.現金)
 				.withShohizeiritsu(new TaxRate(0.99))
 				.withUriageMeisai(meisai)
+				.withRecordId("r-KK01-00001")
 				.withVersion(0);
 		Uriage uriage01 = b.build();
 		// expectation
