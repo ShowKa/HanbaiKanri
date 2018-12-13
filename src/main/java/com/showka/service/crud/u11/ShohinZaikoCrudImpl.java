@@ -53,7 +53,7 @@ public class ShohinZaikoCrudImpl implements ShohinZaikoCrud {
 		// 在庫数
 		e.setNumber(zaiko.getNumber());
 		// record id
-		e.initRecordId();
+		e.setRecordId(zaiko.getRecordId());
 		// save
 		repo.save(e);
 	}

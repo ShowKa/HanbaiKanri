@@ -38,13 +38,9 @@ public class ShohinIdoMeisaiCrudImpl implements ShohinIdoMeisaiCrud {
 		entity.setPk(pk);
 		entity.setShohinId(shohinIdoMeisai.getShohinDomain().getRecordId());
 		// record id
-		if (!_e.isPresent()) {
-			entity.initRecordId();
-		}
+		entity.setRecordId(shohinIdoMeisai.getRecordId());
 		// occ
 		entity.setVersion(shohinIdoMeisai.getVersion());
-		// record id
-		shohinIdoMeisai.setRecordId(entity.getRecordId());
 		// save
 		repo.save(entity);
 	}
