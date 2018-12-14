@@ -20,9 +20,6 @@ import lombok.Getter;
 public class NyukinKakeInfo extends DomainBase {
 
 	// private member
-	/** ID */
-	private String kokyakuId;
-
 	/** 締日 */
 	private Integer shimeDate;
 
@@ -107,12 +104,12 @@ public class NyukinKakeInfo extends DomainBase {
 	@Override
 	protected boolean equals(DomainBase other) {
 		NyukinKakeInfo o = (NyukinKakeInfo) other;
-		return kokyakuId.equals(o.kokyakuId);
+		return this.getRecordId().equals(o.getRecordId());
 	}
 
 	@Override
 	public int hashCode() {
-		return kokyakuId.hashCode();
+		return this.getRecordId().hashCode();
 	}
 
 	@Override

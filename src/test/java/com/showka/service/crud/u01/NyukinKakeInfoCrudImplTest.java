@@ -43,7 +43,6 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		String record_id = "this is inserted record";
 		// set up builder
 		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
-		builder.withKokyakuId(id);
 		builder.withNyukinDate(11);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
@@ -52,7 +51,7 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		// build domain
 		NyukinKakeInfo domain = builder.build();
 		// save = insert
-		service.save(domain);
+		service.save(id, domain);
 		// check
 		MNyukinKakeInfo actual = repo.findById(id).get();
 		assertEquals(record_id, actual.getRecordId());
@@ -70,7 +69,6 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		String record_id = "this is updated record";
 		// set up builder
 		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
-		builder.withKokyakuId(id);
 		builder.withNyukinDate(11);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
@@ -80,7 +78,7 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		// build domain
 		NyukinKakeInfo domain = builder.build();
 		// save = update
-		service.save(domain);
+		service.save(id, domain);
 		// check
 		MNyukinKakeInfo actual = repo.getOne(id);
 		assertEquals(11, actual.getNyukinDate().intValue());
@@ -102,7 +100,6 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		String record_id = "this is updated record";
 		// set up builder
 		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
-		builder.withKokyakuId(id);
 		builder.withNyukinDate(11);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
@@ -112,7 +109,7 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		// build domain
 		NyukinKakeInfo domain = builder.build();
 		// save = update
-		service.save(domain);
+		service.save(id, domain);
 		fail();
 	}
 
@@ -122,14 +119,9 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		// insert data
 		super.insert(M_NYUKIN_KAKE_INFO, M_NYUKIN_KAKE_INFO_COLUMN, VALUE01);
 		String id = "KK03";
-		Integer version = 0;
-		NyukinKakeInfoBuilder nb = new NyukinKakeInfoBuilder();
-		nb.withKokyakuId(id);
-		nb.withVersion(version);
-		NyukinKakeInfo nyukinKakeInfo = nb.build();
 		// delete
 		assertTrue(repo.existsById(id));
-		service.delete(nyukinKakeInfo);
+		service.delete(id);
 		// check
 		assertFalse(repo.existsById(id));
 	}
@@ -143,7 +135,6 @@ public class NyukinKakeInfoCrudImplTest extends PersistenceTestCase {
 		// do
 		NyukinKakeInfo actual = service.getDomain(id);
 		// check
-		assertEquals("KK03", actual.getKokyakuId());
 		assertEquals("r-KK03", actual.getRecordId());
 		assertEquals(Integer.valueOf(30), actual.getNyukinDate());
 		assertEquals("00", actual.getNyukinHohoKubun().getCode());

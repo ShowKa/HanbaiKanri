@@ -8,9 +8,6 @@ public class NyukinKakeInfoBuilder
 		extends com.showka.domain.builder.DomainBuilderBase<NyukinKakeInfo, NyukinKakeInfoBuilder> {
 
 	// private member
-	/** kokyakuId */
-	private String kokyakuId;
-
 	/** shimeDate */
 	private Integer shimeDate;
 
@@ -32,7 +29,6 @@ public class NyukinKakeInfoBuilder
 	// protected method
 	@Override
 	protected void apply(NyukinKakeInfo domain, NyukinKakeInfoBuilder builder) {
-		builder.withKokyakuId(domain.getKokyakuId());
 		builder.withShimeDate(domain.getShimeDate());
 		builder.withNyukinTsukiKubun(domain.getNyukinTsukiKubun());
 		builder.withNyukinHohoKubun(domain.getNyukinHohoKubun());
@@ -43,8 +39,7 @@ public class NyukinKakeInfoBuilder
 
 	@Override
 	protected NyukinKakeInfo createDomainObject() {
-		NyukinKakeInfo domain = new NyukinKakeInfo(kokyakuId, shimeDate, nyukinTsukiKubun, nyukinHohoKubun,
-				nyukinDate);
+		NyukinKakeInfo domain = new NyukinKakeInfo(shimeDate, nyukinTsukiKubun, nyukinHohoKubun, nyukinDate);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -60,24 +55,7 @@ public class NyukinKakeInfoBuilder
 		return new NyukinKakeInfoBuilder();
 	}
 
-	// public method
-	/**
-	 * {@link NyukinKakeInfo}に与えるkokyakuIdをこのビルダに設定する。
-	 *
-	 * @param kokyakuId
-	 *            kokyakuId
-	 * @return {@link NyukinKakeInfoBuilder}
-	 */
-	public NyukinKakeInfoBuilder withKokyakuId(final String kokyakuId) {
-		addConfigurator(new BuilderConfigurator<NyukinKakeInfoBuilder>() {
-			@Override
-			public void configure(NyukinKakeInfoBuilder builder) {
-				builder.kokyakuId = kokyakuId;
-			}
-		});
-		return getThis();
-	}
-
+	// public methodo
 	/**
 	 * {@link NyukinKakeInfo}に与えるshimeDateをこのビルダに設定する。
 	 *

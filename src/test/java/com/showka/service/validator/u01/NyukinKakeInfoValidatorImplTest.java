@@ -8,7 +8,6 @@ import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.domain.u01.NyukinKakeInfo;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
-import com.showka.service.validator.u01.NyukinKakeInfoValidatorImpl;
 import com.showka.system.exception.ValidateException;
 
 /**
@@ -35,13 +34,11 @@ public class NyukinKakeInfoValidatorImplTest extends PersistenceTestCase {
 	@Test
 	public void test_validate1() {
 
-		String id = "KK01";
 		Integer version = 0;
 		String record_id = "this is inserted record";
 
 		// set up builder
 		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
-		builder.withKokyakuId(id);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.翌々月);
 		builder.withShimeDate(20);
@@ -69,13 +66,11 @@ public class NyukinKakeInfoValidatorImplTest extends PersistenceTestCase {
 	@Test(expected = ValidateException.class)
 	public void test_validate2() {
 
-		String id = "KK01";
 		Integer version = 0;
 		String record_id = "this is inserted record";
 
 		// set up builder
 		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
-		builder.withKokyakuId(id);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
 		builder.withShimeDate(25);
@@ -103,13 +98,11 @@ public class NyukinKakeInfoValidatorImplTest extends PersistenceTestCase {
 	@Test(expected = ValidateException.class)
 	public void test_validate3() {
 
-		String id = "KK01";
 		Integer version = 0;
 		String record_id = "this is inserted record";
 
 		// set up builder
 		NyukinKakeInfoBuilder builder = new NyukinKakeInfoBuilder();
-		builder.withKokyakuId(id);
 		builder.withNyukinHohoKubun(NyukinHohoKubun.振込);
 		builder.withNyukinTsukiKubun(NyukinTsukiKubun.当月);
 		builder.withShimeDate(20);

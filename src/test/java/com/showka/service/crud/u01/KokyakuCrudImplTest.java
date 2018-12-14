@@ -86,7 +86,7 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 	public void test_insert() {
 
 		// kokyaku
-		final String id = "NEW!";
+		final String code = "NEW!";
 		final String name = "aaaa";
 		final String address = "北区";
 		final KokyakuKubun kokyakuKubun = KokyakuKubun.法人;
@@ -103,7 +103,6 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 
 		// build nyukinKakeInfo domain
 		NyukinKakeInfoBuilder nyukinBuilder = new NyukinKakeInfoBuilder();
-		nyukinBuilder.withKokyakuId(id);
 		nyukinBuilder.withNyukinDate(nyukinDate);
 		nyukinBuilder.withNyukinHohoKubun(nyukinHohoKubun);
 		nyukinBuilder.withNyukinTsukiKubun(nyukinTukiKubun);
@@ -116,7 +115,7 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 
 		// build kokyaku domain
 		KokyakuBuilder builder = new KokyakuBuilder();
-		builder.withCode(id);
+		builder.withCode(code);
 		builder.withName(name);
 		builder.withAddress(address);
 		builder.withKokyakuKubun(kokyakuKubun);
@@ -130,14 +129,14 @@ public class KokyakuCrudImplTest extends PersistenceTestCase {
 		service.save(domain);
 
 		// assert
-		MKokyaku actual = repo.findById(id).get();
+		MKokyaku actual = repo.findById(code).get();
 		assertEquals(name, actual.getName());
 		assertEquals(address, actual.getAddress());
 		assertEquals(kokyakuKubun.getCode(), actual.getKokyakuKubun());
 		assertEquals(hanbaiKubun.getCode(), actual.getHanbaiKubun());
 		assertEquals(record_id, actual.getRecordId());
 
-		MNyukinKakeInfo actualNyukin = nyukinRepo.findById(id).get();
+		MNyukinKakeInfo actualNyukin = nyukinRepo.findById(record_id).get();
 		assertEquals(nyukinHohoKubun.getCode(), actualNyukin.getNyukinHohoKubun());
 		assertEquals(nyukinTukiKubun.getCode(), actualNyukin.getNyukinTsukiKubun());
 		assertEquals(shimeDate, actualNyukin.getShimebi());
