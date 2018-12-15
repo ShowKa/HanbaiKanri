@@ -1,8 +1,8 @@
 package com.showka.service.crud;
 
-import com.showka.domain.DomainRoot;
+import com.showka.domain.DomainSub;
 
-public interface SubCrud<T extends DomainRoot> {
+public interface SubCrud<T extends DomainSub> {
 
 	/**
 	 * 登録・更新.
