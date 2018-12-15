@@ -1,6 +1,6 @@
 package com.showka.service.validator.z00.i;
 
-import com.showka.system.exception.NotExistException;
+import com.showka.system.exception.validate.NotExistException;
 
 public interface ShainValidator {
 

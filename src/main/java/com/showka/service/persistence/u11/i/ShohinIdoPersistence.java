@@ -1,7 +1,7 @@
 package com.showka.service.persistence.u11.i;
 
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
-import com.showka.system.exception.UnsatisfiedSpecificationException;
+import com.showka.system.exception.specification.UnsatisfiedSpecificationException;
 
 public interface ShohinIdoPersistence {
 

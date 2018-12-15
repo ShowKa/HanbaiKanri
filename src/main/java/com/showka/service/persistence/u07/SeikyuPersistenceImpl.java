@@ -13,7 +13,7 @@ import com.showka.kubun.NyukinHohoKubun;
 import com.showka.service.crud.u07.i.SeikyuCrud;
 import com.showka.service.persistence.u07.i.SeikyuPersistence;
 import com.showka.service.specification.u07.i.SeikyuSpecification;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.validate.ValidateException;
 
 @Service
 public class SeikyuPersistenceImpl implements SeikyuPersistence {

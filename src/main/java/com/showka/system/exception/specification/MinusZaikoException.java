@@ -1,4 +1,4 @@
-package com.showka.system.exception;
+package com.showka.system.exception.specification;
 
 import java.util.List;
 

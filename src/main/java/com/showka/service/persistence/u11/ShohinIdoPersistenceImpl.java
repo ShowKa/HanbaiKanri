@@ -9,7 +9,7 @@ import com.showka.domain.u11.ShohinIdo;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
-import com.showka.system.exception.UnsatisfiedSpecificationException;
+import com.showka.system.exception.specification.UnsatisfiedSpecificationException;
 
 @Service
 public class ShohinIdoPersistenceImpl implements ShohinIdoPersistence {

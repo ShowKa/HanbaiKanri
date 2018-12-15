@@ -14,7 +14,7 @@ import com.showka.domain.u08.Keshikomi;
 import com.showka.domain.u08.Nyukin;
 import com.showka.domain.u08.NyukinKeshikomi;
 import com.showka.service.query.u06.i.UrikakeKeshikomiQuery;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.validate.ValidateException;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 

@@ -28,7 +28,7 @@ import com.showka.service.persistence.u05.i.UriagePersistence;
 import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
 import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.system.EmptyProxy;
-import com.showka.system.exception.MinusZaikoException;
+import com.showka.system.exception.specification.MinusZaikoException;
 import com.showka.value.EigyoDate;
 
 import mockit.Expectations;

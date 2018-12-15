@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.showka.entity.TFirmBankFurikomi;
 import com.showka.entity.TFirmBankFurikomiPK;
-import com.showka.system.exception.SingleInputValidateException;
+import com.showka.system.exception.validate.SingleInputValidateException;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

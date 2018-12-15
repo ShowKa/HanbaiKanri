@@ -1,4 +1,4 @@
-package com.showka.system.exception;
+package com.showka.system.exception.validate;
 
 /**
  * 重複するデータがすでに存在する場合にthrowする例外.

@@ -1,4 +1,6 @@
-package com.showka.system.exception;
+package com.showka.system.exception.validate;
+
+import com.showka.system.exception.ApplicationException;
 
 /**
  * データ整合性例外.

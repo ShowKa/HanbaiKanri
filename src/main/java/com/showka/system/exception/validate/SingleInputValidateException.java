@@ -1,4 +1,4 @@
-package com.showka.system.exception;
+package com.showka.system.exception.validate;
 
 /**
  * 単黒目チェックで問題があった際にthrowする例外。

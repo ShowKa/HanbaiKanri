@@ -7,7 +7,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.entity.MBushoDate;
 import com.showka.repository.i.MBushoDateRepository;
 import com.showka.service.validator.u17.i.BushoDateValidator;
-import com.showka.system.exception.CanNotUpdateOrDeleteException;
+import com.showka.system.exception.validate.CanNotUpdateOrDeleteException;
 import com.showka.value.EigyoDate;
 
 @Service

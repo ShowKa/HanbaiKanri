@@ -11,7 +11,7 @@ import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.domain.u05.UriageMeisai;
 import com.showka.domain.z00.Shohin;
 import com.showka.service.validator.u05.UriageMeisaiValidatorImpl;
-import com.showka.system.exception.NotAllowedNumberException;
+import com.showka.system.exception.validate.NotAllowedNumberException;
 
 public class UriageMeisaiValidatorImplTest extends PersistenceTestCase {
 

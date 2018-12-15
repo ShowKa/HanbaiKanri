@@ -3,7 +3,7 @@ package com.showka.service.specification.u11.i;
 import java.util.List;
 
 import com.showka.domain.u11.ShohinIdo;
-import com.showka.system.exception.UnsatisfiedSpecificationException;
+import com.showka.system.exception.specification.UnsatisfiedSpecificationException;
 
 /**
  * 商品移動の仕様.

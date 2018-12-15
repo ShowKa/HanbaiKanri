@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.showka.service.crud.z00.i.ShainCrud;
 import com.showka.service.validator.z00.i.ShainValidator;
-import com.showka.system.exception.NotExistException;
+import com.showka.system.exception.validate.NotExistException;
 
 @Service
 public class ShainValidatorImpl implements ShainValidator {

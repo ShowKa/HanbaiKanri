@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.showka.domain.u05.UriageMeisai;
 import com.showka.service.validator.u05.i.UriageMeisaiValidator;
-import com.showka.system.exception.NotAllowedNumberException;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.validate.NotAllowedNumberException;
+import com.showka.system.exception.validate.ValidateException;
 
 @Service
 public class UriageMeisaiValidatorImpl implements UriageMeisaiValidator {

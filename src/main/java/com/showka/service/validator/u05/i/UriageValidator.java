@@ -2,7 +2,7 @@ package com.showka.service.validator.u05.i;
 
 import com.showka.domain.u05.Uriage;
 import com.showka.entity.TUriagePK;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.validate.ValidateException;
 
 public interface UriageValidator {
 

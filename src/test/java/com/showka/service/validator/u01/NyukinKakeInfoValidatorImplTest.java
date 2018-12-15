@@ -8,7 +8,7 @@ import com.showka.domain.builder.NyukinKakeInfoBuilder;
 import com.showka.domain.u01.NyukinKakeInfo;
 import com.showka.kubun.NyukinHohoKubun;
 import com.showka.kubun.NyukinTsukiKubun;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.validate.ValidateException;
 
 /**
  * 入金掛情報 Validate Service Test

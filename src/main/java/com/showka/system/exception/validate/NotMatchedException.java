@@ -1,4 +1,4 @@
-package com.showka.system.exception;
+package com.showka.system.exception.validate;
 
 /**
  * 値を一致させる必要があるときにthrowする例外

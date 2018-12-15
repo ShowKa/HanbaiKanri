@@ -1,4 +1,6 @@
-package com.showka.system.exception;
+package com.showka.system.exception.specification;
+
+import com.showka.system.exception.ApplicationException;
 
 /**
  * 仕様を満たさない.

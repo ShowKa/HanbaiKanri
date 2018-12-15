@@ -24,10 +24,10 @@ import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
 import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
-import com.showka.system.exception.MinusZaikoException;
-import com.showka.system.exception.MinusZaikoException.MinusZaiko;
-import com.showka.system.exception.UnsatisfiedSpecificationException;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.specification.MinusZaikoException;
+import com.showka.system.exception.specification.UnsatisfiedSpecificationException;
+import com.showka.system.exception.specification.MinusZaikoException.MinusZaiko;
+import com.showka.system.exception.validate.ValidateException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 

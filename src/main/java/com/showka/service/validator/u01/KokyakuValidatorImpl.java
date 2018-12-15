@@ -12,11 +12,11 @@ import com.showka.kubun.KokyakuKubun;
 import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.query.u05.i.UriageQuery;
 import com.showka.service.validator.u01.i.KokyakuValidator;
-import com.showka.system.exception.AlreadyExistsException;
-import com.showka.system.exception.CanNotUpdateOrDeleteException;
-import com.showka.system.exception.IncorrectKubunException;
-import com.showka.system.exception.NotExistException;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.validate.AlreadyExistsException;
+import com.showka.system.exception.validate.CanNotUpdateOrDeleteException;
+import com.showka.system.exception.validate.IncorrectKubunException;
+import com.showka.system.exception.validate.NotExistException;
+import com.showka.system.exception.validate.ValidateException;
 
 /**
  * 顧客 Validate Service

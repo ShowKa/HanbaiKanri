@@ -43,7 +43,7 @@ import com.showka.service.query.u05.i.UriageRirekiQuery;
 import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.service.validator.u05.i.UriageValidator;
-import com.showka.system.exception.NotExistException;
+import com.showka.system.exception.validate.NotExistException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
 import com.showka.web.ControllerBase;

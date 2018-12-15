@@ -15,9 +15,9 @@ import com.showka.repository.i.MKokyakuRepository;
 import com.showka.service.query.u05.i.UriageQuery;
 import com.showka.service.validator.u01.KokyakuValidatorImpl;
 import com.showka.service.validator.u01.NyukinKakeInfoValidatorImpl;
-import com.showka.system.exception.CanNotUpdateOrDeleteException;
-import com.showka.system.exception.NotExistException;
-import com.showka.system.exception.ValidateException;
+import com.showka.system.exception.validate.CanNotUpdateOrDeleteException;
+import com.showka.system.exception.validate.NotExistException;
+import com.showka.system.exception.validate.ValidateException;
 
 import mockit.Expectations;
 import mockit.Injectable;
