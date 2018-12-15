@@ -2,7 +2,6 @@ package com.showka.domain.u11;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import com.showka.domain.DomainBase;
 import com.showka.domain.z00.Busho;
@@ -114,7 +113,7 @@ public class ShohinZaiko extends DomainBase {
 	 */
 	public ShohinZaiko cloneForKurikoshi(EigyoDate nextDate) {
 		ShohinZaiko kurikoshi = new ShohinZaiko(busho, nextDate, shohin, this.getNumber(), new ArrayList<>());
-		kurikoshi.setRecordId(UUID.randomUUID().toString());
+		kurikoshi.initRecordId();
 		return kurikoshi;
 	}
 
@@ -132,7 +131,7 @@ public class ShohinZaiko extends DomainBase {
 	 */
 	public static ShohinZaiko buildZeroZaiko(Busho busho, EigyoDate date, Shohin shohin) {
 		ShohinZaiko zaiko = new ShohinZaiko(busho, date, shohin, 0, new ArrayList<>());
-		zaiko.setRecordId(UUID.randomUUID().toString());
+		zaiko.initRecordId();
 		return zaiko;
 	}
 

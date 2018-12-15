@@ -26,16 +26,13 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 	@Autowired
 	private MNyukinKakeInfoRepository repo;
 
-	@Autowired
-	private NyukinKakeInfoCrud _this;
-
 	@Override
-	public void save(NyukinKakeInfo domain) {
+	public void save(String id, NyukinKakeInfo domain) {
 		// entity
-		Optional<MNyukinKakeInfo> entity = repo.findById(domain.getKokyakuId());
+		Optional<MNyukinKakeInfo> entity = repo.findById(id);
 		MNyukinKakeInfo e = entity.orElse(new MNyukinKakeInfo());
 		// set columns
-		e.setKokyakuId(domain.getKokyakuId());
+		e.setKokyakuId(id);
 		e.setNyukinDate(domain.getNyukinDate());
 		e.setNyukinHohoKubun(domain.getNyukinHohoKubun().getCode());
 		e.setNyukinTsukiKubun(domain.getNyukinTsukiKubun().getCode());
@@ -48,12 +45,9 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 	}
 
 	@Override
-	public void delete(NyukinKakeInfo domain) {
-		String kokyakuId = domain.getKokyakuId();
-		Integer version = domain.getVersion();
+	public void delete(String kokyakuId) {
 		MNyukinKakeInfo target = repo.getOne(kokyakuId);
 		target.setKokyakuId(kokyakuId);
-		target.setVersion(version);
 		repo.delete(target);
 	}
 
@@ -63,7 +57,6 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 		MNyukinKakeInfo e = repo.getOne(kokyakuId);
 		// set domain builder
 		NyukinKakeInfoBuilder b = new NyukinKakeInfoBuilder();
-		b.withKokyakuId(e.getKokyakuId());
 		b.withNyukinDate(e.getNyukinDate());
 		b.withNyukinHohoKubun(Kubun.get(NyukinHohoKubun.class, e.getNyukinHohoKubun()));
 		b.withNyukinTsukiKubun(Kubun.get(NyukinTsukiKubun.class, e.getNyukinTsukiKubun()));
@@ -82,9 +75,7 @@ public class NyukinKakeInfoCrudImpl implements NyukinKakeInfoCrud {
 	@Override
 	public void deleteIfExists(String kokyakuId) {
 		if (this.exists(kokyakuId)) {
-			NyukinKakeInfo domain = this.getDomain(kokyakuId);
-			// クラス内呼び出してもAOPを有効化する裏技
-			_this.delete(domain);
+			this.delete(kokyakuId);
 		}
 	}
 }

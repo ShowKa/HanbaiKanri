@@ -1,7 +1,5 @@
 package com.showka.service.persistence.u08;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,8 +31,7 @@ public class FirmBankFurikomiMatchingPersistenceImpl implements FirmBankFurikomi
 		WFirmBankFurikomiMatching e = new WFirmBankFurikomiMatching();
 		e.setPk(pk);
 		// record id
-		String recordId = UUID.randomUUID().toString();
-		e.setRecordId(recordId);
+		e.initRecordId();
 		repo.save(e);
 	}
 }

@@ -2,7 +2,6 @@ package com.showka.service.persistence.u05;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,8 +41,7 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 			e.setBushoId(busho.getRecordId());
 			e.setUriageRirekiId(uriageRireki.getRecordId());
 			// record id
-			String recordId = UUID.randomUUID().toString();
-			e.setRecordId(recordId);
+			e.initRecordId();
 			// save
 			repo.save(e);
 		});
@@ -63,8 +61,7 @@ public class UriageKeijoPersistenceImpl implements UriageKeijoPersistence {
 				String uriageRirekiId = teisei.get().getRecordId();
 				et.setUriageRirekiId(uriageRirekiId);
 				// record id
-				String recordId = UUID.randomUUID().toString();
-				et.setRecordId(recordId);
+				et.initRecordId();
 				// save
 				repoTeisei.save(et);
 			}

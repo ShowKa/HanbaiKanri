@@ -1,7 +1,6 @@
 package com.showka.service.crud.u11;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +53,7 @@ public class ShohinZaikoCrudImpl implements ShohinZaikoCrud {
 		// 在庫数
 		e.setNumber(zaiko.getNumber());
 		// record id
-		String recordId = UUID.randomUUID().toString();
-		e.setRecordId(recordId);
+		e.setRecordId(zaiko.getRecordId());
 		// save
 		repo.save(e);
 	}

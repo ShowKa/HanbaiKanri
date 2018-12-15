@@ -2,7 +2,6 @@ package com.showka.web.u08;
 
 import java.io.File;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -67,12 +66,9 @@ public class U08B001Controller extends ControllerBase {
 		// 読込可能行を FB振込リスト として読込
 		List<U08B001Csv> fbFurikomiList = CsvReader.readOnlyReadable(U08B001Csv.class, file);
 		// FB振込リスト をFB振込Table に登録
-		List<TFirmBankFurikomi> entities = fbFurikomiList.parallelStream().map(c -> {
-			TFirmBankFurikomi e = c.toFirmBankFurikomiEntity();
-			String id = UUID.randomUUID().toString();
-			e.setRecordId(id);
-			return e;
-		}).collect(Collectors.toList());
+		List<TFirmBankFurikomi> entities = fbFurikomiList.parallelStream()
+				.map(U08B001Csv::toFirmBankFurikomiEntity)
+				.collect(Collectors.toList());
 		entities.forEach(tFirmBankFurikomiRepository::save);
 		// return
 		form.setSuccessMessage("FBファイル取込成功");

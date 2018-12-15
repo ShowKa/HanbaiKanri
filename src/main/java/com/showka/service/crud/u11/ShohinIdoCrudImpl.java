@@ -2,7 +2,6 @@ package com.showka.service.crud.u11;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,18 +49,15 @@ public class ShohinIdoCrudImpl implements ShohinIdoCrud {
 		// domain -> entity
 		Optional<TShohinIdo> _e = repo.findById(domain.getRecordId());
 		TShohinIdo entity = _e.isPresent() ? _e.get() : new TShohinIdo();
-		if (!_e.isPresent()) {
-			String recordId = UUID.randomUUID().toString();
-			entity.setRecordId(recordId);
-		}
+		// set columns
 		entity.setBushoId(busho.getRecordId());
 		entity.setDate(date.toDate());
 		entity.setKubun(domain.getKubun().getCode());
 		entity.setTimestamp(domain.getTimestamp().toDate());
-		// occ
+		// OCC
 		entity.setVersion(domain.getVersion());
 		// record id
-		domain.setRecordId(entity.getRecordId());
+		entity.setRecordId(domain.getRecordId());
 		// save
 		repo.save(entity);
 		// meisai

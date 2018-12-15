@@ -2,6 +2,7 @@ package com.showka.service.construct.u06;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.builder.UrikakeBuilder;
@@ -9,11 +10,15 @@ import com.showka.domain.u05.Uriage;
 import com.showka.domain.u06.Urikake;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.service.construct.u06.i.UrikakeConstruct;
+import com.showka.service.crud.u06.i.UrikakeCrud;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.TheDate;
 
 @Service
 public class UrikakeConstructImpl implements UrikakeConstruct {
+
+	@Autowired
+	private UrikakeCrud urikakeCrud;
 
 	@Override
 	public Optional<Urikake> by(Uriage uriage) {
@@ -38,6 +43,13 @@ public class UrikakeConstructImpl implements UrikakeConstruct {
 		b.withUriage(uriage);
 		b.withNyukinYoteiDate(nyukinYoteiDate);
 		b.withKingaku(kingaku);
-		return Optional.of(b.build());
+		String uriageId = uriage.getRecordId();
+		boolean exists = urikakeCrud.exists(uriageId);
+		if (exists) {
+			Urikake urikake = urikakeCrud.getDomain(uriageId);
+			return Optional.of(b.apply(urikake));
+		} else {
+			return Optional.of(b.build());
+		}
 	}
 }

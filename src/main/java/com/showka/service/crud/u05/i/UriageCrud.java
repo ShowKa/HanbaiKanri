@@ -6,4 +6,6 @@ import com.showka.service.crud.Crud;
 
 public interface UriageCrud extends Crud<Uriage, TUriagePK> {
 
+	@Override
+	public void save(Uriage d);
 }

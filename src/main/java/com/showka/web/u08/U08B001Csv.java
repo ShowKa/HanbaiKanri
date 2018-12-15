@@ -96,6 +96,7 @@ public class U08B001Csv {
 		pk.setTransmissionDate(transmissionDate);
 		pk.setTransmissionNumber(transmissionNumber);
 		e.setPk(pk);
+		e.initRecordId();
 		return e;
 	}
 }

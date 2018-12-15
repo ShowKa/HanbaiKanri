@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -144,9 +143,7 @@ public class UriageCrudImpl implements UriageCrud {
 		e.setUriageDate(domain.getUriageDate().toDate());
 		e.setKeijoDate(domain.getKeijoDate().toDate());
 		// record id
-		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
-		e.setRecordId(recordId);
-		domain.setRecordId(recordId);
+		e.setRecordId(domain.getRecordId());
 		// occ
 		e.setVersion(domain.getVersion());
 		return e;

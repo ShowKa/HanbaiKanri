@@ -2,7 +2,6 @@ package com.showka.service.crud.u07;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,13 +57,11 @@ public class SeikyuCrudImpl implements SeikyuCrud {
 		// OCC
 		e.setVersion(domain.getVersion());
 		// record id
-		String recordId = _e.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
-		e.setRecordId(recordId);
-		domain.setRecordId(recordId);
+		e.setRecordId(domain.getRecordId());
 		// save
 		repo.save(e);
 		// override 明細
-		seikyuMeisaiPersistence.overrideList(recordId, domain.getSeikyuMeisai());
+		seikyuMeisaiPersistence.overrideList(e.getRecordId(), domain.getSeikyuMeisai());
 	}
 
 	@Override

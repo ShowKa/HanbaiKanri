@@ -66,7 +66,7 @@ public class KokyakuCrudImpl implements KokyakuCrud {
 		Optional<NyukinKakeInfo> _nk = kokyaku.getNyukinKakeInfo();
 		if (_nk.isPresent()) {
 			NyukinKakeInfo nyukinKakeInfo = _nk.get();
-			nyukinKakeInfoCrud.save(nyukinKakeInfo);
+			nyukinKakeInfoCrud.save(recordId, nyukinKakeInfo);
 		} else {
 			nyukinKakeInfoCrud.deleteIfExists(recordId);
 		}

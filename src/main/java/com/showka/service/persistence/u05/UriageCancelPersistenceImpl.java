@@ -1,7 +1,6 @@
 package com.showka.service.persistence.u05;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,9 @@ public class UriageCancelPersistenceImpl implements UriageCancelPersistence {
 		CUriage e = canceldUriageEntity.orElse(new CUriage());
 		// set entity
 		e.setUriageId(uriageId);
-		String recordId = canceldUriageEntity.isPresent() ? e.getRecordId() : UUID.randomUUID().toString();
-		e.setRecordId(recordId);
+		if (!canceldUriageEntity.isPresent()) {
+			e.initRecordId();
+		}
 		// save
 		repo.save(e);
 	}

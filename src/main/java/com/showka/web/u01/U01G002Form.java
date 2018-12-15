@@ -9,6 +9,9 @@ import lombok.Setter;
 @Setter
 public class U01G002Form extends FormBase {
 
+	/** SID. */
+	private static final long serialVersionUID = 4476841778077214492L;
+
 	/** 顧客コード */
 	private String code;
 
@@ -50,5 +53,4 @@ public class U01G002Form extends FormBase {
 
 	/** 入金掛け情報レコードID */
 	private String nyukinKakeInfoRecordId;
-
 }

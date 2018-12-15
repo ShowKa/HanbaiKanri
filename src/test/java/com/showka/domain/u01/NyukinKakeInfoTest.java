@@ -16,12 +16,10 @@ public class NyukinKakeInfoTest extends SimpleTestCase {
 	public void test_GetNextSeikyuSimeDate_01() throws Exception {
 		// domain
 		NyukinKakeInfoBuilder nb = new NyukinKakeInfoBuilder();
-		nb.withKokyakuId("r-KK01");
 		nb.withShimeDate(20);
 		nb.withNyukinDate(30);
 		nb.withNyukinHohoKubun(NyukinHohoKubun.口座振替);
 		nb.withNyukinTsukiKubun(NyukinTsukiKubun.翌月);
-		nb.withRecordId("r-KK01");
 		NyukinKakeInfo domain = nb.build();
 		// input
 		TheDate date = new TheDate(2018, 2, 20);
@@ -37,12 +35,10 @@ public class NyukinKakeInfoTest extends SimpleTestCase {
 	public void test_GetNextSeikyuSimeDate_02() throws Exception {
 		// domain
 		NyukinKakeInfoBuilder nb = new NyukinKakeInfoBuilder();
-		nb.withKokyakuId("r-KK01");
 		nb.withShimeDate(20);
 		nb.withNyukinDate(30);
 		nb.withNyukinHohoKubun(NyukinHohoKubun.口座振替);
 		nb.withNyukinTsukiKubun(NyukinTsukiKubun.翌月);
-		nb.withRecordId("r-KK01");
 		NyukinKakeInfo domain = nb.build();
 		// input
 		TheDate date = new TheDate(2018, 2, 21);
@@ -58,12 +54,10 @@ public class NyukinKakeInfoTest extends SimpleTestCase {
 	public void test_getNyukinYoteiDate_01() throws Exception {
 		// domain
 		NyukinKakeInfoBuilder nb = new NyukinKakeInfoBuilder();
-		nb.withKokyakuId("r-KK01");
 		nb.withShimeDate(20);
 		nb.withNyukinDate(30);
 		nb.withNyukinHohoKubun(NyukinHohoKubun.口座振替);
 		nb.withNyukinTsukiKubun(NyukinTsukiKubun.翌月);
-		nb.withRecordId("r-KK01");
 		NyukinKakeInfo domain = nb.build();
 		// input
 		TheDate date = new TheDate(2018, 1, 20);
