@@ -2,12 +2,12 @@ package com.showka.system.triggerEvent;
 
 import org.springframework.context.ApplicationEvent;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 
 import lombok.Getter;
 
 @SuppressWarnings("serial")
-public abstract class CrudEvent<T extends DomainBase> extends ApplicationEvent {
+public abstract class CrudEvent<T extends DomainRoot> extends ApplicationEvent {
 
 	public enum EventType {
 		save, delete, newRegister, update, beforeSave, beforeDelete, beforeNewRegister, beforeUpdate

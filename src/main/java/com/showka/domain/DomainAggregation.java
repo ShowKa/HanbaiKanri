@@ -7,7 +7,7 @@ package com.showka.domain;
  * ドメインを集めて機能を提供するクラスです。
  * </pre>
  */
-public abstract class DomainAggregation extends DomainCore {
+public abstract class DomainAggregation extends Domain {
 	/**
 	 * 同値判定
 	 * 

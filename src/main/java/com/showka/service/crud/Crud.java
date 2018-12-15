@@ -1,8 +1,8 @@
 package com.showka.service.crud;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 
-public interface Crud<T extends DomainBase, P> {
+public interface Crud<T extends DomainRoot, P> {
 
 	/**
 	 * 登録・更新.

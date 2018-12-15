@@ -1,6 +1,6 @@
 package com.showka.domain.u08;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.u06.Urikake;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
@@ -12,7 +12,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class Keshikomi extends DomainBase {
+public class Keshikomi extends DomainRoot {
 
 	/** 入金. */
 	private Nyukin nyukin;
@@ -56,7 +56,7 @@ public class Keshikomi extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Keshikomi o = (Keshikomi) other;
 		return this.getRecordId().equals(o.getRecordId());
 	}

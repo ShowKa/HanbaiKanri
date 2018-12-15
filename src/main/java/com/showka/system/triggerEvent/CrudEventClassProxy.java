@@ -4,7 +4,7 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.system.exception.SystemException;
 import com.showka.system.triggerEvent.CrudEvent.EventType;
 
@@ -28,7 +28,7 @@ public class CrudEventClassProxy {
 	 * @return CrudEvent<T>.class
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends DomainBase> Class<CrudEvent<T>> get(Class<T> domainClass) {
+	public static <T extends DomainRoot> Class<CrudEvent<T>> get(Class<T> domainClass) {
 		// get if already made
 		Class<CrudEvent<T>> _class = (Class<CrudEvent<T>>) CLASS_MAP.get(domainClass);
 		if (_class != null) {

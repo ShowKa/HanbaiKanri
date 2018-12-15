@@ -3,7 +3,7 @@ package com.showka.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-public abstract class DomainBase extends DomainCore {
+public abstract class DomainEntity extends Domain {
 
 	/** record_id */
 	private RecordID recordId;
@@ -50,7 +50,7 @@ public abstract class DomainBase extends DomainCore {
 	 *            比較対象
 	 * @return 同じものならtrue
 	 */
-	protected abstract boolean equals(DomainBase other);
+	protected abstract boolean equals(DomainRoot other);
 
 	/**
 	 * 同値判定
@@ -74,9 +74,10 @@ public abstract class DomainBase extends DomainCore {
 			return false;
 		}
 
-		if (other instanceof DomainBase) {
-			return equals((DomainBase) other);
+		if (other instanceof DomainRoot) {
+			return equals((DomainRoot) other);
 		}
 		return false;
 	}
+
 }

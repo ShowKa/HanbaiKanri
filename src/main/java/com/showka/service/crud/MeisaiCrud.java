@@ -2,9 +2,9 @@ package com.showka.service.crud;
 
 import java.util.List;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 
-public interface MeisaiCrud<T extends DomainBase, P> {
+public interface MeisaiCrud<T extends DomainRoot, P> {
 
 	/**
 	 * 保存.

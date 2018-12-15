@@ -2,7 +2,7 @@ package com.showka.domain.z00;
 
 import java.math.BigDecimal;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class Shohin extends DomainBase {
+public class Shohin extends DomainRoot {
 
 	// private member
 	/** 商品コード. */
@@ -28,7 +28,7 @@ public class Shohin extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Shohin o = (Shohin) other;
 		return code.equals(o.code);
 	}

@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u01.NyukinKakeInfo;
 import com.showka.kubun.HanbaiKubun;
@@ -20,7 +20,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class Uriage extends DomainBase {
+public class Uriage extends DomainRoot {
 
 	/** 顧客. */
 	private Kokyaku kokyaku;
@@ -86,7 +86,7 @@ public class Uriage extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Uriage o = (Uriage) other;
 		return kokyaku.equals(o.getKokyaku()) && denpyoNumber.equals(o.getDenpyoNumber());
 	}

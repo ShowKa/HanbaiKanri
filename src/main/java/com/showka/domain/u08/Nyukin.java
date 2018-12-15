@@ -1,6 +1,6 @@
 package com.showka.domain.u08;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.z00.Busho;
 import com.showka.kubun.NyukinHohoKubun;
@@ -13,7 +13,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class Nyukin extends DomainBase {
+public class Nyukin extends DomainRoot {
 
 	/** 顧客 */
 	private Kokyaku kokyaku;
@@ -37,7 +37,7 @@ public class Nyukin extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Nyukin o = (Nyukin) other;
 		return this.getRecordId().equals(o.getRecordId());
 	}

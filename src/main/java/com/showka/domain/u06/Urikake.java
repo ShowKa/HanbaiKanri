@@ -1,6 +1,6 @@
 package com.showka.domain.u06;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.u05.Uriage;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
@@ -15,7 +15,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class Urikake extends DomainBase {
+public class Urikake extends DomainRoot {
 
 	// private members
 	/** 売上. */
@@ -74,7 +74,7 @@ public class Urikake extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Urikake o = (Urikake) other;
 		return uriage.equals(o.uriage);
 	}

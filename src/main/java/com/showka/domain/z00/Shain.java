@@ -1,6 +1,6 @@
 package com.showka.domain.z00;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class Shain extends DomainBase {
+public class Shain extends DomainRoot {
 
 	/** コード */
 	private String code;
@@ -30,7 +30,7 @@ public class Shain extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Shain o = (Shain) other;
 		return code.equals(o.code);
 	}

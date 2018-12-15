@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.showka.system.exception.SystemException;
 
-public abstract class DomainCore {
+public abstract class Domain {
 
 	/**
 	 * ドメイン整合性検証

@@ -3,7 +3,7 @@ package com.showka.domain.u06;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class KokyakuUrikake extends DomainBase {
+public class KokyakuUrikake extends DomainRoot {
 
 	// members
 	/** 顧客 */
@@ -76,7 +76,7 @@ public class KokyakuUrikake extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		KokyakuUrikake o = (KokyakuUrikake) other;
 		return kokyaku.equals(o.kokyaku);
 	}

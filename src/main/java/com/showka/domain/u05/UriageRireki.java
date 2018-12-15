@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageMeisaiBuilder;
 import com.showka.domain.u05.Uriage.UriageComparatorByKejoDate;
@@ -18,7 +18,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UriageRireki extends DomainBase {
+public class UriageRireki extends DomainRoot {
 
 	/** 売上ID */
 	private String uriageId;
@@ -180,7 +180,7 @@ public class UriageRireki extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		UriageRireki o = (UriageRireki) other;
 		return uriageId.equals(o.uriageId);
 	}

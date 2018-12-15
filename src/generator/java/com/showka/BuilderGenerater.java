@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainEntity;
 import com.showka.domain.builder.DomainBuilderBase;
 import com.showka.domain.u05.UriageMeisai;
 
@@ -39,7 +39,7 @@ public class BuilderGenerater {
 		// get domain parent private fields if exists
 		Class<?> parent = TARGET_CLASS.getSuperclass();
 		while (parent != null) {
-			if (!DomainBase.class.isAssignableFrom(parent)) {
+			if (!DomainEntity.class.isAssignableFrom(parent)) {
 				break;
 			}
 			for (Field f : parent.getDeclaredFields()) {
