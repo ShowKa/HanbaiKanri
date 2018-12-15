@@ -3,7 +3,7 @@ package com.showka.domain.u06;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.showka.domain.DomainRoot;
+import com.showka.domain.DomainAggregation;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.system.exception.SystemException;
 import com.showka.value.AmountOfMoney;
@@ -15,7 +15,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class KokyakuUrikake extends DomainRoot {
+public class KokyakuUrikake extends DomainAggregation {
 
 	// members
 	/** 顧客 */
@@ -72,18 +72,6 @@ public class KokyakuUrikake extends DomainRoot {
 	// override methods
 	@Override
 	public void validate() throws SystemException {
-		// do nothing
-	}
-
-	@Override
-	protected boolean equals(DomainRoot other) {
-		KokyakuUrikake o = (KokyakuUrikake) other;
-		return kokyaku.equals(o.kokyaku);
-	}
-
-	@Override
-	public int hashCode() {
-		return kokyaku.hashCode();
 	}
 
 	// private methods

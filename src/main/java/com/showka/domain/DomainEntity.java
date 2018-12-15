@@ -29,4 +29,22 @@ public abstract class DomainEntity extends Domain {
 		this.recordId = new RecordID();
 	}
 
+	@Override
+	public abstract int hashCode();
+
+	/**
+	 * ハッシュコード生成用関数
+	 * 
+	 * @param objects
+	 *            equals()で比較対象となるメンバの値を渡してください。
+	 * @return ハッシュ値
+	 */
+	protected final static int generateHashCode(Object... objects) {
+		int hash = 1;
+		for (Object o : objects) {
+			hash = 31 * hash + (o == null ? 0 : o.hashCode());
+		}
+		return hash;
+	}
+
 }

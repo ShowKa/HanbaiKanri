@@ -102,20 +102,4 @@ public class UrikakeKeshikomi extends DomainAggregation {
 			throw new SystemException("別の売掛への消込がセットされています。 : " + uriageIds);
 		}
 	}
-
-	/**
-	 * 同値判定.
-	 * 
-	 * @return 同じ売掛ならtrue
-	 */
-	@Override
-	protected boolean equals(DomainAggregation other) {
-		UrikakeKeshikomi o = (UrikakeKeshikomi) other;
-		return urikake.equals(o.urikake);
-	}
-
-	@Override
-	public int hashCode() {
-		return urikake.hashCode();
-	}
 }

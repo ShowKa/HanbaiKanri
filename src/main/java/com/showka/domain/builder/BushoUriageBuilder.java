@@ -32,15 +32,11 @@ public class BushoUriageBuilder extends com.showka.domain.builder.DomainBuilderB
 		builder.withKeijoDate(domain.getKeijoDate());
 		builder.withKeijoKingaku(domain.getKeijoKingaku());
 		builder.withTeiseiKingaku(domain.getTeiseiKingaku());
-		builder.withRecordId(domain.getRecordId());
-		builder.withVersion(domain.getVersion());
 	}
 
 	@Override
 	protected BushoUriage createDomainObject() {
 		BushoUriage domain = new BushoUriage(busho, keijoDate, keijoKingaku, teiseiKingaku);
-		domain.setRecordId(recordId);
-		domain.setVersion(version);
 		return domain;
 	}
 
@@ -122,39 +118,4 @@ public class BushoUriageBuilder extends com.showka.domain.builder.DomainBuilderB
 		});
 		return getThis();
 	}
-
-	/**
-	 * {@link BushoUriage}に与えるrecordIdをこのビルダに設定する。
-	 *
-	 * @param recordId
-	 *            recordId
-	 * @return {@link BushoUriageBuilder}
-	 */
-	public BushoUriageBuilder withRecordId(final String recordId) {
-		addConfigurator(new BuilderConfigurator<BushoUriageBuilder>() {
-			@Override
-			public void configure(BushoUriageBuilder builder) {
-				builder.recordId = recordId;
-			}
-		});
-		return getThis();
-	}
-
-	/**
-	 * {@link BushoUriage}に与えるversionをこのビルダに設定する。
-	 *
-	 * @param version
-	 *            version
-	 * @return {@link BushoUriageBuilder}
-	 */
-	public BushoUriageBuilder withVersion(final Integer version) {
-		addConfigurator(new BuilderConfigurator<BushoUriageBuilder>() {
-			@Override
-			public void configure(BushoUriageBuilder builder) {
-				builder.version = version;
-			}
-		});
-		return getThis();
-	}
-
 }
