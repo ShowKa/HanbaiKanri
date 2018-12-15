@@ -2,7 +2,7 @@ package com.showka.domain.u05;
 
 import java.math.BigDecimal;
 
-import com.showka.domain.DomainRoot;
+import com.showka.domain.DomainMeisai;
 import com.showka.domain.z00.Shohin;
 import com.showka.system.exception.SystemException;
 
@@ -17,7 +17,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class UriageMeisai extends DomainRoot implements Comparable<UriageMeisai> {
+public class UriageMeisai extends DomainMeisai {
 
 	// private member
 	/** 明細番号. */
@@ -42,24 +42,8 @@ public class UriageMeisai extends DomainRoot implements Comparable<UriageMeisai>
 		return hanbaiTanka.multiply(new BigDecimal(hanbaiNumber));
 	}
 
+	// override
 	@Override
 	public void validate() throws SystemException {
-		// nothing to do
-	}
-
-	@Override
-	protected boolean equals(DomainRoot other) {
-		UriageMeisai o = (UriageMeisai) other;
-		return meisaiNumber.equals(o.meisaiNumber);
-	}
-
-	@Override
-	public int hashCode() {
-		return meisaiNumber.hashCode();
-	}
-
-	@Override
-	public int compareTo(UriageMeisai o) {
-		return this.meisaiNumber.compareTo(o.meisaiNumber);
 	}
 }

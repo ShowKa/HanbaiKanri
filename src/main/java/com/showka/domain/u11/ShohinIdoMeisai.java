@@ -1,6 +1,6 @@
 package com.showka.domain.u11;
 
-import com.showka.domain.DomainRoot;
+import com.showka.domain.DomainMeisai;
 import com.showka.domain.z00.Shohin;
 import com.showka.system.exception.SystemException;
 
@@ -15,7 +15,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class ShohinIdoMeisai extends DomainRoot implements Comparable<ShohinIdoMeisai> {
+public class ShohinIdoMeisai extends DomainMeisai {
 
 	// private member
 	/** 明細番号. */
@@ -33,29 +33,9 @@ public class ShohinIdoMeisai extends DomainRoot implements Comparable<ShohinIdoM
 	 */
 	private Integer number;
 
-	// public method
+	// override
 	@Override
 	public void validate() throws SystemException {
-		// nothing to do
 	}
 
-	@Override
-	protected boolean equals(DomainRoot other) {
-		ShohinIdoMeisai o = (ShohinIdoMeisai) other;
-		return meisaiNumber.equals(o.meisaiNumber);
-	}
-
-	@Override
-	public int hashCode() {
-		return generateHashCode(meisaiNumber);
-	}
-
-	/**
-	 * 明細番号で比較する.
-	 * 
-	 */
-	@Override
-	public int compareTo(ShohinIdoMeisai o) {
-		return this.meisaiNumber.compareTo(o.meisaiNumber);
-	}
 }
