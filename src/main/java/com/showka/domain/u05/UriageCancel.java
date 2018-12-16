@@ -1,6 +1,6 @@
 package com.showka.domain.u05;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UriageCancel extends DomainBase {
+public class UriageCancel extends DomainRoot {
 
 	/** 売上. */
 	private Uriage uriageDomain;
@@ -32,7 +32,7 @@ public class UriageCancel extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		UriageCancel o = (UriageCancel) other;
 		return uriageDomain.equals(o.uriageDomain);
 	}

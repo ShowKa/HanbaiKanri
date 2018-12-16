@@ -3,8 +3,8 @@ package com.showka.domain.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.showka.domain.DomainBase;
-import com.showka.domain.DomainCore;
+import com.showka.domain.Domain;
+import com.showka.domain.DomainEntity;
 
 /**
  * {@link AbstractDomain}のインスタンスを生成するビルダー。
@@ -14,7 +14,7 @@ import com.showka.domain.DomainCore;
  * @param <S>
  *            このビルダークラスの型
  */
-public abstract class DomainBuilderBase<T extends DomainCore, S extends DomainBuilderBase<T, S>> {
+public abstract class DomainBuilderBase<T extends Domain, S extends DomainBuilderBase<T, S>> {
 
 	/**
 	 * Empty String
@@ -29,11 +29,11 @@ public abstract class DomainBuilderBase<T extends DomainCore, S extends DomainBu
 	List<BuilderConfigurator<S>> configurators = new ArrayList<BuilderConfigurator<S>>();
 
 	/**
-	 * ビルダの設定に基づき、引数の{@link DomainBase}の内容を変更した新しいインスタンスを生成する。
+	 * ビルダの設定に基づき、引数の{@link Domain}の内容を変更した新しいインスタンスを生成する。
 	 *
 	 * @param vo
-	 *            状態を引用する{@link DomainBase}
-	 * @return vo の内容に対して、このビルダの設定を上書きした{@link DomainBase}の新しいインスタンス
+	 *            状態を引用する{@link Domain}
+	 * @return vo の内容に対して、このビルダの設定を上書きした{@link Domain}の新しいインスタンス
 	 */
 	public T apply(T vo) {
 		S builder = newInstance();
@@ -54,8 +54,8 @@ public abstract class DomainBuilderBase<T extends DomainCore, S extends DomainBu
 			configurator.configure(getThis());
 		}
 		T domain = createDomainObject();
-		if (domain instanceof DomainBase) {
-			DomainBase _domain = (DomainBase) domain;
+		if (domain instanceof DomainEntity) {
+			DomainEntity _domain = (DomainEntity) domain;
 			if (_domain.getRecordId() == null || _domain.getRecordId().length() == 0) {
 				_domain.initRecordId();
 			}

@@ -2,10 +2,10 @@ package com.showka.system.triggerEvent;
 
 import org.springframework.context.ApplicationListener;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.system.triggerEvent.CrudEvent.EventType;
 
-public interface CrudEventListener<T extends DomainBase> extends ApplicationListener<CrudEvent<T>> {
+public interface CrudEventListener<T extends DomainRoot> extends ApplicationListener<CrudEvent<T>> {
 
 	@Override
 	default void onApplicationEvent(CrudEvent<T> event) {

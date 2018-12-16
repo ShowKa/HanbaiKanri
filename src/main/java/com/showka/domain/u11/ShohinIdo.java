@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
@@ -17,7 +17,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ShohinIdo extends DomainBase implements Comparable<ShohinIdo> {
+public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
 
 	// private member
 	/** 部署. */
@@ -69,7 +69,7 @@ public class ShohinIdo extends DomainBase implements Comparable<ShohinIdo> {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		ShohinIdo o = (ShohinIdo) other;
 		return this.getRecordId().equals(o.getRecordId());
 	}

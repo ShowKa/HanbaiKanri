@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.system.exception.SystemException;
 import com.showka.system.triggerEvent.CrudEvent.EventType;
 
@@ -22,7 +22,7 @@ public class TriggerCrudEventOnService {
 	private ApplicationEventPublisher applicationEventPublisher;
 
 	@Around("execution(* com.showka.service.crud.Crud+.save(..)) && @annotation(triggerCrudEvent) && args(domain)")
-	public <T extends DomainBase> Object triggerSaveEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent,
+	public <T extends DomainRoot> Object triggerSaveEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent,
 			T domain) throws Throwable {
 		// register or update
 		boolean doRegister = domain.getVersion() == null ? true : false;
@@ -52,7 +52,7 @@ public class TriggerCrudEventOnService {
 	}
 
 	@Around("execution(* com.showka.service.crud.Crud+.delete(..)) && @annotation(triggerCrudEvent) && args(domain)")
-	public <T extends DomainBase> Object triggerDeleteEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent,
+	public <T extends DomainRoot> Object triggerDeleteEvent(ProceedingJoinPoint pjp, TriggerCrudEvent triggerCrudEvent,
 			T domain) throws Throwable {
 		// get constructor for event
 		Class<?> eventClass = CrudEventClassProxy.get(domain.getClass());
@@ -73,7 +73,7 @@ public class TriggerCrudEventOnService {
 		return ret;
 	}
 
-	private <T extends DomainBase> Constructor<CrudEvent<T>> getConstructor(Class<CrudEvent<T>> eventClass) {
+	private <T extends DomainRoot> Constructor<CrudEvent<T>> getConstructor(Class<CrudEvent<T>> eventClass) {
 		if (!CrudEvent.class.isAssignableFrom(eventClass)) {
 			throw new SystemException("@TriggerCrudEventにはCrudEventのサブクラスを設定してください。 : " + eventClass);
 		}
@@ -87,7 +87,7 @@ public class TriggerCrudEventOnService {
 		return constuctor[0];
 	}
 
-	private <T extends DomainBase> CrudEvent<T> getEventInstance(Constructor<CrudEvent<T>> constructor, Object target,
+	private <T extends DomainRoot> CrudEvent<T> getEventInstance(Constructor<CrudEvent<T>> constructor, Object target,
 			EventType type, T domain) {
 		CrudEvent<T> event;
 		try {

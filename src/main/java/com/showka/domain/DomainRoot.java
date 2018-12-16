@@ -1,42 +1,6 @@
 package com.showka.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-
-public abstract class DomainBase extends DomainCore {
-
-	/** record_id */
-	private RecordID recordId;
-
-	/** バージョン(排他制御用) */
-	@Getter
-	@Setter
-	private Integer version;
-
-	public String getRecordId() {
-		return this.recordId.toString();
-	}
-
-	public void setRecordId(RecordID recordId) {
-		this.recordId = recordId;
-	}
-
-	public void setRecordId(String recordId) {
-		this.recordId = new RecordID(recordId);
-	}
-
-	public void initRecordId() {
-		this.recordId = new RecordID();
-	}
-
-	/**
-	 * 空チェック
-	 * 
-	 * @return 空オブジェクトならtrue
-	 */
-	public boolean isEmpty() {
-		return false;
-	}
+public abstract class DomainRoot extends DomainEntity {
 
 	/**
 	 * 同値判定
@@ -50,7 +14,7 @@ public abstract class DomainBase extends DomainCore {
 	 *            比較対象
 	 * @return 同じものならtrue
 	 */
-	protected abstract boolean equals(DomainBase other);
+	protected abstract boolean equals(DomainRoot other);
 
 	/**
 	 * 同値判定
@@ -69,13 +33,11 @@ public abstract class DomainBase extends DomainCore {
 		if (other == this) {
 			return true;
 		}
-
 		if (other == null) {
 			return false;
 		}
-
-		if (other instanceof DomainBase) {
-			return equals((DomainBase) other);
+		if (other instanceof DomainRoot) {
+			return equals((DomainRoot) other);
 		}
 		return false;
 	}

@@ -2,7 +2,7 @@ package com.showka.domain.u07;
 
 import java.util.List;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.z00.Busho;
 import com.showka.kubun.NyukinHohoKubun;
@@ -20,7 +20,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class Seikyu extends DomainBase {
+public class Seikyu extends DomainRoot {
 
 	// private members
 	/** 顧客. */
@@ -74,7 +74,7 @@ public class Seikyu extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Seikyu o = (Seikyu) other;
 		return kokyaku.equals(o.kokyaku) && seikyuDate.equals(o.seikyuDate);
 	}

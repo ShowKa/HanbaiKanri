@@ -1,6 +1,6 @@
 package com.showka.domain.u01;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.system.exception.SystemException;
 
 import lombok.AllArgsConstructor;
@@ -17,13 +17,13 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class FurikomiIrainin extends DomainBase {
+public class FurikomiIrainin extends DomainRoot {
 
 	/** 振込依頼人名. */
 	private String furikomiIraininName;
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		FurikomiIrainin o = (FurikomiIrainin) other;
 		return this.getRecordId().equals(o.getRecordId());
 	}

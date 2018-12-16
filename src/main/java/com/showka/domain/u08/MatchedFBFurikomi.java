@@ -41,20 +41,7 @@ public class MatchedFBFurikomi extends DomainAggregation {
 
 	// override
 	@Override
-	public int hashCode() {
-		return this.fBFurikomiId.hashCode();
-	}
-
-	@Override
 	public void validate() throws SystemException {
 	}
 
-	@Override
-	protected boolean equals(DomainAggregation other) {
-		// if (this == other) {
-		// return true;
-		// }
-		MatchedFBFurikomi o = (MatchedFBFurikomi) other;
-		return this.fBFurikomiId.equals(o.fBFurikomiId);
-	}
 }

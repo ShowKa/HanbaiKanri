@@ -91,10 +91,10 @@ public class U08G003Controller extends ControllerBase {
 		List<Map<String, Object>> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
 		model.addObject("keshikomiList", keshikomiList);
 		// get 売掛消込
-		Set<UrikakeKeshikomi> urikakeKeshikomiSet = nyukinKeshikomi.getUrikakeSet().stream().map(u -> {
+		List<UrikakeKeshikomi> _urikakeKeshikomiList = nyukinKeshikomi.getUrikakeSet().stream().map(u -> {
 			return urikakeKeshikomiPersistence.get(u.getRecordId());
-		}).collect(Collectors.toSet());
-		List<Map<String, Object>> urikakeKeshikomiList = urikakeKeshikomiSet.stream().map(uk -> {
+		}).collect(Collectors.toList());
+		List<Map<String, Object>> urikakeKeshikomiList = _urikakeKeshikomiList.stream().map(uk -> {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			// 売上
 			Urikake urikake = uk.getUrikake();

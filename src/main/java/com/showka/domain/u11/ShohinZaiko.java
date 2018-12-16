@@ -3,7 +3,7 @@ package com.showka.domain.u11;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
@@ -16,7 +16,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ShohinZaiko extends DomainBase {
+public class ShohinZaiko extends DomainRoot {
 
 	// private member
 	/** 部署. */
@@ -142,7 +142,7 @@ public class ShohinZaiko extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		ShohinZaiko o = (ShohinZaiko) other;
 		return busho.equals(o.busho) && date.equals(o.date) && shohin.equals(o.shohin);
 	}

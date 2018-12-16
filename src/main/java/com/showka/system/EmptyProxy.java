@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.kubun.i.Kubun;
 import com.showka.system.exception.SystemException;
 import com.showka.value.ValueBase;
@@ -35,7 +35,7 @@ public class EmptyProxy {
 	 *            クラス
 	 * @return Empty
 	 */
-	public static <T extends DomainBase> T domain(Class<T> clazz) {
+	public static <T extends DomainRoot> T domain(Class<T> clazz) {
 		return get(clazz);
 	}
 
@@ -168,7 +168,7 @@ public class EmptyProxy {
 				}
 
 				// Domain
-				boolean isDomain = returnType.subclassOf(cp.get(DomainBase.class.getName()));
+				boolean isDomain = returnType.subclassOf(cp.get(DomainRoot.class.getName()));
 				if (isDomain) {
 					String body = "return (" + returnType.getName() + ") " + EmptyProxy.class.getName() + ".domain("
 							+ returnType.getName() + ".class);";

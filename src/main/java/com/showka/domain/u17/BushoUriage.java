@@ -1,6 +1,6 @@
 package com.showka.domain.u17;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainAggregation;
 import com.showka.domain.z00.Busho;
 import com.showka.system.exception.SystemException;
 import com.showka.value.TheDate;
@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class BushoUriage extends DomainBase {
+public class BushoUriage extends DomainAggregation {
 
 	// private members
 	/** 部署. */
@@ -37,16 +37,5 @@ public class BushoUriage extends DomainBase {
 	@Override
 	public void validate() throws SystemException {
 		// nothing to do
-	}
-
-	@Override
-	protected boolean equals(DomainBase other) {
-		BushoUriage o = (BushoUriage) other;
-		return busho.equals(o.getBusho()) && keijoDate.equals(o.getKeijoDate());
-	}
-
-	@Override
-	public int hashCode() {
-		return generateHashCode(busho, keijoDate);
 	}
 }

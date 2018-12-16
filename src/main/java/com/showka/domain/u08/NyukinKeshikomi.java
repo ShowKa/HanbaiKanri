@@ -196,15 +196,4 @@ public class NyukinKeshikomi extends DomainAggregation {
 			}
 		});
 	}
-
-	@Override
-	public int hashCode() {
-		return generateHashCode(this.nyukin);
-	}
-
-	@Override
-	protected boolean equals(DomainAggregation other) {
-		NyukinKeshikomi o = (NyukinKeshikomi) other;
-		return nyukin.equals(o.nyukin);
-	}
 }

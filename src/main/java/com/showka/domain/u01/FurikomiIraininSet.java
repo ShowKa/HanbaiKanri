@@ -23,18 +23,7 @@ public class FurikomiIraininSet extends DomainAggregation {
 	private Set<FurikomiIrainin> set;
 
 	@Override
-	protected boolean equals(DomainAggregation other) {
-		FurikomiIraininSet o = (FurikomiIraininSet) other;
-		return this.kokyaku.equals(o.kokyaku);
-	}
-
-	@Override
 	public void validate() throws SystemException {
 		// do nothing
-	}
-
-	@Override
-	public int hashCode() {
-		return generateHashCode(kokyaku);
 	}
 }

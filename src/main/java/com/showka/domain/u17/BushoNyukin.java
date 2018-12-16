@@ -111,18 +111,6 @@ public class BushoNyukin extends DomainAggregation {
 		});
 	}
 
-	// override
-	@Override
-	protected boolean equals(DomainAggregation other) {
-		BushoNyukin o = (BushoNyukin) other;
-		return this.busho.equals(o.busho) && this.keijoDate.equals(o.keijoDate);
-	}
-
-	@Override
-	public int hashCode() {
-		return super.generateHashCode(this.busho, this.keijoDate);
-	}
-
 	@Override
 	public void validate() throws SystemException {
 	}

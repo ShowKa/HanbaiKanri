@@ -1,6 +1,6 @@
 package com.showka.domain.z00;
 
-import com.showka.domain.DomainBase;
+import com.showka.domain.DomainRoot;
 import com.showka.kubun.BushoKubun;
 import com.showka.kubun.JigyoKubun;
 import com.showka.system.exception.SystemException;
@@ -17,7 +17,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class Busho extends DomainBase {
+public class Busho extends DomainRoot {
 
 	/** 顧客コード */
 	private String code;
@@ -39,7 +39,7 @@ public class Busho extends DomainBase {
 	}
 
 	@Override
-	protected boolean equals(DomainBase other) {
+	protected boolean equals(DomainRoot other) {
 		Busho o = (Busho) other;
 		return code.equals(o.code);
 	}

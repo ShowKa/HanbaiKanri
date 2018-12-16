@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.showka.system.exception.SystemException;
 
-public abstract class DomainCore {
+public abstract class Domain {
 
 	/**
 	 * ドメイン整合性検証
@@ -35,28 +35,5 @@ public abstract class DomainCore {
 			s = name + "@" + hash + " : 未完成ビルド";
 		}
 		return s;
-	}
-
-	/**
-	 * ハッシュコード取得
-	 * 
-	 * @return ハッシュ値
-	 */
-	@Override
-	public abstract int hashCode();
-
-	/**
-	 * ハッシュコード生成用関数
-	 * 
-	 * @param objects
-	 *            equals()で比較対象となるメンバの値を渡してください。
-	 * @return ハッシュ値
-	 */
-	protected final static int generateHashCode(Object... objects) {
-		int hash = 1;
-		for (Object o : objects) {
-			hash = 31 * hash + (o == null ? 0 : o.hashCode());
-		}
-		return hash;
 	}
 }

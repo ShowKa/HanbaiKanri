@@ -7,7 +7,6 @@ import com.showka.common.PersistenceTestCase;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.repository.i.MShainRepository;
-import com.showka.service.crud.z00.ShainCrudImpl;
 import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.system.EmptyProxy;
 
@@ -60,6 +59,5 @@ public class ShainCrudImplTest extends PersistenceTestCase {
 		};
 		// check
 		assertEquals("r-user01", actual.getRecordId());
-		assertEquals(true, actual.getShozokuBusho().isEmpty());
 	}
 }
