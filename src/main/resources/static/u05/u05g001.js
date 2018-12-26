@@ -38,3 +38,14 @@ function($scope, $window, $http, uriageService, common, meisaiService) {
 		$window.open("/u05g002/refer?kokyakuCode=" + kokyakuCode + "&denpyoNumber=" + denpyoNumber, "_blank");
 	};
 } ]);
+
+$(document).ready(function() {
+	var $labels = $("[ioc-for=kokyakuCode]");
+	$labels.each(function() {
+		var $label = $(this);
+		var $target = $("#" + $label.attr("ioc-for"));
+		
+		
+		
+	});
+});
