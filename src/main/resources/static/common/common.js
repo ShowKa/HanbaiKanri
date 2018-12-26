@@ -286,6 +286,44 @@ function selectorEscape(val) {
 	};
 })(jQuery);
 
+/**
+ * jauery拡張. コード補完
+ */
+(function($) {
+	$.fn.instrumentalityOfCode = function(options) {
+		// options
+		var target = options.target;
+		var url = options.url;
+		var name = options.name ? options.name : "code";
+		var update = options.update;
+		return this.each(function() {
+			// label
+			var $label = $(this);
+			// target input
+			target = target ? target : $label.attr("ioc-target");
+			var $target = $.type(target) == "string" ? $("#" + target) : target;
+			// show or hide label
+			$target.on("focusin", function() {
+				$label.hide();
+			});
+			$target.on("focusout", function() {
+				$label.show();
+			});
+			// update label text
+			$target.on("change", function() {
+				$label.text("");
+				var $form = $("<form>");
+				$form.appendInput(name, this.value);
+				var callback = function(model) {
+					var updatedText = update(model);
+					$label.text(updatedText);
+				};
+				_.get(url, $form, callback);
+			});
+		});
+	};
+})(jQuery);
+
 $(document).ready(function() {
 	// set select readonly
 	$("body").on("mousedown keydown", "select[readonly]", function(e) {

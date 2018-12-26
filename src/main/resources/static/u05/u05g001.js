@@ -40,31 +40,18 @@ function($scope, $window, $http, uriageService, common, meisaiService) {
 } ]);
 
 $(document).ready(function() {
-	var $labels = $("[ioc-for=kokyakuCode]");
-	$labels.each(function() {
-		var $label = $(this);
-		var $target = $("#" + $label.attr("ioc-for"));
-		$target.on("change", function() {
-			var $t = $(this);
-			$label.text("");
-			var $form = $("<form>");
-			$form.appendInput("code", $t.val());
-			var callback = function(model) {
-				var exists = model.exists;
-				if (exists == true) {
-					var code = model.code;
-					var name = model.name;
-					var display = "(" + code + ":" + name + ")";
-					$label.text(display);
-				}
-			};
-			_.get("/info/getKokyaku", $form, callback);
-		});
-		$target.on("focusin", function() {
-			$label.hide();
-		});
-		$target.on("focusout", function() {
-			$label.show();
-		});
-	}); 
+	// function
+	var update = function(param) {
+		var exists = param.exists;
+		var code = param.code;
+		var name = param.name;
+		var text = exists ? "(" + code + ":" + name + ")" : "";
+		return text;
+	};
+	// 顧客
+	var $labels = $("[ioc=kokyaku]");
+	$labels.instrumentalityOfCode({
+		url : "/info/getKokyaku",
+		update : update
+	});
 });
