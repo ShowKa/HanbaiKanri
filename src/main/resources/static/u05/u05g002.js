@@ -146,7 +146,7 @@ function($scope, $http, denpyoService, common, meisaiService) {
 			}
 			$scope.$apply();
 		};
-		_.simpleRequest("/u05g002/getRireki", "uriageDenpyo", callback);
+		_.get("/u05g002/getRireki", "uriageDenpyo", callback);
 		return;
 	};
 	// 新規明細作成

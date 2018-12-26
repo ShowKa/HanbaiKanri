@@ -3,10 +3,17 @@ var _ = {};
 /**
  * 単純なAjaxリクエスト.
  */
-_.simpleRequest = function(url, form, successCallback, erroCallback) {
-	var url = url + "?" + $("#" + form).serialize();
+_.get = function(url, form, successCallback, erroCallback) {
+	var $form;
+	var type = $.type(form);
+	if (type == "string") {
+		$form = $("#" + form);
+	} else {
+		$form = form;
+	}
+	var url = url + "?" + $form.serialize();
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url : url,
 		dataType : "json",
 		success : function(data, status, xhr) {
