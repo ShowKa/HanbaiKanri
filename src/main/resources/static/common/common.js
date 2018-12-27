@@ -356,4 +356,12 @@ $(document).ready(function() {
 		}
 		return false;
 	});
+	// Instrumentality Of Code 
+	var labelText = "${code}:${name}";
+	var $labels = $("[ioc=kokyaku]");
+	$labels.instrumentalityOfCode({
+		url : "/info/getKokyaku",
+		key: "code",
+		labelText : labelText,
+	});
 });

@@ -1,0 +1,12 @@
+.ioc-label {
+	z-index: 0;
+	position: absolute;
+	right: 0px;
+	margin-right: 20px;
+	margin-top: 5px;
+	color: #0000004c;
+	max-width: 50%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
