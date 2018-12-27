@@ -297,6 +297,8 @@ function selectorEscape(val) {
 		var key = options.key ? options.key : "code";
 		var labelText = options.labelText;
 		var debug = options.debug ? options.debug : false;
+		var autoInit = options.autoInit ? options.autoInit : false;
+		var hideWhenInput = options.hideWhenInput ? options.hideWhenInput : false;
 		// regular expression to parse labelText
 		var reg = /\$\{[^\}]+\}/g;
 		return this.each(function() {
@@ -306,12 +308,14 @@ function selectorEscape(val) {
 			target = target ? target : $label.attr("ioc-target");
 			var $target = $.type(target) == "string" ? $("#" + target) : target;
 			// show or hide label
-			$target.on("focusin", function() {
-				$label.hide();
-			});
-			$target.on("focusout", function() {
-				$label.show();
-			});
+			if (hideWhenInput === true) {
+				$target.on("focusin", function() {
+					$label.hide();
+				});
+				$target.on("focusout", function() {
+					$label.show();
+				});
+			}
 			// update label text
 			$target.on("change", function() {
 				$label.text("");
@@ -343,6 +347,12 @@ function selectorEscape(val) {
 				};
 				_.get(url, $form, callback);
 			});
+			// trigger event automatically
+			if (autoInit === true) {
+				if ($target.val()) {
+					$target.trigger("change");
+				}
+			}
 		});
 	};
 })(jQuery);
@@ -363,5 +373,7 @@ $(document).ready(function() {
 		url : "/info/getKokyaku",
 		key: "code",
 		labelText : labelText,
+		autoInit : true,
+		hideWhenInput : false,
 	});
 });
