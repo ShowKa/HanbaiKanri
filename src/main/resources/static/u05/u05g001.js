@@ -40,18 +40,12 @@ function($scope, $window, $http, uriageService, common, meisaiService) {
 } ]);
 
 $(document).ready(function() {
-	// function
-	var update = function(param) {
-		var exists = param.exists;
-		var code = param.code;
-		var name = param.name;
-		var text = exists ? "(" + code + ":" + name + ")" : "";
-		return text;
-	};
+	var labelText = "${code}:${name}";
 	// 顧客
 	var $labels = $("[ioc=kokyaku]");
 	$labels.instrumentalityOfCode({
 		url : "/info/getKokyaku",
-		update : update
+		key: "code",
+		labelText : labelText,
 	});
 });

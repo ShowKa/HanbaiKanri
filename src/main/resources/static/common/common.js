@@ -294,8 +294,11 @@ function selectorEscape(val) {
 		// options
 		var target = options.target;
 		var url = options.url;
-		var name = options.name ? options.name : "code";
-		var update = options.update;
+		var key = options.key ? options.key : "code";
+		var labelText = options.labelText;
+		var debug = options.debug ? options.debug : false;
+		// regular expression to parse labelText
+		var reg = /\$\{[^\}]+\}/g;
 		return this.each(function() {
 			// label
 			var $label = $(this);
@@ -313,10 +316,30 @@ function selectorEscape(val) {
 			$target.on("change", function() {
 				$label.text("");
 				var $form = $("<form>");
-				$form.appendInput(name, this.value);
+				$form.appendInput(key, this.value);
 				var callback = function(model) {
-					var updatedText = update(model);
-					$label.text(updatedText);
+					var _text = "";
+					if ($.type(labelText) == "string") {
+						_text = labelText;
+						var matchedArray = labelText.match(reg);
+						for (var i in matchedArray) {
+							var matched = matchedArray[i];
+							var tKey = matched.substring(2, matched.length - 1);
+							var value = model[tKey];
+							if (!value) {
+								if (debug === true) {
+									console.log(tKey + "の値が見つかりません。");
+									console.log(model);
+								}
+								_text = "";
+								break;
+							}
+							_text = _text.replace(new RegExp("\\$\\{" + tKey + "\\}", "g"), value);
+						}
+					} else if ($.type(labelText) == "function") {
+						_text = labelText(model);
+					}
+					$label.text(_text);
 				};
 				_.get(url, $form, callback);
 			});
