@@ -254,10 +254,8 @@ public class U05G002Controller extends ControllerBase {
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrud.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai()
-				.stream()
-				.filter(m -> m.getMeisaiNumber() == null)
-				.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
+		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+				m -> m.setMeisaiNumber(i.getAndIncrement()));
 
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
@@ -452,7 +450,7 @@ public class U05G002Controller extends ControllerBase {
 		return ResponseEntity.ok(model);
 	}
 
-	@RequestMapping(value = "/u05g002/getRireki", method = RequestMethod.POST)
+	@RequestMapping(value = "/u05g002/getRireki", method = RequestMethod.GET)
 	public ResponseEntity<?> getRireki(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// 履歴取得
 		UriageRireki rireki = uriageRirekiQuery.get(form.getRecordId());

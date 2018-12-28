@@ -3,10 +3,17 @@ var _ = {};
 /**
  * 単純なAjaxリクエスト.
  */
-_.simpleRequest = function(url, form, successCallback, erroCallback) {
-	var url = url + "?" + $("#" + form).serialize();
+_.get = function(url, form, successCallback, erroCallback) {
+	var $form;
+	var type = $.type(form);
+	if (type == "string") {
+		$form = $("#" + form);
+	} else {
+		$form = form;
+	}
+	var url = url + "?" + $form.serialize();
 	$.ajax({
-		type : "POST",
+		type : "GET",
 		url : url,
 		dataType : "json",
 		success : function(data, status, xhr) {
@@ -279,6 +286,77 @@ function selectorEscape(val) {
 	};
 })(jQuery);
 
+/**
+ * jauery拡張. コード補完
+ */
+(function($) {
+	$.fn.instrumentalityOfCode = function(options) {
+		// options
+		var target = options.target;
+		var url = options.url;
+		var key = options.key ? options.key : "code";
+		var labelText = options.labelText;
+		var debug = options.debug ? options.debug : false;
+		var autoInit = options.autoInit ? options.autoInit : false;
+		var hideWhenInput = options.hideWhenInput ? options.hideWhenInput : false;
+		// regular expression to parse labelText
+		var reg = /\$\{[^\}]+\}/g;
+		return this.each(function() {
+			// label
+			var $label = $(this);
+			// target input
+			target = target ? target : $label.attr("ioc-target");
+			var $target = $.type(target) == "string" ? $("#" + target) : target;
+			// show or hide label
+			if (hideWhenInput === true) {
+				$target.on("focusin", function() {
+					$label.hide();
+				});
+				$target.on("focusout", function() {
+					$label.show();
+				});
+			}
+			// update label text
+			$target.on("change", function() {
+				$label.text("");
+				var $form = $("<form>");
+				$form.appendInput(key, this.value);
+				var callback = function(model) {
+					var _text = "";
+					if ($.type(labelText) == "string") {
+						_text = labelText;
+						var matchedArray = labelText.match(reg);
+						for (var i in matchedArray) {
+							var matched = matchedArray[i];
+							var tKey = matched.substring(2, matched.length - 1);
+							var value = model[tKey];
+							if (!value) {
+								if (debug === true) {
+									console.log(tKey + "の値が見つかりません。");
+									console.log(model);
+								}
+								_text = "";
+								break;
+							}
+							_text = _text.replace(new RegExp("\\$\\{" + tKey + "\\}", "g"), value);
+						}
+					} else if ($.type(labelText) == "function") {
+						_text = labelText(model);
+					}
+					$label.text(_text);
+				};
+				_.get(url, $form, callback);
+			});
+			// trigger event automatically
+			if (autoInit === true) {
+				if ($target.val()) {
+					$target.trigger("change");
+				}
+			}
+		});
+	};
+})(jQuery);
+
 $(document).ready(function() {
 	// set select readonly
 	$("body").on("mousedown keydown", "select[readonly]", function(e) {
@@ -287,5 +365,15 @@ $(document).ready(function() {
 			return;
 		}
 		return false;
+	});
+	// Instrumentality Of Code 
+	var labelText = "${code}:${name}";
+	var $labels = $("[ioc=kokyaku]");
+	$labels.instrumentalityOfCode({
+		url : "/info/getKokyaku",
+		key: "code",
+		labelText : labelText,
+		autoInit : true,
+		hideWhenInput : false,
 	});
 });
