@@ -14,25 +14,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 商品移動_入荷.
+ * 商品移動_入荷訂正.
  */
 @Entity
-@Table(name = "t_shohin_ido_nyuka")
+@Table(name = "t_shohin_ido_nyuka_teisei")
 @Getter
 @Setter
-public class TShohinIdoNyuka extends EntityBase implements Serializable {
+public class TShohinIdoNyukaTeisei extends EntityBase implements Serializable {
 
 	/** SID. */
-	private static final long serialVersionUID = 8573605601478991196L;
+	private static final long serialVersionUID = -7136464915357710337L;
 
 	/** 商品移動ID */
 	@Id
 	@Column(name = "shohin_ido_id", nullable = false, length = 255)
 	private String shohinIdoId;
 
-	/** 入荷先ID */
-	@Column(name = "nyuka_saki_id", nullable = false, length = 255)
-	private String nyukaSakiId;
+	/** 入荷ID（訂正対象） */
+	@Id
+	@Column(name = "nyuka_id", nullable = false, length = 255)
+	private String nyukaId;
 
 	// fetch
 	/** 商品移動. */
@@ -40,8 +41,8 @@ public class TShohinIdoNyuka extends EntityBase implements Serializable {
 	@JoinColumn(name = "shohin_ido_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private TShohinIdo shohinIdo;
 
-	/** 入荷先. */
+	/** 入荷. */
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "nyuka_saki_id", referencedColumnName = "record_id", insertable = false, updatable = false)
-	private MNyukaSaki nyukaSaki;
+	@JoinColumn(name = "nyuka_id", referencedColumnName = "record_id", insertable = false, updatable = false)
+	private TShohinIdoNyuka nyuka;
 }

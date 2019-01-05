@@ -14,10 +14,8 @@ import com.showka.web.ModelAndViewExtended;
 @Controller
 @EnableAutoConfiguration
 public class U11G003Controller extends ControllerBase {
-	/**
-	 * 参照.
-	 *
-	 */
+
+	/** 参照. */
 	@RequestMapping(value = "/u11g003/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// set model
@@ -28,10 +26,18 @@ public class U11G003Controller extends ControllerBase {
 		return model;
 	}
 
-	/**
-	 * 商品在庫取得.
-	 *
-	 */
+	/** 商品入荷登録. */
+	@RequestMapping(value = "/u11g003/register", method = RequestMethod.GET)
+	public ModelAndViewExtended register(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// set model
+		model.addForm(form);
+		model.setMode(Mode.READ);
+		model.setViewName("/u11/u11g003");
+		// return
+		return model;
+	}
+
+	// 取得
 	@RequestMapping(value = "/u11g003/get", method = RequestMethod.POST)
 	public ResponseEntity<?> get(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// return
