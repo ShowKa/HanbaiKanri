@@ -20,20 +20,57 @@
 						id="searchForm"
 						class="form-horizontal">
 						<div class="row">
-							<div class="col-sm-2 col-sm-offset-8 col-xs-2 col-xs-offset-8">
+							<div class="col-sm-4 col-xs-4"></div>
+							<div class="col-sm-2 col-xs-2">
 								<input
 									type="button"
-									class="btn btn-primary btn-sm whenRead"
-									value="更新モードへ"
+									class="btn btn-secondary btn-sm whenRead"
+									value="参照モード"
 									ng-show="isReadMode()"
 									ng-click="updateForm()"></input>
 							</div>
+							<div class="col-sm-2 col-xs-2">
+								<input
+									type="button"
+									class="btn btn-secondary btn-sm whenRead"
+									value="更新モード"
+									ng-show="isReadMode()"
+									ng-click="updateForm()"></input>
+							</div>
+							<div class="col-sm-2 col-xs-2">
+								<input
+									type="button"
+									class="btn btn-secondary btn-sm whenRead"
+									value="訂正モード"
+									ng-show="isReadMode()"
+									ng-click="updateForm()"></input>
+							</div>
+							<div class="col-sm-2 col-xs-2">
+								<input
+									type="button"
+									class="btn btn-secondary btn-sm whenRead"
+									value="訂正更新モード"
+									ng-show="isReadMode()"
+									ng-click="updateForm()"></input>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-9 col-xs-9"></div>
 							<div class="col-sm-1 col-xs-1">
 								<input
 									id="deleteBtn"
 									type="button"
 									class="btn btn-primary btn-sm"
 									value="削除"
+									ng-show="isReadMode()"
+									ng-click="delete()" />
+							</div>
+							<div class="col-sm-1 col-xs-1">
+								<input
+									id="deleteBtn"
+									type="button"
+									class="btn btn-primary btn-sm"
+									value="訂正の削除"
 									ng-show="isReadMode()"
 									ng-click="delete()" />
 							</div>
@@ -74,7 +111,7 @@
 						<div class="form-group form-group-sm">
 							<label
 								class="control-label col-sm-2"
-								for="date">営業日</label>
+								for="date">入荷日</label>
 							<div class="col-sm-10">
 								<input
 									class="form-control"
@@ -91,24 +128,42 @@
 				</div>
 			</div>
 			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="col-md-1 col-sm-1">
+					<input
+						ng-click=""
+						id=""
+						type="button"
+						class="btn btn-secondary btn-sm"
+						value="訂正履歴"
+						ng-show="" />
+				</div>
 				<table class="table table-striped">
-					<caption>明細</caption>
+					<caption>訂正履歴</caption>
 					<thead>
 						<tr>
 							<th>商品</th>
 							<th></th>
-							<th>数</th>
+							<th>登録・訂正日</th>
+							<th>移動数</th>
 						</tr>
 					</thead>
 					<tbody id="nyukaList">
 						<tr>
 							<td class="col-sm-1">SH01</td>
-							<td class="col-sm-3">商品01</td>
-							<td class="col-sm-1">5</td>
+							<td class="col-sm-2">商品01</td>
+							<td class="col-sm-2">2018/08/20</td>
+							<td class="col-sm-1">6</td>
+						</tr>
+						<tr>
+							<td class="col-sm-1"></td>
+							<td class="col-sm-2"></td>
+							<td class="col-sm-2">2018/08/21</td>
+							<td class="col-sm-1">-1</td>
 						</tr>
 						<tr>
 							<td class="col-sm-1">SH02</td>
-							<td class="col-sm-3">商品02</td>
+							<td class="col-sm-2">商品02</td>
+							<td class="col-sm-2">2018/08/20</td>
 							<td class="col-sm-1">6</td>
 						</tr>
 					</tbody>
@@ -131,6 +186,24 @@
 						class="btn btn-primary btn-sm whenUpdate"
 						value="更新"
 						ng-show="isUpdateMode()" />
+				</div>
+				<div class="col-md-1 col-sm-1">
+					<input
+						ng-click=""
+						id=""
+						type="button"
+						class="btn btn-primary btn-sm"
+						value="訂正"
+						ng-show="" />
+				</div>
+				<div class="col-md-1 col-sm-1">
+					<input
+						ng-click=""
+						id=""
+						type="button"
+						class="btn btn-primary btn-sm"
+						value="訂正の更新"
+						ng-show="" />
 				</div>
 			</div>
 		</div>
