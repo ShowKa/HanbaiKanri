@@ -28,7 +28,7 @@ public class ShohinIdoMeisai extends DomainMeisai {
 	 * 移動数.
 	 * 
 	 * <pre>
-	 * 在庫数の増減にかかわらず常に正の数。増減の正負は商品移動ドメインで管理
+	 * 移動数が正の値のときに、在庫数が増減するか否かは商品移動区分に依存する。
 	 * </pre>
 	 */
 	private Integer number;

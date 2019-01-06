@@ -31,7 +31,7 @@ public enum ShohinIdoKubun implements Kubun<ShohinIdoKubun> {
 	/**
 	 * 部署在庫増加判定.
 	 * 
-	 * @return 部署の在庫が増える場合はtrue
+	 * @return 移動数が正の数で部署の在庫が増える場合、true
 	 */
 	public boolean increase() {
 		switch (this) {
