@@ -142,6 +142,16 @@ public class Nyuka extends DomainRoot {
 		}).get();
 	}
 
+	// getter
+	public String getShohinIdoId() {
+		return this.nyukaShohinIdo.getRecordId();
+	}
+
+	public String getNyukaSakiId() {
+		return this.nyukaSaki.getRecordId();
+	}
+
+	// override
 	@Override
 	protected boolean equals(DomainRoot other) {
 		Nyuka o = (Nyuka) other;

@@ -44,4 +44,9 @@ public class TShohinIdoNyuka extends EntityBase implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "nyuka_saki_id", referencedColumnName = "record_id", insertable = false, updatable = false)
 	private MNyukaSaki nyukaSaki;
+
+	// getter
+	public MBusho getBusho() {
+		return this.shohinIdo.getBusho();
+	}
 }

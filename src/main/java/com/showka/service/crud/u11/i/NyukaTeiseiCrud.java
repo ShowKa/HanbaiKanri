@@ -1,11 +1,15 @@
 package com.showka.service.crud.u11.i;
 
-import com.showka.domain.u08.Nyukin;
+import java.util.List;
+
+import com.showka.domain.u11.Nyuka;
 import com.showka.domain.u11.ShohinIdo;
 
 public interface NyukaTeiseiCrud {
 
-	public void save(ShohinIdo teiseiShohinIdo, Nyukin nyukin);
+	public void save(ShohinIdo teiseiShohinIdo, Nyuka nyuka);
 
-	public void delete(ShohinIdo teiseiShohinIdo, Nyukin nyukin);
+	public void delete(ShohinIdo teiseiShohinIdo, Nyuka nyuka);
+
+	public List<ShohinIdo> get(String nyukaId);
 }
