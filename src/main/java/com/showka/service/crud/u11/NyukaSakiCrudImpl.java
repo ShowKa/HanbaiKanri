@@ -1,13 +1,18 @@
 package com.showka.service.crud.u11;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.showka.domain.builder.NyukaSakiBuilder;
 import com.showka.domain.u11.NyukaSaki;
 import com.showka.entity.MNyukaSaki;
 import com.showka.repository.i.MNyukaSakiRepository;
 import com.showka.service.crud.u11.i.NyukaSakiCrud;
 
+@Service
 public class NyukaSakiCrudImpl implements NyukaSakiCrud {
 
+	@Autowired
 	private MNyukaSakiRepository repo;
 
 	@Override
