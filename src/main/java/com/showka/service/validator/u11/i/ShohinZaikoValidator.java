@@ -3,6 +3,9 @@ package com.showka.service.validator.u11.i;
 import com.showka.domain.u11.ShohinIdo;
 import com.showka.system.exception.specification.MinusZaikoException;
 
+/**
+ * 商品在庫整合性検証.
+ */
 public interface ShohinZaikoValidator {
 
 	/**
@@ -18,4 +21,18 @@ public interface ShohinZaikoValidator {
 	 *             マイナス在庫例外.
 	 */
 	public void validateMinusZaiko(ShohinIdo shohinIDo) throws MinusZaikoException;
+
+	/**
+	 * 商品マイナス在庫検証.
+	 * 
+	 * <pre>
+	 * 引数.商品移動の削除の結果、在庫がマイナスとなる商品がある場合エラー.
+	 * </pre>
+	 * 
+	 * @param shohinIDo
+	 *            商品移動
+	 * @throws MinusZaikoException
+	 *             マイナス在庫例外.
+	 */
+	public void validateMinusZaikoForDelete(ShohinIdo shohinIDo) throws MinusZaikoException;
 }

@@ -7,15 +7,16 @@ import com.showka.service.validator.u11.i.ShohinZaikoValidator;
 import com.showka.system.exception.specification.UnsatisfiedSpecificationException;
 
 /**
- * 商品移動入荷仕様.
+ * 商品移動入荷訂正仕様.
  */
-public interface ShohinIdoNyukaSpecification extends ShohinIdoSpecification {
+public interface ShohinIdoNyukaTeiseiSpecification extends ShohinIdoSpecification {
 
 	/**
 	 * 商品移動取得.
 	 * 
 	 * <pre>
-	 * 入荷.商品移動を返却
+	 * 下記条件を満たす入荷.入荷訂正商品移動を返却する。
+	 * - 商品移動.日付 = 入荷.部署.営業日
 	 * </pre>
 	 * 
 	 * @return 商品移動のリスト
@@ -49,4 +50,5 @@ public interface ShohinIdoNyukaSpecification extends ShohinIdoSpecification {
 	 */
 	@Override
 	public void ascertainSatisfaction() throws UnsatisfiedSpecificationException;
+
 }

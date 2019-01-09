@@ -33,7 +33,7 @@ public class Nyuka extends DomainRoot {
 	/** 商品移動(入荷). */
 	private ShohinIdo nyukaShohinIdo;
 
-	/** 商品移動リスト（入荷訂正）. */
+	/** 入荷訂正商品移動リスト. */
 	private List<ShohinIdo> teiseiList = new ArrayList<>();
 
 	/**

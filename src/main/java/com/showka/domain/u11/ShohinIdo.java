@@ -15,6 +15,9 @@ import com.showka.value.TheTimestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 商品移動.
+ */
 @AllArgsConstructor
 @Getter
 public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
