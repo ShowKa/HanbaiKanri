@@ -199,7 +199,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 		_shohinIdo.forEach(ido -> {
 			Set<Shohin> shohinSet = ido.getShohinSet();
 			shohinSet.forEach(s -> {
-				int absoluteIdoNumber = ido.getAbusoluteIdoNumberForBushoZaiko(s) * sign;
+				int absoluteIdoNumber = ido.getNumberForBushoZaiko(s) * sign;
 				int number;
 				if (shohinIdoNumberMap.containsKey(s)) {
 					Integer present = shohinIdoNumberMap.get(s);

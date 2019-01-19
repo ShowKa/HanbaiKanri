@@ -2,8 +2,8 @@ package com.showka.domain.builder;
 
 import java.util.List;
 
+import com.showka.domain.u11.ShohinIdo;
 import com.showka.domain.u11.ShohinZaiko;
-import com.showka.domain.u11.ShohinZaiko.ShohinIdoOnDate;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.value.EigyoDate;
@@ -20,11 +20,11 @@ public class ShohinZaikoBuilder extends com.showka.domain.builder.DomainBuilderB
 	/** shohin */
 	private Shohin shohin;
 
-	/** number */
+	/** kurikoshiNumber */
 	private Integer kurikoshiNumber;
 
 	/** shohinIdoList */
-	private List<ShohinIdoOnDate> shohinIdoList;
+	private List<ShohinIdo> shohinIdoList;
 
 	/** recordId */
 	private String recordId;
@@ -115,17 +115,17 @@ public class ShohinZaikoBuilder extends com.showka.domain.builder.DomainBuilderB
 	}
 
 	/**
-	 * {@link ShohinZaiko}に与えるzaikoをこのビルダに設定する。
+	 * {@link ShohinZaiko}に与えるkurikoshiNumberをこのビルダに設定する。
 	 *
-	 * @param zaiko
-	 *            zaiko
+	 * @param kurikoshiNumber
+	 *            kurikoshiNumber
 	 * @return {@link ShohinZaikoBuilder}
 	 */
-	public ShohinZaikoBuilder withKurikoshiNumber(final Integer number) {
+	public ShohinZaikoBuilder withKurikoshiNumber(final Integer kurikoshiNumber) {
 		addConfigurator(new BuilderConfigurator<ShohinZaikoBuilder>() {
 			@Override
 			public void configure(ShohinZaikoBuilder builder) {
-				builder.kurikoshiNumber = number;
+				builder.kurikoshiNumber = kurikoshiNumber;
 			}
 		});
 		return getThis();
@@ -138,7 +138,7 @@ public class ShohinZaikoBuilder extends com.showka.domain.builder.DomainBuilderB
 	 *            shohinIdoList
 	 * @return {@link ShohinZaikoBuilder}
 	 */
-	public ShohinZaikoBuilder withShohinIdoList(final List<ShohinIdoOnDate> shohinIdoList) {
+	public ShohinZaikoBuilder withShohinIdoList(final List<ShohinIdo> shohinIdoList) {
 		addConfigurator(new BuilderConfigurator<ShohinZaikoBuilder>() {
 			@Override
 			public void configure(ShohinZaikoBuilder builder) {

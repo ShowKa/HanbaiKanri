@@ -354,7 +354,7 @@ public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCa
 				// 対象商品商品。1つ移動した（部署->顧客）
 				pastShohinIdo.getShohinSet();
 				result = shohinSet;
-				pastShohinIdo.getAbusoluteIdoNumberForBushoZaiko(shohin);
+				pastShohinIdo.getNumberForBushoZaiko(shohin);
 				result = -1;
 				// 在庫は10個残っている
 				zaiko.getNumber();

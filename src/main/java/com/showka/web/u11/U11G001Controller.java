@@ -94,7 +94,7 @@ public class U11G001Controller extends ControllerBase {
 			Map<String, Object> ret = new HashMap<String, Object>();
 			ret.put("timestamp", z.getTimestamp().toString("HH:mm:ss"));
 			ret.put("kubun", z.getKubun().name());
-			ret.put("number", z.getIncreaseOrDecreaseNumber());
+			ret.put("number", z.getNumberForBushoZaiko(_zaiko.getShohin()));
 			return ret;
 		}).collect(Collectors.toList());
 		// set model

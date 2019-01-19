@@ -23,6 +23,7 @@ public interface ShohinIdoSpecification {
 	 * 
 	 * @return 削除対象の商品移動のリスト
 	 */
+	// TODO 消す
 	public List<ShohinIdo> getShohinIdoForDelete();
 
 	/**
