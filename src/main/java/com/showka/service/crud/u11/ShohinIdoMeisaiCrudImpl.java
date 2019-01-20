@@ -39,8 +39,6 @@ public class ShohinIdoMeisaiCrudImpl implements ShohinIdoMeisaiCrud {
 		entity.setShohinId(shohinIdoMeisai.getShohinDomain().getRecordId());
 		// record id
 		entity.setRecordId(shohinIdoMeisai.getRecordId());
-		// occ
-		entity.setVersion(shohinIdoMeisai.getVersion());
 		// save
 		repo.save(entity);
 	}
@@ -48,8 +46,6 @@ public class ShohinIdoMeisaiCrudImpl implements ShohinIdoMeisaiCrud {
 	@Override
 	public void delete(TShohinIdoMeisaiPK pk, int version) {
 		TShohinIdoMeisai entity = repo.getOne(pk);
-		// occ
-		entity.setVersion(version);
 		repo.delete(entity);
 	}
 

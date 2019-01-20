@@ -1,13 +1,12 @@
 package com.showka.service.specification.u11;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,14 +24,15 @@ import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
 import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.system.exception.specification.MinusZaikoException;
-import com.showka.system.exception.specification.UnsatisfiedSpecificationException;
 import com.showka.system.exception.specification.MinusZaikoException.MinusZaiko;
+import com.showka.system.exception.specification.UnsatisfiedSpecificationException;
 import com.showka.system.exception.validate.ValidateException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 売上商品移動.
@@ -47,80 +47,63 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	@Autowired
 	private ShohinZaikoQuery shohinZaikoQuery;
 
-	/**
-	 * 商品移動.
-	 */
-	private List<ShohinIdo> shohinIdo = new ArrayList<ShohinIdo>();
+	/** 売上. */
+	@Setter(value = AccessLevel.PROTECTED)
+	private Uriage uriage;
 
-	/**
-	 * 削除対象商品移動.
-	 */
-	private List<ShohinIdo> shohinIdoForDelete = new ArrayList<ShohinIdo>();
+	/** cache */
+	private List<ShohinIdo> shohinIdoList = new ArrayList<ShohinIdo>();
 
-	/**
-	 * 部署.
-	 */
-	private Busho busho;
-
-	/**
-	 * 売上設定.
-	 * 
-	 * @param uriage
-	 *            売上
-	 */
-	protected void setUriage(Uriage uriage) {
-		this.busho = uriage.getKokyaku().getShukanBusho();
-		// 売上による商品移動
-		this.shohinIdo.add(buildShohinIdoFromUriageDomain(uriage));
-		// 売上訂正による商品移動
-		Optional<ShohinIdo> pastIdo = shohinIdoUriageQuery.getNewest(uriage.getRecordId());
-		if (pastIdo.isPresent()) {
-			// get past
-			ShohinIdo p = pastIdo.get();
-			// add 商品移動
-			// - 営業日がまだ同じ場合、前回の商品移動を削除対象とする。
-			// - 営業日が更新されている場合、商品移動を差し戻すための商品移動を新たに設定する。
-			EigyoDate eigyoDate = uriage.getKokyaku().getShukanBusho().getEigyoDate();
-			if (eigyoDate.equals(p.getDate())) {
-				this.shohinIdoForDelete.add(p);
-			} else {
-				// build 商品移動（売上訂正）
-				ShohinIdoBuilder b = new ShohinIdoBuilder();
-				b.withDate(eigyoDate);
-				b.withKubun(ShohinIdoKubun.売上訂正);
-				b.withBusho(p.getBusho());
-				List<ShohinIdoMeisai> meisai = p.getMeisai().stream().map(m -> {
-					ShohinIdoMeisaiBuilder mb = new ShohinIdoMeisaiBuilder();
-					mb.withMeisaiNumber(m.getMeisaiNumber());
-					mb.withNumber(m.getNumber());
-					mb.withShohinDomain(m.getShohinDomain());
-					return mb.build();
-				}).collect(Collectors.toList());
-				b.withMeisai(meisai);
-				b.withTimestamp(new TheTimestamp());
-				ShohinIdo si = b.build();
-				this.shohinIdo.add(si);
-			}
-		}
-	}
-
-	/**
-	 * 売上による商品移動を取得.
-	 * 
-	 * <pre>
-	 * 伝票訂正の場合、マイナス移動も含まれる。
-	 * </pre>
-	 * 
-	 * @return 商品移動ドメイン
-	 */
 	@Override
 	public List<ShohinIdo> getShohinIdo() {
-		return shohinIdo;
-	}
-
-	@Override
-	public List<ShohinIdo> getShohinIdoForDelete() {
-		return this.shohinIdoForDelete;
+		if (!shohinIdoList.isEmpty()) {
+			return shohinIdoList;
+		}
+		// 商品移動
+		// 売上ID
+		String uriageId = this.uriage.getRecordId();
+		// 営業日
+		EigyoDate eigyoDate = this.uriage.getKokyaku().getShukanBusho().getEigyoDate();
+		// 新規登録の場合
+		// 条件: 商品移動がない
+		// やること: 売上から商品移動（売上）をビルド
+		Optional<ShohinIdo> _newest = shohinIdoUriageQuery.getNewest(uriageId);
+		if (!_newest.isPresent()) {
+			ShohinIdo ido = this.build();
+			shohinIdoList.add(ido);
+			return shohinIdoList;
+		}
+		// 訂正の更新の場合
+		// 条件: 商品移動がある。ただし当日営業日の商品移動がない。
+		// やること：直前の移動から商品移動（売上訂正）をビルド
+		List<ShohinIdo> idoList = shohinIdoUriageQuery.get(uriageId, eigyoDate);
+		if (idoList.isEmpty()) {
+			ShohinIdo past = _newest.get();
+			ShohinIdo teisei = this.buildTeisei(past);
+			shohinIdoList.add(teisei);
+			ShohinIdo ido = this.build();
+			shohinIdoList.add(ido);
+			return shohinIdoList;
+		}
+		// すでに登録or訂正済みで、これを更新する場合
+		// 条件: 商品移動がある。当日営業日の商品移動が存在する。
+		// やること: 既存の商品移動（売上）の明細を更新する。
+		idoList.stream().forEach(i -> {
+			switch (i.getKubun()) {
+			case 売上:
+				// 明細のみ上書きする。
+				ShohinIdoBuilder b = new ShohinIdoBuilder();
+				b.withMeisai(this.build().getMeisai());
+				shohinIdoList.add(b.apply(i));
+				break;
+			case 売上訂正:
+				shohinIdoList.add(i);
+				break;
+			default:
+				break;
+			}
+		});
+		return shohinIdoList;
 	}
 
 	/**
@@ -134,16 +117,19 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	 */
 	@Override
 	public void ascertainSatisfaction() throws UnsatisfiedSpecificationException {
+		List<ShohinIdo> _shohinIdoList = this.getShohinIdo();
+		Set<Shohin> shohinSet = _shohinIdoList.stream().map(i -> {
+			return i.getShohinSet();
+		}).flatMap(Set::stream).collect(toSet());
 		List<MinusZaiko> minusZaikoList = new ArrayList<MinusZaiko>();
-		Map<Shohin, Integer> shohinIdoNumberMap = new HashMap<Shohin, Integer>();
-		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdo, false);
-		this.putShohiIdoNumber(shohinIdoNumberMap, this.shohinIdoForDelete, true);
-		shohinIdoNumberMap.forEach((s, n) -> {
-			ShohinZaiko zaiko = shohinZaikoQuery.get(this.busho, this.busho.getEigyoDate(), s);
-			Integer present = zaiko.getNumber();
-			Integer after = present + n;
-			if (after < 0) {
-				minusZaikoList.add(new MinusZaiko(s, present, after));
+		shohinSet.forEach(s -> {
+			Busho busho = this.uriage.getKokyaku().getShukanBusho();
+			EigyoDate date = busho.getEigyoDate();
+			ShohinZaiko zaiko = shohinZaikoQuery.get(busho, date, s);
+			ShohinZaiko zaikoMerged = zaiko.merge(_shohinIdoList);
+			if (zaikoMerged.isNegative()) {
+				MinusZaiko minusZaiko = new MinusZaiko(s, zaiko.getNumber(), zaikoMerged.getNumber());
+				minusZaikoList.add(minusZaiko);
 			}
 		});
 		if (!minusZaikoList.isEmpty()) {
@@ -160,7 +146,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	 *            売上訂正による商品移動にしたい場合はtrue
 	 * @return 商品移動
 	 */
-	private ShohinIdo buildShohinIdoFromUriageDomain(Uriage uriage) {
+	private ShohinIdo build() {
 		// 売上明細
 		List<UriageMeisai> meisaiList = uriage.getUriageMeisai();
 		// 商品移動明細
@@ -171,7 +157,7 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 			b.withNumber(meisai.getHanbaiNumber());
 			b.withShohinDomain(meisai.getShohinDomain());
 			return b.build();
-		}).collect(Collectors.toList());
+		}).collect(toList());
 		// 商品移動
 		ShohinIdoBuilder b = new ShohinIdoBuilder();
 		b.withBusho(uriage.getKokyaku().getShukanBusho());
@@ -183,32 +169,30 @@ public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpec
 	}
 
 	/**
-	 * 商品移動数をマップにまとめます.
+	 * 売上訂正の商品移動をビルド.
 	 * 
-	 * @param shohinIdoNumberMap
-	 *            商品移動数のマップ（更新されます）。部署在庫が増える場合は正の数が加算されます。
-	 * @param _shohinIdo
-	 *            商品移動
-	 * @param forDelete
-	 *            商品移動が削除対象の場合true
+	 * @param past
+	 *            訂正対象の商品移動
+	 * @return 商品移動
 	 */
-	private void putShohiIdoNumber(Map<Shohin, Integer> shohinIdoNumberMap, List<ShohinIdo> _shohinIdo,
-			boolean forDelete) {
-		// 削除対象の場合、移動数の正負符号を反転させる。
-		int sign = forDelete ? -1 : 1;
-		_shohinIdo.forEach(ido -> {
-			Set<Shohin> shohinSet = ido.getShohinSet();
-			shohinSet.forEach(s -> {
-				int absoluteIdoNumber = ido.getNumberForBushoZaiko(s) * sign;
-				int number;
-				if (shohinIdoNumberMap.containsKey(s)) {
-					Integer present = shohinIdoNumberMap.get(s);
-					number = present + absoluteIdoNumber;
-				} else {
-					number = absoluteIdoNumber;
-				}
-				shohinIdoNumberMap.put(s, number);
-			});
-		});
+	private ShohinIdo buildTeisei(ShohinIdo past) {
+		// 営業日
+		Busho shukanBusho = this.uriage.getKokyaku().getShukanBusho();
+		EigyoDate eigyoDate = shukanBusho.getEigyoDate();
+		// build 商品移動（売上訂正）
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
+		b.withBusho(past.getBusho());
+		b.withKubun(ShohinIdoKubun.売上訂正);
+		b.withDate(eigyoDate);
+		List<ShohinIdoMeisai> meisai = past.getMeisai().stream().map(m -> {
+			ShohinIdoMeisaiBuilder mb = new ShohinIdoMeisaiBuilder();
+			mb.withMeisaiNumber(m.getMeisaiNumber());
+			mb.withNumber(m.getNumber());
+			mb.withShohinDomain(m.getShohinDomain());
+			return mb.build();
+		}).collect(toList());
+		b.withMeisai(meisai);
+		b.withTimestamp(new TheTimestamp());
+		return b.build();
 	}
 }

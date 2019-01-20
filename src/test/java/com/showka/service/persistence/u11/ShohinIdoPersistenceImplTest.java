@@ -23,7 +23,7 @@ import mockit.Mocked;
 import mockit.Tested;
 import mockit.Verifications;
 
-public class ShohinIdPersistenceImplTest extends SimpleTestCase {
+public class ShohinIdoPersistenceImplTest extends SimpleTestCase {
 
 	@Tested
 	private ShohinIdoPersistenceImpl service;
@@ -48,23 +48,6 @@ public class ShohinIdPersistenceImplTest extends SimpleTestCase {
 		ido_save = b;
 	}
 
-	/** 移動01. 2017/1/1 0時 売上による消費 */
-	private static final ShohinIdoBuilder ido_delete;
-	static {
-		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
-		ShohinIdoBuilder b = new ShohinIdoBuilder();
-		b.withTimestamp(new TheTimestamp(2017, 1, 1, 0, 0, 0, 0));
-		b.withKubun(ShohinIdoKubun.売上);
-		b.withMeisai(meisai);
-		b.withRecordId("r-999");
-		BushoBuilder bb = new BushoBuilder();
-		bb.withRecordId("r-BS01");
-		Busho busho = bb.build();
-		b.withBusho(busho);
-		b.withDate(new EigyoDate(2017, 1, 1));
-		ido_delete = b;
-	}
-
 	/**
 	 * 商品移動仕様による商品移動.
 	 *
@@ -79,16 +62,11 @@ public class ShohinIdPersistenceImplTest extends SimpleTestCase {
 	public void test_ShohinIdo_01(@Mocked ShohinIdoSpecification specification) throws Exception {
 		// data
 		ShohinIdo shohinIdo = ido_save.build();
-		ShohinIdo shohinIdo_delete = ido_delete.build();
 		// expect
 		new Expectations() {
 			{
 				// ascertain
 				specification.ascertainSatisfaction();
-				// delete
-				specification.getShohinIdoForDelete();
-				result = shohinIdo_delete;
-				shohinIdoCrud.delete(shohinIdo_delete);
 				// save
 				specification.getShohinIdo();
 				result = shohinIdo;
@@ -102,11 +80,6 @@ public class ShohinIdPersistenceImplTest extends SimpleTestCase {
 			{
 				// ascertain
 				specification.ascertainSatisfaction();
-				times = 1;
-				// delete
-				specification.getShohinIdoForDelete();
-				times = 1;
-				shohinIdoCrud.delete(shohinIdo_delete);
 				times = 1;
 				// save
 				specification.getShohinIdo();
@@ -131,14 +104,9 @@ public class ShohinIdPersistenceImplTest extends SimpleTestCase {
 	public void test_shohinIdoForcibly_01(@Mocked ShohinIdoSpecification specification) throws Exception {
 		// data
 		ShohinIdo shohinIdo = ido_save.build();
-		ShohinIdo shohinIdo_delete = ido_delete.build();
 		// expect
 		new Expectations() {
 			{
-				// delete
-				specification.getShohinIdoForDelete();
-				result = shohinIdo_delete;
-				shohinIdoCrud.delete(shohinIdo_delete);
 				// save
 				specification.getShohinIdo();
 				result = shohinIdo;
@@ -153,11 +121,6 @@ public class ShohinIdPersistenceImplTest extends SimpleTestCase {
 				// ascertain
 				specification.ascertainSatisfaction();
 				times = 0;
-				// delete
-				specification.getShohinIdoForDelete();
-				times = 1;
-				shohinIdoCrud.delete(shohinIdo_delete);
-				times = 1;
 				// save
 				specification.getShohinIdo();
 				times = 1;

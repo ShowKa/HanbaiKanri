@@ -1,6 +1,7 @@
 package com.showka.service.persistence.u11;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -15,8 +16,8 @@ import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
-import com.showka.service.specification.u11.ShohinIdoSpecificationAssociatedWithUriage;
 import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
+import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 import com.showka.value.EigyoDate;
 
 @Service
@@ -40,22 +41,19 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 	@Override
 	public void save(Uriage uriage) {
 		// 商品移動仕様
-		ShohinIdoSpecificationAssociatedWithUriage specification = shohinIdoSpecificationFactory.create(uriage);
-		// 削除対象のレコードを削除
-		List<ShohinIdo> shohinIdoForDelete = specification.getShohinIdoForDelete();
-		shohinIdoForDelete.forEach(d -> {
-			repo.deleteById(d.getRecordId());
-		});
+		ShohinIdoSpecification specification = shohinIdoSpecificationFactory.create(uriage);
 		// 商品移動
 		shohinIdoPersistence.shohinIdo(specification);
 		// 商品移動売上
 		List<ShohinIdo> shohinIdo = specification.getShohinIdo();
 		shohinIdo.forEach(si -> {
-			// insert only
-			JShohinIdoUriage e = new JShohinIdoUriage();
-			e.setShohinIdoId(si.getRecordId());
+			Optional<JShohinIdoUriage> _e = repo.findById(si.getRecordId());
+			JShohinIdoUriage e = _e.orElse(new JShohinIdoUriage());
 			e.setUriageId(uriage.getRecordId());
-			e.initRecordId();
+			e.setShohinIdoId(si.getRecordId());
+			if (!_e.isPresent()) {
+				e.initRecordId();
+			}
 			repo.save(e);
 		});
 	}
