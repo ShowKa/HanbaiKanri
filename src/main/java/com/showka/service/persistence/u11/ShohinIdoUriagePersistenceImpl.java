@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.showka.domain.u05.Uriage;
@@ -13,21 +12,16 @@ import com.showka.entity.JShohinIdoUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.JShohinIdoUriageRepository;
 import com.showka.service.crud.u05.i.UriageCrud;
-import com.showka.service.crud.u11.i.ShohinIdoCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
 import com.showka.service.specification.u11.ShohinIdoSpecificationFactory;
 import com.showka.service.specification.u11.i.ShohinIdoSpecification;
-import com.showka.value.EigyoDate;
 
 @Service
 public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistence {
 
 	@Autowired
 	private JShohinIdoUriageRepository repo;
-
-	@Autowired
-	private ShohinIdoCrud shohinIdoCrud;
 
 	@Autowired
 	private ShohinIdoSpecificationFactory shohinIdoSpecificationFactory;
@@ -60,22 +54,12 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 
 	@Override
 	public void delete(TUriagePK pk) {
-		// find records
 		Uriage uriage = uriageCrud.getDomain(pk);
-		String uriageId = uriage.getRecordId();
-		JShohinIdoUriage e = new JShohinIdoUriage();
-		e.setUriageId(uriageId);
-		Example<JShohinIdoUriage> example = Example.of(e);
-		List<JShohinIdoUriage> shohinIdoList = repo.findAll(example);
-		shohinIdoList.stream().filter(ido -> {
-			// 営業日の移動のみ抽出
-			EigyoDate shohinIdoDate = new EigyoDate(ido.getShohinIdo().getDate());
-			return shohinIdoDate.equals(uriage.getKokyaku().getShukanBusho().getEigyoDate());
-		}).forEach(ido -> {
-			// delete records
-			repo.delete(ido);
-			ShohinIdo domain = shohinIdoCrud.getDomain(ido.getShohinIdoId());
-			shohinIdoCrud.delete(domain);
+		ShohinIdoSpecification specification = shohinIdoSpecificationFactory.create(uriage);
+		List<ShohinIdo> idoList = specification.getShohinIdo();
+		idoList.forEach(ido -> {
+			repo.deleteById(ido.getRecordId());
 		});
+		shohinIdoPersistence.delete(specification);
 	}
 }
