@@ -44,9 +44,9 @@ public class Nyuka extends DomainRoot {
 	 * @return 入荷数
 	 */
 	public Integer getNumber(Shohin shohin) {
-		int nyukaNumber = this.nyukaShohinIdo.getAbusoluteIdoNumberForBushoZaiko(shohin);
+		int nyukaNumber = this.nyukaShohinIdo.getNumberForBushoZaiko(shohin);
 		int teiseiNumber = this.teiseiList.parallelStream().mapToInt(teisei -> {
-			return teisei.getAbusoluteIdoNumberForBushoZaiko(shohin);
+			return teisei.getNumberForBushoZaiko(shohin);
 		}).sum();
 		return nyukaNumber + teiseiNumber;
 	}
