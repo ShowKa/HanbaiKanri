@@ -1,41 +1,41 @@
 package com.showka.service.persistence.u11.i;
 
 import com.showka.domain.u11.Nyuka;
-import com.showka.service.crud.u11.i.NyukaCrud;
+import com.showka.service.crud.u11.i.NyukaTeiseiCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 
-public interface ShohinIdoNyukaPersistence {
-
+public interface ShohinIdoNyukaTeiseiPersistence {
 	/**
-	 * 保存.
+	 * 訂正.
 	 * 
 	 * <pre>
-	 * 商品移動入荷仕様構築
 	 * 商品移動
-	 * 入荷登録 & 排他制御実施
+	 * 入荷訂正登録
 	 * </pre>
 	 * 
-	 * @see ShohinIdoNyukaSpecification
+	 * @see ShohinIdoNyukaTeiseiSpecification
 	 * @see ShohinIdoPersistence
-	 * @see NyukaCrud
+	 * @see NyukaTeiseiCrud
+	 * 
 	 * @param nyuka
 	 *            入荷
 	 */
 	public void save(Nyuka nyuka);
 
 	/**
-	 * 商品移動削除.
+	 * 訂正削除.
 	 * 
 	 * <pre>
 	 * 商品移動削除
-	 * 入荷削除
+	 * 入荷訂正削除
 	 * </pre>
 	 * 
 	 * @see ShohinIdoCrud
-	 * @see NyukaCrud
+	 * @see NyukaTeiseiCrud
 	 * 
 	 * @param nyuka
 	 *            入荷
 	 */
 	public void delete(Nyuka nyuka);
+
 }
