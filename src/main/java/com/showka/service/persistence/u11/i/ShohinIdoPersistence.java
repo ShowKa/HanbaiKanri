@@ -13,16 +13,22 @@ public interface ShohinIdoPersistence {
 	 * 
 	 * @param specification
 	 *            商品移動仕様
-	 * @return
 	 */
 	public void shohinIdo(ShohinIdoSpecification specification) throws UnsatisfiedSpecificationException;
+
+	/**
+	 * 商品移動削除.
+	 * 
+	 * @param specification
+	 *            商品移動仕様
+	 */
+	public void delete(ShohinIdoSpecification specification) throws UnsatisfiedSpecificationException;
 
 	/**
 	 * 強制商品移動.
 	 * 
 	 * @param specification
 	 *            商品移動使用
-	 * @return
 	 */
 	public void shohinIdoForcibly(ShohinIdoSpecification specification);
 

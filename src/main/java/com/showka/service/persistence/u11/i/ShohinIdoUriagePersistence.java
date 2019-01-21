@@ -6,7 +6,7 @@ import com.showka.entity.TUriagePK;
 public interface ShohinIdoUriagePersistence {
 
 	/**
-	 * 保存.
+	 * 商品移動売上の保存.
 	 * 
 	 * @param uriage
 	 *            売上
@@ -14,14 +14,19 @@ public interface ShohinIdoUriagePersistence {
 	public void save(Uriage uriage);
 
 	/**
-	 * 商品移動削除.
-	 * 
-	 * <pre>
-	 * 移動日=営業日の商品移動のレコードのみ削除し、前日移動分はそのまま残す。
-	 * </pre>
+	 * 商品移動売上削除.
 	 * 
 	 * @param pk
 	 *            売上の主キー
 	 */
 	public void delete(TUriagePK pk);
+
+	/**
+	 * 
+	 * 商品移動売上（キャンセル時）の保存.
+	 * 
+	 * @param pk
+	 *            売上の主キー
+	 */
+	public void cancel(TUriagePK pk);
 }

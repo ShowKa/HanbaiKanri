@@ -5,6 +5,7 @@ import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
 import com.showka.domain.u05.Uriage;
+import com.showka.service.specification.u11.i.ShohinIdoSpecification;
 
 @Component
 public class ShohinIdoSpecificationFactory {
@@ -18,10 +19,10 @@ public class ShohinIdoSpecificationFactory {
 	 * @param uriage
 	 * @return
 	 */
-	public ShohinIdoSpecificationAssociatedWithUriage create(Uriage uriage) {
-		ShohinIdoSpecificationAssociatedWithUriage object = new ShohinIdoSpecificationAssociatedWithUriage();
-		beanFactory.autowireBean(object);
+	public ShohinIdoSpecification create(Uriage uriage) {
+		ShohinIdoUriageSpecification object = new ShohinIdoUriageSpecification();
 		object.setUriage(uriage);
+		beanFactory.autowireBean(object);
 		return object;
 	}
 }

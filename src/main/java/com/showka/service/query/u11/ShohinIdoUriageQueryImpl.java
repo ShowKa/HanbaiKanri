@@ -1,5 +1,7 @@
 package com.showka.service.query.u11;
 
+import static java.util.stream.Collectors.*;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,7 @@ import com.showka.entity.JShohinIdoUriage;
 import com.showka.repository.i.JShohinIdoUriageRepository;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 import com.showka.service.query.u11.i.ShohinIdoUriageQuery;
+import com.showka.value.EigyoDate;
 
 @Service
 public class ShohinIdoUriageQueryImpl implements ShohinIdoUriageQuery {
@@ -25,10 +28,7 @@ public class ShohinIdoUriageQueryImpl implements ShohinIdoUriageQuery {
 
 	@Override
 	public Optional<ShohinIdo> getNewest(String uriageId) {
-		JShohinIdoUriage e = new JShohinIdoUriage();
-		e.setUriageId(uriageId);
-		Example<JShohinIdoUriage> example = Example.of(e);
-		List<JShohinIdoUriage> results = repo.findAll(example);
+		List<JShohinIdoUriage> results = this.getEntity(uriageId);
 		if (results.isEmpty()) {
 			return Optional.empty();
 		}
@@ -39,5 +39,24 @@ public class ShohinIdoUriageQueryImpl implements ShohinIdoUriageQuery {
 		});
 		ShohinIdo shohinIdo = shohinIdoCrud.getDomain(newest.get().getShohinIdoId());
 		return Optional.of(shohinIdo);
+	}
+
+	@Override
+	public List<ShohinIdo> get(String uriageId, EigyoDate date) {
+		List<JShohinIdoUriage> _results = this.getEntity(uriageId);
+		return _results.stream().filter(e -> {
+			EigyoDate _date = new EigyoDate(e.getShohinIdo().getDate());
+			return date.equals(_date);
+		}).map(e -> {
+			return shohinIdoCrud.getDomain(e.getShohinIdoId());
+		}).collect(toList());
+	}
+
+	private List<JShohinIdoUriage> getEntity(String uriageId) {
+		JShohinIdoUriage e = new JShohinIdoUriage();
+		e.setUriageId(uriageId);
+		Example<JShohinIdoUriage> example = Example.of(e);
+		List<JShohinIdoUriage> results = repo.findAll(example);
+		return results;
 	}
 }
