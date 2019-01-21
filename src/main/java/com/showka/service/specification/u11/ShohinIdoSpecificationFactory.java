@@ -20,7 +20,7 @@ public class ShohinIdoSpecificationFactory {
 	 * @return
 	 */
 	public ShohinIdoSpecification create(Uriage uriage) {
-		ShohinIdoSpecificationAssociatedWithUriage object = new ShohinIdoSpecificationAssociatedWithUriage();
+		ShohinIdoUriageSpecification object = new ShohinIdoUriageSpecification();
 		object.setUriage(uriage);
 		beanFactory.autowireBean(object);
 		return object;

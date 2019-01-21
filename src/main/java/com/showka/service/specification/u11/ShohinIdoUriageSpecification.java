@@ -39,7 +39,7 @@ import lombok.Setter;
  * 
  */
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ShohinIdoSpecificationAssociatedWithUriage implements ShohinIdoSpecification {
+public class ShohinIdoUriageSpecification implements ShohinIdoSpecification {
 
 	@Autowired
 	private ShohinIdoUriageQuery shohinIdoUriageQuery;

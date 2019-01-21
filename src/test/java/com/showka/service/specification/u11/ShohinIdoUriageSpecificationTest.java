@@ -34,10 +34,10 @@ import mockit.Tested;
 import mockit.Verifications;
 
 //XXX バグってるので、停止中
-public class ShohinIdoSpecificationAssociatedWithUriageTest extends SimpleTestCase {
+public class ShohinIdoUriageSpecificationTest extends SimpleTestCase {
 
 	@Tested
-	private ShohinIdoSpecificationAssociatedWithUriage shohinIdoSpecificationImpl;
+	private ShohinIdoUriageSpecification shohinIdoSpecificationImpl;
 
 	@Injectable
 	private UriagePersistence uriagePersistence;
