@@ -11,6 +11,7 @@ import com.showka.domain.u11.ShohinIdo;
 import com.showka.entity.JShohinIdoUriage;
 import com.showka.entity.TUriagePK;
 import com.showka.repository.i.JShohinIdoUriageRepository;
+import com.showka.service.construct.u05.i.UriageCancelConstruct;
 import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoPersistence;
 import com.showka.service.persistence.u11.i.ShohinIdoUriagePersistence;
@@ -31,6 +32,9 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 
 	@Autowired
 	private UriageCrud uriageCrud;
+
+	@Autowired
+	private UriageCancelConstruct uriageCancelConstruct;
 
 	@Override
 	public void save(Uriage uriage) {
@@ -61,5 +65,15 @@ public class ShohinIdoUriagePersistenceImpl implements ShohinIdoUriagePersistenc
 			repo.deleteById(ido.getRecordId());
 		});
 		shohinIdoPersistence.delete(specification);
+	}
+
+	@Override
+	public void cancel(TUriagePK pk) {
+		// 売上キャンセル
+		Uriage uriageCancel = uriageCancelConstruct.by(pk);
+		// 商品移動仕様
+		ShohinIdoSpecification specification = shohinIdoSpecificationFactory.create(uriageCancel);
+		// 商品移動
+		shohinIdoPersistence.shohinIdo(specification);
 	}
 }

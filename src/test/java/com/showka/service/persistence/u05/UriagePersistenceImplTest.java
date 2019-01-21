@@ -6,16 +6,14 @@ import java.util.List;
 import org.junit.Test;
 
 import com.showka.common.SimpleTestCase;
-import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
 import com.showka.domain.builder.UriageBuilder;
 import com.showka.domain.builder.UriageRirekiBuilder;
-import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageRireki;
-import com.showka.domain.z00.Busho;
 import com.showka.entity.RUriagePK;
 import com.showka.entity.TUriagePK;
+import com.showka.service.construct.u05.i.UriageCancelConstruct;
 import com.showka.service.crud.u05.i.UriageCrud;
 import com.showka.service.persistence.u05.i.UriageCancelPersistence;
 import com.showka.service.persistence.u05.i.UriageRirekiPersistence;
@@ -37,6 +35,9 @@ public class UriagePersistenceImplTest extends SimpleTestCase {
 	private UriageCrud uriageCrud;
 
 	@Injectable
+	private UriageCancelConstruct UriageCancelConstruct;
+
+	@Injectable
 	private UriageRirekiPersistence uriageRirekiPersistence;
 
 	@Injectable
@@ -56,7 +57,7 @@ public class UriagePersistenceImplTest extends SimpleTestCase {
 		// expect
 		new Expectations() {
 			{
-				service.buildForCancel(pk);
+				UriageCancelConstruct.by(pk);
 				result = uriage;
 				times = 1;
 				// save
@@ -138,45 +139,5 @@ public class UriagePersistenceImplTest extends SimpleTestCase {
 				times = 1;
 			}
 		};
-	}
-
-	// キャンセル売上のビルド
-	@Test
-	public void test_BuildForCancel_01() throws Exception {
-		// input
-		TUriagePK pk = new TUriagePK();
-		// mock
-		// 部署
-		BushoBuilder bb = new BushoBuilder();
-		EigyoDate eigyoDate = new EigyoDate(2018, 9, 20);
-		bb.withEigyoDate(eigyoDate);
-		Busho busho = bb.build();
-		// 顧客
-		KokyakuBuilder bk = new KokyakuBuilder();
-		bk.withShukanBusho(busho);
-		Kokyaku kokyaku = bk.build();
-		// 売上
-		UriageBuilder ub = new UriageBuilder();
-		ub.withKokyaku(kokyaku);
-		Uriage uriage = ub.build();
-		// expect
-		new Expectations() {
-			{
-				uriageCrud.getDomain(pk);
-				result = uriage;
-			}
-		};
-		// do
-		Uriage actual = service.buildForCancel(pk);
-		// verify
-		new Verifications() {
-			{
-				uriageCrud.getDomain(pk);
-				times = 1;
-			}
-		};
-		// check
-		assertEquals(0, actual.getUriageMeisai().size());
-		assertEquals(eigyoDate, actual.getKeijoDate());
 	}
 }
