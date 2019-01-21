@@ -1,6 +1,7 @@
 package com.showka.domain.u11;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,7 +12,6 @@ import com.showka.domain.builder.ShohinBuilder;
 import com.showka.domain.builder.ShohinIdoBuilder;
 import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.domain.builder.ShohinZaikoBuilder;
-import com.showka.domain.u11.ShohinZaiko.ShohinIdoOnDate;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
@@ -99,66 +99,41 @@ public class ShohinZaikoTest extends SimpleTestCase {
 	/** 在庫01 = 商品01.(4 -> 3使う) */
 	private static final ShohinZaiko zaiko01;
 	static {
-		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
-		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain01));
 		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(4);
-		b.withShohinIdoList(shohinIdoList);
+		b.withShohin(shohinDomain01);
+		b.withShohinIdoList(Arrays.asList(ido01));
 		zaiko01 = b.build();
 	}
 
 	/** 在庫02 = 商品02.(3 -> 3使う) */
 	private static final ShohinZaiko zaiko02;
 	static {
-		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
-		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain02));
 		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(3);
-		b.withShohinIdoList(shohinIdoList);
+		b.withShohin(shohinDomain02);
+		b.withShohinIdoList(Arrays.asList(ido01));
 		zaiko02 = b.build();
 	}
 
 	/** 在庫03 = 商品02.(2 -> 3使う) */
 	private static final ShohinZaiko zaiko03;
 	static {
-		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
-		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain02));
 		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(2);
-		b.withShohinIdoList(shohinIdoList);
+		b.withShohin(shohinDomain02);
+		b.withShohinIdoList(Arrays.asList(ido01));
 		zaiko03 = b.build();
 	}
 
 	/** 在庫04 = 商品02.(2 -> 0時に3使う -> 3時に3戻す) */
 	private static final ShohinZaiko zaiko04;
 	static {
-		List<ShohinIdoOnDate> shohinIdoList = new ArrayList<ShohinIdoOnDate>();
-		shohinIdoList.add(new ShohinIdoOnDate(ido01, shohinDomain02));
-		shohinIdoList.add(new ShohinIdoOnDate(ido02, shohinDomain02));
 		ShohinZaikoBuilder b = new ShohinZaikoBuilder();
 		b.withKurikoshiNumber(2);
-		b.withShohinIdoList(shohinIdoList);
+		b.withShohin(shohinDomain02);
+		b.withShohinIdoList(Arrays.asList(ido01, ido02));
 		zaiko04 = b.build();
-	}
-
-	@Test
-	public void test01_ShohinIdoOnDate() throws Exception {
-		ShohinIdoOnDate actual = new ShohinIdoOnDate(ido01, shohinDomain01);
-		assertEquals(new TheTimestamp(2017, 1, 1), actual.getTimestamp());
-		assertEquals(ShohinIdoKubun.売上, actual.getKubun());
-		assertEquals(3, actual.getNumber().intValue());
-	}
-
-	@Test
-	public void test02_GetIncreaseOrDecreaseNumber() throws Exception {
-		ShohinIdoOnDate actual = new ShohinIdoOnDate(ido01, shohinDomain01);
-		assertEquals(-3, actual.getIncreaseOrDecreaseNumber().intValue());
-	}
-
-	@Test
-	public void test03_GetIncreaseOrDecreaseNumber() throws Exception {
-		ShohinIdoOnDate actual = new ShohinIdoOnDate(ido02, shohinDomain02);
-		assertEquals(3, actual.getIncreaseOrDecreaseNumber().intValue());
 	}
 
 	@Test
@@ -226,5 +201,25 @@ public class ShohinZaikoTest extends SimpleTestCase {
 		ShohinZaiko actual = ShohinZaiko.buildZeroZaiko(busho, date, shohin);
 		assertEquals(0, actual.getKurikoshiNumber().intValue());
 		assertEquals(0, actual.getNumber().intValue());
+	}
+
+	@Test
+	public void test14_Remove() throws Exception {
+		ShohinZaiko actual = zaiko01.remove(ido01);
+		assertEquals(0, actual.getShohinIdoList().size());
+	}
+
+	// merge 商品移動新規追加
+	@Test
+	public void test15_merge() throws Exception {
+		ShohinZaiko actual = zaiko01.merge(ido02);
+		assertEquals(2, actual.getShohinIdoList().size());
+	}
+
+	// merge 既存の商品移動追加
+	@Test
+	public void test16_merge() throws Exception {
+		ShohinZaiko actual = zaiko01.merge(ido01);
+		assertEquals(1, actual.getShohinIdoList().size());
 	}
 }

@@ -53,7 +53,7 @@ public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
 	 *            対象商品
 	 * @return 増加数（在庫が減る場合はマイナスになる）
 	 */
-	public int getAbusoluteIdoNumberForBushoZaiko(Shohin target) {
+	public int getNumberForBushoZaiko(Shohin target) {
 		int sign = this.kubun.increase() ? 1 : -1;
 		return this.meisai.stream().filter(m -> {
 			return m.getShohinDomain().equals(target);

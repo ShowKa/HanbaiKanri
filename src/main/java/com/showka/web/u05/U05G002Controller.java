@@ -432,7 +432,7 @@ public class U05G002Controller extends ControllerBase {
 		pk.setKokyakuId(kokyakuCrud.getDomain(form.getKokyakuCode()).getRecordId());
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		// delete 商品移動
-		shohinIdoUriagePersistence.delete(pk);
+		shohinIdoUriagePersistence.cancel(pk);
 		// cancel 売掛
 		String uriageId = form.getRecordId();
 		if (urikakeCrud.exists(uriageId)) {

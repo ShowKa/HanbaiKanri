@@ -19,23 +19,23 @@ public class ShohinIdoPersistenceImpl implements ShohinIdoPersistence {
 
 	@Override
 	public void shohinIdo(ShohinIdoSpecification specification) throws UnsatisfiedSpecificationException {
+		// 新たに商品移動を登録
+		List<ShohinIdo> idoList = specification.getShohinIdo();
+		idoList.forEach(shohinIdoCrud::save);
 		// 業務的仕様を満たすか判定
 		specification.ascertainSatisfaction();
-		// 削除対象の商品移動を削除
-		List<ShohinIdo> idoListForDelete = specification.getShohinIdoForDelete();
-		idoListForDelete.forEach(d -> shohinIdoCrud.delete(d));
+	}
+
+	@Override
+	public void shohinIdoForcibly(ShohinIdoSpecification specification) {
 		// 新たに商品移動を登録
 		List<ShohinIdo> idoList = specification.getShohinIdo();
 		idoList.forEach(shohinIdoCrud::save);
 	}
 
 	@Override
-	public void shohinIdoForcibly(ShohinIdoSpecification specification) {
-		// 削除対象の商品移動を削除
-		List<ShohinIdo> idoListForDelete = specification.getShohinIdoForDelete();
-		idoListForDelete.forEach(d -> shohinIdoCrud.delete(d));
-		// 新たに商品移動を登録
+	public void delete(ShohinIdoSpecification specification) throws UnsatisfiedSpecificationException {
 		List<ShohinIdo> idoList = specification.getShohinIdo();
-		idoList.forEach(shohinIdoCrud::save);
+		idoList.forEach(shohinIdoCrud::delete);
 	}
 }

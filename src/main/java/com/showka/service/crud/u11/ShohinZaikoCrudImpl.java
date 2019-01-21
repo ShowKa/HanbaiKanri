@@ -1,7 +1,6 @@
 package com.showka.service.crud.u11;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.showka.domain.builder.ShohinZaikoBuilder;
 import com.showka.domain.u11.ShohinIdo;
 import com.showka.domain.u11.ShohinZaiko;
-import com.showka.domain.u11.ShohinZaiko.ShohinIdoOnDate;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.entity.TShohinZaiko;
@@ -83,10 +81,7 @@ public class ShohinZaikoCrudImpl implements ShohinZaikoCrud {
 		b.withShohin(shohin);
 		b.withKurikoshiNumber(e.getNumber());
 		// 商品移動リスト
-		List<ShohinIdo> _idoList = shohinIdoQuery.getShohinIdoListInDate(busho, date, shohin);
-		List<ShohinIdoOnDate> idoList = _idoList.stream().map(ido -> {
-			return new ShohinIdoOnDate(ido, shohin);
-		}).collect(Collectors.toList());
+		List<ShohinIdo> idoList = shohinIdoQuery.getShohinIdoListInDate(busho, date, shohin);
 		b.withShohinIdoList(idoList);
 		// return
 		return b.build();

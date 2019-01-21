@@ -88,10 +88,30 @@ public class TheTimestamp extends ValueBase implements Comparable<TheTimestamp> 
 	 * タイムスタンプ前後判定.
 	 * 
 	 * @param other
+	 * @return this < other の場合true
+	 */
+	public boolean isAfterOrEq(TheTimestamp other) {
+		return !this.isBefore(other);
+	}
+
+	/**
+	 * タイムスタンプ前後判定.
+	 * 
+	 * @param other
 	 * @return this > other の場合true
 	 */
 	public boolean isBefore(TheTimestamp other) {
 		return this.timestamp.isBefore(other.timestamp);
+	}
+
+	/**
+	 * タイムスタンプ前後判定.
+	 * 
+	 * @param other
+	 * @return this > other の場合true
+	 */
+	public boolean isBeforeOrEq(TheTimestamp other) {
+		return !this.isAfter(other);
 	}
 
 	/**

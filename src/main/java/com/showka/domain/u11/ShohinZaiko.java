@@ -6,7 +6,6 @@ import java.util.List;
 import com.showka.domain.DomainRoot;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
-import com.showka.kubun.ShohinIdoKubun;
 import com.showka.system.exception.SystemException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
@@ -16,7 +15,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class ShohinZaiko extends DomainRoot {
+public class ShohinZaiko extends DomainRoot implements Cloneable {
 
 	// private member
 	/** 部署. */
@@ -32,7 +31,7 @@ public class ShohinZaiko extends DomainRoot {
 	private Integer kurikoshiNumber;
 
 	/** 商品移動 */
-	private List<ShohinIdoOnDate> shohinIdoList;
+	private List<ShohinIdo> shohinIdoList;
 
 	// public method
 	/**
@@ -42,7 +41,7 @@ public class ShohinZaiko extends DomainRoot {
 	 */
 	public Integer getNumber() {
 		int idoNumber = shohinIdoList.stream().mapToInt(ido -> {
-			return ido.getIncreaseOrDecreaseNumber();
+			return ido.getNumberForBushoZaiko(this.shohin);
 		}).sum();
 		return kurikoshiNumber + idoNumber;
 	}
@@ -54,9 +53,9 @@ public class ShohinZaiko extends DomainRoot {
 	 */
 	public Integer getNumber(TheTimestamp timestamp) {
 		int idoNumber = shohinIdoList.stream().filter(ido -> {
-			return ido.getTimestamp().compareTo(timestamp) <= 0;
+			return ido.getTimestamp().isBeforeOrEq(timestamp);
 		}).mapToInt(ido -> {
-			return ido.getIncreaseOrDecreaseNumber();
+			return ido.getNumberForBushoZaiko(this.shohin);
 		}).sum();
 		return kurikoshiNumber + idoNumber;
 	}
@@ -95,6 +94,46 @@ public class ShohinZaiko extends DomainRoot {
 	 */
 	public Integer getKurikoshiNumber() {
 		return kurikoshiNumber;
+	}
+
+	/**
+	 * 商品移動merge.
+	 * 
+	 * <pre>
+	 * 非破壊で新インスタンスを返却.
+	 * </pre>
+	 * 
+	 * @param shohinIdo
+	 *            商品移動
+	 */
+	public ShohinZaiko merge(ShohinIdo shohinIdo) {
+		ShohinZaiko _zaiko = this.remove(shohinIdo);
+		_zaiko.shohinIdoList.add(shohinIdo);
+		return _zaiko;
+	}
+
+	public ShohinZaiko merge(List<ShohinIdo> _shohinIdoList) {
+		ShohinZaiko _zaiko = this.clone();
+		_zaiko.shohinIdoList.removeAll(_shohinIdoList);
+		_zaiko.shohinIdoList.addAll(_shohinIdoList);
+		return _zaiko;
+	}
+
+	/**
+	 * 商品移動除去.
+	 * 
+	 * <pre>
+	 * 非破壊で新インスタンスを返却.
+	 * </pre>
+	 * 
+	 * @param shohinIdo
+	 *            商品移動除去
+	 * @return 既存だった場合、true
+	 */
+	public ShohinZaiko remove(ShohinIdo shohinIdo) {
+		ShohinZaiko _zaiko = this.clone();
+		_zaiko.shohinIdoList.remove(shohinIdo);
+		return _zaiko;
 	}
 
 	/**
@@ -152,42 +191,13 @@ public class ShohinZaiko extends DomainRoot {
 		return generateHashCode(busho, date, shohin);
 	}
 
-	@Getter
-	public static class ShohinIdoOnDate {
-
-		/** 商品移動タイムスタンプ(営業日とは関係のないシステム日付). */
-		private TheTimestamp timestamp;
-
-		/** 商品移動区分. */
-		private ShohinIdoKubun kubun;
-
-		/** 移動数. */
-		private Integer number;
-
-		/**
-		 * コンストラクタ.
-		 */
-		public ShohinIdoOnDate(ShohinIdo ido, Shohin target) {
-			this.timestamp = ido.getTimestamp();
-			this.kubun = ido.getKubun();
-			this.number = ido.getMeisai().stream().filter(m -> {
-				return target.equals(m.getShohinDomain());
-			}).mapToInt(m -> {
-				return m.getNumber();
-			}).sum();
-		}
-
-		/**
-		 * 部署在庫の増加数を取得
-		 * 
-		 * <pre>
-		 * 部署在庫が増えるなら正の数、減るなら負の数で移動数を返却
-		 * </pre>
-		 * 
-		 * @return 増加数
-		 */
-		public Integer getIncreaseOrDecreaseNumber() {
-			return kubun.increase() ? number : number * -1;
-		}
+	@Override
+	public ShohinZaiko clone() {
+		List<ShohinIdo> _list = new ArrayList<>();
+		_list.addAll(this.shohinIdoList);
+		ShohinZaiko _zaiko = new ShohinZaiko(busho, date, shohin, kurikoshiNumber, _list);
+		_zaiko.setRecordId(this.getRecordId());
+		return _zaiko;
 	}
+
 }
