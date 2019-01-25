@@ -26,7 +26,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="参照モード"
-									ng-show="isUpdateMode()"
+									ng-show="true"
 									ng-click="toRead()"></input>
 							</div>
 							<div class="col-sm-2 col-xs-2">
@@ -34,7 +34,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="更新モード"
-									ng-show="isReadMode()"
+									ng-show="true"
 									ng-click="toUpdate()"></input>
 							</div>
 							<div class="col-sm-2 col-xs-2">
@@ -42,7 +42,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="訂正モード"
-									ng-show="isReadMode()"
+									ng-show="true"
 									ng-click="toRegisterTeisei()"></input>
 							</div>
 							<div class="col-sm-2 col-xs-2">
@@ -50,7 +50,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="訂正更新モード"
-									ng-show="isReadMode()"
+									ng-show="true"
 									ng-click="toUpdateTeisei()"></input>
 							</div>
 						</div>
@@ -62,7 +62,7 @@
 									type="button"
 									class="btn btn-primary btn-sm"
 									value="削除"
-									ng-show="isReadMode()"
+									ng-show="true"
 									ng-click="delete()" />
 							</div>
 							<div class="col-sm-1 col-xs-1">
@@ -71,7 +71,7 @@
 									type="button"
 									class="btn btn-primary btn-sm"
 									value="訂正の削除"
-									ng-show="isReadMode()"
+									ng-show="true"
 									ng-click="deleteTeisei()" />
 							</div>
 						</div>
@@ -99,11 +99,11 @@
 							<div class="col-sm-10">
 								<input
 									class="form-control"
-									id="bushoCode"
-									name="bushoCode"
+									id="nyukaSakiCode"
+									name="nyukaSakiCode"
 									type="text"
-									placeholder="BS01"
-									ng-model="bushoCode"
+									placeholder="NS1"
+									ng-model="nyukaSakiCode"
 									ng-init-from-value
 									required />
 							</div>
@@ -112,17 +112,7 @@
 							<label
 								class="control-label col-sm-2"
 								for="date">入荷日</label>
-							<div class="col-sm-10">
-								<input
-									class="form-control"
-									id="date"
-									name="date"
-									type="text"
-									placeholder="yyyy/MM/dd"
-									ng-model="date"
-									ng-init-from-value
-									required />
-							</div>
+							<div class="col-sm-10">2999/12/31</div>
 						</div>
 					</form>
 				</div>
@@ -130,7 +120,6 @@
 			<div class="col-md-6 col-sm-6 col-xs-12">
 				<div class="col-md-2 col-sm-2">
 					<input
-						id=""
 						type="button"
 						class="btn btn-secondary btn-sm"
 						value="明細入力"
@@ -139,7 +128,6 @@
 				</div>
 				<div class="col-md-2 col-sm-2">
 					<input
-						id=""
 						type="button"
 						class="btn btn-secondary btn-sm"
 						value="明細追加"
@@ -148,12 +136,11 @@
 				</div>
 				<div class="col-md-1 col-sm-1">
 					<input
-						ng-click=""
-						id=""
 						type="button"
 						class="btn btn-secondary btn-sm"
 						value="訂正履歴"
-						ng-show="true" />
+						ng-show="true"
+						ng-click="toggleTeiseiRireki()" />
 				</div>
 				<table class="table table-striped">
 					<caption>明細</caption>
@@ -162,9 +149,10 @@
 							<th>#</th>
 							<th>商品</th>
 							<th></th>
-							<th>移動数</th>
+							<th>入荷数</th>
 						</tr>
 					</thead>
+					<!-- 明細登録 -->
 					<tbody id="nyukaList">
 						<tr
 							ng-repeat="meisai in meisaiList"
@@ -178,7 +166,7 @@
 									ng-readonly="true"
 									ng-show="isReadMode()" />
 							</td>
-							<td class="col-sm-5">
+							<td class="col-sm-3">
 								<input
 									name="meisai[{{$index}}].shohinCode"
 									class="form-control"
@@ -187,12 +175,13 @@
 									ng-readonly="!meisai.editing"
 									required />
 							</td>
+							<td class="col-sm-2"></td>
 							<td class="col-sm-2">
 								<input
-									name="meisai[{{$index}}].hanbaiNumber"
+									name="meisai[{{$index}}].number"
 									class="form-control"
 									type="number"
-									ng-model="meisai.hanbaiNumber"
+									ng-model="meisai.number"
 									ng-readonly="!meisai.editing"
 									required />
 							</td>
@@ -236,6 +225,61 @@
 							</td>
 						</tr>
 					</tbody>
+					<!-- 明細参照 -->
+					<tbody
+						id="nyukaList"
+						ng-show="false">
+						<tr>
+							<td class="col-sm-1">1</td>
+							<td class="col-sm-2">SH01</td>
+							<td class="col-sm-5">商品01</td>
+							<td class="col-sm-2">5</td>
+						</tr>
+						<tr>
+							<td class="col-sm-1">2</td>
+							<td class="col-sm-2">SH02</td>
+							<td class="col-sm-5">商品02</td>
+							<td class="col-sm-2">10</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 訂正参照 -->
+				<table
+					class="table table-striped"
+					ng-show="false">
+					<caption>明細</caption>
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>商品</th>
+							<th></th>
+							<th>日付</th>
+							<th>移動数</th>
+						</tr>
+					</thead>
+					<tbody id="nyukaList">
+						<tr>
+							<td class="col-sm-1">1</td>
+							<td class="col-sm-2">SH01</td>
+							<td class="col-sm-5">商品01</td>
+							<td class="col-sm-2">2019/02/26</td>
+							<td class="col-sm-2">4</td>
+						</tr>
+						<tr>
+							<td class="col-sm-1">1</td>
+							<td class="col-sm-2">SH01</td>
+							<td class="col-sm-5">商品01</td>
+							<td class="col-sm-2">2019/02/27</td>
+							<td class="col-sm-2">1</td>
+						</tr>
+						<tr>
+							<td class="col-sm-1">2</td>
+							<td class="col-sm-2">SH02</td>
+							<td class="col-sm-5">商品02</td>
+							<td class="col-sm-2">2019/02/26</td>
+							<td class="col-sm-2">10</td>
+						</tr>
+					</tbody>
 				</table>
 				<div class="col-md-1 col-sm-1">
 					<input
@@ -253,9 +297,8 @@
 						type="button"
 						class="btn btn-primary btn-sm whenUpdate"
 						value="更新"
-						ng-show="isUpdateMode()"
-						ng-click="update()"
-						 />
+						ng-show="true"
+						ng-click="update()" />
 				</div>
 				<div class="col-md-1 col-sm-1">
 					<input
@@ -263,9 +306,8 @@
 						type="button"
 						class="btn btn-primary btn-sm"
 						value="訂正"
-						ng-show=""
-						ng-click="registerTeisei()"
-						 />
+						ng-show="true"
+						ng-click="registerTeisei()" />
 				</div>
 				<div class="col-md-1 col-sm-1">
 					<input
@@ -273,9 +315,8 @@
 						type="button"
 						class="btn btn-primary btn-sm"
 						value="訂正の更新"
-						ng-show=""
-						ng-click="updateTeisei()"
-						/>
+						ng-show="true"
+						ng-click="updateTeisei()" />
 				</div>
 			</div>
 		</div>
