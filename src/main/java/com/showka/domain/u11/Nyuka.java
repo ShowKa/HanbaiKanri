@@ -21,19 +21,13 @@ import lombok.Getter;
 @Getter
 public class Nyuka extends DomainRoot {
 
-	/** 部署. */
-	private Busho busho;
-
 	/** 入荷先. */
 	private NyukaSaki nyukaSaki;
 
-	/** 入荷日. */
-	private EigyoDate nyukaDate;
-
-	/** 商品移動(入荷). */
+	/** 商品移動入荷. */
 	private ShohinIdo nyukaShohinIdo;
 
-	/** 入荷訂正商品移動リスト. */
+	/** 商品移動入荷訂正リスト. */
 	private List<ShohinIdo> teiseiList = new ArrayList<>();
 
 	/**
@@ -149,6 +143,14 @@ public class Nyuka extends DomainRoot {
 
 	public String getNyukaSakiId() {
 		return this.nyukaSaki.getRecordId();
+	}
+
+	public Busho getBusho() {
+		return this.nyukaShohinIdo.getBusho();
+	}
+
+	public EigyoDate getNyukaDate() {
+		return this.nyukaShohinIdo.getDate();
 	}
 
 	// override

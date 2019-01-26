@@ -10,24 +10,18 @@ import com.showka.domain.builder.NyukaBuilder;
 import com.showka.domain.u11.Nyuka;
 import com.showka.domain.u11.NyukaSaki;
 import com.showka.domain.u11.ShohinIdo;
-import com.showka.domain.z00.Busho;
 import com.showka.entity.TShohinIdoNyuka;
 import com.showka.repository.i.TShohinIdoNyukaRepository;
 import com.showka.service.crud.u11.i.NyukaCrud;
 import com.showka.service.crud.u11.i.NyukaSakiCrud;
 import com.showka.service.crud.u11.i.NyukaTeiseiCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
-import com.showka.service.crud.z00.i.BushoCrud;
-import com.showka.value.EigyoDate;
 
 @Service
 public class NyukaCrudImpl implements NyukaCrud {
 
 	@Autowired
 	private TShohinIdoNyukaRepository repo;
-
-	@Autowired
-	private BushoCrud bushoCrud;
 
 	@Autowired
 	private NyukaSakiCrud nyukaSakiCrud;
@@ -65,8 +59,6 @@ public class NyukaCrudImpl implements NyukaCrud {
 	public Nyuka getDomain(String shohinIdoId) {
 		// entity
 		TShohinIdoNyuka e = repo.getOne(shohinIdoId);
-		// 部署
-		Busho busho = bushoCrud.getDomain(e.getBusho().getCode());
 		// 入荷先
 		NyukaSaki nyukaSaki = nyukaSakiCrud.getDomain(e.getNyukaSaki().getCode());
 		// 商品移動
@@ -75,8 +67,6 @@ public class NyukaCrudImpl implements NyukaCrud {
 		List<ShohinIdo> teiseiList = nyukaTeiseiCrud.getAll(null);
 		// build
 		NyukaBuilder nb = new NyukaBuilder();
-		nb.withBusho(busho);
-		nb.withNyukaDate(new EigyoDate(e.getShohinIdo().getDate()));
 		nb.withNyukaSaki(nyukaSaki);
 		nb.withNyukaShohinIdo(shohinIdo);
 		nb.withTeiseiList(teiseiList);

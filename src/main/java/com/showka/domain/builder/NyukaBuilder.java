@@ -5,26 +5,18 @@ import java.util.List;
 import com.showka.domain.u11.Nyuka;
 import com.showka.domain.u11.NyukaSaki;
 import com.showka.domain.u11.ShohinIdo;
-import com.showka.domain.z00.Busho;
-import com.showka.value.EigyoDate;
 
 public class NyukaBuilder extends com.showka.domain.builder.DomainBuilderBase<Nyuka, NyukaBuilder> {
 
 	// private member
-	/** busho */
-	private Busho busho;
-
 	/** nyukaSaki */
 	private NyukaSaki nyukaSaki;
-
-	/** nyukaDate */
-	private EigyoDate nyukaDate;
 
 	/** nyukaShohinIdo */
 	private ShohinIdo nyukaShohinIdo;
 
 	/** teiseiList */
-	private List teiseiList;
+	private List<ShohinIdo> teiseiList;
 
 	/** recordId */
 	private String recordId;
@@ -35,9 +27,7 @@ public class NyukaBuilder extends com.showka.domain.builder.DomainBuilderBase<Ny
 	// protected method
 	@Override
 	protected void apply(Nyuka domain, NyukaBuilder builder) {
-		builder.withBusho(domain.getBusho());
 		builder.withNyukaSaki(domain.getNyukaSaki());
-		builder.withNyukaDate(domain.getNyukaDate());
 		builder.withNyukaShohinIdo(domain.getNyukaShohinIdo());
 		builder.withTeiseiList(domain.getTeiseiList());
 		builder.withRecordId(domain.getRecordId());
@@ -46,7 +36,7 @@ public class NyukaBuilder extends com.showka.domain.builder.DomainBuilderBase<Ny
 
 	@Override
 	protected Nyuka createDomainObject() {
-		Nyuka domain = new Nyuka(busho, nyukaSaki, nyukaDate, nyukaShohinIdo, teiseiList);
+		Nyuka domain = new Nyuka(nyukaSaki, nyukaShohinIdo, teiseiList);
 		domain.setRecordId(recordId);
 		domain.setVersion(version);
 		return domain;
@@ -64,23 +54,6 @@ public class NyukaBuilder extends com.showka.domain.builder.DomainBuilderBase<Ny
 
 	// public method
 	/**
-	 * {@link Nyuka}に与えるbushoをこのビルダに設定する。
-	 *
-	 * @param busho
-	 *            busho
-	 * @return {@link NyukaBuilder}
-	 */
-	public NyukaBuilder withBusho(final Busho busho) {
-		addConfigurator(new BuilderConfigurator<NyukaBuilder>() {
-			@Override
-			public void configure(NyukaBuilder builder) {
-				builder.busho = busho;
-			}
-		});
-		return getThis();
-	}
-
-	/**
 	 * {@link Nyuka}に与えるnyukaSakiをこのビルダに設定する。
 	 *
 	 * @param nyukaSaki
@@ -92,23 +65,6 @@ public class NyukaBuilder extends com.showka.domain.builder.DomainBuilderBase<Ny
 			@Override
 			public void configure(NyukaBuilder builder) {
 				builder.nyukaSaki = nyukaSaki;
-			}
-		});
-		return getThis();
-	}
-
-	/**
-	 * {@link Nyuka}に与えるnyukaDateをこのビルダに設定する。
-	 *
-	 * @param nyukaDate
-	 *            nyukaDate
-	 * @return {@link NyukaBuilder}
-	 */
-	public NyukaBuilder withNyukaDate(final EigyoDate nyukaDate) {
-		addConfigurator(new BuilderConfigurator<NyukaBuilder>() {
-			@Override
-			public void configure(NyukaBuilder builder) {
-				builder.nyukaDate = nyukaDate;
 			}
 		});
 		return getThis();
@@ -138,7 +94,7 @@ public class NyukaBuilder extends com.showka.domain.builder.DomainBuilderBase<Ny
 	 *            teiseiList
 	 * @return {@link NyukaBuilder}
 	 */
-	public NyukaBuilder withTeiseiList(final List teiseiList) {
+	public NyukaBuilder withTeiseiList(final List<ShohinIdo> teiseiList) {
 		addConfigurator(new BuilderConfigurator<NyukaBuilder>() {
 			@Override
 			public void configure(NyukaBuilder builder) {
