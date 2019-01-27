@@ -1,3 +1,6 @@
+----------------------------------
+-- Z00 MASTER
+----------------------------------
 INSERT INTO m_busho
 (code, busho_kubun, jigyo_kubun, name, record_id)
 VALUES
@@ -19,6 +22,16 @@ VALUES
 ('r-BS02', '0002', '2000001', 'r-BS02'),
 ;
 
+INSERT INTO m_nyuka_saki
+(code, name, address, record_id)
+VALUES
+('NS1', '入荷先01', '入荷先01住所', 'r-NS1'),
+('NS2', '入荷先02', '入荷先02住所', 'r-NS2'),
+;
+
+----------------------------------
+-- U01 顧客
+----------------------------------
 
 INSERT INTO m_kokyaku
 (code, name, address, hanbai_kubun, kokyaku_kubun, shukan_busho_id, record_id)
