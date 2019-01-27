@@ -2,7 +2,6 @@ package com.showka.service.crud.u11.i;
 
 import java.util.List;
 
-import com.showka.domain.u11.Nyuka;
 import com.showka.domain.u11.ShohinIdo;
 
 /**
@@ -17,22 +16,22 @@ public interface NyukaTeiseiCrud {
 	/**
 	 * 保存.
 	 * 
+	 * @param nyukaId
+	 *            入荷ID
 	 * @param teiseiShohinIdo
 	 *            訂正商品移動
-	 * @param nyuka
-	 *            入荷
 	 */
-	public void save(ShohinIdo teiseiShohinIdo, Nyuka nyuka);
+	public void save(String nyukaId, ShohinIdo teiseiShohinIdo);
 
 	/**
 	 * 削除
 	 * 
+	 * @param nyukaId
+	 *            入荷ID
 	 * @param teiseiShohinIdo
 	 *            訂正商品移動
-	 * @param nyuka
-	 *            入荷
 	 */
-	public void delete(ShohinIdo teiseiShohinIdo, Nyuka nyuka);
+	public void delete(String nyukaId, ShohinIdo teiseiShohinIdo);
 
 	/**
 	 * 訂正商品移動取得.
