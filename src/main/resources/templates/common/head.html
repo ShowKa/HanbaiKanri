@@ -129,6 +129,9 @@
 		this.toUpdate = function() {
 			$scope.mode = "update";
 		};
+		this.setMode = function(_mode) {
+			$scope.mode = _mode;
+		};
 	} ]);
 	
 	ngModules.service('meisai', [ '$rootScope', '$filter',

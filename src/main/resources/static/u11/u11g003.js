@@ -1,12 +1,32 @@
-ngModules.service('nyuka', [ '$rootScope', '$filter', '$httpw',
-// モデルの操作・取得
-function($scope, $filter, $httpw) {
-	// service
-} ])
-// controllers
-.controller('MainController', [ '$scope', '$httpw', 'nyuka', 'common', 'meisai',
+// 拡張
+function commonExtend($scope, common) {
+	// 継承
+	angular.extend(commonExtend.prototype, common);
+	// 訂正登録モード追加
+	var registerTeisei = "registerTeisei";
+	$scope.isRegisterTeisei = function() {
+		return registerTeisei === $scope.mode;
+	};
+	this.toRegisterTeisei = function() {
+		common.setMode(registerTeisei);
+	};
+	// 訂正更新モード追加
+	var updateTeisei = "updateTeisei";
+	$scope.isUpdateTeisei = function() {
+		return updateTeisei === $scope.mode;
+	};
+	this.toUpdateTeisei = function() {
+		common.setMode(updateTeisei);
+	};
+}
+// modules
+ngModules
+// add extended modules
+.service('commonExtend', ['$rootScope', 'common', commonExtend])
+// controller
+.controller('MainController', [ '$scope', '$httpw', 'commonExtend', 'meisai',
 // main
-function($scope, $httpw, nyukaService, common, meisaiService) {
+function($scope, $httpw, common, meisaiService) {
 	// scope
 	/**
 	 * 初期化.
@@ -157,7 +177,6 @@ function($scope, $httpw, nyukaService, common, meisaiService) {
 		};
 		$httpw.post("/u11g003/deleteTeisei", {}, callback);
 	}
-
 	// 内部関数
 	/**
 	 * 明細作成

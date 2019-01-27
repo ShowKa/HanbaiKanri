@@ -4,31 +4,37 @@ import com.showka.domain.u11.Nyuka;
 import com.showka.service.crud.u11.i.NyukaCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 
+/**
+ * 商品移動入荷の永続化Service
+ */
 public interface ShohinIdoNyukaPersistence {
 
 	/**
-	 * 保存.
+	 * 商品入荷の保存.
 	 * 
 	 * <pre>
-	 * 商品移動入荷仕様構築
-	 * 商品移動
-	 * 入荷登録 & 排他制御実施
+	 * 対象テーブル
+	 * - 商品移動 & 商品移動明細
+	 * - 商品移動入荷
+	 * 
 	 * </pre>
 	 * 
-	 * @see ShohinIdoNyukaSpecification
-	 * @see ShohinIdoPersistence
+	 * @see ShohinIdoCrud
 	 * @see NyukaCrud
+	 * 
 	 * @param nyuka
 	 *            入荷
 	 */
 	public void save(Nyuka nyuka);
 
 	/**
-	 * 商品移動削除.
+	 * 商品入荷の削除.
 	 * 
 	 * <pre>
-	 * 商品移動削除
-	 * 入荷削除
+	 * 対象テーブル
+	 * - 商品移動 & 商品移動明細
+	 * - 商品移動入荷
+	 * 
 	 * </pre>
 	 * 
 	 * @see ShohinIdoCrud

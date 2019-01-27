@@ -1,20 +1,30 @@
 package com.showka.service.persistence.u11.i;
 
 import com.showka.domain.u11.Nyuka;
+import com.showka.service.crud.u11.i.NyukaCrud;
 import com.showka.service.crud.u11.i.NyukaTeiseiCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 
+/**
+ * 商品移動入荷訂正の永続化Service
+ */
 public interface ShohinIdoNyukaTeiseiPersistence {
+
 	/**
-	 * 訂正.
+	 * 入荷訂正の保存.
 	 * 
 	 * <pre>
-	 * 商品移動
-	 * 入荷訂正登録
+	 * 対象テーブル
+	 * - 商品移動 & 商品移動明細
+	 * - 商品移動入荷
+	 * - 商品移動入荷訂正
+	 * 
+	 * 注意点：
+	 * 商品移動入荷テーブルは楽観排他制御のため更新を行う。
 	 * </pre>
 	 * 
-	 * @see ShohinIdoNyukaTeiseiSpecification
-	 * @see ShohinIdoPersistence
+	 * @see ShohinIdoCrud
+	 * @see NyukaCrud
 	 * @see NyukaTeiseiCrud
 	 * 
 	 * @param nyuka
@@ -23,19 +33,26 @@ public interface ShohinIdoNyukaTeiseiPersistence {
 	public void save(Nyuka nyuka);
 
 	/**
-	 * 訂正削除.
+	 * 入荷訂正の削除.
 	 * 
 	 * <pre>
-	 * 商品移動削除
-	 * 入荷訂正削除
+	 * 削除対象テーブル
+	 * - 商品移動 & 商品移動明細
+	 * - 商品移動入荷訂正
+	 * 
+	 * 更新対象テーブル
+	 * - 商品移動入荷
+	 * 
+	 * 注意点：
+	 * 商品移動入荷テーブルは楽観排他制御のため更新を行う。
 	 * </pre>
 	 * 
 	 * @see ShohinIdoCrud
+	 * @see NyukaCrud
 	 * @see NyukaTeiseiCrud
 	 * 
 	 * @param nyuka
 	 *            入荷
 	 */
 	public void delete(Nyuka nyuka);
-
 }

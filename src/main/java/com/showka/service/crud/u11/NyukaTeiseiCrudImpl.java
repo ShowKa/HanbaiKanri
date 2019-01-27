@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import com.showka.domain.u11.Nyuka;
 import com.showka.domain.u11.ShohinIdo;
 import com.showka.entity.TShohinIdoNyukaTeisei;
 import com.showka.entity.TShohinidoNyukaTeiseiPK;
@@ -28,10 +27,10 @@ public class NyukaTeiseiCrudImpl implements NyukaTeiseiCrud {
 
 	// OCC 対象外
 	@Override
-	public void save(ShohinIdo teiseiShohinIdo, Nyuka nyuka) {
+	public void save(String nyukaId, ShohinIdo teiseiShohinIdo) {
 		// pk
 		TShohinidoNyukaTeiseiPK pk = new TShohinidoNyukaTeiseiPK();
-		pk.setNyukaId(nyuka.getRecordId());
+		pk.setNyukaId(nyukaId);
 		pk.setShohinIdoId(teiseiShohinIdo.getRecordId());
 		// entity
 		Optional<TShohinIdoNyukaTeisei> _e = repo.findById(pk);
@@ -48,10 +47,10 @@ public class NyukaTeiseiCrudImpl implements NyukaTeiseiCrud {
 
 	// OCC 対象外
 	@Override
-	public void delete(ShohinIdo teiseiShohinIdo, Nyuka nyuka) {
+	public void delete(String nyukaId, ShohinIdo teiseiShohinIdo) {
 		// pk
 		TShohinidoNyukaTeiseiPK pk = new TShohinidoNyukaTeiseiPK();
-		pk.setNyukaId(nyuka.getRecordId());
+		pk.setNyukaId(nyukaId);
 		pk.setShohinIdoId(teiseiShohinIdo.getRecordId());
 		// delete
 		repo.deleteById(pk);
