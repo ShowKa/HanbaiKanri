@@ -1,6 +1,8 @@
 package com.showka.service.validator.u11.i;
 
 import com.showka.domain.u11.ShohinIdo;
+import com.showka.domain.u11.ShohinZaiko;
+import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.system.exception.specification.MinusZaikoException;
 
 /**
@@ -9,11 +11,17 @@ import com.showka.system.exception.specification.MinusZaikoException;
 public interface ShohinZaikoValidator {
 
 	/**
-	 * 商品マイナス在庫検証.
+	 * 商品移動登録・更新時の商品マイナス在庫検証.
 	 * 
 	 * <pre>
-	 * 商品移動の結果、在庫がマイナスとなる商品がある場合エラー.
+	 * 引数.商品移動:-商品移動明細.商品毎に下記の処理を実施する。
+	 * - 商品在庫を取得する
+	 * - 商品在庫に引数.商品移動をマージ
+	 * - 商品在庫.商品在庫数<0の場合エラー
 	 * </pre>
+	 * 
+	 * @see ShohinZaikoQuery
+	 * @see ShohinZaiko
 	 * 
 	 * @param shohinIDo
 	 *            商品移動
@@ -23,11 +31,17 @@ public interface ShohinZaikoValidator {
 	public void validateMinusZaiko(ShohinIdo shohinIDo) throws MinusZaikoException;
 
 	/**
-	 * 商品マイナス在庫検証.
+	 * 商品移動削除時の商品マイナス在庫検証.
 	 * 
 	 * <pre>
-	 * 引数.商品移動の削除の結果、在庫がマイナスとなる商品がある場合エラー.
+	 * 引数.商品移動:-商品移動明細.商品毎に下記の処理を実施する。
+	 * - 商品在庫を取得する
+	 * - 商品在庫から引数.商品移動を除去
+	 * - 商品在庫.商品在庫数<0の場合エラー
 	 * </pre>
+	 * 
+	 * @see ShohinZaikoQuery
+	 * @see ShohinZaiko
 	 * 
 	 * @param shohinIDo
 	 *            商品移動
