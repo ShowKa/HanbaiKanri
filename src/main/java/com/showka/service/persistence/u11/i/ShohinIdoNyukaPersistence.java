@@ -1,7 +1,7 @@
 package com.showka.service.persistence.u11.i;
 
 import com.showka.domain.u11.Nyuka;
-import com.showka.service.crud.u11.i.NyukaCrud;
+import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 
 /**
@@ -20,7 +20,7 @@ public interface ShohinIdoNyukaPersistence {
 	 * </pre>
 	 * 
 	 * @see ShohinIdoCrud
-	 * @see NyukaCrud
+	 * @see ShohinIdoNyukaCrud
 	 * 
 	 * @param nyuka
 	 *            入荷
@@ -38,7 +38,7 @@ public interface ShohinIdoNyukaPersistence {
 	 * </pre>
 	 * 
 	 * @see ShohinIdoCrud
-	 * @see NyukaCrud
+	 * @see ShohinIdoNyukaCrud
 	 * 
 	 * @param nyuka
 	 *            入荷

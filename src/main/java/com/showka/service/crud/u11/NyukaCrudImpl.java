@@ -12,13 +12,13 @@ import com.showka.domain.u11.NyukaSaki;
 import com.showka.domain.u11.ShohinIdo;
 import com.showka.entity.TShohinIdoNyuka;
 import com.showka.repository.i.TShohinIdoNyukaRepository;
-import com.showka.service.crud.u11.i.NyukaCrud;
+import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
 import com.showka.service.crud.u11.i.NyukaSakiCrud;
 import com.showka.service.crud.u11.i.NyukaTeiseiCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
 
 @Service
-public class NyukaCrudImpl implements NyukaCrud {
+public class NyukaCrudImpl implements ShohinIdoNyukaCrud {
 
 	@Autowired
 	private TShohinIdoNyukaRepository repo;
