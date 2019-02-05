@@ -317,4 +317,26 @@ public class NyukaTest extends SimpleTestCase {
 		// check
 		assertEquals(new EigyoDate(2018, 1, 3), actual.getDate());
 	}
+
+	@Test
+	public void test_GetAllShohinIdoList_01() throws Exception {
+		// 商品移動
+		ShohinIdoBuilder sib = new ShohinIdoBuilder();
+		sib.withKubun(ShohinIdoKubun.入荷);
+		ShohinIdo nyukaShohinIdo = sib.build();
+		// 商品移動 訂正
+		ShohinIdoBuilder sibt = new ShohinIdoBuilder();
+		sibt.withKubun(ShohinIdoKubun.入荷訂正);
+		ShohinIdo nyukaShohinIdot = sibt.build();
+		// 入荷
+		NyukaBuilder nb = new NyukaBuilder();
+		nb.withNyukaShohinIdo(nyukaShohinIdo);
+		nb.withTeiseiList(Arrays.asList(nyukaShohinIdot));
+		Nyuka nyuka = nb.build();
+		// do
+		List<ShohinIdo> actual = nyuka.getAllShohinIdoList();
+		// check
+		assertTrue(actual.contains(nyukaShohinIdo));
+		assertTrue(actual.contains(nyukaShohinIdot));
+	}
 }

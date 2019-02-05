@@ -65,7 +65,31 @@ public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
 		}).sum();
 	}
 
-	// public method
+	/**
+	 * 最大明細番号.
+	 * 
+	 * <pre>
+	 * ただし明細ない場合は0を返却
+	 * </pre>
+	 * 
+	 * @return 最大明細番号
+	 */
+	public Integer getMaxMeisaiNumber() {
+		return this.getMeisai().parallelStream().mapToInt(m -> m.getMeisaiNumber()).max().orElse(0);
+	}
+
+	/**
+	 * 商品移動明細merge.
+	 * 
+	 * @param merged
+	 *            マージ対象
+	 */
+	public void mergeMeisai(ShohinIdoMeisai merged) {
+		this.meisai.remove(merged);
+		this.meisai.add(merged);
+	}
+
+	// override
 	@Override
 	public void validate() throws SystemException {
 		// nothing to do

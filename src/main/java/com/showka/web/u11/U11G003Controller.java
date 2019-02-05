@@ -20,7 +20,7 @@ import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u11.i.NyukaSakiCrud;
 import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
-import com.showka.service.persistence.u11.ShohinIdoNyukaPersistenceImpl;
+import com.showka.service.persistence.u11.i.ShohinIdoNyukaPersistence;
 import com.showka.service.validator.z00.i.BushoValidator;
 import com.showka.service.validator.z00.i.NyukaSakiValidator;
 import com.showka.service.validator.z00.i.ShohinValidator;
@@ -53,7 +53,7 @@ public class U11G003Controller extends ControllerBase {
 	private NyukaSakiValidator nyukaSakiValidator;
 
 	// @Autowired
-	private ShohinIdoNyukaPersistenceImpl shohinIdoNyukaPersistence;
+	private ShohinIdoNyukaPersistence shohinIdoNyukaPersistence;
 
 	/** 参照モード. */
 	@RequestMapping(value = "/u11g003/refer", method = RequestMethod.GET)
