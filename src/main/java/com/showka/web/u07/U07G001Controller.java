@@ -1,8 +1,6 @@
 package com.showka.web.u07;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import com.showka.domain.u07.Seikyu;
 import com.showka.service.crud.u01.i.KokyakuCrud;
 import com.showka.service.query.u07.i.SeikyuQuery;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -56,8 +55,8 @@ public class U07G001Controller extends ControllerBase {
 		// get 請求リスト
 		List<Seikyu> _seikyuList = seikyuQuery.get(kokyaku);
 		// to map
-		List<Map<String, Object>> seikyuList = _seikyuList.stream().map(seikyu -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+		List<MavMap> seikyuList = _seikyuList.stream().map(seikyu -> {
+			MavMap ret = new MavMap();
 			ret.put("seikyuDate", seikyu.getSeikyuDate().toString());
 			ret.put("gokeiKingaku", seikyu.getGokeiKingaku().getFormatted());
 			ret.put("shiharaiDate", seikyu.getShiharaiDate().toString());

@@ -173,40 +173,6 @@ public class Kakaku extends ValueBase {
 		return new Kakaku(zeinuki.multiply(multiplicand), shohizeiRate);
 	}
 
-	// get formatted
-	/**
-	 * 税込価格をフォーマットした状態で取得
-	 * 
-	 * <pre>
-	 * 例 : ¥1,080
-	 * </pre>
-	 */
-	public String getZeikomiFormatted() {
-		return this.getZeikomi().getFormatted();
-	}
-
-	/**
-	 * 税抜金額をフォーマットした状態で取得
-	 * 
-	 * <pre>
-	 * 例 : ¥1,000
-	 * </pre>
-	 */
-	public String getZeinukiFormatted() {
-		return zeinuki.getFormatted();
-	}
-
-	/**
-	 * 税をフォーマットした状態で取得
-	 * 
-	 * <pre>
-	 * 例 : ¥80
-	 * </pre>
-	 */
-	public String getShohizeiFormatted() {
-		return this.getShohizei().getFormatted();
-	}
-
 	// override
 	/**
 	 * 価格と税が同じなら一致とみなす.

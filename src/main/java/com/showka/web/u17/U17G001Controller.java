@@ -1,8 +1,6 @@
 package com.showka.web.u17;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -29,6 +27,7 @@ import com.showka.service.query.u08.i.NyukinKeijoQuery;
 import com.showka.service.validator.u17.i.BushoDateValidator;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -86,12 +85,12 @@ public class U17G001Controller extends ControllerBase {
 		// get 部署リスト
 		List<Busho> _bushoList = bushoCrud.getDomains();
 		// to map
-		List<Map<String, Object>> bushoList = _bushoList.stream().map(b -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+		List<MavMap> bushoList = _bushoList.stream().map(b -> {
+			MavMap ret = new MavMap();
 			ret.put("code", b.getCode());
 			ret.put("name", b.getName());
 			EigyoDate eigyoDate = b.getEigyoDate();
-			ret.put("eigyoDate", eigyoDate.toString());
+			ret.put("eigyoDate", eigyoDate);
 			ret.put("dayOfWeek", eigyoDate.getDayOfWeek());
 			// FIXME 前日の売上計上を取得
 			EigyoDate keijoDate = new EigyoDate(eigyoDate.plusDays(-1));

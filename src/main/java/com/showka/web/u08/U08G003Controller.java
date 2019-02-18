@@ -1,6 +1,5 @@
 package com.showka.web.u08;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -37,6 +36,7 @@ import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -88,20 +88,20 @@ public class U08G003Controller extends ControllerBase {
 		model.addObject("bushoName", nyukin.getBusho().getName());
 		model.addObject("mikeshikomi", nyukinKeshikomi.getMikeshikomi().getFormatted());
 		// 消込リスト
-		List<Map<String, Object>> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
+		List<MavMap> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
 		model.addObject("keshikomiList", keshikomiList);
 		// get 売掛消込
 		List<UrikakeKeshikomi> _urikakeKeshikomiList = nyukinKeshikomi.getUrikakeSet().stream().map(u -> {
 			return urikakeKeshikomiPersistence.get(u.getRecordId());
 		}).collect(Collectors.toList());
-		List<Map<String, Object>> urikakeKeshikomiList = _urikakeKeshikomiList.stream().map(uk -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+		List<MavMap> urikakeKeshikomiList = _urikakeKeshikomiList.stream().map(uk -> {
+			MavMap ret = new MavMap();
 			// 売上
 			Urikake urikake = uk.getUrikake();
 			Uriage uriage = urikake.getUriage();
-			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("uriageDate", uriage.getUriageDate());
 			ret.put("uriageDenpyoNumber", uriage.getDenpyoNumber());
-			ret.put("uriageKingaku", uriage.getUriageGokeiKakaku().getZeikomiFormatted());
+			ret.put("uriageKingaku", uriage.getUriageGokeiKakaku().getZeikomi());
 			// 売掛
 			ret.put("urikakeKingaku", urikake.getKingaku().intValue());
 			// 売掛消込
@@ -125,7 +125,7 @@ public class U08G003Controller extends ControllerBase {
 		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
 		nyukinKeshikomi.removeKeshikomiBefore(eigyoDate);
 		// set to model
-		List<Map<String, Object>> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
+		List<MavMap> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
 		model.addObject("keshikomiList", keshikomiList);
 		// 消込済売掛IDリスト
 		Set<String> keshikomiDoneUrikakIdSet = nyukinKeshikomi.getKeshikomiSet()
@@ -141,11 +141,11 @@ public class U08G003Controller extends ControllerBase {
 			return keshikomiDoneUrikakIdSet.contains(thisUrikakeId);
 		});
 		// set to model
-		List<Map<String, Object>> newKeshikomiList = urikake.stream().map(u -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+		List<MavMap> newKeshikomiList = urikake.stream().map(u -> {
+			MavMap ret = new MavMap();
 			// 売上
 			Uriage uriage = u.getUriage();
-			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("uriageDate", uriage.getUriageDate());
 			ret.put("uriageDenpyoNumber", uriage.getDenpyoNumber());
 			// 売掛
 			ret.put("urikakeKingaku", u.getKingaku().intValue());
@@ -156,12 +156,12 @@ public class U08G003Controller extends ControllerBase {
 			AmountOfMoney otherKeshikomiKingaku = urikakeKeshikomi.getKeshikomiKingakuOf(nyukin);
 			ret.put("otherKeshikomiKingaku", otherKeshikomiKingaku.intValue());
 			// 消込
-			ret.put("keshikomiId", null);
+			// ret.put("keshikomiId", null);
 			ret.put("urikakeId", u.getRecordId());
 			ret.put("urikakeVersion", u.getVersion());
 			ret.put("kingaku", 0);
 			ret.put("date", eigyoDate.toString());
-			ret.put("version", null);
+			// ret.put("version", null);
 			return ret;
 		}).collect(Collectors.toList());
 		model.addObject("newKeshikomiList", newKeshikomiList);
@@ -215,7 +215,7 @@ public class U08G003Controller extends ControllerBase {
 		EigyoDate eigyoDate = nyukinKeshikomi.getNyukinBushoEigyoDate();
 		nyukinKeshikomi.removeKeshikomiOf(eigyoDate);
 		// set to model
-		List<Map<String, Object>> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
+		List<MavMap> keshikomiList = this.buildKeshikomiList(nyukinKeshikomi);
 		model.addObject("keshikomiList", keshikomiList);
 		// form
 		model.setMode(Mode.UPDATE);
@@ -293,17 +293,17 @@ public class U08G003Controller extends ControllerBase {
 	 *            入金消込
 	 * @return
 	 */
-	private List<Map<String, Object>> buildKeshikomiList(NyukinKeshikomi nyukinKeshikomi) {
+	private List<MavMap> buildKeshikomiList(NyukinKeshikomi nyukinKeshikomi) {
 		// build
 		Set<Keshikomi> keshikomiSet = nyukinKeshikomi.getKeshikomiSet();
 		Nyukin nyukin = nyukinKeshikomi.getNyukin();
 		return keshikomiSet.stream().map(keshikomi -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+			MavMap ret = new MavMap();
 			// 売上
 			Uriage uriage = keshikomi.getUrikake().getUriage();
-			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("uriageDate", uriage.getUriageDate());
 			ret.put("uriageDenpyoNumber", uriage.getDenpyoNumber());
-			ret.put("uriageKingaku", uriage.getUriageGokeiKakaku().getZeikomiFormatted());
+			ret.put("uriageKingaku", uriage.getUriageGokeiKakaku().getZeikomi());
 			// 売掛
 			Urikake urikake = keshikomi.getUrikake();
 			ret.put("urikakeKingaku", urikake.getKingaku().intValue());
