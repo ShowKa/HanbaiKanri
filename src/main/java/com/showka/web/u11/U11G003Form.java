@@ -26,11 +26,10 @@ public class U11G003Form extends FormBase {
 	/** 入荷日. */
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	private Date date;
-	// 2019/01/23 明細には専用のFormが必要です。U05G002Form U05G002FormMeisaiを参照してください。
 	/** 入荷明細. */
 	private List<U11G003MeisaiForm> meisai = new ArrayList<U11G003MeisaiForm>();
 	/** record_id */
-	private String recordId;
+	private String nyukaId;
 	/** バージョン(排他制御用) */
 	private Integer version;
 }
