@@ -1,9 +1,7 @@
 package com.showka.web.u05;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,6 +22,7 @@ import com.showka.service.search.u05.i.UriageSearchCriteria;
 import com.showka.service.validator.u01.i.KokyakuValidator;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -89,14 +88,14 @@ public class U05G001Controller extends ControllerBase {
 		criteria.setOnlyUrikake(form.isOnlyUrikake());
 		List<Uriage> searchLislt = uriageSearch.search(criteria);
 		// set model
-		List<Map<String, Object>> uriageList = searchLislt.stream().map(uriage -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+		List<MavMap> uriageList = searchLislt.stream().map(uriage -> {
+			MavMap ret = new MavMap();
 			ret.put("kokyakuCode", uriage.getKokyaku().getCode());
 			ret.put("kokyakuName", uriage.getKokyaku().getName());
 			ret.put("denpyoNumber", uriage.getDenpyoNumber());
-			ret.put("uriageDate", uriage.getUriageDate().toString());
+			ret.put("uriageDate", uriage.getUriageDate());
 			ret.put("hanbaiKubun", uriage.getHanbaiKubun().name());
-			ret.put("gokeiKakakuZeinuki", uriage.getUriageGokeiKakaku().getZeinukiFormatted());
+			ret.put("gokeiKakakuZeinuki", uriage.getUriageGokeiKakaku().getZeinuki());
 			return ret;
 		}).collect(Collectors.toList());
 		model.addObject("uriageList", uriageList);

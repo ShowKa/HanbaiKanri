@@ -2,9 +2,7 @@ package com.showka.web.u05;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -47,6 +45,7 @@ import com.showka.system.exception.validate.NotExistException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TaxRate;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -456,10 +455,10 @@ public class U05G002Controller extends ControllerBase {
 		UriageRireki rireki = uriageRirekiQuery.get(form.getRecordId());
 
 		// 画面に必要な履歴情報をmapに入れる。
-		List<Map<String, Object>> rirekiList = new ArrayList<Map<String, Object>>();
+		List<MavMap> rirekiList = new ArrayList<>();
 		rireki.getAllWithTeiseiDenpyo().stream().forEach(uriage -> {
 			uriage.getUriageMeisai().forEach(meisai -> {
-				Map<String, Object> m = new HashMap<String, Object>();
+				MavMap m = new MavMap();
 				m.put("shohinCode", meisai.getShohinDomain().getCode());
 				m.put("hanbaiNumber", meisai.getHanbaiNumber());
 				m.put("hanbaiTanka", meisai.getHanbaiTanka());

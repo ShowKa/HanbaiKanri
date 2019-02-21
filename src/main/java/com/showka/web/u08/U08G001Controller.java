@@ -1,9 +1,7 @@
 package com.showka.web.u08;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,7 @@ import com.showka.service.search.u08.i.NyukinKeshikomiSearchParm;
 import com.showka.value.AmountOfMoney;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -113,18 +112,18 @@ public class U08G001Controller extends ControllerBase {
 		// search
 		List<NyukinKeshikomi> nyukinList = nyukinKeshikomiSearch.search(param);
 		// model
-		List<Map<String, Object>> resultList = nyukinList.stream().map(nk -> {
+		List<MavMap> resultList = nyukinList.stream().map(nk -> {
 			Nyukin n = nk.getNyukin();
-			Map<String, Object> ret = new HashMap<>();
+			MavMap ret = new MavMap();
 			ret.put("nyukinId", n.getRecordId());
 			ret.put("kokyakuCode", n.getKokyaku().getCode());
 			ret.put("kokyakuName", n.getKokyaku().getName());
 			ret.put("bushoCode", n.getBusho().getCode());
 			ret.put("bushoName", n.getBusho().getName());
-			ret.put("nyukinDate", n.getDate().toString());
+			ret.put("nyukinDate", n.getDate());
 			ret.put("nyukinHoho", n.getNyukinHohoKubun().name());
-			ret.put("nyukinKingaku", n.getKingaku().getFormatted());
-			ret.put("keshikomiKingaku", nk.getKeshikomiKingakuGokei().getFormatted());
+			ret.put("nyukinKingaku", n.getKingaku());
+			ret.put("keshikomiKingaku", nk.getKeshikomiKingakuGokei());
 			ret.put("keshikomiDone", nk.done());
 			return ret;
 		}).collect(Collectors.toList());
