@@ -1,5 +1,12 @@
 package com.showka.web.u11;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -7,6 +14,24 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.showka.domain.builder.NyukaBuilder;
+import com.showka.domain.builder.ShohinIdoBuilder;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
+import com.showka.domain.u11.Nyuka;
+import com.showka.domain.u11.ShohinIdo;
+import com.showka.domain.u11.ShohinIdoMeisai;
+import com.showka.domain.z00.Shohin;
+import com.showka.kubun.ShohinIdoKubun;
+import com.showka.service.crud.u11.i.NyukaSakiCrud;
+import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
+import com.showka.service.crud.z00.i.BushoCrud;
+import com.showka.service.crud.z00.i.ShohinCrud;
+import com.showka.service.persistence.u11.i.ShohinIdoNyukaPersistence;
+import com.showka.service.validator.z00.i.BushoValidator;
+import com.showka.service.validator.z00.i.NyukaSakiValidator;
+import com.showka.service.validator.z00.i.ShohinValidator;
+import com.showka.value.EigyoDate;
+import com.showka.value.TheTimestamp;
 import com.showka.web.ControllerBase;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
@@ -14,6 +39,30 @@ import com.showka.web.ModelAndViewExtended;
 @Controller
 @EnableAutoConfiguration
 public class U11G003Controller extends ControllerBase {
+
+	@Autowired
+	private BushoCrud bushoCrud;
+
+	@Autowired
+	private ShohinCrud shohinCrud;
+
+	@Autowired
+	private NyukaSakiCrud nyukaSakiCrud;
+
+	@Autowired
+	private ShohinIdoNyukaCrud shohinIdoNyukaCrud;
+
+	@Autowired
+	private BushoValidator bushoValidator;
+
+	// @Autowired
+	private ShohinValidator shoinValidator;
+
+	// @Autowired
+	private NyukaSakiValidator nyukaSakiValidator;
+
+	// @Autowired
+	private ShohinIdoNyukaPersistence shohinIdoNyukaPersistence;
 
 	/** 参照モード. */
 	@RequestMapping(value = "/u11g003/refer", method = RequestMethod.GET)
@@ -29,6 +78,8 @@ public class U11G003Controller extends ControllerBase {
 	/** 新規登録モード */
 	@RequestMapping(value = "/u11g003/registerForm", method = RequestMethod.GET)
 	public ModelAndViewExtended registerForm(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// 初期値
+		form.setBushoCode(super.getLoginShain().getShozokuBusho().getCode());
 		// set model
 		model.addForm(form);
 		model.setMode(Mode.REGISTER);
@@ -40,6 +91,19 @@ public class U11G003Controller extends ControllerBase {
 	/** 商品入荷登録. */
 	@RequestMapping(value = "/u11g003/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// データ存在チェック
+		bushoValidator.validateExistance(form.getBushoCode());
+		nyukaSakiValidator.validateExistance(form.getNyukasakiCode());
+		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		for (int i = 0; i < meisai.size(); i++) {
+			shoinValidator.validateExistance(meisai.get(i).getShohinCode());
+		}
+		// フォームから登録データ作成
+		Nyuka nyuka = buildDomainNyukaFromForm(form);
+		// register
+		shohinIdoNyukaPersistence.save(nyuka);
+		// set model
+		model.addForm(form);
 		// return
 		return ResponseEntity.ok(model);
 	}
@@ -82,6 +146,47 @@ public class U11G003Controller extends ControllerBase {
 	/** 商品入荷取得. */
 	@RequestMapping(value = "/u11g003/get", method = RequestMethod.POST)
 	public ResponseEntity<?> get(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// 入荷取得
+		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
+		// 明細リスト_入荷
+		List<Map<String, Object>> meisaiList_Nyuka = new ArrayList<>();
+		Set<Shohin> shohinSet = nyuka.getShohinSet();
+		shohinSet.parallelStream().forEach(s -> {
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("shohinCode", s.getCode());
+			m.put("shohinName", s.getName());
+			m.put("number", nyuka.getNumber(s));
+			meisaiList_Nyuka.add(m);
+		});
+		// 明細リスト_入荷訂正履歴
+		List<Map<String, Object>> meisaiList_NyukaTeisei = new ArrayList<>();
+		List<ShohinIdo> allShohinIdoList = nyuka.getAllShohinIdoList();
+		allShohinIdoList.forEach(shohinIdo -> {
+			shohinIdo.getMeisai().forEach(shohinIdoMeisai -> {
+				Shohin shohin = shohinIdoMeisai.getShohinDomain();
+				Map<String, Object> m = new HashMap<String, Object>();
+				m.put("meisaiNumber", shohinIdoMeisai.getMeisaiNumber());
+				m.put("shohinCode", shohin.getCode());
+				m.put("shohinName", shohin.getName());
+				m.put("date", shohinIdo.getDate().toDate());
+				m.put("number", shohinIdoMeisai.getNumber());
+				meisaiList_NyukaTeisei.add(m);
+			});
+		});
+		// model
+		model.addObject("bushoCode", nyuka.getBusho().getCode());
+		model.addObject("nyukaSakiCode", nyuka.getNyukaSaki().getCode());
+		model.addObject("nyukaDate", nyuka.getNyukaDate());
+		model.addObject("meisaiList_Nyuka", meisaiList_Nyuka);
+		model.addObject("meisaiList_NyukaTeisei", meisaiList_NyukaTeisei);
+		// mode
+		// 対象伝票
+		EigyoDate eigyoDate = nyuka.getBusho().getEigyoDate();
+		boolean nyukaDenpyo = nyuka.getNyukaDate().equals(eigyoDate);
+		model.addObject("target", nyukaDenpyo ? "nyuka" : "nyukaTeisei");
+		// 当日訂正
+		boolean done = nyuka.doneTeisei(eigyoDate);
+		model.addObject("teiseiDone", done ? "done" : "notYet");
 		// return
 		return ResponseEntity.ok(model);
 	}
@@ -99,4 +204,47 @@ public class U11G003Controller extends ControllerBase {
 		// return
 		return ResponseEntity.ok(model);
 	}
+
+	// private
+	/**
+	 * form -> $入荷
+	 */
+	private Nyuka buildDomainNyukaFromForm(U11G003Form form) {
+		// 入荷商品移動
+		ShohinIdoBuilder shohinIdoBuilder = new ShohinIdoBuilder();
+		// 入荷ID
+		String nyukaId = form.getNyukaId();
+		// 明細
+		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
+		for (U11G003MeisaiForm mf : form.getMeisai()) {
+			// meisai build
+			ShohinIdoMeisaiBuilder mb = new ShohinIdoMeisaiBuilder();
+			// TODO formに番号がなければ、採番
+			mb.withMeisaiNumber(mf.getMeisaiNumber());
+			mb.withNumber(mf.getNyukaSu());
+			mb.withRecordId(mf.getRecordId());
+			mb.withShohinDomain(shohinCrud.getDomain(mf.getShohinCode()));
+			mb.withVersion(mf.getVersion());
+			// add list
+			meisai.add(mb.build());
+		}
+		shohinIdoBuilder.withBusho(bushoCrud.getDomain(form.getBushoCode()));
+		shohinIdoBuilder.withDate(new EigyoDate(form.getDate()));
+		shohinIdoBuilder.withKubun(ShohinIdoKubun.入荷);
+		shohinIdoBuilder.withMeisai(meisai);
+		// recordIDを設定しない=勝手に採番
+		// shohinIdoBuilder.withRecordId(recordId);
+		shohinIdoBuilder.withTimestamp(new TheTimestamp());
+		shohinIdoBuilder.withVersion(form.getVersion());
+		// NyukaBuilder
+		NyukaBuilder nb = new NyukaBuilder();
+		nb.withNyukaSaki(nyukaSakiCrud.getDomain(form.getNyukasakiCode()));
+		nb.withNyukaShohinIdo(shohinIdoBuilder.build());
+		nb.withRecordId(nyukaId);
+		// 省略
+		nb.withTeiseiList(new ArrayList<>());
+		nb.withVersion(form.getVersion());
+		return nb.build();
+	}
+
 }

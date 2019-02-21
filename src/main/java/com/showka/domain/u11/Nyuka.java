@@ -8,11 +8,14 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.showka.domain.DomainRoot;
+import com.showka.domain.builder.ShohinIdoBuilder;
+import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.system.exception.SystemException;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheTimestamp;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -136,7 +139,82 @@ public class Nyuka extends DomainRoot {
 		}).get();
 	}
 
+	/**
+	 * 訂正.
+	 * 
+	 * <pre>
+	 * 訂正の商品移動を作成します。
+	 * </pre>
+	 * 
+	 * @param target
+	 *            対象商品
+	 * @param nyukaNumber
+	 *            入荷数(訂正後)
+	 */
+	public void teisei(Shohin target, Integer nyukaNumber) {
+		// 現在入荷数=引数.入荷数の場合、何もしない
+		Integer number = this.getNumber(target);
+		if (number.equals(nyukaNumber)) {
+			return;
+		}
+		// 移動数
+		Integer idosuu = nyukaNumber - number;
+		// 営業日
+		EigyoDate eigyoDate = this.getBusho().getEigyoDate();
+		// 商品移動
+		Optional<ShohinIdo> _teisei = this.teiseiList.parallelStream()
+				.filter(t -> t.getDate().equals(eigyoDate))
+				.findFirst();
+		ShohinIdo teisei = _teisei.orElseGet(() -> {
+			ShohinIdoBuilder b = new ShohinIdoBuilder();
+			b.withBusho(this.getBusho());
+			b.withDate(eigyoDate);
+			b.withKubun(ShohinIdoKubun.入荷訂正);
+			b.withMeisai(new ArrayList<>());
+			b.withTimestamp(new TheTimestamp());
+			return b.build();
+		});
+		// 商品移動明細
+		Optional<ShohinIdoMeisai> _meisai = teisei.getMeisai()
+				.parallelStream()
+				.filter(m -> m.getShohinDomain().equals(target))
+				.findFirst();
+		ShohinIdoMeisai meisai;
+		if (_meisai.isPresent()) {
+			// 移動数だけ上書き
+			ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
+			meisai = b.withNumber(idosuu).apply(_meisai.get());
+		} else {
+			ShohinIdoMeisaiBuilder b = new ShohinIdoMeisaiBuilder();
+			Integer n = teisei.getMaxMeisaiNumber() + 1;
+			b.withMeisaiNumber(n);
+			b.withNumber(idosuu);
+			b.withShohinDomain(target);
+			meisai = b.build();
+		}
+		// 明細を訂正商品移動にmerge
+		teisei.mergeMeisai(meisai);
+		// 訂正商品移動を入荷にmerge
+		this.mergeTeisei(teisei);
+	}
+
 	// getter
+	/**
+	 * 全商品移動リスト取得
+	 * 
+	 * <pre>
+	 * 入荷と入荷訂正の商品移動すべてを取得
+	 * </pre>
+	 * 
+	 * @return 全商品移動リスト
+	 */
+	public List<ShohinIdo> getAllShohinIdoList() {
+		List<ShohinIdo> list = new ArrayList<>();
+		list.add(nyukaShohinIdo);
+		list.addAll(teiseiList);
+		return list;
+	}
+
 	public String getShohinIdoId() {
 		return this.nyukaShohinIdo.getRecordId();
 	}
@@ -180,5 +258,11 @@ public class Nyuka extends DomainRoot {
 		if (includesInccorrect) {
 			throw new SystemException("訂正に誤った商品移動区分が含まれています。");
 		}
+	}
+
+	// protected or private
+	private void mergeTeisei(ShohinIdo target) {
+		this.teiseiList.remove(target);
+		this.teiseiList.add(target);
 	}
 }

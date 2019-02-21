@@ -1,8 +1,6 @@
 package com.showka.web.u07;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,6 +23,7 @@ import com.showka.service.crud.u01.i.KokyakuCrud;
 import com.showka.service.crud.u07.i.SeikyuCrud;
 import com.showka.value.Kakaku;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -82,11 +81,11 @@ public class U07G002Controller extends ControllerBase {
 		model.addObject("nyukinHoho", nyukinHoho.toString());
 		// set model 明細
 		List<SeikyuMeisai> seikyuMeisai = seikyu.getSeikyuMeisai();
-		List<Map<String, Object>> meisaiList = seikyuMeisai.stream().map(m -> {
+		List<MavMap> meisaiList = seikyuMeisai.stream().map(m -> {
 			Urikake urikake = m.getUrikake();
 			Uriage uriage = urikake.getUriage();
 			Kakaku uriageGokei = uriage.getUriageGokeiKakaku();
-			Map<String, Object> ret = new HashMap<String, Object>();
+			MavMap ret = new MavMap();
 			ret.put("denpyoNumber", uriage.getDenpyoNumber());
 			ret.put("uriageDate", uriage.getUriageDate().toString());
 			ret.put("zeikomiKakaku", uriageGokei.getZeikomi().getFormatted());

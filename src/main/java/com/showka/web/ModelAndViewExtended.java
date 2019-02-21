@@ -7,6 +7,7 @@ import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.i.Kubun;
 import com.showka.value.EigyoDate;
+import com.showka.value.TheDate;
 
 import lombok.Getter;
 
@@ -72,5 +73,20 @@ public class ModelAndViewExtended extends org.springframework.web.servlet.ModelA
 		EigyoDate eigyoDate = shozoku.getEigyoDate();
 		this.addObject("loginUserBushoName", shozoku.getName());
 		this.addObject("loginUserBushoEigyoDate", eigyoDate.toString() + " (" + eigyoDate.getDayOfWeek() + ")");
+	}
+
+	// extension
+	/**
+	 * 日付.
+	 * 
+	 * @param attributeName
+	 *            属性名
+	 * @param date
+	 *            日付
+	 * @return ModeAndView
+	 */
+	public ModelAndViewExtended addObject(String attributeName, TheDate date) {
+		super.addObject(attributeName, date.toDate());
+		return this;
 	}
 }

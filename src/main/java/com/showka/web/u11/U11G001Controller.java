@@ -1,8 +1,6 @@
 package com.showka.web.u11;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.query.u11.i.ShohinZaikoQuery;
 import com.showka.value.EigyoDate;
 import com.showka.web.ControllerBase;
+import com.showka.web.MavMap;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -64,8 +63,8 @@ public class U11G001Controller extends ControllerBase {
 		Busho busho = bushoCrud.getDomain(form.getBushoCode());
 		List<ShohinZaiko> _zaikoList = shohinZaikoQuery.get(busho, new EigyoDate(form.getDate()));
 		// to map
-		List<Map<String, Object>> zaikoList = _zaikoList.stream().map(z -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+		List<MavMap> zaikoList = _zaikoList.stream().map(z -> {
+			MavMap ret = new MavMap();
 			ret.put("code", z.getShohin().getCode());
 			ret.put("name", z.getShohin().getName());
 			ret.put("number", z.getNumber());
@@ -90,8 +89,8 @@ public class U11G001Controller extends ControllerBase {
 		Shohin shohin = shohinCrud.getDomain(form.getShohinCode());
 		ShohinZaiko _zaiko = shohinZaikoQuery.get(busho, new EigyoDate(form.getDate()), shohin);
 		// to map
-		List<Map<String, Object>> shohinIdoList = _zaiko.getShohinIdoList().stream().map(z -> {
-			Map<String, Object> ret = new HashMap<String, Object>();
+		List<MavMap> shohinIdoList = _zaiko.getShohinIdoList().stream().map(z -> {
+			MavMap ret = new MavMap();
 			ret.put("timestamp", z.getTimestamp().toString("HH:mm:ss"));
 			ret.put("kubun", z.getKubun().name());
 			ret.put("number", z.getNumberForBushoZaiko(_zaiko.getShohin()));

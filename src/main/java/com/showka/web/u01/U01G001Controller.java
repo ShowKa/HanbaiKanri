@@ -1,7 +1,6 @@
 package com.showka.web.u01;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.entity.MKokyaku;
 import com.showka.service.search.u01.i.KokyakuSearch;
 import com.showka.service.search.u01.i.KokyakuSearchCriteria;
+import com.showka.web.MavMap;
 import com.showka.web.ModelAndViewExtended;
 
 /**
@@ -65,9 +65,9 @@ public class U01G001Controller {
 		List<MKokyaku> result = service.search(criteria);
 
 		// list
-		ArrayList<HashMap<String, String>> kokyakuList = new ArrayList<>();
+		List<MavMap> kokyakuList = new ArrayList<>();
 		for (MKokyaku k : result) {
-			HashMap<String, String> m = new HashMap<String, String>();
+			MavMap m = new MavMap();
 			m.put("code", k.getCode());
 			m.put("name", k.getName());
 			m.put("bushoName", k.getShukanBusho().getName());
@@ -91,8 +91,8 @@ public class U01G001Controller {
 
 		if (result.hasErrors()) {
 			// list
-			ArrayList<HashMap<String, String>> kokyakuList = new ArrayList<>();
-			HashMap<String, String> m = new HashMap<String, String>();
+			List<MavMap> kokyakuList = new ArrayList<>();
+			MavMap m = new MavMap();
 			m.put("code", "");
 			m.put("name", "valid NG");
 			m.put("bushoName", "");
