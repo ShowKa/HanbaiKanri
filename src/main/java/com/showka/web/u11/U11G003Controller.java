@@ -55,7 +55,7 @@ public class U11G003Controller extends ControllerBase {
 	@Autowired
 	private BushoValidator bushoValidator;
 
-	// @Autowired
+	@Autowired
 	private ShohinValidator shoinValidator;
 
 	// @Autowired
@@ -95,15 +95,13 @@ public class U11G003Controller extends ControllerBase {
 		bushoValidator.validateExistance(form.getBushoCode());
 		nyukaSakiValidator.validateExistance(form.getNyukasakiCode());
 		List<U11G003MeisaiForm> meisai = form.getMeisai();
-		for (int i = 0; i < meisai.size(); i++) {
-			shoinValidator.validateExistance(meisai.get(i).getShohinCode());
-		}
+		meisai.forEach(m -> {
+			shoinValidator.validateExistance(m.getShohinCode());
+		});
 		// フォームから登録データ作成
-		Nyuka nyuka = buildDomainNyukaFromForm(form);
+		Nyuka nyuka = buildNyuka(form);
 		// register
 		shohinIdoNyukaPersistence.save(nyuka);
-		// set model
-		model.addForm(form);
 		// return
 		return ResponseEntity.ok(model);
 	}
@@ -111,6 +109,21 @@ public class U11G003Controller extends ControllerBase {
 	/** 商品入荷更新. */
 	@RequestMapping(value = "/u11g003/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// データ存在チェック
+		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		meisai.forEach(m -> {
+			shoinValidator.validateExistance(m.getShohinCode());
+		});
+		// 入荷（更新前）
+		Nyuka _nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
+		// 商品移動（更新）
+		ShohinIdo shohinIdo = this.buildShohinIdo(form);
+		// 入荷（更新後）
+		NyukaBuilder b = new NyukaBuilder();
+		b.withNyukaShohinIdo(shohinIdo);
+		Nyuka nyuka = b.apply(_nyuka);
+		// update
+		shohinIdoNyukaPersistence.save(nyuka);
 		// return
 		return ResponseEntity.ok(model);
 	}
@@ -209,15 +222,43 @@ public class U11G003Controller extends ControllerBase {
 	/**
 	 * form -> $入荷
 	 */
-	private Nyuka buildDomainNyukaFromForm(U11G003Form form) {
-		// 入荷商品移動
-		ShohinIdoBuilder shohinIdoBuilder = new ShohinIdoBuilder();
-		// 入荷ID
-		String nyukaId = form.getNyukaId();
+	private Nyuka buildNyuka(U11G003Form form) {
+		// 商品移動
+		ShohinIdo shohinIdo = this.buildShohinIdo(form);
+		// 入荷
+		NyukaBuilder nb = new NyukaBuilder();
+		nb.withNyukaSaki(nyukaSakiCrud.getDomain(form.getNyukasakiCode()));
+		nb.withNyukaShohinIdo(shohinIdo);
+		nb.withRecordId(form.getNyukaId());
+		nb.withTeiseiList(new ArrayList<>());
+		nb.withVersion(form.getVersion());
+		return nb.build();
+	}
+
+	/**
+	 * 商品移動構築
+	 */
+	private ShohinIdo buildShohinIdo(U11G003Form form) {
 		// 明細
+		List<ShohinIdoMeisai> meisai = this.buildShohinIdoMeisai(form.getMeisai());
+		// 商品移動
+		ShohinIdoBuilder b = new ShohinIdoBuilder();
+		b.withBusho(bushoCrud.getDomain(form.getBushoCode()));
+		b.withDate(new EigyoDate(form.getDate()));
+		b.withKubun(ShohinIdoKubun.入荷);
+		b.withMeisai(meisai);
+		b.withTimestamp(new TheTimestamp());
+		b.withVersion(form.getVersion());
+		ShohinIdo shohinIdo = b.build();
+		return shohinIdo;
+	}
+
+	/**
+	 * 商品移動明細構築
+	 */
+	private List<ShohinIdoMeisai> buildShohinIdoMeisai(List<U11G003MeisaiForm> meisaiList) {
 		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
-		for (U11G003MeisaiForm mf : form.getMeisai()) {
-			// meisai build
+		for (U11G003MeisaiForm mf : meisaiList) {
 			ShohinIdoMeisaiBuilder mb = new ShohinIdoMeisaiBuilder();
 			// TODO formに番号がなければ、採番
 			mb.withMeisaiNumber(mf.getMeisaiNumber());
@@ -225,26 +266,9 @@ public class U11G003Controller extends ControllerBase {
 			mb.withRecordId(mf.getRecordId());
 			mb.withShohinDomain(shohinCrud.getDomain(mf.getShohinCode()));
 			mb.withVersion(mf.getVersion());
-			// add list
 			meisai.add(mb.build());
 		}
-		shohinIdoBuilder.withBusho(bushoCrud.getDomain(form.getBushoCode()));
-		shohinIdoBuilder.withDate(new EigyoDate(form.getDate()));
-		shohinIdoBuilder.withKubun(ShohinIdoKubun.入荷);
-		shohinIdoBuilder.withMeisai(meisai);
-		// recordIDを設定しない=勝手に採番
-		// shohinIdoBuilder.withRecordId(recordId);
-		shohinIdoBuilder.withTimestamp(new TheTimestamp());
-		shohinIdoBuilder.withVersion(form.getVersion());
-		// NyukaBuilder
-		NyukaBuilder nb = new NyukaBuilder();
-		nb.withNyukaSaki(nyukaSakiCrud.getDomain(form.getNyukasakiCode()));
-		nb.withNyukaShohinIdo(shohinIdoBuilder.build());
-		nb.withRecordId(nyukaId);
-		// 省略
-		nb.withTeiseiList(new ArrayList<>());
-		nb.withVersion(form.getVersion());
-		return nb.build();
+		return meisai;
 	}
 
 }
