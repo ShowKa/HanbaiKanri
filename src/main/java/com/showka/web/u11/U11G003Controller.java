@@ -27,6 +27,7 @@ import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
 import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoNyukaPersistence;
+import com.showka.service.validator.u11.i.NyukaValidator;
 import com.showka.service.validator.z00.i.BushoValidator;
 import com.showka.service.validator.z00.i.NyukaSakiValidator;
 import com.showka.service.validator.z00.i.ShohinValidator;
@@ -58,10 +59,13 @@ public class U11G003Controller extends ControllerBase {
 	@Autowired
 	private ShohinValidator shoinValidator;
 
-	// @Autowired
+	@Autowired
 	private NyukaSakiValidator nyukaSakiValidator;
 
-	// @Autowired
+	@Autowired
+	private NyukaValidator nyukaValidator;
+
+	@Autowired
 	private ShohinIdoNyukaPersistence shohinIdoNyukaPersistence;
 
 	/** 参照モード. */
@@ -100,9 +104,12 @@ public class U11G003Controller extends ControllerBase {
 		});
 		// フォームから登録データ作成
 		Nyuka nyuka = buildNyuka(form);
-		// register
+		// 整合性検証
+		nyukaValidator.validate(nyuka);
+		// 登録
 		shohinIdoNyukaPersistence.save(nyuka);
 		// return
+		form.setSuccessMessage("新規登録成功");
 		return ResponseEntity.ok(model);
 	}
 
@@ -122,16 +129,31 @@ public class U11G003Controller extends ControllerBase {
 		NyukaBuilder b = new NyukaBuilder();
 		b.withNyukaShohinIdo(shohinIdo);
 		Nyuka nyuka = b.apply(_nyuka);
-		// update
+		// OCC
+		nyuka.setVersion(form.getVersion());
+		// 整合性検証
+		nyukaValidator.validate(nyuka);
+		nyukaValidator.validateForUpdate(nyuka);
+		// 更新
 		shohinIdoNyukaPersistence.save(nyuka);
 		// return
+		form.setSuccessMessage("更新成功");
 		return ResponseEntity.ok(model);
 	}
 
 	/** 商品入荷削除. */
 	@RequestMapping(value = "/u11g003/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// 入荷（更新前）
+		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
+		// OCC
+		nyuka.setVersion(form.getVersion());
+		// 整合性検証
+		nyukaValidator.validateForDelete(nyuka);
+		// 削除
+		shohinIdoNyukaPersistence.delete(nyuka);
 		// return
+		form.setSuccessMessage("削除成功");
 		return ResponseEntity.ok(model);
 	}
 
