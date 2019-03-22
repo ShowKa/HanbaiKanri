@@ -20,6 +20,7 @@ import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.domain.u11.Nyuka;
 import com.showka.domain.u11.ShohinIdo;
 import com.showka.domain.u11.ShohinIdoMeisai;
+import com.showka.domain.z00.Shain;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.u11.i.NyukaSakiCrud;
@@ -27,10 +28,13 @@ import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
 import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoNyukaPersistence;
+import com.showka.service.query.u11.i.ShohinTanaoroshiQuery;
 import com.showka.service.validator.u11.i.NyukaValidator;
 import com.showka.service.validator.z00.i.BushoValidator;
 import com.showka.service.validator.z00.i.NyukaSakiValidator;
 import com.showka.service.validator.z00.i.ShohinValidator;
+import com.showka.system.exception.AuthorizationException;
+import com.showka.system.exception.validate.ValidateException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 import com.showka.web.ControllerBase;
@@ -68,6 +72,9 @@ public class U11G003Controller extends ControllerBase {
 	@Autowired
 	private ShohinIdoNyukaPersistence shohinIdoNyukaPersistence;
 
+	@Autowired
+	private ShohinTanaoroshiQuery shohinTanaoroshiQuery;
+
 	/** 参照モード. */
 	@RequestMapping(value = "/u11g003/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
@@ -104,6 +111,9 @@ public class U11G003Controller extends ControllerBase {
 		});
 		// フォームから登録データ作成
 		Nyuka nyuka = buildNyuka(form);
+		// 処理可否検証
+		this.validateTanaoroshi(nyuka);
+		this.validateAuth(nyuka);
 		// 整合性検証
 		nyukaValidator.validate(nyuka);
 		// 登録
@@ -131,6 +141,9 @@ public class U11G003Controller extends ControllerBase {
 		Nyuka nyuka = b.apply(_nyuka);
 		// OCC
 		nyuka.setVersion(form.getVersion());
+		// 処理可否検証
+		this.validateTanaoroshi(nyuka);
+		this.validateAuth(nyuka);
 		// 整合性検証
 		nyukaValidator.validate(nyuka);
 		nyukaValidator.validateForUpdate(nyuka);
@@ -148,6 +161,9 @@ public class U11G003Controller extends ControllerBase {
 		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
 		// OCC
 		nyuka.setVersion(form.getVersion());
+		// 処理可否検証
+		this.validateTanaoroshi(nyuka);
+		this.validateAuth(nyuka);
 		// 整合性検証
 		nyukaValidator.validateForDelete(nyuka);
 		// 削除
@@ -238,6 +254,22 @@ public class U11G003Controller extends ControllerBase {
 	public ResponseEntity<?> validateMeisai(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// return
 		return ResponseEntity.ok(model);
+	}
+
+	/** 棚卸検証 */
+	private void validateTanaoroshi(Nyuka nyuka) {
+		boolean onGoing = shohinTanaoroshiQuery.onGoing(nyuka.getBusho());
+		if (onGoing) {
+			throw new ValidateException("棚卸中のため登録・更新・削除できません。");
+		}
+	}
+
+	/** ユーザー権限検証 */
+	private void validateAuth(Nyuka nyuka) {
+		Shain user = super.getLoginShain();
+		if (!user.getShozokuBusho().equals(nyuka.getBusho())) {
+			throw new AuthorizationException("所属部署の入荷のみ登録・更新・削除が行なえます。");
+		}
 	}
 
 	// private
