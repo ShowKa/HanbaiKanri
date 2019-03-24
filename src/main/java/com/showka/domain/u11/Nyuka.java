@@ -215,6 +215,21 @@ public class Nyuka extends DomainRoot {
 		return list;
 	}
 
+	/**
+	 * 商品移動取得.
+	 * 
+	 * <pre>
+	 * 存在しないIDを渡した場合エラー
+	 * </pre>
+	 * 
+	 * @param shohinIdoId
+	 *            商品移動ID
+	 * @return 商品移動
+	 */
+	public ShohinIdo getShohinIdoById(String shohinIdoId) {
+		return this.getAllShohinIdoList().stream().filter(s -> shohinIdoId.equals(s.getRecordId())).findFirst().get();
+	}
+
 	public String getShohinIdoId() {
 		return this.nyukaShohinIdo.getRecordId();
 	}

@@ -29,6 +29,7 @@ import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoNyukaPersistence;
 import com.showka.service.query.u11.i.ShohinTanaoroshiQuery;
+import com.showka.service.validator.u11.i.NyukaTeiseiValidator;
 import com.showka.service.validator.u11.i.NyukaValidator;
 import com.showka.service.validator.z00.i.BushoValidator;
 import com.showka.service.validator.z00.i.NyukaSakiValidator;
@@ -68,6 +69,9 @@ public class U11G003Controller extends ControllerBase {
 
 	@Autowired
 	private NyukaValidator nyukaValidator;
+
+	@Autowired
+	private NyukaTeiseiValidator nyukaTeiseiValidator;
 
 	@Autowired
 	private ShohinIdoNyukaPersistence shohinIdoNyukaPersistence;
@@ -176,6 +180,25 @@ public class U11G003Controller extends ControllerBase {
 	/** 商品入荷訂正登録. */
 	@RequestMapping(value = "/u11g003/registerTeisei", method = RequestMethod.POST)
 	public ResponseEntity<?> registerTeisei(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// データ存在チェック
+		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		meisai.forEach(m -> {
+			shoinValidator.validateExistance(m.getShohinCode());
+		});
+		// 入荷（訂正前）
+		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
+		// 訂正
+		form.getMeisai().forEach(m -> {
+			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
+			nyuka.teisei(shohin, m.getTeiseiSu());
+		});
+		// 処理可否検証
+		this.validateTanaoroshi(nyuka);
+		this.validateAuth(nyuka);
+		// 整合性検証
+		EigyoDate eigyoDate = nyuka.getBusho().getEigyoDate();
+		String teiseiShohinIdoId = nyuka.getShohinIdoOf(eigyoDate).get().getRecordId();
+		nyukaTeiseiValidator.validateForTeisei(nyuka, teiseiShohinIdoId);
 		// return
 		return ResponseEntity.ok(model);
 	}
