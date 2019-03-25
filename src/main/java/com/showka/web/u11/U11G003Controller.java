@@ -28,6 +28,7 @@ import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
 import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.persistence.u11.i.ShohinIdoNyukaPersistence;
+import com.showka.service.persistence.u11.i.ShohinIdoNyukaTeiseiPersistence;
 import com.showka.service.query.u11.i.ShohinTanaoroshiQuery;
 import com.showka.service.validator.u11.i.NyukaTeiseiValidator;
 import com.showka.service.validator.u11.i.NyukaValidator;
@@ -75,6 +76,9 @@ public class U11G003Controller extends ControllerBase {
 
 	@Autowired
 	private ShohinIdoNyukaPersistence shohinIdoNyukaPersistence;
+
+	@Autowired
+	private ShohinIdoNyukaTeiseiPersistence shohinIdoNyukaTeiseiPersistence;
 
 	@Autowired
 	private ShohinTanaoroshiQuery shohinTanaoroshiQuery;
@@ -192,6 +196,8 @@ public class U11G003Controller extends ControllerBase {
 			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
 			nyuka.teisei(shohin, m.getTeiseiSu());
 		});
+		// OCC
+		nyuka.setVersion(form.getVersion());
 		// 処理可否検証
 		this.validateTanaoroshi(nyuka);
 		this.validateAuth(nyuka);
@@ -199,6 +205,8 @@ public class U11G003Controller extends ControllerBase {
 		EigyoDate eigyoDate = nyuka.getBusho().getEigyoDate();
 		String teiseiShohinIdoId = nyuka.getShohinIdoOf(eigyoDate).get().getRecordId();
 		nyukaTeiseiValidator.validateForTeisei(nyuka, teiseiShohinIdoId);
+		// register
+		shohinIdoNyukaTeiseiPersistence.save(nyuka);
 		// return
 		return ResponseEntity.ok(model);
 	}
