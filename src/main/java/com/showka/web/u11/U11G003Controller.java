@@ -214,6 +214,29 @@ public class U11G003Controller extends ControllerBase {
 	/** 商品入荷訂正更新. */
 	@RequestMapping(value = "/u11g003/updateTeisei", method = RequestMethod.POST)
 	public ResponseEntity<?> updateTeisei(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// データ存在チェック
+		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		meisai.forEach(m -> {
+			shoinValidator.validateExistance(m.getShohinCode());
+		});
+		// 入荷（訂正前）
+		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
+		// 訂正
+		form.getMeisai().forEach(m -> {
+			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
+			nyuka.teisei(shohin, m.getTeiseiSu());
+		});
+		// OCC
+		nyuka.setVersion(form.getVersion());
+		// 処理可否検証
+		this.validateTanaoroshi(nyuka);
+		this.validateAuth(nyuka);
+		// 整合性検証
+		EigyoDate eigyoDate = nyuka.getBusho().getEigyoDate();
+		String teiseiShohinIdoId = nyuka.getShohinIdoOf(eigyoDate).get().getRecordId();
+		nyukaTeiseiValidator.validateForTeiseiUpdate(nyuka, teiseiShohinIdoId);
+		// register
+		shohinIdoNyukaTeiseiPersistence.save(nyuka);
 		// return
 		return ResponseEntity.ok(model);
 	}
@@ -221,6 +244,19 @@ public class U11G003Controller extends ControllerBase {
 	/** 商品入荷訂正削除. */
 	@RequestMapping(value = "/u11g003/deleteTeisei", method = RequestMethod.POST)
 	public ResponseEntity<?> deleteTeisei(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// 入荷（訂正前）
+		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
+		// OCC
+		nyuka.setVersion(form.getVersion());
+		// 処理可否検証
+		this.validateTanaoroshi(nyuka);
+		this.validateAuth(nyuka);
+		// 整合性検証
+		EigyoDate eigyoDate = nyuka.getBusho().getEigyoDate();
+		String teiseiShohinIdoId = nyuka.getShohinIdoOf(eigyoDate).get().getRecordId();
+		nyukaTeiseiValidator.validateForTeiseiDelete(nyuka, teiseiShohinIdoId);
+		// register
+		shohinIdoNyukaTeiseiPersistence.delete(nyuka);
 		// return
 		return ResponseEntity.ok(model);
 	}
