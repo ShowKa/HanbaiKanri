@@ -368,9 +368,37 @@ $(document).ready(function() {
 	});
 	// Instrumentality Of Code 
 	var labelText = "${code}:${name}";
-	var $labels = $("[ioc=kokyaku]");
-	$labels.instrumentalityOfCode({
+	// 顧客
+	var $labelsKokyaku = $("[ioc=kokyaku]");
+	$labelsKokyaku.instrumentalityOfCode({
 		url : "/info/getKokyaku",
+		key: "code",
+		labelText : labelText,
+		autoInit : true,
+		hideWhenInput : false,
+	});
+	// 部署
+	var $labelsBusho = $("[ioc=busho]");
+	$labelsBusho.instrumentalityOfCode({
+		url : "/info/getBusho",
+		key: "code",
+		labelText : labelText,
+		autoInit : true,
+		hideWhenInput : false,
+	});
+	// 商品
+	var $labelsShohin = $("[ioc=shohin]");
+	$labelsShohin.instrumentalityOfCode({
+		url : "/info/getShohin",
+		key: "code",
+		labelText : labelText,
+		autoInit : true,
+		hideWhenInput : false,
+	});
+	// 入荷先
+	var $labelsNyukaSaki = $("[ioc=nyukaSaki]");
+	$labelsNyukaSaki.instrumentalityOfCode({
+		url : "/info/getNyukaSaki",
 		key: "code",
 		labelText : labelText,
 		autoInit : true,
