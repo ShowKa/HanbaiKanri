@@ -4,7 +4,7 @@ function commonExtend($scope, common) {
 	angular.extend(commonExtend.prototype, common);
 	// 訂正登録モード追加
 	var registerTeisei = "registerTeisei";
-	$scope.isRegisterTeisei = function() {
+	$scope.isRegisterTeiseiMode = function() {
 		return registerTeisei === $scope.mode;
 	};
 	this.toRegisterTeisei = function() {
@@ -12,7 +12,7 @@ function commonExtend($scope, common) {
 	};
 	// 訂正更新モード追加
 	var updateTeisei = "updateTeisei";
-	$scope.isUpdateTeisei = function() {
+	$scope.isUpdateTeiseiMode = function() {
 		return updateTeisei === $scope.mode;
 	};
 	this.toUpdateTeisei = function() {
@@ -68,7 +68,9 @@ function($scope, $httpw, common, meisaiService) {
 	 * 商品入荷取得.
 	 */
 	$scope.get = function(nyukaId) {
-		var callback = function() {
+		var callback = function(model) {
+			$scope.target = model.target;
+			$scope.teiseiDone = model.teiseiDone;
 		};
 		$httpw.post("/u11g003/get", {
 			nyukaId : nyukaId,

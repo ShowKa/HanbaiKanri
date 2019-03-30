@@ -26,7 +26,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="参照モード"
-									ng-show="true"
+									ng-show="isUpdateMode() || isRegisterTeiseiMode() || isUpdateTeiseiMode() "
 									ng-click="toRead()"></input>
 							</div>
 							<div class="col-sm-2 col-xs-2">
@@ -34,7 +34,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="更新モード"
-									ng-show="true"
+									ng-show="isReadMode() && target == 'nyuka'"
 									ng-click="toUpdate()"></input>
 							</div>
 							<div class="col-sm-2 col-xs-2">
@@ -42,7 +42,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="訂正モード"
-									ng-show="true"
+									ng-show="isReadMode() && target == 'nyukaTeisei' && teiseiDone ==  'notYet'"
 									ng-click="toRegisterTeisei()"></input>
 							</div>
 							<div class="col-sm-2 col-xs-2">
@@ -50,7 +50,7 @@
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="訂正更新モード"
-									ng-show="true"
+									ng-show="isReadMode() && target == 'nyukaTeisei' && teiseiDone ==  'done'"
 									ng-click="toUpdateTeisei()"></input>
 							</div>
 						</div>
@@ -62,7 +62,7 @@
 									type="button"
 									class="btn btn-primary btn-sm"
 									value="削除"
-									ng-show="true"
+									ng-show="isReadMode() && target == 'nyuka'"
 									ng-click="delete()" />
 							</div>
 							<div class="col-sm-1 col-xs-1">
@@ -71,7 +71,7 @@
 									type="button"
 									class="btn btn-primary btn-sm"
 									value="訂正の削除"
-									ng-show="true"
+									ng-show="isReadMode() && target =='nyukaTeisei' && teiseiDone == 'done'"
 									ng-click="deleteTeisei()" />
 							</div>
 						</div>
@@ -88,6 +88,7 @@
 									type="text"
 									placeholder="BS01"
 									ng-model="bushoCode"
+									ng-readonly="!(header.editing)"
 									ng-init-from-value
 									required />
 							</div>
@@ -104,6 +105,7 @@
 									type="text"
 									placeholder="NS1"
 									ng-model="nyukaSakiCode"
+									ng-readonly="!(header.editing)"
 									ng-init-from-value
 									required />
 							</div>
@@ -112,7 +114,9 @@
 							<label
 								class="control-label col-sm-2"
 								for="date">入荷日</label>
-							<div class="col-sm-10">2999/12/31</div>
+							<div
+								class="col-sm-10"
+								ng-show="true">2999/12/31</div>
 						</div>
 					</form>
 				</div>
@@ -124,7 +128,7 @@
 						class="btn btn-secondary btn-sm"
 						value="ヘッダ入力完了"
 						ng-click="startEditingMeisaiList()"
-						ng-show="true" />
+						ng-show="header.editing" />
 				</div>
 				<div class="col-md-2 col-sm-2">
 					<input
@@ -132,14 +136,14 @@
 						class="btn btn-secondary btn-sm"
 						value="明細追加"
 						ng-click="addMeisai()"
-						ng-show="true" />
+						ng-show="!header.editing && !isReadMode()" />
 				</div>
 				<div class="col-md-1 col-sm-1">
 					<input
 						type="button"
 						class="btn btn-secondary btn-sm"
 						value="訂正履歴"
-						ng-show="true"
+						ng-show="isReadMode()"
 						ng-click="toggleTeiseiRireki()" />
 				</div>
 				<table class="table table-striped">
@@ -289,7 +293,7 @@
 						ng-click="register()"
 						ng-disabled="false"
 						value="登録"
-						ng-show="true" />
+						ng-show="isRegisterMode()" />
 				</div>
 				<div class="col-md-1 col-sm-1">
 					<input
@@ -297,7 +301,7 @@
 						type="button"
 						class="btn btn-primary btn-sm whenUpdate"
 						value="更新"
-						ng-show="true"
+						ng-show="isUpdateMode()"
 						ng-click="update()" />
 				</div>
 				<div class="col-md-1 col-sm-1">
@@ -306,7 +310,7 @@
 						type="button"
 						class="btn btn-primary btn-sm"
 						value="訂正"
-						ng-show="true"
+						ng-show="isRegisterTeiseiMode()"
 						ng-click="registerTeisei()" />
 				</div>
 				<div class="col-md-1 col-sm-1">
@@ -315,7 +319,7 @@
 						type="button"
 						class="btn btn-primary btn-sm"
 						value="訂正の更新"
-						ng-show="true"
+						ng-show="isUpdateTeiseiMode()"
 						ng-click="updateTeisei()" />
 				</div>
 			</div>
