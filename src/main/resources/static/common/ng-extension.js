@@ -235,3 +235,14 @@ ngModules.directive('ngInitIterator', function() {
 		}
 	};
 });
+
+ngModules.directive('ngIoc', function() {
+	return {
+		restrict : 'A',
+		link : function postLink(scope, element, attrs) {
+			console.log(scope);
+			console.log(element);
+			console.log(attrs);
+		}
+	};
+});

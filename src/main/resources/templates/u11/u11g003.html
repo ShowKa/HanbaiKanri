@@ -84,7 +84,7 @@
 								<label
 									class="ioc-label"
 									ioc="busho"
-									ioc-target="bushoCode"></label> 
+									ioc-target="bushoCode"></label>
 								<input
 									id="bushoCode"
 									name="bushoCode"
@@ -106,7 +106,7 @@
 								<label
 									class="ioc-label"
 									ioc="nyukaSaki"
-									ioc-target="nyukaSakiCode"></label> 
+									ioc-target="nyukaSakiCode"></label>
 								<input
 									class="form-control"
 									id="nyukaSakiCode"
@@ -181,6 +181,7 @@
 							</td>
 							<td class="col-sm-3">
 								<input
+									id="shohinCode_{{$index}}"
 									name="meisai[{{$index}}].shohinCode"
 									class="form-control"
 									type="text"
@@ -188,7 +189,11 @@
 									ng-readonly="!meisai.editing"
 									required />
 							</td>
-							<td class="col-sm-2"></td>
+							<td class="col-sm-2">
+								<label
+									ng-ioc="abc"
+									ioc-target="shohinCode_{{$index}}">{{meisai.shohinName}}</label>
+							</td>
 							<td class="col-sm-2">
 								<input
 									name="meisai[{{$index}}].number"
