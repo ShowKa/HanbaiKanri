@@ -22,8 +22,15 @@ ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
 		};
 		this.post(url, params, callback);
 	};
+	// get
+	this.get = function(url, params, successCallback) {
+		this._request(url, params, "GET", successCallback);
+	};
 	// post
 	this.post = function(url, params, successCallback) {
+		this._request(url, params, "POST", successCallback);
+	};
+	this._request = function(url, params, method, successCallback) {
 		// FIXME test code for -> List<U08G003FormMeisai> meisai;
 		var _params = {};
 		for(var key in params) {
@@ -57,7 +64,7 @@ ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
 			}
 		}
 		$http({
-			method : "POST",
+			method : method,
 			url : url,
 			params : _params,
 		}).then(function(response) {
@@ -196,9 +203,9 @@ ngModules.directive('ngInitIterator', function() {
 	return {
 		restrict : 'E',
 		priority : 1001,
-		compile : function(tElement, tAttrs) { //Compile関数
+		compile : function(tElement, tAttrs) { // Compile関数
 			return {
-				pre : function preLink(scope, element, attrs, ctrl) { //Link関数その1
+				pre : function preLink(scope, element, attrs, ctrl) { // Link関数その1
 					var match = attrs["for"].match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
 					var lhs = match[1];
 					var rhs = match[2];
@@ -229,20 +236,58 @@ ngModules.directive('ngInitIterator', function() {
 					scope[rhs].push(line);
 					element.remove();
 				},
-				post : function postLink(scope, element, attrs, ctrl) { //Link関数その2
+				post : function postLink(scope, element, attrs, ctrl) { // Link関数その2
 				}
 			};
 		}
 	};
 });
 
-ngModules.directive('ngIoc', function() {
+ngModules.directive('ngIoc', ["$httpw", function($httpw) {
 	return {
 		restrict : 'A',
 		link : function postLink(scope, element, attrs) {
-			console.log(scope);
-			console.log(element);
-			console.log(attrs);
+			var type = attrs.ngIoc;
+			var url;
+			var maxLength;
+			switch(type) {
+			case "kokyaku" :
+				url = "/info/getKokyaku";
+				maxLength = 4;
+				break;
+			case "busho" :
+				url = "/info/getBusho";
+				maxLength = 4;
+				break;
+			case "shohin" :
+				url = "/info/getShohin";
+				maxLength = 4;
+				break;
+			case "nyukaSaki" :
+				url = "/info/getNyukaSaki";
+				maxLength = 3;
+				break;
+			default:
+				return;
+			}
+			var $label = element;
+			var target = attrs.ngIocTarget;
+			var labelText = attrs.ngIocLabelText;
+			scope.$watch(target, function(newValue, oldvalue) {
+				if (newValue.length == 0) {
+					$label.text("");
+					return;
+				}
+				if (maxLength && newValue.length != maxLength) {
+					$label.text("");
+					return;
+				}
+				var callback = function(model) {
+					var text = _.replaceText(model, labelText);
+					$label.text(text);
+				};
+				$httpw.get(url, {"code":newValue}, callback);
+			});
 		}
 	};
-});
+}]);

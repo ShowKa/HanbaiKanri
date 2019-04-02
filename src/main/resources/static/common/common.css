@@ -10,3 +10,7 @@
 	white-space: nowrap;
 	overflow: hidden;
 }
+
+td.hasIocLabel {
+	position: relative !important;
+}

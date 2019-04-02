@@ -179,15 +179,6 @@ function($scope, $httpw, common, meisaiService) {
 		};
 		$httpw.post("/u11g003/deleteTeisei", {}, callback);
 	};
-	/**
-	 * 商品名取得.
-	 */
-	$scope.getShohinName = function(meisai) {
-		var callback = function(model) {
-			meisai.shohinName = model.name;
-		};
-		$httpw.get("/info/getShohin", {code : meisai.shohinCode}, callback);
-	};
 	// 内部関数
 	/**
 	 * 明細作成
