@@ -178,7 +178,7 @@ function($scope, $httpw, common, meisaiService) {
 			common.toRead();
 		};
 		$httpw.post("/u11g003/deleteTeisei", {}, callback);
-	}
+	};
 	// 内部関数
 	/**
 	 * 明細作成
