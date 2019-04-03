@@ -1,4 +1,4 @@
-// 拡張
+//拡張
 function commonExtend($scope, common) {
 	// 継承
 	angular.extend(commonExtend.prototype, common);
@@ -19,24 +19,24 @@ function commonExtend($scope, common) {
 		common.setMode(updateTeisei);
 	};
 }
-// modules
+//modules
 ngModules
-// add extended modules
+//add extended modules
 .service('commonExtend', ['$rootScope', 'common', commonExtend])
-// controller
+//controller
 .controller('MainController', [ '$scope', '$httpw', 'commonExtend', 'meisai',
-// main
-function($scope, $httpw, common, meisaiService) {
+//	main
+	function($scope, $httpw, common, meisaiService) {
 	// scope
 	/**
 	 * 初期化.
 	 */
 	$scope.initialize = function() {
 		$scope.header = {
-			editing : true,
-			edit : function(editable) {
-				this.editing = editable;
-			},
+				editing : true,
+				edit : function(editable) {
+					this.editing = editable;
+				},
 		};
 		if (!$scope.meisaiList) {
 			$scope.meisaiList = [];
@@ -85,7 +85,10 @@ function($scope, $httpw, common, meisaiService) {
 			$scope.header.edit(false);
 			$scope.addMeisai();
 		};
-		$httpw.post("/u11g003/validateHeader", {}, callback);
+		$httpw.post("/u11g003/validateHeader", {
+			bushoCode:$scope.bushoCode,
+			nyukaSakiCode:$scope.nyukaSakiCode
+		}, callback);
 	};
 	/**
 	 * 明細追加
@@ -127,11 +130,22 @@ function($scope, $httpw, common, meisaiService) {
 		if (!meisaiService.check($scope.meisaiList)) {
 			return;
 		}
-		var callback = function() {
+		// callback
+		var callback = function(model) {
 			// 参照モードへ
 			common.toRead();
+			$scope.get(model.nyukaId);
 		};
-		$httpw.post("/u11g003/register", {}, callback);
+		// param
+		var param = {
+			bushoCode: $scope.bushoCode,
+			nyukaSakiCode: $scope.nyukaSakiCode
+		};
+		for (var i = 0; i < $scope.meisaiList.length; i++) {
+			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList[i].shohinCode;
+			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList[i].nyukaSu;
+		}
+		$httpw.post("/u11g003/register", param, callback);
 	};
 	/**
 	 * 更新.
@@ -185,7 +199,7 @@ function($scope, $httpw, common, meisaiService) {
 	 */
 	var createMeisai = function() {
 		var m = {
-			shohinCode : '',
+				shohinCode : '',
 		};
 		meisaiService.convertToMeisai(m);
 		m.edit();

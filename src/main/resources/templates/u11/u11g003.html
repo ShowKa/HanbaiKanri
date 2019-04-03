@@ -127,7 +127,9 @@
 								for="date">入荷日</label>
 							<div
 								class="col-sm-10"
-								ng-show="true">2999/12/31</div>
+								th:text="${nyukaDate}"
+								ng-show="true"
+								></div>
 						</div>
 					</form>
 				</div>
@@ -198,10 +200,10 @@
 							</td>
 							<td class="col-sm-2">
 								<input
-									name="meisai[{{$index}}].number"
+									name="meisai[{{$index}}].nyukaSu"
 									class="form-control"
 									type="number"
-									ng-model="meisai.number"
+									ng-model="meisai.nyukaSu"
 									ng-readonly="!meisai.editing"
 									required />
 							</td>

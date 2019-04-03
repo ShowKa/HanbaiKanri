@@ -20,6 +20,7 @@ import com.showka.domain.builder.ShohinIdoMeisaiBuilder;
 import com.showka.domain.u11.Nyuka;
 import com.showka.domain.u11.ShohinIdo;
 import com.showka.domain.u11.ShohinIdoMeisai;
+import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.domain.z00.Shohin;
 import com.showka.kubun.ShohinIdoKubun;
@@ -98,7 +99,9 @@ public class U11G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u11g003/registerForm", method = RequestMethod.GET)
 	public ModelAndViewExtended registerForm(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// 初期値
-		form.setBushoCode(super.getLoginShain().getShozokuBusho().getCode());
+		Busho busho = super.getLoginShain().getShozokuBusho();
+		form.setBushoCode(busho.getCode());
+		model.addObject("nyukaDate", busho.getEigyoDate().toString());
 		// set model
 		model.addForm(form);
 		model.setMode(Mode.REGISTER);
@@ -112,7 +115,7 @@ public class U11G003Controller extends ControllerBase {
 	public ResponseEntity<?> register(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// データ存在チェック
 		bushoValidator.validateExistance(form.getBushoCode());
-		nyukaSakiValidator.validateExistance(form.getNyukasakiCode());
+		nyukaSakiValidator.validateExistance(form.getNyukaSakiCode());
 		List<U11G003MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> {
 			shoinValidator.validateExistance(m.getShohinCode());
@@ -126,6 +129,9 @@ public class U11G003Controller extends ControllerBase {
 		nyukaValidator.validate(nyuka);
 		// 登録
 		shohinIdoNyukaPersistence.save(nyuka);
+		// model
+		// XXX 入荷ID = 商品移動IDとしてよいか？
+		model.addObject("nyukaId", nyuka.getShohinIdoId());
 		// return
 		form.setSuccessMessage("新規登録成功");
 		return ResponseEntity.ok(model);
@@ -312,6 +318,9 @@ public class U11G003Controller extends ControllerBase {
 	/** ヘッダー整合性検証. */
 	@RequestMapping(value = "/u11g003/validateHeader", method = RequestMethod.POST)
 	public ResponseEntity<?> validateHeader(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// データ存在チェック
+		bushoValidator.validateExistance(form.getBushoCode());
+		nyukaSakiValidator.validateExistance(form.getNyukaSakiCode());
 		// return
 		return ResponseEntity.ok(model);
 	}
@@ -319,6 +328,11 @@ public class U11G003Controller extends ControllerBase {
 	/** 明細整合性検証. */
 	@RequestMapping(value = "/u11g003/validateMeisai", method = RequestMethod.POST)
 	public ResponseEntity<?> validateMeisai(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
+		// データ存在チェック
+		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		meisai.forEach(m -> {
+			shoinValidator.validateExistance(m.getShohinCode());
+		});
 		// return
 		return ResponseEntity.ok(model);
 	}
@@ -348,7 +362,7 @@ public class U11G003Controller extends ControllerBase {
 		ShohinIdo shohinIdo = this.buildShohinIdo(form);
 		// 入荷
 		NyukaBuilder nb = new NyukaBuilder();
-		nb.withNyukaSaki(nyukaSakiCrud.getDomain(form.getNyukasakiCode()));
+		nb.withNyukaSaki(nyukaSakiCrud.getDomain(form.getNyukaSakiCode()));
 		nb.withNyukaShohinIdo(shohinIdo);
 		nb.withRecordId(form.getNyukaId());
 		nb.withTeiseiList(new ArrayList<>());
@@ -362,10 +376,12 @@ public class U11G003Controller extends ControllerBase {
 	private ShohinIdo buildShohinIdo(U11G003Form form) {
 		// 明細
 		List<ShohinIdoMeisai> meisai = this.buildShohinIdoMeisai(form.getMeisai());
+		// 部署
+		Busho busho = bushoCrud.getDomain(form.getBushoCode());
 		// 商品移動
 		ShohinIdoBuilder b = new ShohinIdoBuilder();
-		b.withBusho(bushoCrud.getDomain(form.getBushoCode()));
-		b.withDate(new EigyoDate(form.getDate()));
+		b.withBusho(busho);
+		b.withDate(busho.getEigyoDate());
 		b.withKubun(ShohinIdoKubun.入荷);
 		b.withMeisai(meisai);
 		b.withTimestamp(new TheTimestamp());
@@ -379,10 +395,13 @@ public class U11G003Controller extends ControllerBase {
 	 */
 	private List<ShohinIdoMeisai> buildShohinIdoMeisai(List<U11G003MeisaiForm> meisaiList) {
 		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
+		int meisaiNumber = 0;
 		for (U11G003MeisaiForm mf : meisaiList) {
+			// 明細番号採番
+			meisaiNumber = mf.getMeisaiNumber() != null ? mf.getMeisaiNumber() : ++meisaiNumber;
+			// build
 			ShohinIdoMeisaiBuilder mb = new ShohinIdoMeisaiBuilder();
-			// TODO formに番号がなければ、採番
-			mb.withMeisaiNumber(mf.getMeisaiNumber());
+			mb.withMeisaiNumber(meisaiNumber);
 			mb.withNumber(mf.getNyukaSu());
 			mb.withRecordId(mf.getRecordId());
 			mb.withShohinDomain(shohinCrud.getDomain(mf.getShohinCode()));
