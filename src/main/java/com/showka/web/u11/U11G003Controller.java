@@ -88,6 +88,7 @@ public class U11G003Controller extends ControllerBase {
 	@RequestMapping(value = "/u11g003/refer", method = RequestMethod.GET)
 	public ModelAndViewExtended refer(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// set model
+		model.addObject("nyukaId", form.getNyukaId());
 		model.addForm(form);
 		model.setMode(Mode.READ);
 		model.setViewName("/u11/u11g003");
@@ -101,7 +102,6 @@ public class U11G003Controller extends ControllerBase {
 		// 初期値
 		Busho busho = super.getLoginShain().getShozokuBusho();
 		form.setBushoCode(busho.getCode());
-		model.addObject("nyukaDate", busho.getEigyoDate().toString());
 		// set model
 		model.addForm(form);
 		model.setMode(Mode.REGISTER);
@@ -298,6 +298,7 @@ public class U11G003Controller extends ControllerBase {
 			});
 		});
 		// model
+		model.addObject("nyukaId", nyuka.getShohinIdoId());
 		model.addObject("bushoCode", nyuka.getBusho().getCode());
 		model.addObject("nyukaSakiCode", nyuka.getNyukaSaki().getCode());
 		model.addObject("nyukaDate", nyuka.getNyukaDate());

@@ -69,6 +69,11 @@ ngModules
 	 */
 	$scope.get = function(nyukaId) {
 		var callback = function(model) {
+			$scope.nyukaId = model.nyukaId;
+			$scope.bushoCode = model.bushoCode;
+			$scope.nyukaSakiCode = model.nyukaSakiCode;
+			$scope.nyukaDate = model.nyukaDate;
+			$scope.meisaiList_Nyuka = model.meisaiList_Nyuka;
 			$scope.target = model.target;
 			$scope.teiseiDone = model.teiseiDone;
 		};
@@ -206,11 +211,11 @@ ngModules
 		return m;
 	};
 	// 初期処理
-	if ($scope.isReadMode()) {
-		var nyukaId = "入荷IDを設定してください。";
-		$scope.get(nyukaId);
-	} else if ($scope.isRegisterMode()) {
-		// 初期化
-		$scope.initialize();
-	}
+	$scope.init = function(nyukaId){
+		if ($scope.isReadMode()) {
+			$scope.get(nyukaId);
+		} else if ($scope.isRegisterMode()) {
+			$scope.initialize();
+		}
+	};
 } ]);

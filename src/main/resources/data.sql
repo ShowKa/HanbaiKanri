@@ -177,6 +177,10 @@ VALUES
 ('r-001', to_date('2018/09/20', 'yyyy/MM/dd'), to_date('2018/09/20', 'yyyy/MM/dd'), 1000,'r-001', 'r-KK02-00001', 'r-001'),
 ('r-002', to_date('2018/09/20', 'yyyy/MM/dd'), to_date('2018/09/20', 'yyyy/MM/dd'), 1000,'r-002', 'r-KK02-00001', 'r-002'),
 ;
+
+----------------------------------
+-- U11 商品管理
+----------------------------------
 -- 商品在庫
 INSERT INTO t_shohin_zaiko
 (busho_id, eigyo_date, shohin_id, number, record_id)
@@ -207,4 +211,11 @@ VALUES
 ('r-001', 2, 'r-SH02', 10, 'r-001-2'),
 ('r-002', 1, 'r-SH02',  5, 'r-002-1'),
 ('r-002', 2, 'r-SH03', 10, 'r-002-2'),
+;
+
+-- 商品移動入荷
+INSERT INTO t_shohin_ido_nyuka
+(shohin_ido_id, nyuka_saki_id, record_id)
+VALUES
+('r-002', 'r-NS1', 'r-002'),
 ;

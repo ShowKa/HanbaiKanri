@@ -86,7 +86,7 @@ public class ModelAndViewExtended extends org.springframework.web.servlet.ModelA
 	 * @return ModeAndView
 	 */
 	public ModelAndViewExtended addObject(String attributeName, TheDate date) {
-		super.addObject(attributeName, date.toDate());
+		super.addObject(attributeName, date.toString());
 		return this;
 	}
 }
