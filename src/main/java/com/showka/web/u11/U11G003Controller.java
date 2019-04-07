@@ -1,10 +1,12 @@
 package com.showka.web.u11;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -148,7 +150,21 @@ public class U11G003Controller extends ControllerBase {
 		// 入荷（更新前）
 		Nyuka _nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
 		// 商品移動（更新）
-		ShohinIdo shohinIdo = this.buildShohinIdo(form);
+		ShohinIdo _shohinIdo = _nyuka.getNyukaShohinIdo();
+		Integer max = _shohinIdo.getMaxMeisaiNumber();
+		AtomicInteger i = new AtomicInteger(max + 1);
+		List<ShohinIdoMeisai> shohinIdoMeisaiList = meisai.stream().map(m -> {
+			// 明細番号
+			Integer meisaiNumber = m.getMeisaiNumber() != null ? m.getMeisaiNumber() : i.getAndIncrement();
+			// build
+			ShohinIdoMeisaiBuilder simb = new ShohinIdoMeisaiBuilder();
+			simb.withMeisaiNumber(meisaiNumber);
+			simb.withNumber(m.getNyukaSu());
+			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
+			simb.withShohinDomain(shohin);
+			return simb.build();
+		}).collect(Collectors.toList());
+		ShohinIdo shohinIdo = new ShohinIdoBuilder().withMeisai(shohinIdoMeisaiList).apply(_shohinIdo);
 		// 入荷（更新後）
 		NyukaBuilder b = new NyukaBuilder();
 		b.withNyukaShohinIdo(shohinIdo);
@@ -273,15 +289,18 @@ public class U11G003Controller extends ControllerBase {
 		// 入荷取得
 		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
 		// 明細リスト_入荷
-		List<Map<String, Object>> meisaiList_Nyuka = new ArrayList<>();
-		Set<Shohin> shohinSet = nyuka.getShohinSet();
-		shohinSet.parallelStream().forEach(s -> {
+		ShohinIdo nyukaShohinIdo = nyuka.getNyukaShohinIdo();
+		List<ShohinIdoMeisai> meisaiList = nyukaShohinIdo.getMeisai();
+		Collections.sort(meisaiList);
+		List<Map<String, Object>> meisaiList_Nyuka = meisaiList.stream().map(si -> {
 			Map<String, Object> m = new HashMap<String, Object>();
-			m.put("shohinCode", s.getCode());
-			m.put("shohinName", s.getName());
-			m.put("number", nyuka.getNumber(s));
-			meisaiList_Nyuka.add(m);
-		});
+			Shohin shohin = si.getShohinDomain();
+			m.put("meisaiNumber", si.getMeisaiNumber());
+			m.put("shohinCode", shohin.getCode());
+			m.put("shohinName", shohin.getName());
+			m.put("nyukaSu", nyuka.getNumber(shohin));
+			return m;
+		}).collect(Collectors.toList());
 		// 明細リスト_入荷訂正履歴
 		List<Map<String, Object>> meisaiList_NyukaTeisei = new ArrayList<>();
 		List<ShohinIdo> allShohinIdoList = nyuka.getAllShohinIdoList();
@@ -304,6 +323,7 @@ public class U11G003Controller extends ControllerBase {
 		model.addObject("nyukaDate", nyuka.getNyukaDate());
 		model.addObject("meisaiList_Nyuka", meisaiList_Nyuka);
 		model.addObject("meisaiList_NyukaTeisei", meisaiList_NyukaTeisei);
+		model.addObject("version", nyuka.getVersion());
 		// mode
 		// 対象伝票
 		EigyoDate eigyoDate = nyuka.getBusho().getEigyoDate();
@@ -386,6 +406,7 @@ public class U11G003Controller extends ControllerBase {
 		b.withKubun(ShohinIdoKubun.入荷);
 		b.withMeisai(meisai);
 		b.withTimestamp(new TheTimestamp());
+		b.withRecordId(form.getNyukaId());
 		b.withVersion(form.getVersion());
 		ShohinIdo shohinIdo = b.build();
 		return shohinIdo;

@@ -38,8 +38,8 @@ ngModules
 					this.editing = editable;
 				},
 		};
-		if (!$scope.meisaiList) {
-			$scope.meisaiList = [];
+		if (!$scope.meisaiList_Nyuka) {
+			$scope.meisaiList_Nyuka = [];
 		}
 	};
 	/**
@@ -69,13 +69,19 @@ ngModules
 	 */
 	$scope.get = function(nyukaId) {
 		var callback = function(model) {
-			$scope.nyukaId = model.nyukaId;
+			// set
 			$scope.bushoCode = model.bushoCode;
 			$scope.nyukaSakiCode = model.nyukaSakiCode;
 			$scope.nyukaDate = model.nyukaDate;
 			$scope.meisaiList_Nyuka = model.meisaiList_Nyuka;
+			$scope.nyukaId = model.nyukaId;
+			$scope.version = model.version;
 			$scope.target = model.target;
 			$scope.teiseiDone = model.teiseiDone;
+			// 明細
+			for (var m of $scope.meisaiList_Nyuka) {
+				meisaiService.convertToMeisai(m);
+			}
 		};
 		$httpw.post("/u11g003/get", {
 			nyukaId : nyukaId,
@@ -99,7 +105,7 @@ ngModules
 	 * 明細追加
 	 */
 	$scope.addMeisai = function() {
-		$scope.meisaiList.push(createMeisai());
+		$scope.meisaiList_Nyuka.push(createMeisai());
 	};
 	/**
 	 * 明細編集完了.
@@ -125,14 +131,14 @@ ngModules
 	 * 明細削除.
 	 */
 	$scope.removeMeisai = function(target) {
-		meisaiService.remove(target, $scope.meisaiList);
+		meisaiService.remove(target, $scope.meisaiList_Nyuka);
 	};
 	/**
 	 * 新規登録.
 	 */
 	$scope.register = function() {
 		// check
-		if (!meisaiService.check($scope.meisaiList)) {
+		if (!meisaiService.check($scope.meisaiList_Nyuka)) {
 			return;
 		}
 		// callback
@@ -146,9 +152,9 @@ ngModules
 			bushoCode: $scope.bushoCode,
 			nyukaSakiCode: $scope.nyukaSakiCode
 		};
-		for (var i = 0; i < $scope.meisaiList.length; i++) {
-			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList[i].shohinCode;
-			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList[i].nyukaSu;
+		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
+			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
+			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
 		}
 		$httpw.post("/u11g003/register", param, callback);
 	};
@@ -156,9 +162,21 @@ ngModules
 	 * 更新.
 	 */
 	$scope.update = function() {
-		var callback = function () {
+		var callback = function (model) {
+			// 参照モードへ
+			common.toRead();
+			$scope.get($scope.nyukaId);
 		};
-		$httpw.post("/u11g003/update", {}, callback);
+		var param = {
+			nyukaId : $scope.nyukaId,
+			version: $scope.version
+		};
+		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
+			param["meisai[" + i + "].meisaiNumber"] = $scope.meisaiList_Nyuka[i].meisaiNumber;
+			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
+			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
+		}
+		$httpw.post("/u11g003/update", param, callback);
 	};
 	/**
 	 * 削除.
@@ -172,7 +190,7 @@ ngModules
 	 * 訂正登録.
 	 */
 	$scope.registerTeisei = function() {
-		if (!meisaiService.check($scope.meisaiList)) {
+		if (!meisaiService.check($scope.meisaiList_Nyuka)) {
 			return;
 		}
 		var callback = function() {
