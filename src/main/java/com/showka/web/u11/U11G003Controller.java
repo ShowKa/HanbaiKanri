@@ -136,6 +136,7 @@ public class U11G003Controller extends ControllerBase {
 		model.addObject("nyukaId", nyuka.getShohinIdoId());
 		// return
 		form.setSuccessMessage("新規登録成功");
+		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 
@@ -181,6 +182,7 @@ public class U11G003Controller extends ControllerBase {
 		shohinIdoNyukaPersistence.save(nyuka);
 		// return
 		form.setSuccessMessage("更新成功");
+		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 
@@ -200,6 +202,7 @@ public class U11G003Controller extends ControllerBase {
 		shohinIdoNyukaPersistence.delete(nyuka);
 		// return
 		form.setSuccessMessage("削除成功");
+		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 

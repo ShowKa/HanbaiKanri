@@ -182,9 +182,14 @@ ngModules
 	 * 削除.
 	 */
 	$scope.delete = function() {
-		var callback = function () {
+		var callback = function(model) {
+			_.submitForm("/u11g001/refer", "nyuka");
 		};
-		$httpw.post("/u11g003/delete", {}, callback);
+		var param = {
+			nyukaId: $scope.nyukaId,
+			version: $scope.version,
+		};
+		$httpw.post("/u11g003/delete", param, callback);
 	};
 	/**
 	 * 訂正登録.
@@ -211,10 +216,6 @@ ngModules
 	 * 訂正削除.
 	 */
 	$scope.deleteTeisei = function() {
-		var callback = function () {
-			common.toRead();
-		};
-		$httpw.post("/u11g003/deleteTeisei", {}, callback);
 	};
 	// 内部関数
 	/**

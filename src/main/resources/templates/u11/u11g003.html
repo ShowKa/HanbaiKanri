@@ -17,13 +17,19 @@
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<form
-						id="searchForm"
+						id="nyuka"
 						class="form-horizontal">
 						<input
 							id="nyukaId"
+							name="nyukaId"
 							type="hidden"
 							ng-model="nyukaId"
 							th:ng-init="|init('${nyukaId}')|" />
+						<input
+							id="version"
+							name="version"
+							type="hidden"
+							ng-model="version" />
 						<div class="row">
 							<div class="col-sm-4 col-xs-4"></div>
 							<div class="col-sm-2 col-xs-2">
