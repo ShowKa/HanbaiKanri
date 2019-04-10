@@ -263,7 +263,7 @@
 				<!-- 明細リスト_入荷(参照) -->
 				<table
 					class="table table-striped"
-					ng-show="isReadMode()">
+					ng-show="isReadMode() && display == 'nyuka'">
 					<caption>明細</caption>
 					<thead>
 						<tr>
@@ -285,7 +285,7 @@
 				<!-- 訂正参照 -->
 				<table
 					class="table table-striped"
-					ng-show="false">
+					ng-show="isReadMode() && display == 'nyukaTeiseiRireki'">
 					<caption>明細</caption>
 					<thead>
 						<tr>
@@ -296,27 +296,13 @@
 							<th>移動数</th>
 						</tr>
 					</thead>
-					<tbody id="nyukaList">
-						<tr>
-							<td class="col-sm-1">1</td>
-							<td class="col-sm-2">SH01</td>
-							<td class="col-sm-5">商品01</td>
-							<td class="col-sm-2">2019/02/26</td>
-							<td class="col-sm-2">4</td>
-						</tr>
-						<tr>
-							<td class="col-sm-1">1</td>
-							<td class="col-sm-2">SH01</td>
-							<td class="col-sm-5">商品01</td>
-							<td class="col-sm-2">2019/02/27</td>
-							<td class="col-sm-2">1</td>
-						</tr>
-						<tr>
-							<td class="col-sm-1">2</td>
-							<td class="col-sm-2">SH02</td>
-							<td class="col-sm-5">商品02</td>
-							<td class="col-sm-2">2019/02/26</td>
-							<td class="col-sm-2">10</td>
+					<tbody>
+						<tr ng-repeat="meisai in meisaiList_NyukaTeisei">
+							<td class="col-sm-1">{{meisai.meisaiNumber}}</td>
+							<td class="col-sm-2">{{meisai.shohinCode}}</td>
+							<td class="col-sm-5">{{meisai.shohinName}}</td>
+							<td class="col-sm-2">{{meisai.date}}</td>
+							<td class="col-sm-2">{{meisai.number}}</td>
 						</tr>
 					</tbody>
 				</table>

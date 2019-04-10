@@ -314,7 +314,7 @@ public class U11G003Controller extends ControllerBase {
 				m.put("meisaiNumber", shohinIdoMeisai.getMeisaiNumber());
 				m.put("shohinCode", shohin.getCode());
 				m.put("shohinName", shohin.getName());
-				m.put("date", shohinIdo.getDate().toDate());
+				m.put("date", shohinIdo.getDate().toString());
 				m.put("number", shohinIdoMeisai.getNumber());
 				meisaiList_NyukaTeisei.add(m);
 			});

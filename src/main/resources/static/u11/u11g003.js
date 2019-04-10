@@ -75,10 +75,12 @@ ngModules
 			$scope.nyukaSakiCode = model.nyukaSakiCode;
 			$scope.nyukaDate = model.nyukaDate;
 			$scope.meisaiList_Nyuka = model.meisaiList_Nyuka;
+			$scope.meisaiList_NyukaTeisei = model.meisaiList_NyukaTeisei;
 			$scope.nyukaId = model.nyukaId;
 			$scope.version = model.version;
 			$scope.target = model.target;
 			$scope.teiseiDone = model.teiseiDone;
+			$scope.display = "nyuka";
 			// 明細
 			for (var m of $scope.meisaiList_Nyuka) {
 				meisaiService.convertToMeisai(m);
@@ -228,6 +230,13 @@ ngModules
 	 * 訂正削除.
 	 */
 	$scope.deleteTeisei = function() {
+	};
+	/**
+	 * 対象切替.
+	 */
+	$scope.toggleTeiseiRireki = function() {
+		var nt = $scope.display == "nyukaTeiseiRireki";
+		$scope.display = nt ? "nyuka" : "nyukaTeiseiRireki";
 	};
 	// 内部関数
 	/**
