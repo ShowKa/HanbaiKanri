@@ -23,9 +23,6 @@ public class U11G003MeisaiForm extends MeisaiFormBase {
 	/** 入荷数. */
 	private Integer nyukaSu;
 
-	/** 訂正数. */
-	private Integer teiseiSu;
-
 	/** record_id */
 	private String recordId;
 

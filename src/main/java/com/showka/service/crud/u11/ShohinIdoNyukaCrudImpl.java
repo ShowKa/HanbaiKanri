@@ -12,10 +12,10 @@ import com.showka.domain.u11.NyukaSaki;
 import com.showka.domain.u11.ShohinIdo;
 import com.showka.entity.TShohinIdoNyuka;
 import com.showka.repository.i.TShohinIdoNyukaRepository;
-import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
 import com.showka.service.crud.u11.i.NyukaSakiCrud;
 import com.showka.service.crud.u11.i.NyukaTeiseiCrud;
 import com.showka.service.crud.u11.i.ShohinIdoCrud;
+import com.showka.service.crud.u11.i.ShohinIdoNyukaCrud;
 
 @Service
 public class ShohinIdoNyukaCrudImpl implements ShohinIdoNyukaCrud {
@@ -64,7 +64,7 @@ public class ShohinIdoNyukaCrudImpl implements ShohinIdoNyukaCrud {
 		// 商品移動
 		ShohinIdo shohinIdo = shohinIdoCrud.getDomain(e.getShohinIdoId());
 		// 入荷訂正
-		List<ShohinIdo> teiseiList = nyukaTeiseiCrud.getAll(e.getRecordId());
+		List<ShohinIdo> teiseiList = nyukaTeiseiCrud.getAll(e.getShohinIdoId());
 		// build
 		NyukaBuilder nb = new NyukaBuilder();
 		nb.withNyukaSaki(nyukaSaki);

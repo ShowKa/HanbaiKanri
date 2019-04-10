@@ -219,7 +219,7 @@ public class U11G003Controller extends ControllerBase {
 		// 訂正
 		form.getMeisai().forEach(m -> {
 			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
-			nyuka.teisei(shohin, m.getTeiseiSu());
+			nyuka.teisei(shohin, m.getNyukaSu());
 		});
 		// OCC
 		nyuka.setVersion(form.getVersion());
@@ -249,7 +249,7 @@ public class U11G003Controller extends ControllerBase {
 		// 訂正
 		form.getMeisai().forEach(m -> {
 			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
-			nyuka.teisei(shohin, m.getTeiseiSu());
+			nyuka.teisei(shohin, m.getNyukaSu());
 		});
 		// OCC
 		nyuka.setVersion(form.getVersion());

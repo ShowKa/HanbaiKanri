@@ -60,7 +60,7 @@ public class NyukaTeiseiCrudImpl implements NyukaTeiseiCrud {
 	public List<ShohinIdo> getAll(String nyukaId) {
 		List<TShohinIdoNyukaTeisei> entities = this.findEntityByNyukaId(nyukaId);
 		return entities.stream().map(e -> {
-			return shohinIdoCrud.getDomain(e.getRecordId());
+			return shohinIdoCrud.getDomain(e.getShohinIdoId());
 		}).collect(toList());
 	}
 

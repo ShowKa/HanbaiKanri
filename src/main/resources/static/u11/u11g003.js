@@ -57,7 +57,8 @@ ngModules
 	/**
 	 * 訂正モード
 	 */
-	$scope.toRegisterTeiseai = function() {
+	$scope.toRegisterTeisei = function() {
+		common.toRegisterTeisei();
 	};
 	/**
 	 * 訂正更新モード
@@ -198,10 +199,21 @@ ngModules
 		if (!meisaiService.check($scope.meisaiList_Nyuka)) {
 			return;
 		}
-		var callback = function() {
+		var callback = function (model) {
+			// 参照モードへ
 			common.toRead();
+			$scope.get($scope.nyukaId);
 		};
-		$httpw.post("/u11g003/registerTeisei", {}, callback);
+		var param = {
+			nyukaId : $scope.nyukaId,
+			version: $scope.version
+		};
+		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
+			param["meisai[" + i + "].meisaiNumber"] = $scope.meisaiList_Nyuka[i].meisaiNumber;
+			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
+			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
+		}
+		$httpw.post("/u11g003/registerTeisei", param, callback);
 	};
 	/**
 	 * 訂正更新.
