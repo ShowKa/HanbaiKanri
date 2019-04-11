@@ -64,7 +64,7 @@ public class ShohinIdoNyukaCrudImpl implements ShohinIdoNyukaCrud {
 		// 商品移動
 		ShohinIdo shohinIdo = shohinIdoCrud.getDomain(e.getShohinIdoId());
 		// 入荷訂正
-		List<ShohinIdo> teiseiList = nyukaTeiseiCrud.getAll(e.getShohinIdoId());
+		List<ShohinIdo> teiseiList = nyukaTeiseiCrud.getAll(e.getRecordId());
 		// build
 		NyukaBuilder nb = new NyukaBuilder();
 		nb.withNyukaSaki(nyukaSaki);
