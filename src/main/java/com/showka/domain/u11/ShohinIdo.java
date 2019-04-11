@@ -1,6 +1,7 @@
 package com.showka.domain.u11;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,17 @@ public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
 		return meisai.stream().map(m -> {
 			return m.getShohinDomain();
 		}).collect(Collectors.toSet());
+	}
+
+	/**
+	 * 引数.商品の商品移動明細取得.
+	 * 
+	 * @param shohin
+	 *            商品
+	 * @return 商品移動明細
+	 */
+	public Optional<ShohinIdoMeisai> getOf(Shohin shohin) {
+		return meisai.parallelStream().filter(m -> m.getShohinDomain().equals(shohin)).findAny();
 	}
 
 	/**

@@ -1,10 +1,11 @@
 package com.showka.web.u11;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -291,14 +292,15 @@ public class U11G003Controller extends ControllerBase {
 	public ResponseEntity<?> get(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// 入荷取得
 		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
+		Set<Shohin> shohinSet = nyuka.getShohinSet();
 		// 明細リスト_入荷
-		ShohinIdo nyukaShohinIdo = nyuka.getNyukaShohinIdo();
-		List<ShohinIdoMeisai> meisaiList = nyukaShohinIdo.getMeisai();
-		Collections.sort(meisaiList);
-		List<Map<String, Object>> meisaiList_Nyuka = meisaiList.stream().map(si -> {
+		ShohinIdo nyukaShohinIdo = nyuka.getNewestShohinIdo();
+		List<Map<String, Object>> meisaiList_Nyuka = shohinSet.stream().map(shohin -> {
 			Map<String, Object> m = new HashMap<String, Object>();
-			Shohin shohin = si.getShohinDomain();
-			m.put("meisaiNumber", si.getMeisaiNumber());
+			Optional<ShohinIdoMeisai> _meisai = nyukaShohinIdo.getOf(shohin);
+			if (_meisai.isPresent()) {
+				m.put("meisaiNumber", _meisai.get().getMeisaiNumber());
+			}
 			m.put("shohinCode", shohin.getCode());
 			m.put("shohinName", shohin.getName());
 			m.put("nyukaSu", nyuka.getNumber(shohin));
