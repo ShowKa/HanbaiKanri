@@ -174,7 +174,6 @@
 					<caption>明細</caption>
 					<thead>
 						<tr>
-							<th>#</th>
 							<th>商品</th>
 							<th></th>
 							<th>入荷数</th>
@@ -185,16 +184,6 @@
 						<tr
 							ng-repeat="meisai in meisaiList_Nyuka"
 							ng-present-deleted="meisai">
-							<td class="col-sm-1 ">
-								<input
-									id="meisaiNumber_{{$index}}"
-									name="meisai[{{$index}}].meisaiNumber"
-									class="form-control"
-									type="text"
-									ng-model="meisai.meisaiNumber"
-									ng-readonly="true"
-									required />
-							</td>
 							<td class="col-sm-5 hasIocLabel">
 								<label
 									class="ioc-label"
@@ -224,10 +213,6 @@
 									name="meisai[{{$index}}].version"
 									type="number"
 									ng-model="meisai.version" />
-								<input
-									name="meisai[{{$index}}].recordId"
-									type="text"
-									ng-model="meisai.recordId" />
 								<input
 									name="meisai[{{$index}}].editMode"
 									type="text"
@@ -267,7 +252,6 @@
 					<caption>明細</caption>
 					<thead>
 						<tr>
-							<th>#</th>
 							<th>商品</th>
 							<th></th>
 							<th>入荷数</th>
@@ -275,7 +259,6 @@
 					</thead>
 					<tbody id="nyukaList">
 						<tr ng-repeat="meisai in meisaiList_Nyuka">
-							<td>{{meisai.meisaiNumber}}</td>
 							<td>{{meisai.shohinCode}}</td>
 							<td>{{meisai.shohinName}}</td>
 							<td>{{meisai.nyukaSu}}</td>

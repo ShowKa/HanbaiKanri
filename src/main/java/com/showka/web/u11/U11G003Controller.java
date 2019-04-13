@@ -153,11 +153,10 @@ public class U11G003Controller extends ControllerBase {
 		Nyuka _nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
 		// 商品移動（更新）
 		ShohinIdo _shohinIdo = _nyuka.getNyukaShohinIdo();
-		Integer max = _shohinIdo.getMaxMeisaiNumber();
-		AtomicInteger i = new AtomicInteger(max + 1);
+		AtomicInteger i = new AtomicInteger(1);
 		List<ShohinIdoMeisai> shohinIdoMeisaiList = meisai.stream().map(m -> {
 			// 明細番号
-			Integer meisaiNumber = m.getMeisaiNumber() != null ? m.getMeisaiNumber() : i.getAndIncrement();
+			Integer meisaiNumber = i.getAndIncrement();
 			// build
 			ShohinIdoMeisaiBuilder simb = new ShohinIdoMeisaiBuilder();
 			simb.withMeisaiNumber(meisaiNumber);
@@ -222,6 +221,16 @@ public class U11G003Controller extends ControllerBase {
 			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
 			nyuka.teisei(shohin, m.getNyukaSu());
 		});
+		// 明細にない商品 -> 入荷数=0に訂正
+		Set<Shohin> shohinSet = nyuka.getShohinSet();
+		Set<String> newShohinCodeSet = meisai.parallelStream()
+				.map(U11G003MeisaiForm::getShohinCode)
+				.collect(Collectors.toSet());
+		shohinSet.parallelStream().forEach(s -> {
+			if (!newShohinCodeSet.contains(s.getCode())) {
+				nyuka.teisei(s, 0);
+			}
+		});
 		// OCC
 		nyuka.setVersion(form.getVersion());
 		// 処理可否検証
@@ -234,6 +243,8 @@ public class U11G003Controller extends ControllerBase {
 		// register
 		shohinIdoNyukaTeiseiPersistence.save(nyuka);
 		// return
+		form.setSuccessMessage("訂正成功");
+		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 
@@ -425,14 +436,12 @@ public class U11G003Controller extends ControllerBase {
 		int meisaiNumber = 0;
 		for (U11G003MeisaiForm mf : meisaiList) {
 			// 明細番号採番
-			meisaiNumber = mf.getMeisaiNumber() != null ? mf.getMeisaiNumber() : ++meisaiNumber;
+			meisaiNumber++;
 			// build
 			ShohinIdoMeisaiBuilder mb = new ShohinIdoMeisaiBuilder();
 			mb.withMeisaiNumber(meisaiNumber);
 			mb.withNumber(mf.getNyukaSu());
-			mb.withRecordId(mf.getRecordId());
 			mb.withShohinDomain(shohinCrud.getDomain(mf.getShohinCode()));
-			mb.withVersion(mf.getVersion());
 			meisai.add(mb.build());
 		}
 		return meisai;

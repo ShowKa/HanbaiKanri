@@ -175,7 +175,6 @@ ngModules
 			version: $scope.version
 		};
 		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
-			param["meisai[" + i + "].meisaiNumber"] = $scope.meisaiList_Nyuka[i].meisaiNumber;
 			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
 			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
 		}
@@ -211,7 +210,6 @@ ngModules
 			version: $scope.version
 		};
 		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
-			param["meisai[" + i + "].meisaiNumber"] = $scope.meisaiList_Nyuka[i].meisaiNumber;
 			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
 			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
 		}
