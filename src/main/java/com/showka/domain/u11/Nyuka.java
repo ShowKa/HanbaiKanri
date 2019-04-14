@@ -152,13 +152,6 @@ public class Nyuka extends DomainRoot {
 	 *            入荷数(訂正後)
 	 */
 	public void teisei(Shohin target, Integer nyukaNumber) {
-		// 現在入荷数=引数.入荷数の場合、何もしない
-		Integer number = this.getNumber(target);
-		if (number.equals(nyukaNumber)) {
-			return;
-		}
-		// 移動数
-		Integer idosuu = nyukaNumber - number;
 		// 営業日
 		EigyoDate eigyoDate = this.getBusho().getEigyoDate();
 		// 商品移動
@@ -174,11 +167,23 @@ public class Nyuka extends DomainRoot {
 			b.withTimestamp(new TheTimestamp());
 			return b.build();
 		});
-		// 商品移動明細
+		// 商品移動明細 当日訂正分削除
 		Optional<ShohinIdoMeisai> _meisai = teisei.getMeisai()
 				.parallelStream()
 				.filter(m -> m.getShohinDomain().equals(target))
 				.findFirst();
+		if (_meisai.isPresent()) {
+			teisei.remove(_meisai.get());
+		}
+		// 現在入荷数=引数.入荷数の場合、何もしない
+		Integer number = this.getNumber(target);
+		if (number.equals(nyukaNumber)) {
+			return;
+		}
+		// 移動数
+		number = this.getNumber(target);
+		Integer idosuu = nyukaNumber - number;
+		// 商品移動明細 再作成
 		ShohinIdoMeisai meisai;
 		if (_meisai.isPresent()) {
 			// 移動数だけ上書き

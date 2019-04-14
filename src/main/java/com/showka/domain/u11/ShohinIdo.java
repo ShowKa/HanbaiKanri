@@ -101,6 +101,16 @@ public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
 		this.meisai.add(merged);
 	}
 
+	/**
+	 * 商品移動明細除去
+	 * 
+	 * @param meisai
+	 *            商品移動明細
+	 */
+	public void remove(ShohinIdoMeisai meisai) {
+		this.meisai.remove(meisai);
+	}
+
 	// override
 	@Override
 	public void validate() throws SystemException {

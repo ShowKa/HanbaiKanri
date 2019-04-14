@@ -64,6 +64,7 @@ ngModules
 	 * 訂正更新モード
 	 */
 	$scope.toUpdateTeisei = function() {
+		common.toUpdateTeisei();
 	};
 	/**
 	 * 商品入荷取得.
@@ -219,10 +220,20 @@ ngModules
 	 * 訂正更新.
 	 */
 	$scope.updateTeisei = function() {
-		var callback = function () {
+		var callback = function (model) {
+			// 参照モードへ
 			common.toRead();
+			$scope.get($scope.nyukaId);
 		};
-		$httpw.post("/u11g003/updateTeisei", {}, callback);
+		var param = {
+			nyukaId : $scope.nyukaId,
+			version: $scope.version
+		};
+		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
+			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
+			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
+		}
+		$httpw.post("/u11g003/updateTeisei", param, callback);
 	};
 	/**
 	 * 訂正削除.
