@@ -226,10 +226,10 @@ public class U11G003Controller extends ControllerBase {
 		Set<String> newShohinCodeSet = meisai.parallelStream()
 				.map(U11G003MeisaiForm::getShohinCode)
 				.collect(Collectors.toSet());
-		shohinSet.parallelStream().forEach(s -> {
-			if (!newShohinCodeSet.contains(s.getCode())) {
-				nyuka.teisei(s, 0);
-			}
+		shohinSet.parallelStream().filter(s -> {
+			return !newShohinCodeSet.contains(s.getCode());
+		}).forEach(s -> {
+			nyuka.teisei(s, 0);
 		});
 		// OCC
 		nyuka.setVersion(form.getVersion());
@@ -295,6 +295,8 @@ public class U11G003Controller extends ControllerBase {
 		// register
 		shohinIdoNyukaTeiseiPersistence.delete(nyuka);
 		// return
+		form.setSuccessMessage("訂正削除成功");
+		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 

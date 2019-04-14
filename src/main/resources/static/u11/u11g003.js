@@ -228,6 +228,16 @@ ngModules
 	 * 訂正削除.
 	 */
 	$scope.deleteTeisei = function() {
+		var callback = function(model) {
+			// 参照モードへ
+			common.toRead();
+			$scope.get($scope.nyukaId);
+		};
+		var param = {
+			nyukaId: $scope.nyukaId,
+			version: $scope.version,
+		};
+		$httpw.post("/u11g003/deleteTeisei", param, callback);
 	};
 	/**
 	 * 対象切替.
