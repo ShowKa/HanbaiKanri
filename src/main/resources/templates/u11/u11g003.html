@@ -31,59 +31,45 @@
 							type="hidden"
 							ng-model="version" />
 						<div class="row">
-							<div class="col-sm-4 col-xs-4"></div>
-							<div class="col-sm-2 col-xs-2">
+							<div class="col-sm-12 col-xs-12">
+								<input
+									id="deleteBtn"
+									type="button"
+									class="btn btn-primary btn-sm pull-right"
+									value="削除"
+									ng-show="isReadMode() && target == 'nyuka'"
+									ng-click="delete()" />
+								<input
+									id="deleteBtn"
+									type="button"
+									class="btn btn-primary btn-sm pull-right"
+									value="訂正の削除"
+									ng-show="isReadMode() && target =='nyukaTeisei' && teiseiDone == 'done'"
+									ng-click="deleteTeisei()" />
 								<input
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="参照モード"
 									ng-show="isUpdateMode() || isRegisterTeiseiMode() || isUpdateTeiseiMode() "
 									ng-click="toRead()"></input>
-							</div>
-							<div class="col-sm-2 col-xs-2">
 								<input
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="更新モード"
 									ng-show="isReadMode() && target == 'nyuka'"
 									ng-click="toUpdate()"></input>
-							</div>
-							<div class="col-sm-2 col-xs-2">
 								<input
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="訂正モード"
 									ng-show="isReadMode() && target == 'nyukaTeisei' && teiseiDone ==  'notYet'"
 									ng-click="toRegisterTeisei()"></input>
-							</div>
-							<div class="col-sm-2 col-xs-2">
 								<input
 									type="button"
 									class="btn btn-secondary btn-sm whenRead"
 									value="訂正更新モード"
 									ng-show="isReadMode() && target == 'nyukaTeisei' && teiseiDone ==  'done'"
 									ng-click="toUpdateTeisei()"></input>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-9 col-xs-9"></div>
-							<div class="col-sm-1 col-xs-1">
-								<input
-									id="deleteBtn"
-									type="button"
-									class="btn btn-primary btn-sm"
-									value="削除"
-									ng-show="isReadMode() && target == 'nyuka'"
-									ng-click="delete()" />
-							</div>
-							<div class="col-sm-1 col-xs-1">
-								<input
-									id="deleteBtn"
-									type="button"
-									class="btn btn-primary btn-sm"
-									value="訂正の削除"
-									ng-show="isReadMode() && target =='nyukaTeisei' && teiseiDone == 'done'"
-									ng-click="deleteTeisei()" />
 							</div>
 						</div>
 						<h4>商品入荷</h4>
@@ -144,29 +130,27 @@
 				</div>
 			</div>
 			<div class="col-md-6 col-sm-6 col-xs-12">
-				<div class="col-md-3 col-sm-3">
-					<input
-						type="button"
-						class="btn btn-secondary btn-sm"
-						value="ヘッダ入力完了"
-						ng-click="startEditingMeisaiList()"
-						ng-show="header.editing" />
-				</div>
-				<div class="col-md-2 col-sm-2">
-					<input
-						type="button"
-						class="btn btn-secondary btn-sm"
-						value="明細追加"
-						ng-click="addMeisai()"
-						ng-show="!header.editing && !isReadMode()" />
-				</div>
-				<div class="col-md-1 col-sm-1">
-					<input
-						type="button"
-						class="btn btn-secondary btn-sm"
-						value="訂正履歴"
-						ng-show="isReadMode()"
-						ng-click="toggleTeiseiRireki()" />
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<input
+							type="button"
+							class="btn btn-secondary btn-sm pull-right"
+							value="ヘッダ入力完了"
+							ng-click="startEditingMeisaiList()"
+							ng-show="header.editing" />
+						<input
+							type="button"
+							class="btn btn-secondary btn-sm pull-right"
+							value="明細追加"
+							ng-click="addMeisai()"
+							ng-show="!header.editing && !isReadMode()" />
+						<input
+							type="button"
+							class="btn btn-secondary btn-sm pull-right"
+							value="訂正履歴"
+							ng-show="isReadMode()"
+							ng-click="toggleTeiseiRireki()" />
+					</div>
 				</div>
 				<table
 					class="table table-striped"
@@ -259,9 +243,9 @@
 					</thead>
 					<tbody id="nyukaList">
 						<tr ng-repeat="meisai in meisaiList_Nyuka">
-							<td>{{meisai.shohinCode}}</td>
-							<td>{{meisai.shohinName}}</td>
-							<td>{{meisai.nyukaSu}}</td>
+							<td class="col-sm-2">{{meisai.shohinCode}}</td>
+							<td class="col-sm-8">{{meisai.shohinName}}</td>
+							<td class="col-sm-2">{{meisai.nyukaSu}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -272,59 +256,55 @@
 					<caption>明細</caption>
 					<thead>
 						<tr>
+							<th>日付</th>
 							<th>#</th>
 							<th>商品</th>
 							<th></th>
-							<th>日付</th>
 							<th>移動数</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-repeat="meisai in meisaiList_NyukaTeisei">
+							<td class="col-sm-2">{{meisai.date}}</td>
 							<td class="col-sm-1">{{meisai.meisaiNumber}}</td>
 							<td class="col-sm-2">{{meisai.shohinCode}}</td>
 							<td class="col-sm-5">{{meisai.shohinName}}</td>
-							<td class="col-sm-2">{{meisai.date}}</td>
 							<td class="col-sm-2">{{meisai.number}}</td>
 						</tr>
 					</tbody>
 				</table>
-				<div class="col-md-1 col-sm-1">
-					<input
-						id="registerBtn"
-						type="button"
-						class="btn btn-primary btn-sm"
-						ng-click="register()"
-						ng-disabled="false"
-						value="登録"
-						ng-show="isRegisterMode()" />
-				</div>
-				<div class="col-md-1 col-sm-1">
-					<input
-						id="updateBtn"
-						type="button"
-						class="btn btn-primary btn-sm whenUpdate"
-						value="更新"
-						ng-show="isUpdateMode()"
-						ng-click="update()" />
-				</div>
-				<div class="col-md-1 col-sm-1">
-					<input
-						id=""
-						type="button"
-						class="btn btn-primary btn-sm"
-						value="訂正"
-						ng-show="isRegisterTeiseiMode()"
-						ng-click="registerTeisei()" />
-				</div>
-				<div class="col-md-1 col-sm-1">
-					<input
-						id=""
-						type="button"
-						class="btn btn-primary btn-sm"
-						value="訂正の更新"
-						ng-show="isUpdateTeiseiMode()"
-						ng-click="updateTeisei()" />
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<input
+							id="registerBtn"
+							type="button"
+							class="btn btn-primary btn-sm"
+							ng-click="register()"
+							ng-disabled="false"
+							value="登録"
+							ng-show="isRegisterMode()" />
+						<input
+							id="updateBtn"
+							type="button"
+							class="btn btn-primary btn-sm whenUpdate"
+							value="更新"
+							ng-show="isUpdateMode()"
+							ng-click="update()" />
+						<input
+							id=""
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="訂正"
+							ng-show="isRegisterTeiseiMode()"
+							ng-click="registerTeisei()" />
+						<input
+							id=""
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="訂正の更新"
+							ng-show="isUpdateTeiseiMode()"
+							ng-click="updateTeisei()" />
+					</div>
 				</div>
 			</div>
 		</div>
