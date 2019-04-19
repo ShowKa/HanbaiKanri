@@ -1,6 +1,7 @@
 package com.showka.web.u11;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -334,8 +335,11 @@ public class U11G003Controller extends ControllerBase {
 		// 明細リスト_入荷訂正履歴
 		List<Map<String, Object>> meisaiList_NyukaTeisei = new ArrayList<>();
 		List<ShohinIdo> allShohinIdoList = nyuka.getAllShohinIdoList();
-		allShohinIdoList.forEach(shohinIdo -> {
-			shohinIdo.getMeisai().forEach(shohinIdoMeisai -> {
+		allShohinIdoList.sort(Comparator.comparing(s -> s.getDate()));
+		allShohinIdoList.stream().forEachOrdered(shohinIdo -> {
+			List<ShohinIdoMeisai> meisaiList = shohinIdo.getMeisai();
+			meisaiList.sort(Comparator.comparing(s -> s.getMeisaiNumber()));
+			meisaiList.stream().forEachOrdered(shohinIdoMeisai -> {
 				Shohin shohin = shohinIdoMeisai.getShohinDomain();
 				Map<String, Object> m = new HashMap<String, Object>();
 				m.put("meisaiNumber", shohinIdoMeisai.getMeisaiNumber());
