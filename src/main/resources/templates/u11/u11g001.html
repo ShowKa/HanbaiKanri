@@ -103,7 +103,14 @@
 							<td>{{kurikoshiZaiko}}</td>
 						</tr>
 						<tr ng-repeat="ido in shohinIdoList">
-							<td class="col-sm-1">{{ido.timestamp}}</td>
+							<td
+								ng-if="ido.isNyuka"
+								class="col-sm-1">
+								<a ng-href="/u11g003/refer?nyukaId={{ido.nyukaShohinIdoId}}" target="_blank">{{ido.timestamp}}</a>
+							</td>
+							<td
+								ng-if="!ido.isNyuka"
+								class="col-sm-1">{{ido.timestamp}}</td>
 							<td class="col-sm-1">{{ido.kubun}}</td>
 							<td class="col-sm-1">{{ido.number}}</td>
 						</tr>

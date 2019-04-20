@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+<link th:replace="common/head :: common_link" />
+<script
+	th:inmeisai="javascript"
+	src="/u11/u11g003.js"></script>
+</head>
+<body ng-app="App">
+	<div th:replace="common/header :: common_header"></div>
+	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
+	<div class="bootstrap-iso">
+		<div
+			class="container"
+			ng-controller="MainController">
+			<div class="row">
+				<div class="col-md-6 col-sm-6 col-xs-12">
+					<form
+						id="nyuka"
+						class="form-horizontal">
+						<input
+							id="nyukaId"
+							name="nyukaId"
+							type="hidden"
+							ng-model="nyukaId"
+							th:ng-init="|init('${nyukaId}')|" />
+						<input
+							id="version"
+							name="version"
+							type="hidden"
+							ng-model="version" />
+						<div class="row">
+							<div class="col-sm-12 col-xs-12">
+								<input
+									id="deleteBtn"
+									type="button"
+									class="btn btn-primary btn-sm pull-right"
+									value="削除"
+									ng-show="isReadMode() && target == 'nyuka'"
+									ng-click="delete()" />
+								<input
+									id="deleteBtn"
+									type="button"
+									class="btn btn-primary btn-sm pull-right"
+									value="訂正の削除"
+									ng-show="isReadMode() && target =='nyukaTeisei' && teiseiDone == 'done'"
+									ng-click="deleteTeisei()" />
+								<input
+									type="button"
+									class="btn btn-secondary btn-sm whenRead"
+									value="参照モード"
+									ng-show="isUpdateMode() || isRegisterTeiseiMode() || isUpdateTeiseiMode() "
+									ng-click="toRead()"></input>
+								<input
+									type="button"
+									class="btn btn-secondary btn-sm whenRead"
+									value="更新モード"
+									ng-show="isReadMode() && target == 'nyuka'"
+									ng-click="toUpdate()"></input>
+								<input
+									type="button"
+									class="btn btn-secondary btn-sm whenRead"
+									value="訂正モード"
+									ng-show="isReadMode() && target == 'nyukaTeisei' && teiseiDone ==  'notYet'"
+									ng-click="toRegisterTeisei()"></input>
+								<input
+									type="button"
+									class="btn btn-secondary btn-sm whenRead"
+									value="訂正更新モード"
+									ng-show="isReadMode() && target == 'nyukaTeisei' && teiseiDone ==  'done'"
+									ng-click="toUpdateTeisei()"></input>
+							</div>
+						</div>
+						<h4>商品入荷</h4>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="bushoCode">部署</label>
+							<div class="col-sm-10">
+								<label
+									class="ioc-label"
+									ng-ioc="busho"
+									ng-ioc-label-text="${name}"
+									ng-ioc-target="bushoCode"></label>
+								<input
+									id="bushoCode"
+									name="bushoCode"
+									class="form-control"
+									type="text"
+									placeholder="BS01"
+									ng-model="bushoCode"
+									ng-readonly="!(header.editing)"
+									ng-init-from-value
+									th:value="${form.bushoCode}"
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="bushoCode">入荷先</label>
+							<div class="col-sm-10">
+								<label
+									class="ioc-label"
+									ng-ioc="nyukaSaki"
+									ng-ioc-label-text="${name}"
+									ng-ioc-target="nyukaSakiCode"></label>
+								<input
+									class="form-control"
+									id="nyukaSakiCode"
+									name="nyukaSakiCode"
+									type="text"
+									placeholder="NS1"
+									ng-model="nyukaSakiCode"
+									ng-readonly="!(header.editing)"
+									ng-init-from-value
+									required />
+							</div>
+						</div>
+						<div class="form-group form-group-sm">
+							<label
+								class="control-label col-sm-2"
+								for="date">入荷日</label>
+							<div
+								class="col-sm-10"
+								ng-show="true">{{nyukaDate}}</div>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-12">
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<input
+							type="button"
+							class="btn btn-secondary btn-sm pull-right"
+							value="ヘッダ入力完了"
+							ng-click="startEditingMeisaiList()"
+							ng-show="header.editing" />
+						<input
+							type="button"
+							class="btn btn-secondary btn-sm pull-right"
+							value="明細追加"
+							ng-click="addMeisai()"
+							ng-show="!header.editing && !isReadMode()" />
+						<input
+							type="button"
+							class="btn btn-secondary btn-sm pull-right"
+							value="訂正履歴"
+							ng-show="isReadMode()"
+							ng-click="toggleTeiseiRireki()" />
+					</div>
+				</div>
+				<table
+					class="table table-striped"
+					ng-show="isRegisterMode() || isUpdateMode() || isRegisterTeiseiMode() || isUpdateTeiseiMode()">
+					<caption>明細</caption>
+					<thead>
+						<tr>
+							<th>商品</th>
+							<th></th>
+							<th>入荷数</th>
+						</tr>
+					</thead>
+					<!-- 明細登録 -->
+					<tbody id="nyukaList">
+						<tr
+							ng-repeat="meisai in meisaiList_Nyuka"
+							ng-present-deleted="meisai">
+							<td class="col-sm-5 hasIocLabel">
+								<label
+									class="ioc-label"
+									ng-ioc="shohin"
+									ng-ioc-label-text="${name}"
+									ng-ioc-target="meisai.shohinCode"></label>
+								<input
+									id="shohinCode_{{$index}}"
+									name="meisai[{{$index}}].shohinCode"
+									class="form-control"
+									type="text"
+									ng-model="meisai.shohinCode"
+									ng-readonly="!meisai.editing"
+									required />
+							</td>
+							<td class="col-sm-2">
+								<input
+									name="meisai[{{$index}}].nyukaSu"
+									class="form-control"
+									type="number"
+									ng-model="meisai.nyukaSu"
+									ng-readonly="!meisai.editing"
+									required />
+							</td>
+							<td ng-hide="true">
+								<input
+									name="meisai[{{$index}}].version"
+									type="number"
+									ng-model="meisai.version" />
+								<input
+									name="meisai[{{$index}}].editMode"
+									type="text"
+									ng-model="meisai.editMode" />
+							</td>
+							<td
+								class="col-sm-1"
+								ng-show="!isReadMode()">
+								<input
+									class="btn btn-default"
+									type="button"
+									ng-click="done(meisai)"
+									ng-show="meisai.editing"
+									ng-disabled="uriageDenpyo.$invalid"
+									value="完了" />
+								<button
+									class="btn btn-default"
+									type="button"
+									ng-click="edit(meisai)"
+									ng-show="!meisai.editing">編集</button>
+							</td>
+							<td
+								class="col-sm-1"
+								ng-show="!isReadMode()">
+								<button
+									class="btn btn-default"
+									type="button"
+									ng-click="removeMeisai(meisai)">削除</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 明細リスト_入荷(参照) -->
+				<table
+					class="table table-striped"
+					ng-show="isReadMode() && display == 'nyuka'">
+					<caption>明細</caption>
+					<thead>
+						<tr>
+							<th>商品</th>
+							<th></th>
+							<th>入荷数</th>
+						</tr>
+					</thead>
+					<tbody id="nyukaList">
+						<tr ng-repeat="meisai in meisaiList_Nyuka">
+							<td class="col-sm-2">{{meisai.shohinCode}}</td>
+							<td class="col-sm-8">{{meisai.shohinName}}</td>
+							<td class="col-sm-2">{{meisai.nyukaSu}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- 訂正参照 -->
+				<table
+					class="table table-striped"
+					ng-show="isReadMode() && display == 'nyukaTeiseiRireki'">
+					<caption>明細</caption>
+					<thead>
+						<tr>
+							<th>日付</th>
+							<th>#</th>
+							<th>商品</th>
+							<th></th>
+							<th>移動数</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="meisai in meisaiList_NyukaTeisei">
+							<td class="col-sm-2">{{meisai.date}}</td>
+							<td class="col-sm-1">{{meisai.meisaiNumber}}</td>
+							<td class="col-sm-2">{{meisai.shohinCode}}</td>
+							<td class="col-sm-5">{{meisai.shohinName}}</td>
+							<td class="col-sm-2">{{meisai.number}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="row">
+					<div class="col-md-12 col-sm-12">
+						<input
+							id="registerBtn"
+							type="button"
+							class="btn btn-primary btn-sm"
+							ng-click="register()"
+							ng-disabled="false"
+							value="登録"
+							ng-show="isRegisterMode()" />
+						<input
+							id="updateBtn"
+							type="button"
+							class="btn btn-primary btn-sm whenUpdate"
+							value="更新"
+							ng-show="isUpdateMode()"
+							ng-click="update()" />
+						<input
+							id=""
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="訂正"
+							ng-show="isRegisterTeiseiMode()"
+							ng-click="registerTeisei()" />
+						<input
+							id=""
+							type="button"
+							class="btn btn-primary btn-sm"
+							value="訂正の更新"
+							ng-show="isUpdateTeiseiMode()"
+							ng-click="updateTeisei()" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="common/footer :: common_footer"></div>
+</body>
+</html>

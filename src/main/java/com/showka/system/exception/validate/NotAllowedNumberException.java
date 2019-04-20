@@ -69,6 +69,24 @@ public class NotAllowedNumberException extends ValidateException {
 	}
 
 	/**
+	 * コンストラクタ.
+	 * 
+	 * <pre>
+	 * targetName の値は allowedNumber を設定する必要があります。
+	 * 
+	 * <pre>
+	 * 
+	 * @param targetName
+	 * @param allowedNumber
+	 */
+	public NotAllowedNumberException(String targetName, Integer allowedNumber) {
+		super(targetName + "の値は " + allowedNumber.toString() + " を設定する必要があります。");
+		this.targetName = targetName;
+		this.allowedMaximum = new BigDecimal(allowedNumber);
+		this.allowedMinimum = new BigDecimal(allowedNumber);
+	}
+
+	/**
 	 * 範囲メッセージ.
 	 * 
 	 * @param min

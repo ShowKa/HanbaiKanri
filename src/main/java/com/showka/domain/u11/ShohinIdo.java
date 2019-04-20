@@ -1,6 +1,7 @@
 package com.showka.domain.u11;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,9 @@ import com.showka.value.TheTimestamp;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * 商品移動.
+ */
 @AllArgsConstructor
 @Getter
 public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
@@ -47,6 +51,17 @@ public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
 	}
 
 	/**
+	 * 引数.商品の商品移動明細取得.
+	 * 
+	 * @param shohin
+	 *            商品
+	 * @return 商品移動明細
+	 */
+	public Optional<ShohinIdoMeisai> getOf(Shohin shohin) {
+		return meisai.parallelStream().filter(m -> m.getShohinDomain().equals(shohin)).findAny();
+	}
+
+	/**
 	 * 対象商品の部署在庫における増加数を取得する。
 	 * 
 	 * @param target
@@ -62,7 +77,41 @@ public class ShohinIdo extends DomainRoot implements Comparable<ShohinIdo> {
 		}).sum();
 	}
 
-	// public method
+	/**
+	 * 最大明細番号.
+	 * 
+	 * <pre>
+	 * ただし明細ない場合は0を返却
+	 * </pre>
+	 * 
+	 * @return 最大明細番号
+	 */
+	public Integer getMaxMeisaiNumber() {
+		return this.getMeisai().parallelStream().mapToInt(m -> m.getMeisaiNumber()).max().orElse(0);
+	}
+
+	/**
+	 * 商品移動明細merge.
+	 * 
+	 * @param merged
+	 *            マージ対象
+	 */
+	public void mergeMeisai(ShohinIdoMeisai merged) {
+		this.meisai.remove(merged);
+		this.meisai.add(merged);
+	}
+
+	/**
+	 * 商品移動明細除去
+	 * 
+	 * @param meisai
+	 *            商品移動明細
+	 */
+	public void remove(ShohinIdoMeisai meisai) {
+		this.meisai.remove(meisai);
+	}
+
+	// override
 	@Override
 	public void validate() throws SystemException {
 		// nothing to do

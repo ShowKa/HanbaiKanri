@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.showka.domain.u11.ShohinZaiko;
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shohin;
+import com.showka.kubun.ShohinIdoKubun;
 import com.showka.service.crud.z00.i.BushoCrud;
 import com.showka.service.crud.z00.i.ShohinCrud;
 import com.showka.service.query.u11.i.ShohinZaikoQuery;
@@ -94,6 +95,11 @@ public class U11G001Controller extends ControllerBase {
 			ret.put("timestamp", z.getTimestamp().toString("HH:mm:ss"));
 			ret.put("kubun", z.getKubun().name());
 			ret.put("number", z.getNumberForBushoZaiko(_zaiko.getShohin()));
+			// 入荷商品移動ID
+			boolean isNyuka = z.getKubun() == ShohinIdoKubun.入荷;
+			String nyukaShohinIdoId = isNyuka ? z.getRecordId() : "";
+			ret.put("isNyuka", isNyuka);
+			ret.put("nyukaShohinIdoId", nyukaShohinIdoId);
 			return ret;
 		}).collect(Collectors.toList());
 		// set model

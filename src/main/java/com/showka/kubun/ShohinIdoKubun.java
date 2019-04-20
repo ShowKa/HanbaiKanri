@@ -8,10 +8,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ShohinIdoKubun implements Kubun<ShohinIdoKubun> {
-	/** 入荷元 -> 部署在庫. */
+	/** 入荷元 -> 部署在庫（正の数のみ）. */
 	入荷("00"),
+	/** 入力誤りによる訂正（正負あり）. */
+	入荷訂正("01"),
 	/** 部署在庫 -> 入荷元. */
-	入荷返品("00"),
+	入荷返品("05"),
 	/** 部署在庫 -> 顧客. */
 	売上("10"),
 	/** 顧客 -> 部署在庫. */
@@ -29,11 +31,12 @@ public enum ShohinIdoKubun implements Kubun<ShohinIdoKubun> {
 	/**
 	 * 部署在庫増加判定.
 	 * 
-	 * @return 部署の在庫が増える場合はtrue
+	 * @return 移動数が正の数で部署の在庫が増える場合、true
 	 */
 	public boolean increase() {
 		switch (this) {
 		case 入荷:
+		case 入荷訂正:
 		case 売上訂正:
 		case 売上返品:
 		case 部署間移動受入:

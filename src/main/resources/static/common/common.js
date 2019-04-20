@@ -220,6 +220,27 @@ _.swithElementActivationByMode = function() {
 }
 
 /**
+ * 文字列操作
+ */
+_.replaceText = function (model, labelText) {
+	var _text = labelText;
+	// regular expression to parse labelText
+	var reg = /\$\{[^\}]+\}/g;
+	var matchedArray = labelText.match(reg);
+	for (var i in matchedArray) {
+		var matched = matchedArray[i];
+		var tKey = matched.substring(2, matched.length - 1);
+		var value = model[tKey];
+		if (!value) {
+			_text = "";
+			break;
+		}
+		_text = _text.replace(new RegExp("\\$\\{" + tKey + "\\}", "g"), value);
+	}
+	return _text;
+}
+
+/**
  * escape jquery's selector value
  * 
  * @param val
@@ -296,11 +317,8 @@ function selectorEscape(val) {
 		var url = options.url;
 		var key = options.key ? options.key : "code";
 		var labelText = options.labelText;
-		var debug = options.debug ? options.debug : false;
 		var autoInit = options.autoInit ? options.autoInit : false;
 		var hideWhenInput = options.hideWhenInput ? options.hideWhenInput : false;
-		// regular expression to parse labelText
-		var reg = /\$\{[^\}]+\}/g;
 		return this.each(function() {
 			// label
 			var $label = $(this);
@@ -324,22 +342,7 @@ function selectorEscape(val) {
 				var callback = function(model) {
 					var _text = "";
 					if ($.type(labelText) == "string") {
-						_text = labelText;
-						var matchedArray = labelText.match(reg);
-						for (var i in matchedArray) {
-							var matched = matchedArray[i];
-							var tKey = matched.substring(2, matched.length - 1);
-							var value = model[tKey];
-							if (!value) {
-								if (debug === true) {
-									console.log(tKey + "の値が見つかりません。");
-									console.log(model);
-								}
-								_text = "";
-								break;
-							}
-							_text = _text.replace(new RegExp("\\$\\{" + tKey + "\\}", "g"), value);
-						}
+						_text = _.replaceText(model, labelText);
 					} else if ($.type(labelText) == "function") {
 						_text = labelText(model);
 					}
@@ -365,15 +368,5 @@ $(document).ready(function() {
 			return;
 		}
 		return false;
-	});
-	// Instrumentality Of Code 
-	var labelText = "${code}:${name}";
-	var $labels = $("[ioc=kokyaku]");
-	$labels.instrumentalityOfCode({
-		url : "/info/getKokyaku",
-		key: "code",
-		labelText : labelText,
-		autoInit : true,
-		hideWhenInput : false,
 	});
 });
