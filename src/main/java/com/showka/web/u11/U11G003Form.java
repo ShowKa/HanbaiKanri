@@ -1,9 +1,7 @@
 package com.showka.web.u11;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.showka.web.FormBase;
+import com.showka.web.MeisaiList;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +19,7 @@ public class U11G003Form extends FormBase {
 	/** 入荷先コード. */
 	private String nyukaSakiCode;
 	/** 入荷明細. */
-	private List<U11G003MeisaiForm> meisai = new ArrayList<U11G003MeisaiForm>();
+	private MeisaiList<U11G003MeisaiForm> meisai = new MeisaiList<>();
 	/** record_id */
 	private String nyukaId;
 	/** バージョン(排他制御用) */
