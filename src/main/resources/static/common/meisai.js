@@ -1,7 +1,15 @@
 // 明細
-function Meisai(keys, members) {
-	// keys
-	this.keys = keys;
+function Meisai(columns, members) {
+	// columns
+	this.keys = [];
+	this.columns = [];
+	for (var i = 0; i < columns.length; i++) {
+		var column = columns[i];
+		this.columns.push(column.name);
+		if (column.uniqueKey === true) {
+			this.keys.push(column.name);
+		}
+	}
 	// member
 	Object.assign(this, members);
 	// initial value
@@ -15,6 +23,11 @@ function Meisai(keys, members) {
 	this._version = 0;
 	// return
 	return this;
+}
+Meisai.define = function(columns) {
+	return function(members) {
+		return new Meisai(columns, members);
+	}
 }
 Meisai.prototype.editDone = function() {
 	this.editing = false;
@@ -44,7 +57,7 @@ Meisai.prototype.edit = function(e) {
 	this.editing = e;
 }
 Meisai.prototype.updated = function() {
-	for ( var k in this.init) {
+	for ( var k of this.columns) {
 		if (this.init[k] != this[k]) {
 			return true;
 		}
@@ -111,29 +124,19 @@ MeisaiList.prototype.push = function(newer) {
 MeisaiList.prototype.mergeRequestParameters = function(key, param) {
 	for (var i = 0; i < this.length; i++) {
 		var meisai = this[i];
-		for (var prop in meisai) {
-			if (prop == "keys" || prop == "init" || prop == "_version") {
-				continue;
-			}
+		for (var prop of meisai.columns) {
 			var v = meisai[prop];
-			if (typeof v === "function") {
-				continue;
-			}
 			param[key + "[" + i + "]." + prop] = v;
 		}
+		param[key + "[" + i + "]." + "status"] = meisai.status;
 	}
 	for (var k = 0; k < this.deletedList.length; k++) {
 		var meisai = this.deletedList[k];
-		for (var prop in meisai) {
-			if (prop == "keys" || prop == "init" || prop == "_version") {
-				continue;
-			}
+		for (var prop of meisai.columns) {
 			var v = meisai[prop];
-			if (typeof v === "function") {
-				continue;
-			}
 			param[key + "[" + i + "]." + prop] = v;
 		}
+		param[key + "[" + i + "]." + "status"] = meisai.status;
 		i++;
 	}
 }
