@@ -85,6 +85,9 @@ Meisai.prototype.delete = function() {
 	this.status = "deleted";
 }
 Meisai.prototype.equals = function(other) {
+	if (this.keys.length == 0) {
+		return false;
+	}
 	for(var i = 0; i < this.keys.length; i++){ 
 		var key = this.keys[i];
 		if (this[key] != other[key]) {

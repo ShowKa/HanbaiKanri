@@ -1,6 +1,6 @@
 var ngModules = angular.module('App', []);
 
-//services
+// services
 ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
 	// $http wrapper
 	function($scope, $http, $filter) {
@@ -160,6 +160,18 @@ ngModules.service('meisai', [ '$rootScope', '$filter',
 		}
 		return true;
 	};
+	
+	this.errorIfDuplicate = function (meisaiList) {
+		for ( var i = 0; i < meisaiList.length; i++) {
+			for ( var j = i + 1; j < meisaiList.length; j++) {
+				if (meisaiList[i].equals(meisaiList[j])) {
+					_.showErroeMessage("明細が重複しています。[ " + (i+1) + "行目・" + (j+1) + "行目]");
+					return false;
+				}
+			}
+		}
+		return true;
+	};
 
 	// 任意の明細行をリストモデルから取り除く
 	this.remove = function(target, meisaiList) {
@@ -170,7 +182,7 @@ ngModules.service('meisai', [ '$rootScope', '$filter',
 	};
 }]);
 
-//directive
+// directive
 ngModules.directive('ngInitFromValue', function() {
 	return {
 		restrict : 'A',
