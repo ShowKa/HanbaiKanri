@@ -11,12 +11,29 @@ function Meisai(columns, members) {
 		}
 	}
 	// member
-	Object.assign(this, members);
+	var _members = members != null ? members : {};
+	for (var j = 0; j < this.columns.length; j++) {
+		var column = this.columns[j];
+		if (_members[column] == undefined) {
+			_members[column] = "";
+		}
+	}
+	Object.assign(this, _members);
 	// initial value
 	this.init = {};
-	Object.assign(this.init, members);
+	Object.assign(this.init, _members);
 	// status
-	this.status = "added";
+	var hasUniqueKey = members == null ? false : function(_this) {
+		for (var k = 0; k < _this.keys.length; k++) {
+			var key = _this.keys[k];
+			var val = members[key];
+			if (val == undefined || val == null || val.length == 0) {
+				return false;
+			}
+		}
+		return true;
+	}(this);
+	this.status = hasUniqueKey ? "notUpdated" : "added";
 	// editing
 	this.editing = false;
 	// _version
