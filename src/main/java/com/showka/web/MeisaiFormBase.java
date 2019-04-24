@@ -19,6 +19,7 @@ public class MeisaiFormBase implements Serializable {
 	private static final long serialVersionUID = -5376895824409763664L;
 
 	/** ステータス. */
+	@Getter(AccessLevel.NONE)
 	private String status;
 
 	@AllArgsConstructor
