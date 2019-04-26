@@ -148,19 +148,53 @@ ngModules.service('meisai', [ '$rootScope', '$filter',
 	};
 
 	this.check = function (meisaiList) {
+		if (!this.errorIfNothing(meisaiList)) {
+			return false;
+		}
+		if (!this.errorIfEditing(meisaiList)) {
+			return false;
+		}
+		if (!this.errorIfNotUpdated(meisaiList)) {
+			return false;
+		}
+		if (!this.errorIfDuplicate(meisaiList)) {
+			return false;
+		}
+		return true;
+	};
+	this.errorIfNothing = function (meisaiList) {
 		if (meisaiList.length === 0) {
 			_.showErroeMessage("明細を追加してください。");
 			return false;
 		}
-		for ( var l of meisaiList) {
-			if (l.editing == true) {
+		return true;
+	};
+	this.errorIfEditing = function (meisaiList) {
+		for ( var i = 0; i < meisaiList.length; i++) {
+			var meisai = meisaiList[i];
+			if (meisai.editing == true) {
 				_.showErroeMessage("編集中の明細が残っています。");
 				return false;
 			}
 		}
 		return true;
 	};
-	
+	this.errorIfNotUpdated = function (meisaiList) {
+		if (meisaiList.deletedList.length > 0) {
+			return true;
+		}
+		for ( var i = 0; i < meisaiList.length; i++) {
+			var meisai = meisaiList[i];
+			if (meisai.isNewRegistered()) {
+				return true;
+			}
+			if (meisai.updated()) {
+				return true;
+			}
+		}
+		_.showErroeMessage("明細を変更していません。");
+		return false;
+	};
 	this.errorIfDuplicate = function (meisaiList) {
 		for ( var i = 0; i < meisaiList.length; i++) {
 			for ( var j = i + 1; j < meisaiList.length; j++) {
