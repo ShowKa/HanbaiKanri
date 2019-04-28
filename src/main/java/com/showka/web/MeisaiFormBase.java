@@ -20,7 +20,7 @@ public class MeisaiFormBase implements Serializable {
 
 	/** ステータス. */
 	@Getter(AccessLevel.NONE)
-	private String status;
+	private String _status;
 
 	@AllArgsConstructor
 	private enum MeisaiStatus {
@@ -31,7 +31,7 @@ public class MeisaiFormBase implements Serializable {
 	}
 
 	public boolean isDeleted() {
-		return MeisaiStatus.deleted.getCode().equals(status);
+		return MeisaiStatus.deleted.getCode().equals(_status);
 	}
 
 	/**

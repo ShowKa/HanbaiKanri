@@ -163,34 +163,22 @@ ngModules.service('meisai', [ '$rootScope', '$filter',
 		return true;
 	};
 	this.errorIfNothing = function (meisaiList) {
-		if (meisaiList.length === 0) {
+		if (meisaiList.nothing()) {
 			_.showErroeMessage("明細を追加してください。");
 			return false;
 		}
 		return true;
 	};
 	this.errorIfEditing = function (meisaiList) {
-		for ( var i = 0; i < meisaiList.length; i++) {
-			var meisai = meisaiList[i];
-			if (meisai.editing == true) {
-				_.showErroeMessage("編集中の明細が残っています。");
-				return false;
-			}
+		if (meisaiList.hasEditing()) {
+			_.showErroeMessage("編集中の明細が残っています。");
+			return false;
 		}
 		return true;
 	};
 	this.errorIfNotUpdated = function (meisaiList) {
-		if (meisaiList.deletedList.length > 0) {
+		if (meisaiList.updated()) {
 			return true;
-		}
-		for ( var i = 0; i < meisaiList.length; i++) {
-			var meisai = meisaiList[i];
-			if (meisai.isNewRegistered()) {
-				return true;
-			}
-			if (meisai.updated()) {
-				return true;
-			}
 		}
 		_.showErroeMessage("明細を変更していません。");
 		return false;

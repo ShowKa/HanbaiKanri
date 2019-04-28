@@ -1,6 +1,6 @@
 // 明細
 function Meisai(columns, members) {
-	// columns
+	// keys & columns
 	this.keys = [];
 	this.columns = [];
 	for (var i = 0; i < columns.length; i++) {
@@ -10,7 +10,7 @@ function Meisai(columns, members) {
 			this.keys.push(column.name);
 		}
 	}
-	// member
+	// members
 	var _members = members != null ? members : {};
 	for (var j = 0; j < this.columns.length; j++) {
 		var column = this.columns[j];
@@ -23,20 +23,11 @@ function Meisai(columns, members) {
 	this.init = {};
 	Object.assign(this.init, _members);
 	// status
-	var hasUniqueKey = members == null ? false : function(_this) {
-		for (var k = 0; k < _this.keys.length; k++) {
-			var key = _this.keys[k];
-			var val = members[key];
-			if (val == undefined || val == null || val.length == 0) {
-				return false;
-			}
-		}
-		return true;
-	}(this);
-	this.status = hasUniqueKey ? "notUpdated" : "added";
+	var hasUniqueKey = members == null ? false : this.hasUniqueKey();
+	this._status = hasUniqueKey ? "notUpdated" : "added";
 	// editing
 	this.editing = false;
-	// _version
+	// version
 	this._version = 0;
 	// return
 	return this;
@@ -48,25 +39,24 @@ Meisai.define = function(columns) {
 }
 Meisai.prototype.editDone = function() {
 	this.editing = false;
-	if (this.updated()) {
-		this.moveStatus();
-		this._version += 1;
-	} else {
-		this.status = "notUpdated";
-		this._version = 0;
-	}
+	this.moveStatus();
+	this._version += 1;
 }
 Meisai.prototype.moveStatus = function() {
-	switch (this.status) {
-	case "added":
-		this.status = "newRegistered";
-		break;
-	case "notUpdated":
-	case "deleted":
-		this.status = "updated";
-		break;
-	case "newRegistered":
-		break;
+	if (this.updated()) {
+		switch (this._status) {
+		case "added":
+			this._status = "newRegistered";
+			break;
+		case "notUpdated":
+		case "deleted":
+			this._status = "updated";
+			break;
+		case "newRegistered":
+			break;
+		}
+	} else {
+		this._status = "notUpdated";
 	}
 }
 Meisai.prototype.edit = function(e) {
@@ -81,11 +71,24 @@ Meisai.prototype.updated = function() {
 	}
 	return false;
 }
+Meisai.prototype.hasUniqueKey = function() {
+	if (this.keys.length == 0) {
+		return false;
+	}
+	for(var i = 0; i < this.keys.length; i++){ 
+		var key = this.keys[i];
+		var val = this[key];
+		if (val == undefined || val == null || val.length == 0) {
+			return false;
+		}
+	}
+	return true;
+}
 Meisai.prototype.delete = function() {
-	this.status = "deleted";
+	this._status = "deleted";
 }
 Meisai.prototype.equals = function(other) {
-	if (this.keys.length == 0) {
+	if (!this.hasUniqueKey()) {
 		return false;
 	}
 	for(var i = 0; i < this.keys.length; i++){ 
@@ -100,10 +103,10 @@ Meisai.prototype.initialize = function() {
 	Object.assign(this, this.init);
 }
 Meisai.prototype.isAdded = function() {
-	return "added" === this.status;
+	return "added" === this._status;
 }
 Meisai.prototype.isNewRegistered = function() {
-	return "newRegistered" === this.status;
+	return "newRegistered" === this._status;
 }
 // 明細リスト
 function MeisaiList() {
@@ -113,7 +116,7 @@ MeisaiList.prototype = new Array;
 MeisaiList.prototype.delete = function(target) {
 	for (var i = 0; i < this.length; i++) {
 		var meisai = this[i];
-		if (target.equals(meisai)) {
+		if (target == meisai) {
 			this.splice(i, 1);
 			if(meisai.isAdded() || meisai.isNewRegistered()) {
 				return;
@@ -134,21 +137,47 @@ MeisaiList.prototype.push = function(newer) {
 			if (deleted.equals(newer)) {
 				meisiaList.deletedList.splice(i, 1);
 				newer.init = deleted.init;
-				newer.status = "updated";
-				newer.editDone();
+				newer._status = "updated";
+				this.moveStatus();
 				return;
 			}
 		}
 	});
 }
-MeisaiList.prototype.mergeRequestParameters = function(key, param) {
+MeisaiList.prototype.updated = function() {
+	if (this.deletedList.length > 0) {
+		return true;
+	}
+	for ( var i = 0; i < this.length; i++) {
+		var meisai = this[i];
+		if (meisai.isNewRegistered()) {
+			return true;
+		}
+		if (meisai.updated()) {
+			return true;
+		}
+	}
+}
+MeisaiList.prototype.nothing = function() {
+	return this.length === 0;
+}
+MeisaiList.prototype.hasEditing = function() {
+	for ( var i = 0; i < this.length; i++) {
+		var meisai = this[i];
+		if (meisai.editing == true) {
+			return true;
+		}
+	}
+	return false;
+}
+MeisaiList.prototype.merge = function(key, param) {
 	for (var i = 0; i < this.length; i++) {
 		var meisai = this[i];
 		for (var prop of meisai.columns) {
 			var v = meisai[prop];
 			param[key + "[" + i + "]." + prop] = v;
 		}
-		param[key + "[" + i + "]." + "status"] = meisai.status;
+		param[key + "[" + i + "]." + "_status"] = meisai._status;
 	}
 	for (var k = 0; k < this.deletedList.length; k++) {
 		var meisai = this.deletedList[k];
@@ -156,7 +185,7 @@ MeisaiList.prototype.mergeRequestParameters = function(key, param) {
 			var v = meisai[prop];
 			param[key + "[" + i + "]." + prop] = v;
 		}
-		param[key + "[" + i + "]." + "status"] = meisai.status;
+		param[key + "[" + i + "]." + "_status"] = meisai._status;
 		i++;
 	}
 }
