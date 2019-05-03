@@ -84,69 +84,9 @@ ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
 	};
 } ]);
 
+// 明細
 ngModules.service('meisai', [ '$rootScope', '$filter',
-	// 明細
 	function($scope, $filster) {
-
-	this.convertToMeisai = function(meisai, edit) {
-		if (meisai.editing) {
-			return;
-		}
-		edit = edit != null ? edit :false;
-		meisai.editing = edit;
-		meisai.edit = function (e) {
-			e = e != null ? e : true;
-			this.editing = e;
-		};
-		meisai.editDone = function() {
-			this.editing = false;
-			this.updated();
-		}
-
-		if(!meisai.editMode) {
-			meisai.editMode = "added";
-		}
-		var tmp = {
-				isNewRegistered: function () {
-					return this.editMode == 'newRegistered';
-				},
-				isUpdated: function() {
-					return this.editMode == "updated"
-				},
-				updated : function() {
-					switch(this.editMode) {
-					case "added":
-						this.editMode = "newRegistered";
-						break;
-					case "notUpdated":
-					case "deleted" :
-						this.editMode = "updated";
-						break;
-					case "newRegistered" : 
-						console.log("this is new-registered meisai, cannot set editMode updated");
-						break;
-					}
-				},
-				isDeleted: function() {
-					return this.editMode == "deleted"
-				},
-				delete: function() {
-					this.editMode = "deleted";
-				},
-				isAdded: function() {
-					return this.editMode == "added";
-				}
-		};
-
-		Object.assign(meisai, tmp);
-	};
-
-	this.convertCollectionToMeisai = function(meisaiList, edit) {
-		for (var l of meisaiList) {
-			this.convertToMeisai(l, edit);
-		}
-	};
-
 	this.check = function (meisaiList) {
 		if (!this.errorIfNothing(meisaiList)) {
 			return false;
@@ -193,14 +133,6 @@ ngModules.service('meisai', [ '$rootScope', '$filter',
 			}
 		}
 		return true;
-	};
-
-	// 任意の明細行をリストモデルから取り除く
-	this.remove = function(target, meisaiList) {
-		var index = meisaiList.indexOf(target);
-		if (index !== -1) {
-			meisaiList.splice(index, 1);
-		}
 	};
 }]);
 
@@ -308,7 +240,7 @@ ngModules.directive('ngIoc', ["$httpw", function($httpw) {
 			var target = attrs.ngIocTarget;
 			var labelText = attrs.ngIocLabelText;
 			scope.$watch(target, function(newValue, oldvalue) {
-				if (newValue.length == 0) {
+				if (newValue == null || newValue.length == 0) {
 					$label.text("");
 					return;
 				}
