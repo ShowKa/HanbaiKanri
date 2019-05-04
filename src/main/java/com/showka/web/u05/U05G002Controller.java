@@ -2,9 +2,12 @@ package com.showka.web.u05;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -98,16 +101,9 @@ public class U05G002Controller extends ControllerBase {
 	/** 税率. */
 	private TaxRate ZEIRITSU = new TaxRate(0.08);
 
-	// public method called by request
-	/**
-	 * 登録モード初期表示
-	 *
-	 * @param model
-	 * @return
-	 */
+	/** 登録モード初期表示 */
 	@RequestMapping(value = "/u05g002/registerForm", method = RequestMethod.GET)
 	public ModelAndViewExtended registerForm(ModelAndViewExtended model) {
-
 		// 初期入力値設定
 		U05G002Form form = new U05G002Form();
 		form.setKokyakuCode("");
@@ -116,156 +112,114 @@ public class U05G002Controller extends ControllerBase {
 		form.setDenpyoNumber("00000");
 		form.setHanbaiKubun(HanbaiKubun.現金.getCode());
 		model.addForm(form);
-
 		// モード
 		model.setMode(Mode.REGISTER);
-
 		// view
 		model.setViewName("/u05/u05g002");
 		return model;
 	}
 
-	/**
-	 * 登録モード初期表示
-	 *
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/u05g002/updateForm", method = RequestMethod.POST)
-	public ModelAndViewExtended updateForm(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-
-		// 初期入力値設定
-		model = refer(form, model);
-
-		// モード
-		model.setMode(Mode.UPDATE);
+	/** 参照. */
+	@RequestMapping(value = "/u05g002/refer", method = RequestMethod.GET)
+	public ModelAndViewExtended refer(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
+		// set model
+		model.addForm(form);
+		model.setMode(Mode.READ);
+		model.setViewName("/u05/u05g002");
 		return model;
 	}
 
-	/**
-	 * 参照.
-	 *
-	 */
-	@RequestMapping(value = "/u05g002/refer", method = RequestMethod.GET)
-	public ModelAndViewExtended refer(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-
+	@RequestMapping(value = "/u05g002/get", method = RequestMethod.POST)
+	public ResponseEntity<?> get(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// 顧客取得
 		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
-
 		// 売上取得
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		pk.setKokyakuId(kokyaku.getRecordId());
 		Uriage u = uriageCrud.getDomain(pk);
-
 		// 売上ID
 		String uriageId = u.getRecordId();
-
 		// set form
-		form.setHanbaiKubun(u.getHanbaiKubun().getCode());
-		form.setUriageDate(u.getUriageDate().toDate());
-		form.setVersion(u.getVersion());
-		form.setRecordId(uriageId);
-
-		// set 明細
-		List<U05G002MeisaiForm> meisaiList = new ArrayList<U05G002MeisaiForm>();
-		for (UriageMeisai meisai : u.getUriageMeisai()) {
-			U05G002MeisaiForm e = new U05G002MeisaiForm();
-			e.setMeisaiNumber(meisai.getMeisaiNumber());
-			e.setHanbaiNumber(meisai.getHanbaiNumber());
-			e.setHanbaiTanka(meisai.getHanbaiTanka().intValue());
-			e.setShohinCode(meisai.getShohinDomain().getCode());
-			e.setVersion(meisai.getVersion());
-			e.setRecordId(meisai.getRecordId());
-			meisaiList.add(e);
-		}
-		form.setMeisai(meisaiList);
-
+		model.addObject("kokyakuCode", form.getKokyakuCode());
+		model.addObject("denpyoNumber", form.getDenpyoNumber());
+		model.addObject("hanbaiKubun", u.getHanbaiKubun().getCode());
+		model.addObject("uriageDate", u.getUriageDate());
+		model.addObject("version", u.getVersion());
+		model.addObject("recordId", u.getRecordId());
+		// 明細
+		List<Map<String, Object>> meisaiList = u.getUriageMeisai().stream().map(meisai -> {
+			Map<String, Object> e = new HashMap<String, Object>();
+			e.put("meisaiNumber", meisai.getMeisaiNumber());
+			e.put("hanbaiNumber", meisai.getHanbaiNumber());
+			e.put("hanbaiTanka", meisai.getHanbaiTanka().intValue());
+			e.put("shohinCode", meisai.getShohinDomain().getCode());
+			e.put("version", meisai.getVersion());
+			e.put("recordId", meisai.getRecordId());
+			return e;
+		}).collect(Collectors.toList());
+		model.addObject("meisaiList", meisaiList);
 		// set 売掛
 		boolean exists = urikakeCrud.exists(uriageId);
 		if (exists) {
 			Urikake urikake = urikakeCrud.getDomain(uriageId);
-			form.setUrikakeVersion(urikake.getVersion());
+			model.addObject("urikakeVersion", urikake.getVersion());
 			// 請求済み判定
 			Optional<Seikyu> _seikyu = seikyuQuery.getNewest(urikake.getRecordId());
 			if (_seikyu.isPresent()) {
 				model.addObject("isSeikyuZumi", true);
 			}
 		}
-
-		// set model
-		model.addForm(form);
-		model.setMode(Mode.READ);
-		model.setViewName("/u05/u05g002");
-
 		// 計上済み判定
 		model.addObject("isKeijoZumi", uriageKeijoQuery.hasDone(u));
-
-		return model;
+		// return
+		return ResponseEntity.ok(model);
 	}
 
-	/**
-	 * 登録.
-	 *
-	 */
+	/** 登録. */
 	@Transactional
 	@RequestMapping(value = "/u05g002/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-
 		// 明細番号
 		AtomicInteger i = new AtomicInteger(1);
-		List<U05G002MeisaiForm> meisai = form.getMeisai();
+		List<U05G002MeisaiForm> meisai = form.getMeisaiList();
 		meisai.forEach(m -> m.setMeisaiNumber(i.getAndIncrement()));
-
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
-
 		// validate
 		uriageValidator.validateForRegister(uriage);
 		uriageValidator.validate(uriage);
-
 		// save
 		uriageCrud.save(uriage);
-
 		// 掛売
 		Optional<Urikake> urikake = urikakeConstruct.by(uriage);
 		urikake.ifPresent(u -> {
 			urikakeCrud.save(u);
 		});
-
 		// 商品移動
 		shohinIdoUriagePersistence.save(uriage);
-
 		// jump refer
 		form.setSuccessMessage("登録成功");
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 
-	/**
-	 * 更新.
-	 *
-	 */
+	/** 更新. */
 	@Transactional
 	@RequestMapping(value = "/u05g002/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-
 		// 新しい売上明細に明細番号付番
 		Integer maxMeisaiNumber = uriageMeisaiCrud.getMaxMeisaiNumber(form.getRecordId());
 		AtomicInteger i = new AtomicInteger(maxMeisaiNumber + 1);
-		form.getMeisai().stream().filter(m -> m.getMeisaiNumber() == null).forEach(
+		form.getMeisaiList().filterNotDeleted().filter(m -> m.getMeisaiNumber() == null).forEach(
 				m -> m.setMeisaiNumber(i.getAndIncrement()));
-
 		// domain
 		Uriage uriage = buildDomainFromForm(form);
-
 		// validate
 		uriageValidator.validateForUpdate(uriage);
 		uriageValidator.validate(uriage);
-
 		// save
 		uriageCrud.save(uriage);
-
 		// 掛売
 		Optional<Urikake> urikake = urikakeConstruct.by(uriage);
 		urikake.ifPresent(u -> {
@@ -273,43 +227,32 @@ public class U05G002Controller extends ControllerBase {
 			u.setVersion(form.getUrikakeVersion());
 			urikakeCrud.save(u);
 		});
-
 		// 商品移動
 		shohinIdoUriagePersistence.save(uriage);
-
 		// message
 		form.setSuccessMessage("更新成功");
-
 		// set model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 
-	/**
-	 * delete.
-	 *
-	 */
+	/** 削除. */
 	// TODO revert delete 内部で分岐させるより初めからmethod分割しておくほうがよい。
 	@Transactional
 	@RequestMapping(value = "/u05g002/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-
 		// 売上PK
 		TUriagePK pk = new TUriagePK();
 		pk.setDenpyoNumber(form.getDenpyoNumber());
 		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
 		pk.setKokyakuId(kokyaku.getRecordId());
-
 		// 売上
 		Uriage uriage = uriageCrud.getDomain(pk);
 		uriage.setVersion(form.getVersion());
-
 		// validate
 		uriageValidator.validateForDelete(pk);
-
 		// delete 商品移動
 		shohinIdoUriagePersistence.delete(pk);
-
 		// 売上履歴=1件 -> 一度も計上されていないで売上・売掛を削除。
 		// 売上履歴>1件 -> 前回計上状態に差し戻す。
 		UriageRireki rireki = uriageRirekiQuery.get(form.getRecordId());
@@ -322,34 +265,23 @@ public class U05G002Controller extends ControllerBase {
 			urikakePersistence.revert(form.getRecordId(), form.getUrikakeVersion());
 			uriagePersistence.revert(pk, form.getVersion());
 		}
-
 		// message
 		form.setSuccessMessage("削除成功");
-
 		// set model
 		model.addForm(form);
 		return ResponseEntity.ok(model);
 	}
 
-	/**
-	 * form から domain を生成する.
-	 * 
-	 * @param form
-	 * @return
-	 */
+	/** form domain を生成する. */
 	private Uriage buildDomainFromForm(U05G002Form form) {
-
 		// record_id 採番
 		form.setRecordId(form.getRecordId() == null ? "" : form.getRecordId());
-
 		// 売上明細
 		List<UriageMeisai> uriageMeisaiList = new ArrayList<UriageMeisai>();
-		for (U05G002MeisaiForm mf : form.getMeisai()) {
-
+		form.getMeisaiList().filterNotDeleted().forEach(mf -> {
 			// record_id 採番
 			String rec = mf.getRecordId();
 			mf.setRecordId(StringUtils.isEmpty(rec) ? "" : rec);
-
 			// build
 			UriageMeisaiBuilder mb = new UriageMeisaiBuilder();
 			mb.withHanbaiNumber(mf.getHanbaiNumber());
@@ -359,17 +291,14 @@ public class U05G002Controller extends ControllerBase {
 			mb.withShohinDomain(shohinCrud.getDomain(mf.getShohinCode()));
 			mb.withVersion(mf.getVersion());
 			UriageMeisai md = mb.build();
-
 			// add list
 			uriageMeisaiList.add(md);
-		}
+		});
 
 		// 顧客
 		Kokyaku kokyaku = kokyakuCrud.getDomain(form.getKokyakuCode());
-
 		// 営業日取得
 		EigyoDate eigyoDate = kokyaku.getShukanBusho().getEigyoDate();
-
 		// 売上
 		UriageBuilder ub = new UriageBuilder();
 		ub.withUriageMeisai(uriageMeisaiList);
@@ -382,14 +311,10 @@ public class U05G002Controller extends ControllerBase {
 		ub.withVersion(form.getVersion());
 		ub.withKokyaku(kokyaku);
 		Uriage uriage = ub.build();
-
 		return uriage;
 	}
 
-	/**
-	 * Validate Header.
-	 *
-	 */
+	/** Validate Header. */
 	@RequestMapping(value = "/u05g002/validateHeader", method = RequestMethod.POST)
 	public ResponseEntity<?> validateHeader(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		kokyakuValidator.validateForRefer(form.getKokyakuCode());
@@ -399,15 +324,10 @@ public class U05G002Controller extends ControllerBase {
 		return ResponseEntity.ok(model);
 	}
 
-	/**
-	 * Validate Meisai.
-	 *
-	 */
+	/** Validate Meisai. */
 	@RequestMapping(value = "/u05g002/validateMeisai", method = RequestMethod.POST)
 	public ResponseEntity<?> validateMeisai(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
-
-		// TODO
-		List<U05G002MeisaiForm> meisaiList = form.getMeisai();
+		List<U05G002MeisaiForm> meisaiList = form.getMeisaiList();
 		meisaiList.forEach(m -> {
 			String shohinCode = m.getShohinCode();
 			try {
@@ -416,7 +336,6 @@ public class U05G002Controller extends ControllerBase {
 				throw new NotExistException("商品", shohinCode);
 			}
 		});
-
 		Uriage d = buildDomainFromForm(form);
 		uriageValidator.validate(d);
 		model.addForm(form);
@@ -453,7 +372,6 @@ public class U05G002Controller extends ControllerBase {
 	public ResponseEntity<?> getRireki(@ModelAttribute U05G002Form form, ModelAndViewExtended model) {
 		// 履歴取得
 		UriageRireki rireki = uriageRirekiQuery.get(form.getRecordId());
-
 		// 画面に必要な履歴情報をmapに入れる。
 		List<MavMap> rirekiList = new ArrayList<>();
 		rireki.getAllWithTeiseiDenpyo().stream().forEach(uriage -> {
@@ -466,7 +384,6 @@ public class U05G002Controller extends ControllerBase {
 				rirekiList.add(m);
 			});
 		});
-
 		// set model
 		model.addObject("rirekiList", rirekiList);
 		model.addForm(form);

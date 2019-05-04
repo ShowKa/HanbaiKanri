@@ -1,12 +1,11 @@
 package com.showka.web.u05;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.showka.web.FormBase;
+import com.showka.web.MeisaiList;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +35,7 @@ public class U05G002Form extends FormBase {
 	private String hanbaiKubun;
 
 	/** 売上明細. */
-	private List<U05G002MeisaiForm> meisai = new ArrayList<U05G002MeisaiForm>();
+	private MeisaiList<U05G002MeisaiForm> meisaiList = new MeisaiList<U05G002MeisaiForm>();
 
 	/** record_id */
 	private String recordId;
