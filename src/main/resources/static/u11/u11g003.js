@@ -19,27 +19,31 @@ function commonExtend($scope, common) {
 		common.setMode(updateTeisei);
 	};
 }
-//modules
+// modules
 ngModules
-//add extended modules
+// add extended modules
 .service('commonExtend', ['$rootScope', 'common', commonExtend])
-//controller
+// controller
 .controller('MainController', [ '$scope', '$httpw', 'commonExtend', 'meisai',
-//	main
+// main
 	function($scope, $httpw, common, meisaiService) {
 	// scope
 	/**
 	 * 初期化.
 	 */
-	$scope.initialize = function() {
-		$scope.header = {
+	$scope.init = function(nyukaId){
+		if ($scope.isReadMode()) {
+			$scope.get(nyukaId);
+		} else if ($scope.isRegisterMode()) {
+			$scope.header = {
 				editing : true,
 				edit : function(editable) {
 					this.editing = editable;
-				},
-		};
-		if (!$scope.meisaiList_Nyuka) {
-			$scope.meisaiList_Nyuka = [];
+				}
+			};
+			if (!$scope.meisaiList_Nyuka) {
+				$scope.meisaiList_Nyuka = new MeisaiList();
+			}
 		}
 	};
 	/**
@@ -47,6 +51,7 @@ ngModules
 	 */
 	$scope.toRead = function() {
 		common.toRead();
+		$scope.get($scope.nyukaId);
 	};
 	/**
 	 * 更新モード
@@ -75,7 +80,6 @@ ngModules
 			$scope.bushoCode = model.bushoCode;
 			$scope.nyukaSakiCode = model.nyukaSakiCode;
 			$scope.nyukaDate = model.nyukaDate;
-			$scope.meisaiList_Nyuka = model.meisaiList_Nyuka;
 			$scope.meisaiList_NyukaTeisei = model.meisaiList_NyukaTeisei;
 			$scope.nyukaId = model.nyukaId;
 			$scope.version = model.version;
@@ -83,8 +87,11 @@ ngModules
 			$scope.teiseiDone = model.teiseiDone;
 			$scope.display = "nyuka";
 			// 明細
-			for (var m of $scope.meisaiList_Nyuka) {
-				meisaiService.convertToMeisai(m);
+			$scope.meisaiList_Nyuka = new MeisaiList();
+			for (var i = 0; i < model.meisaiList_Nyuka.length; i++) {
+				var _meisai = model.meisaiList_Nyuka[i];
+				var meisai = createMeisai(_meisai);
+				$scope.meisaiList_Nyuka.push(meisai);
 			}
 		};
 		$httpw.post("/u11g003/get", {
@@ -109,12 +116,17 @@ ngModules
 	 * 明細追加
 	 */
 	$scope.addMeisai = function() {
-		$scope.meisaiList_Nyuka.push(createMeisai());
+		var meisai = createMeisai();
+		meisai.edit();
+		$scope.meisaiList_Nyuka.push(meisai);
 	};
 	/**
 	 * 明細編集完了.
 	 */
 	$scope.done = function(meisai) {
+		if(!meisaiService.errorIfDuplicate($scope.meisaiList_Nyuka)) {
+			return;
+		}
 		var callback = function() {
 			meisai.editDone();
 		}
@@ -129,13 +141,16 @@ ngModules
 	 * 明細編集.
 	 */
 	$scope.edit = function(meisai) {
+		if(!meisaiService.errorIfEditing($scope.meisaiList_Nyuka)) {
+			return;
+		}
 		meisai.edit();
 	}
 	/**
 	 * 明細削除.
 	 */
 	$scope.removeMeisai = function(target) {
-		meisaiService.remove(target, $scope.meisaiList_Nyuka);
+		$scope.meisaiList_Nyuka.delete(target);
 	};
 	/**
 	 * 新規登録.
@@ -156,16 +171,17 @@ ngModules
 			bushoCode: $scope.bushoCode,
 			nyukaSakiCode: $scope.nyukaSakiCode
 		};
-		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
-			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
-			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
-		}
+		$scope.meisaiList_Nyuka.merge("meisai", param);
 		$httpw.post("/u11g003/register", param, callback);
 	};
 	/**
 	 * 更新.
 	 */
 	$scope.update = function() {
+		// check
+		if (!meisaiService.check($scope.meisaiList_Nyuka)) {
+			return;
+		}
 		var callback = function (model) {
 			// 参照モードへ
 			common.toRead();
@@ -175,10 +191,7 @@ ngModules
 			nyukaId : $scope.nyukaId,
 			version: $scope.version
 		};
-		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
-			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
-			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
-		}
+		$scope.meisaiList_Nyuka.merge("meisai", param);
 		$httpw.post("/u11g003/update", param, callback);
 	};
 	/**
@@ -210,16 +223,17 @@ ngModules
 			nyukaId : $scope.nyukaId,
 			version: $scope.version
 		};
-		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
-			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
-			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
-		}
+		$scope.meisaiList_Nyuka.merge("meisai", param);
 		$httpw.post("/u11g003/registerTeisei", param, callback);
 	};
 	/**
 	 * 訂正更新.
 	 */
 	$scope.updateTeisei = function() {
+		// check
+		if (!meisaiService.check($scope.meisaiList_Nyuka)) {
+			return;
+		}
 		var callback = function (model) {
 			// 参照モードへ
 			common.toRead();
@@ -229,10 +243,7 @@ ngModules
 			nyukaId : $scope.nyukaId,
 			version: $scope.version
 		};
-		for (var i = 0; i < $scope.meisaiList_Nyuka.length; i++) {
-			param["meisai[" + i + "].shohinCode"] = $scope.meisaiList_Nyuka[i].shohinCode;
-			param["meisai[" + i + "].nyukaSu"] = $scope.meisaiList_Nyuka[i].nyukaSu;
-		}
+		$scope.meisaiList_Nyuka.merge("meisai", param);
 		$httpw.post("/u11g003/updateTeisei", param, callback);
 	};
 	/**
@@ -257,24 +268,14 @@ ngModules
 		var nt = $scope.display == "nyukaTeiseiRireki";
 		$scope.display = nt ? "nyuka" : "nyukaTeiseiRireki";
 	};
-	// 内部関数
 	/**
-	 * 明細作成
+	 * 明細定義
 	 */
-	var createMeisai = function() {
-		var m = {
-				shohinCode : '',
-		};
-		meisaiService.convertToMeisai(m);
-		m.edit();
-		return m;
-	};
-	// 初期処理
-	$scope.init = function(nyukaId){
-		if ($scope.isReadMode()) {
-			$scope.get(nyukaId);
-		} else if ($scope.isRegisterMode()) {
-			$scope.initialize();
-		}
-	};
+	var createMeisai = Meisai.define([{
+		name: "shohinCode",
+		uniqueKey: true
+	}, {
+		name: "nyukaSu",
+		uniqueKey: false
+	}]);
 } ]);

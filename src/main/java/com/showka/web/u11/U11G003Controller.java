@@ -5,10 +5,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -45,6 +46,7 @@ import com.showka.system.exception.validate.ValidateException;
 import com.showka.value.EigyoDate;
 import com.showka.value.TheTimestamp;
 import com.showka.web.ControllerBase;
+import com.showka.web.MeisaiList;
 import com.showka.web.Mode;
 import com.showka.web.ModelAndViewExtended;
 
@@ -115,12 +117,13 @@ public class U11G003Controller extends ControllerBase {
 	}
 
 	/** 商品入荷登録. */
+	@Transactional
 	@RequestMapping(value = "/u11g003/register", method = RequestMethod.POST)
 	public ResponseEntity<?> register(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// データ存在チェック
 		bushoValidator.validateExistance(form.getBushoCode());
 		nyukaSakiValidator.validateExistance(form.getNyukaSakiCode());
-		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		MeisaiList<U11G003MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> {
 			shoinValidator.validateExistance(m.getShohinCode());
 		});
@@ -134,7 +137,7 @@ public class U11G003Controller extends ControllerBase {
 		// 登録
 		shohinIdoNyukaPersistence.save(nyuka);
 		// model
-		// XXX 入荷ID = 商品移動IDとしてよいか？
+		// TODO 入荷ID = 商品移動IDとしてよいか？
 		model.addObject("nyukaId", nyuka.getShohinIdoId());
 		// return
 		form.setSuccessMessage("新規登録成功");
@@ -143,10 +146,11 @@ public class U11G003Controller extends ControllerBase {
 	}
 
 	/** 商品入荷更新. */
+	@Transactional
 	@RequestMapping(value = "/u11g003/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// データ存在チェック
-		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		MeisaiList<U11G003MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> {
 			shoinValidator.validateExistance(m.getShohinCode());
 		});
@@ -155,7 +159,7 @@ public class U11G003Controller extends ControllerBase {
 		// 商品移動（更新）
 		ShohinIdo _shohinIdo = _nyuka.getNyukaShohinIdo();
 		AtomicInteger i = new AtomicInteger(1);
-		List<ShohinIdoMeisai> shohinIdoMeisaiList = meisai.stream().map(m -> {
+		List<ShohinIdoMeisai> shohinIdoMeisaiList = meisai.filterNotDeleted().map(m -> {
 			// 明細番号
 			Integer meisaiNumber = i.getAndIncrement();
 			// build
@@ -188,6 +192,7 @@ public class U11G003Controller extends ControllerBase {
 	}
 
 	/** 商品入荷削除. */
+	@Transactional
 	@RequestMapping(value = "/u11g003/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> delete(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// 入荷（更新前）
@@ -208,29 +213,24 @@ public class U11G003Controller extends ControllerBase {
 	}
 
 	/** 商品入荷訂正登録. */
+	@Transactional
 	@RequestMapping(value = "/u11g003/registerTeisei", method = RequestMethod.POST)
 	public ResponseEntity<?> registerTeisei(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// データ存在チェック
-		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		MeisaiList<U11G003MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> {
 			shoinValidator.validateExistance(m.getShohinCode());
 		});
 		// 入荷（訂正前）
 		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
 		// 訂正
-		form.getMeisai().forEach(m -> {
+		meisai.filterNotDeleted().forEach(m -> {
 			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
 			nyuka.teisei(shohin, m.getNyukaSu());
 		});
-		// 明細にない商品 -> 入荷数=0に訂正
-		Set<Shohin> shohinSet = nyuka.getShohinSet();
-		Set<String> newShohinCodeSet = meisai.parallelStream()
-				.map(U11G003MeisaiForm::getShohinCode)
-				.collect(Collectors.toSet());
-		shohinSet.parallelStream().filter(s -> {
-			return !newShohinCodeSet.contains(s.getCode());
-		}).forEach(s -> {
-			nyuka.teisei(s, 0);
+		meisai.filterDeleted().forEach(m -> {
+			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
+			nyuka.teisei(shohin, 0);
 		});
 		// OCC
 		nyuka.setVersion(form.getVersion());
@@ -250,29 +250,24 @@ public class U11G003Controller extends ControllerBase {
 	}
 
 	/** 商品入荷訂正更新. */
+	@Transactional
 	@RequestMapping(value = "/u11g003/updateTeisei", method = RequestMethod.POST)
 	public ResponseEntity<?> updateTeisei(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// データ存在チェック
-		List<U11G003MeisaiForm> meisai = form.getMeisai();
+		MeisaiList<U11G003MeisaiForm> meisai = form.getMeisai();
 		meisai.forEach(m -> {
 			shoinValidator.validateExistance(m.getShohinCode());
 		});
 		// 入荷（訂正前）
 		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
 		// 訂正
-		form.getMeisai().forEach(m -> {
+		meisai.filterNotDeleted().forEach(m -> {
 			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
 			nyuka.teisei(shohin, m.getNyukaSu());
 		});
-		// 明細にない商品 -> 入荷数=0に訂正
-		Set<Shohin> shohinSet = nyuka.getShohinSet();
-		Set<String> newShohinCodeSet = meisai.parallelStream()
-				.map(U11G003MeisaiForm::getShohinCode)
-				.collect(Collectors.toSet());
-		shohinSet.parallelStream().filter(s -> {
-			return !newShohinCodeSet.contains(s.getCode());
-		}).forEach(s -> {
-			nyuka.teisei(s, 0);
+		meisai.filterDeleted().forEach(m -> {
+			Shohin shohin = shohinCrud.getDomain(m.getShohinCode());
+			nyuka.teisei(shohin, 0);
 		});
 		// OCC
 		nyuka.setVersion(form.getVersion());
@@ -280,6 +275,7 @@ public class U11G003Controller extends ControllerBase {
 		this.validateTanaoroshi(nyuka);
 		this.validateAuth(nyuka);
 		// 整合性検証
+		// TODO 訂正前と内容が変わっていない時にエラーとすべき
 		EigyoDate eigyoDate = nyuka.getBusho().getEigyoDate();
 		String teiseiShohinIdoId = nyuka.getShohinIdoOf(eigyoDate).get().getRecordId();
 		nyukaTeiseiValidator.validateForTeiseiUpdate(nyuka, teiseiShohinIdoId);
@@ -292,6 +288,7 @@ public class U11G003Controller extends ControllerBase {
 	}
 
 	/** 商品入荷訂正削除. */
+	@Transactional
 	@RequestMapping(value = "/u11g003/deleteTeisei", method = RequestMethod.POST)
 	public ResponseEntity<?> deleteTeisei(@ModelAttribute U11G003Form form, ModelAndViewExtended model) {
 		// 入荷（訂正前）
@@ -320,13 +317,8 @@ public class U11G003Controller extends ControllerBase {
 		Nyuka nyuka = shohinIdoNyukaCrud.getDomain(form.getNyukaId());
 		Set<Shohin> shohinSet = nyuka.getShohinSet();
 		// 明細リスト_入荷
-		ShohinIdo nyukaShohinIdo = nyuka.getNewestShohinIdo();
 		List<Map<String, Object>> meisaiList_Nyuka = shohinSet.stream().map(shohin -> {
 			Map<String, Object> m = new HashMap<String, Object>();
-			Optional<ShohinIdoMeisai> _meisai = nyukaShohinIdo.getOf(shohin);
-			if (_meisai.isPresent()) {
-				m.put("meisaiNumber", _meisai.get().getMeisaiNumber());
-			}
 			m.put("shohinCode", shohin.getCode());
 			m.put("shohinName", shohin.getName());
 			m.put("nyukaSu", nyuka.getNumber(shohin));
@@ -449,7 +441,7 @@ public class U11G003Controller extends ControllerBase {
 	/**
 	 * 商品移動明細構築
 	 */
-	private List<ShohinIdoMeisai> buildShohinIdoMeisai(List<U11G003MeisaiForm> meisaiList) {
+	private List<ShohinIdoMeisai> buildShohinIdoMeisai(MeisaiList<U11G003MeisaiForm> meisaiList) {
 		List<ShohinIdoMeisai> meisai = new ArrayList<ShohinIdoMeisai>();
 		int meisaiNumber = 0;
 		for (U11G003MeisaiForm mf : meisaiList) {
@@ -464,5 +456,4 @@ public class U11G003Controller extends ControllerBase {
 		}
 		return meisai;
 	}
-
 }

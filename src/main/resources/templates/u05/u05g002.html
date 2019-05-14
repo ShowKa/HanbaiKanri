@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
 <link th:replace="common/head :: common_link" />
 <script
@@ -34,7 +33,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 <body ng-app="App">
 	<div th:replace="common/header :: common_header"></div>
 	<!-- powerd by Bootstrap Form Builder https://formden.com/form-builder/ -->
-
 	<div class="bootstrap-iso">
 		<div
 			class="container"
@@ -42,19 +40,16 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			<div class="row">
 				<div class="col-md-6 col-sm-6 col-xs-12">
 					<form
-						novalidate
 						id="uriageDenpyo"
-						class="form-horizontal"
-						method="post"
-						name="uriageDenpyo">
+						class="form-horizontal">
 						<div class="row">
 							<div class="col-sm-2 col-sm-offset-8 col-xs-2 col-xs-offset-8">
 								<input
 									type="button"
-									class="btn btn-primary btn-sm whenRead"
-									value="更新モードへ"
+									class="btn btn-primary btn-sm"
+									value="更新モード"
 									ng-show="isReadMode()"
-									ng-click="updateForm()"></input>
+									ng-click="toUpdateMode()"></input>
 							</div>
 							<div class="col-sm-1 col-xs-1">
 								<input
@@ -73,7 +68,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									ng-click="cancel()" />
 							</div>
 						</div>
-
 						<h4>売上伝票</h4>
 						<div class="form-group form-group-sm">
 							<label
@@ -84,7 +78,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									class="ioc-label"
 									ng-ioc="kokyaku"
 									ng-ioc-label-text="${name}"
-									ng-ioc-target="kokyakuCode"></label> 
+									ng-ioc-target="kokyakuCode"></label>
 								<input
 									class="form-control"
 									id="kokyakuCode"
@@ -92,8 +86,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									type="text"
 									th:value="${form.kokyakuCode}"
 									ng-model="kokyakuCode"
-									ng-init-from-value
-									required
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
 						</div>
@@ -109,8 +101,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									placeholder="00000"
 									type="text"
 									th:value="${form.denpyoNumber}"
-									ng-model="denpyoNumber"
 									ng-init-from-value
+									ng-model="denpyoNumber"
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
 						</div>
@@ -126,8 +118,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									placeholder="YYYY/MM/DD"
 									type="text"
 									th:value="${{form.uriageDate}}"
-									ng-model="uriageDate"
 									ng-init-from-value
+									ng-model="uriageDate"
 									ng-readonly="!header.editing || !isRegisterMode() " />
 							</div>
 						</div>
@@ -143,13 +135,15 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									th:include='common/kubunOption :: option(kubunName=HanbaiKubun, selected=${form.hanbaiKubun})'
 									ng-model="hanbaiKubun"
 									ng-init-from-value
-									ng-readonly="!header.editing || !isRegisterMode()" />
+									ng-readonly="!header.editing || !isRegisterMode()"></select>
 							</div>
 						</div>
 						<input
 							type="hidden"
 							name="version"
-							th:value="${form.version}" />
+							th:value="${form.version}"
+							ng-model="version"
+							ng-init-from-value />
 						<input
 							type="hidden"
 							name="urikakeVersion"
@@ -157,21 +151,22 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<input
 							type="hidden"
 							name="recordId"
-							th:value="${form.recordId}" />
+							ng-model="recordId"
+							th:ng-init="|init('${form.kokyakuCode}', '${form.denpyoNumber}')|" />
 						<!-- 計上済み -->
 						<input
 							type="checkbox"
 							th:value="${isKeijoZumi}"
 							ng-hide="true"
 							ng-model="isKeijoZumi"
-							ng-init-from-value/>
+							ng-init-from-value />
 						<!-- 請求済み -->
 						<input
 							type="checkbox"
 							th:value="${isSeikyuZumi}"
 							ng-hide="true"
 							ng-model="isSeikyuZumi"
-							ng-init-from-value/>
+							ng-init-from-value />
 						<h4>明細</h4>
 
 						<button
@@ -203,34 +198,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								</tr>
 							</thead>
 							<tbody>
-								<ng-init-iterator
-									for="meisai in meisaiList"
-									th:each="m, stat:${form.meisai}"
-									style="display:none;"> <input
-									type="number"
-									th:value="${m.meisaiNumber}"
-									ng-model="meisai.meisaiNumber" /> <input
-									type="text"
-									th:value="${m.shohinCode}"
-									ng-model="meisai.shohinCode" /> <input
-									type="number"
-									th:value="${m.hanbaiNumber}"
-									ng-model="meisai.hanbaiNumber" /> <input
-									type="number"
-									th:value="${m.hanbaiTanka}"
-									ng-model="meisai.hanbaiTanka" /> <input
-									type="number"
-									th:value="${m.version}"
-									ng-model="meisai.version" /> <input
-									type="text"
-									th:value="${m.recordId}"
-									ng-model="meisai.recordId" /> <input
-									type="text"
-									th:value="${m.editMode}"
-									ng-model="meisai.editMode" /> </ng-init-iterator>
-								<tr
-									ng-repeat="meisai in meisaiList"
-									ng-present-deleted="meisai">
+								<tr ng-repeat="meisai in meisaiList">
 									<td class="col-sm-1">
 										<input
 											name="meisai[{{$index}}].meisaiNumber"
@@ -309,7 +277,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								</tr>
 								<tr ng-show="meisaiList.length > 0">
 									<td colspan="4"></td>
-									<td colspan="3">{{ getTotalAmount(meisaiList) | number }}</td>
+									<td
+										colspan="3"
+										ng-if="meisaiList">{{ getTotalAmount(meisaiList) | number }}</td>
 								</tr>
 							</tbody>
 						</table>

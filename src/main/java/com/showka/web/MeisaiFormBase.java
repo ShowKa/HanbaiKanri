@@ -18,15 +18,20 @@ public class MeisaiFormBase implements Serializable {
 	 */
 	private static final long serialVersionUID = -5376895824409763664L;
 
-	/** 編集モード */
-	private EditMode editMode = EditMode.notUpdated;
+	/** ステータス. */
+	@Getter(AccessLevel.NONE)
+	private String _status;
 
 	@AllArgsConstructor
-	private enum EditMode {
+	private enum MeisaiStatus {
 		added("added"), notUpdated("notUpdated"), newRegistered("newRegistered"), updated("updated"), deleted(
 				"deleted");
 		@Getter(value = AccessLevel.PROTECTED)
 		private String code;
+	}
+
+	public boolean isDeleted() {
+		return MeisaiStatus.deleted.getCode().equals(_status);
 	}
 
 	/**

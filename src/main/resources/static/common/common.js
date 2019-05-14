@@ -222,12 +222,12 @@ _.swithElementActivationByMode = function() {
 /**
  * 文字列操作
  */
-_.replaceText = function (model, labelText) {
+_.replaceText = function(model, labelText) {
 	var _text = labelText;
 	// regular expression to parse labelText
 	var reg = /\$\{[^\}]+\}/g;
 	var matchedArray = labelText.match(reg);
-	for (var i in matchedArray) {
+	for ( var i in matchedArray) {
 		var matched = matchedArray[i];
 		var tKey = matched.substring(2, matched.length - 1);
 		var value = model[tKey];
@@ -370,3 +370,44 @@ $(document).ready(function() {
 		return false;
 	});
 });
+
+//object.watch
+// https://gist.github.com/eligrey/384583
+if (!Object.prototype.watch) {
+	Object.defineProperty(Object.prototype, "watch", {
+		enumerable : false,
+		configurable : true,
+		writable : false,
+		value : function(prop, handler) {
+			var oldval = this[prop], newval = oldval, getter = function() {
+				return newval;
+			}, setter = function(val) {
+				oldval = newval;
+				return newval = handler.call(this, prop, oldval, val);
+			};
+
+			if (delete this[prop]) { // can't watch constants
+				Object.defineProperty(this, prop, {
+					get : getter,
+					set : setter,
+					enumerable : true,
+					configurable : true
+				});
+			}
+		}
+	});
+}
+
+// object.unwatch
+if (!Object.prototype.unwatch) {
+	Object.defineProperty(Object.prototype, "unwatch", {
+		enumerable : false,
+		configurable : true,
+		writable : false,
+		value : function(prop) {
+			var val = this[prop];
+			delete this[prop]; // remove accessors
+			this[prop] = val;
+		}
+	});
+}

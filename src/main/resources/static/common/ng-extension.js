@@ -1,6 +1,6 @@
 var ngModules = angular.module('App', []);
 
-//services
+// services
 ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
 	// $http wrapper
 	function($scope, $http, $filter) {
@@ -84,93 +84,59 @@ ngModules.service('$httpw', [ '$rootScope', '$http', '$filter',
 	};
 } ]);
 
+// 明細
 ngModules.service('meisai', [ '$rootScope', '$filter',
-	// 明細
 	function($scope, $filster) {
-
-	this.convertToMeisai = function(meisai, edit) {
-		if (meisai.editing) {
-			return;
-		}
-		edit = edit != null ? edit :false;
-		meisai.editing = edit;
-		meisai.edit = function (e) {
-			e = e != null ? e : true;
-			this.editing = e;
-		};
-		meisai.editDone = function() {
-			this.editing = false;
-			this.updated();
-		}
-
-		if(!meisai.editMode) {
-			meisai.editMode = "added";
-		}
-		var tmp = {
-				isNewRegistered: function () {
-					return this.editMode == 'newRegistered';
-				},
-				isUpdated: function() {
-					return this.editMode == "updated"
-				},
-				updated : function() {
-					switch(this.editMode) {
-					case "added":
-						this.editMode = "newRegistered";
-						break;
-					case "notUpdated":
-					case "deleted" :
-						this.editMode = "updated";
-						break;
-					case "newRegistered" : 
-						console.log("this is new-registered meisai, cannot set editMode updated");
-						break;
-					}
-				},
-				isDeleted: function() {
-					return this.editMode == "deleted"
-				},
-				delete: function() {
-					this.editMode = "deleted";
-				},
-				isAdded: function() {
-					return this.editMode == "added";
-				}
-		};
-
-		Object.assign(meisai, tmp);
-	};
-
-	this.convertCollectionToMeisai = function(meisaiList, edit) {
-		for (var l of meisaiList) {
-			this.convertToMeisai(l, edit);
-		}
-	};
-
 	this.check = function (meisaiList) {
-		if (meisaiList.length === 0) {
+		if (!this.errorIfNothing(meisaiList)) {
+			return false;
+		}
+		if (!this.errorIfEditing(meisaiList)) {
+			return false;
+		}
+		if (!this.errorIfNotUpdated(meisaiList)) {
+			return false;
+		}
+		if (!this.errorIfDuplicate(meisaiList)) {
+			return false;
+		}
+		return true;
+	};
+	this.errorIfNothing = function (meisaiList) {
+		if (meisaiList.nothing()) {
 			_.showErroeMessage("明細を追加してください。");
 			return false;
 		}
-		for ( var l of meisaiList) {
-			if (l.editing == true) {
-				_.showErroeMessage("編集中の明細が残っています。");
-				return false;
+		return true;
+	};
+	this.errorIfEditing = function (meisaiList) {
+		if (meisaiList.hasEditing()) {
+			_.showErroeMessage("編集中の明細が残っています。");
+			return false;
+		}
+		return true;
+	};
+	this.errorIfNotUpdated = function (meisaiList) {
+		if (meisaiList.updated()) {
+			return true;
+		}
+		_.showErroeMessage("明細を変更していません。");
+		return false;
+	};
+	this.errorIfDuplicate = function (meisaiList) {
+		for ( var i = 0; i < meisaiList.length; i++) {
+			for ( var j = i + 1; j < meisaiList.length; j++) {
+				if (meisaiList[i].equals(meisaiList[j])) {
+					_.showErroeMessage("明細が重複しています。[ " + (i+1) + "行目・" + (j+1) + "行目]");
+					return false;
+				}
 			}
 		}
 		return true;
 	};
-
-	// 任意の明細行をリストモデルから取り除く
-	this.remove = function(target, meisaiList) {
-		var index = meisaiList.indexOf(target);
-		if (index !== -1) {
-			meisaiList.splice(index, 1);
-		}
-	};
 }]);
 
-//directive
+// directive
 ngModules.directive('ngInitFromValue', function() {
 	return {
 		restrict : 'A',
@@ -274,7 +240,7 @@ ngModules.directive('ngIoc', ["$httpw", function($httpw) {
 			var target = attrs.ngIocTarget;
 			var labelText = attrs.ngIocLabelText;
 			scope.$watch(target, function(newValue, oldvalue) {
-				if (newValue.length == 0) {
+				if (newValue == null || newValue.length == 0) {
 					$label.text("");
 					return;
 				}
