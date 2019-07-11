@@ -1,6 +1,7 @@
 package com.showka.entity;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityManager;
@@ -84,6 +85,25 @@ public class EntityManagementAOP {
 		if (e.isNew()) {
 			this.refresh(e);
 		}
+		return ret;
+	}
+
+	@Around("execution(* org.springframework.data.jpa.repository.JpaRepository+.findAll(..))")
+	public Object refreshWhenFindAll(ProceedingJoinPoint pjp) throws Throwable {
+		Object ret = pjp.proceed();
+		if (!(ret instanceof List)) {
+			return ret;
+		}
+		List<?> entities = (List<?>) ret;
+		entities.forEach(_e -> {
+			if (!(_e instanceof EntityBase)) {
+				return;
+			}
+			EntityBase e = (EntityBase) _e;
+			if (e.isNew()) {
+				this.refresh(e);
+			}
+		});
 		return ret;
 	}
 
