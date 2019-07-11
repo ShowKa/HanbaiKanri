@@ -1,10 +1,8 @@
 package com.showka.service.crud.u05;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageMeisai;
 import com.showka.entity.RUriagePK;
 import com.showka.entity.TUriage;
-import com.showka.entity.TUriageMeisai;
 import com.showka.entity.TUriageMeisaiPK;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
@@ -100,11 +97,7 @@ public class UriageCrudImpl implements UriageCrud {
 		// 顧客
 		Kokyaku kokyaku = kokyakuCrud.getDomain(e.getKokyaku().getCode());
 		// 売上明細ドメイン
-		List<UriageMeisai> uriageMeisai = new ArrayList<UriageMeisai>();
-		Set<TUriageMeisai> meisaiEntityList = e.getMeisai();
-		for (TUriageMeisai m : meisaiEntityList) {
-			uriageMeisai.add(uriageMeisaiCrud.getDomain(m.getPk()));
-		}
+		List<UriageMeisai> uriageMeisai = uriageMeisaiCrud.getDomainList(e.getRecordId());
 		// sort
 		Collections.sort(uriageMeisai);
 		// set builder
