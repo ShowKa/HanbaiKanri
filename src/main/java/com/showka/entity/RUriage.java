@@ -42,10 +42,6 @@ public class RUriage extends EntityBase implements Serializable {
 	@Column(name = "shohizeiritsu", unique = false, nullable = false)
 	private Double shohizeiritsu;
 
-	/** 売上履歴明細. */
-	// @OneToMany(fetch = FetchType.EAGER, mappedBy = "uriage")
-	// private List<TUriageMeisai> meisai;
-
 	/** 売上. */
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "uriage_id", referencedColumnName = "record_id", insertable = false, updatable = false)

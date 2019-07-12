@@ -2,7 +2,6 @@ package com.showka.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -10,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -47,10 +45,6 @@ public class TUriage extends EntityBase implements Serializable {
 	/** 消費税率. */
 	@Column(name = "shohizeiritsu", unique = false, nullable = false)
 	private Double shohizeiritsu;
-
-	/** 売上明細. */
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "uriage")
-	private Set<TUriageMeisai> meisai;
 
 	/** 顧客 */
 	@ManyToOne(fetch = FetchType.EAGER)
