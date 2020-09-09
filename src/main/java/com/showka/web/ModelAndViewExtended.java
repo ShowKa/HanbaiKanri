@@ -3,6 +3,8 @@ package com.showka.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.lang.Nullable;
+
 import com.showka.domain.z00.Busho;
 import com.showka.domain.z00.Shain;
 import com.showka.kubun.i.Kubun;
@@ -88,5 +90,11 @@ public class ModelAndViewExtended extends org.springframework.web.servlet.ModelA
 	public ModelAndViewExtended addObject(String attributeName, TheDate date) {
 		super.addObject(attributeName, date.toString());
 		return this;
+	}
+
+	@Override
+	public void setViewName(@Nullable String viewName) {
+		// we don't need slash at the top of path
+		super.setViewName(viewName.replaceAll("^/", ""));
 	}
 }

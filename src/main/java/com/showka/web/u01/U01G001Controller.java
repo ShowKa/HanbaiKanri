@@ -76,7 +76,7 @@ public class U01G001Controller {
 		model.addAttribute("kokyakuList", kokyakuList);
 
 		// 画面
-		return "/u01/u01g001KokyakuList :: list";
+		return "u01/u01g001KokyakuList :: list";
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class U01G001Controller {
 			search(form, model, session);
 		}
 
-		return "/u01/u01g001KokyakuList :: list";
+		return "u01/u01g001KokyakuList :: list";
 	}
 
 }
