@@ -37,6 +37,9 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.springframework.boot:spring-boot-devtools")
 
+	// postgres
+	compile ('org.postgresql:postgresql:42.1.4')
+	
 	// h2 databse
 	compile('com.h2database:h2:1.4.196')
 
