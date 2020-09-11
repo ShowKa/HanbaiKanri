@@ -27,6 +27,6 @@ public class U00G000Controller {
 	// public method called by request
 	@RequestMapping(value = "/u00g000", method = RequestMethod.GET)
 	public String index(Map<String, Object> model, HttpSession session) {
-		return "/u00/u00g000";
+		return "u00/u00g000";
 	}
 }
