@@ -14,7 +14,6 @@ import com.showka.domain.u01.Kokyaku;
 import com.showka.domain.u05.Uriage;
 import com.showka.domain.u05.UriageMeisai;
 import com.showka.entity.TUriage;
-import com.showka.entity.TUriageMeisaiPK;
 import com.showka.entity.TUriagePK;
 import com.showka.kubun.HanbaiKubun;
 import com.showka.repository.i.TUriageRepository;
@@ -274,7 +273,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 			{
 				kokyakuCrud.getDomain("KK01");
 				result = kokyaku01;
-				uriageMeisaiCrud.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
+				uriageMeisaiCrud.getDomainList("r-KK01-00001");
 				result = uriageMeisai01;
 			}
 		};
@@ -286,7 +285,7 @@ public class UriageCrudImplTest extends PersistenceTestCase {
 			{
 				kokyakuCrud.getDomain("KK01");
 				times = 1;
-				uriageMeisaiCrud.getDomain(new TUriageMeisaiPK("r-KK01-00001", 1));
+				uriageMeisaiCrud.getDomainList("r-KK01-00001");
 				times = 1;
 			}
 		};

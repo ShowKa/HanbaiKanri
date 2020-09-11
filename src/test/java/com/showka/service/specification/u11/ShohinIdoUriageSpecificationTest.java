@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Test;
+
 import com.showka.common.SimpleTestCase;
 import com.showka.domain.builder.BushoBuilder;
 import com.showka.domain.builder.KokyakuBuilder;
@@ -370,4 +372,11 @@ public class ShohinIdoUriageSpecificationTest extends SimpleTestCase {
 			}
 		};
 	}
+
+	// avoid error: No runnable methods
+	@Test
+	public void dummy() {
+		assertTrue(true);
+	}
+
 }
