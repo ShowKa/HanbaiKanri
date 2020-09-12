@@ -55,7 +55,6 @@ workflows:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           region: AWS_REGION
-          # context: myContext
           path: .
           dockerfile: Dockerfile
           no-output-timeout: 20m
@@ -63,3 +62,7 @@ workflows:
           repo: showka/hanbaikanri
           skip-when-tags-exist: false
           tag: latest
+          # only master
+          filters:
+            branches:
+              only: master
