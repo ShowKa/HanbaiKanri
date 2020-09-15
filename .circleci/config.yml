@@ -61,7 +61,7 @@ workflows:
           create-repo: true
           repo: showka/hanbaikanri
           skip-when-tags-exist: false
-          tag: latest
+          tag: latest,${CIRCLE_BUILD_NUM}
           # only master
           filters:
             branches:
