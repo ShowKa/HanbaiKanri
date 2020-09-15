@@ -6,6 +6,7 @@ RUN npm install --global bower@1.8.2
 COPY --chown=node:node ./bower.json /home/bower/
 WORKDIR /home/bower
 
+USER node
 RUN bower install
 
 # the stage of our build will use a gradle
