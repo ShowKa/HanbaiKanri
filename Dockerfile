@@ -7,7 +7,7 @@ COPY --chown=node:node ./bower.json /home/bower/
 WORKDIR /home/bower
 
 USER node
-RUN bower install
+RUN bower install --force-latest
 
 # the stage of our build will use a gradle
 FROM gradle:4.1.0-jdk8-alpine AS build
