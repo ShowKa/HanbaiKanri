@@ -62,3 +62,7 @@ workflows:
           repo: showka/hanbaikanri
           skip-when-tags-exist: false
           tag: latest
+          # only master
+          filters:
+            branches:
+              only: master
