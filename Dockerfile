@@ -16,6 +16,10 @@ FROM gradle:4.1.0-jdk8-alpine AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 COPY --from=asseble-js --chown=gradle:gradle /home/bower/bower_components /home/gradle/src/main/resources/static/bower_components
 
+RUN ls -la /home/gradle/src/main/resources/static/bower_components
+RUN ls -la /home/gradle/src/main/resources/static/bower_components/angular
+RUN ls -la /home/gradle/src/main/resources/static/common
+
 WORKDIR /home/gradle/src
 
 # package our application code
