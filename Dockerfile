@@ -1,8 +1,19 @@
-# the first stage of our build will use a gradle
+# bower
+FROM node:13 AS asseble-js
+
+RUN npm install --global bower@1.8.2
+
+COPY --chown=node:node ./bower.json /home/bower/
+WORKDIR /home/bower
+
+RUN bower install
+
+# the stage of our build will use a gradle
 FROM gradle:4.1.0-jdk8-alpine AS build
 
 # copy src code to the container
 COPY --chown=gradle:gradle . /home/gradle/src
+COPY --from=asseble-js --chown=gradle:gradle /home/bower/bower_components/* /home/gradle/src/main/resources/static/bower_components/
 WORKDIR /home/gradle/src
 
 # package our application code
